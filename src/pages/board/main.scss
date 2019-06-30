@@ -1,0 +1,61 @@
+body {
+    background-color: #2d2d2d;
+}
+
+div {
+    color: white;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.btn {
+    background-color: #535353;
+    box-shadow: 2px 2px 2px;
+}
+
+.vertical-rule  {
+    border-left: 1px solid #000;
+}
+
+.top-section {
+    margin-top: 12px;
+}
+
+.board-information {
+    float: left;
+}
+
+.board-user-options-btns {
+    float: left;
+    clear: left;
+    margin-top: 6px;
+}
+
+.btn.board-user-options-btn {
+    height: 24px !important;
+    line-height: 24px !important;
+}
+
+.board-avatar-small {
+    height: 32px;
+    width: 32px;
+    float: left;
+    margin: 4px;
+    margin-right: 8px;
+    margin-top: 4px;
+}
+
+.board-info-title {
+    font-weight: 800;
+}
+
+.board-details {
+    float: left;
+}
+
+.large-invite-members-btn {
+    float: right;
+    margin-left: 12px;
+}
