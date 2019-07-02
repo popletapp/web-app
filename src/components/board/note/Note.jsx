@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from './';
+import { Button } from './../../';
 
 class Note extends Component {
     constructor ({ note }) {

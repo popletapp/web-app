@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TopBar, Note } from './';
+import { TopBar, Note } from './../';
 
 class Board extends Component {
     constructor ({ id, object, notes }) {

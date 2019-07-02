@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Board, Chatroom } from './';
+import { Board, Chatroom } from '../..';
 import axios from 'axios';
 
 class App extends Component {
@@ -26,6 +26,7 @@ class App extends Component {
         }
         return (
             <div className='poplet-root'>
+                <div className='modal-container'></div>
                 <Board id={board.id} object={board} notes={this.state.notes || []} />
                 <Chatroom chatroom={this.state.chatroom}/>
             </div>

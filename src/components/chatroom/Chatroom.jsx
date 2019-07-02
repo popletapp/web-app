@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Avatar, RoundedButton } from './';
-import TimeParser from './../util/parseTime';
+import { Avatar, RoundedButton } from './../';
+import TimeParser from './../../util/parseTime';
 
 class Comment extends Component {
     constructor ({ author }) {

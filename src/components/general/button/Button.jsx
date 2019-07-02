@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 class Button extends Component {
     constructor ({ text, color }) {
         super();
@@ -10,7 +9,8 @@ class Button extends Component {
 
     render() {
         return (
-            <button className={`waves-effect waves-light btn-small${this.color ? ` ${this.color}` : ''}${this.props.className ? ` ${this.props.className}` : ''}`}>
+            <button data-target={this.props['data-target']}
+            className={`waves-effect waves-light btn-small${this.color ? ` ${this.color}` : ''}${this.props.className ? ` ${this.props.className}` : ''}`}>
                 {this.text || this.props.children}
             </button>
         );
