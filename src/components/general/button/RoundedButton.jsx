@@ -1,4 +1,5 @@
 import React from 'react';
+import './Button.scss';
 
 export default ({ label, color = 'red', waves = true, icon = 'add', className, small }) => {
     return (

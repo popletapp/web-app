@@ -1,0 +1,110 @@
+.chatroom-title {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.chatroom-last-active-label {
+  font-size: 13px;
+  color: lightgrey;
+}
+
+.chatroom-header {
+  background-color: #5c6bc0;
+  width: auto;
+  height: 15%;
+  padding: 12px;
+
+  &-btns {
+    padding: 12px;
+    padding-left: 0px;
+    margin-left: 0px;
+    float: left;
+  }
+  
+  &-information {
+    float: left;
+  }
+}
+
+.chatroom-root {
+  background-color: #333333;
+  width: 20%;
+  height: 100% !important;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  float: right;
+  padding: 0 !important;
+}
+
+.chatroom-body {
+  margin-top: 12px;
+  padding: 12px;
+}
+
+.chatroom-textarea {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #1a1a1a;
+
+  textarea {
+    margin: 12px;
+    width: 90%;
+  }
+}
+
+.chatroom-container {
+  float: right;
+  width: 20%;
+}
+
+.chatroom-comment {
+  &-author {
+    height: 32px;
+
+    &-username {
+      float: right;
+      top: -10px;
+      padding-left: 12px;
+      position: relative;
+    }
+  }
+
+  &-content {
+    clear: left;
+    color: rgb(202, 202, 202);
+
+    p {
+      padding-top: 5px;
+      margin-top: 5px;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .chatroom-title {
+      font-size: 24px;
+      font-weight: 700;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .chatroom-title {
+      font-size: 16px;
+      font-weight: 700;
+  }
+}
+
+@media screen and (max-width: 750px) {
+    .chatroom-header-btns {
+        padding: 0;
+        padding-top: 6px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+  .chatroom-container {
+      display: none;
+  }
+}

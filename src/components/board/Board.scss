@@ -1,0 +1,210 @@
+
+.vertical-rule  {
+  border-left: 1px solid #fff;
+  float: left;
+}
+
+.top-section {
+  padding-top: 12px;
+  margin-bottom: 12px;
+  float: left;
+  width: 80%;
+  background-color: #292929;
+  box-shadow: 3px 4px 2px #212121;
+}
+
+.board-information {
+  float: left;
+  margin-right: 24px;
+}
+
+.large-invite-members-btn {
+  float: right;
+  margin-top: 4px;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.board-selector-btn {
+  float: right;
+  margin-top: 4px;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.user-details {
+  margin-top: 12px;
+  float: left;
+  background-color: #202225;
+  border-radius: 12px;
+  padding: 4px !important;
+  width: 350px;
+
+  .btn-small {
+    margin-right: 12px;
+  }
+
+  &-btn {
+    height: 24px !important;
+    line-height: 24px !important;
+  }
+}
+
+.options-top-section-left {
+  float: right;
+}
+
+.board-details .avatar {
+  top: 4px;
+  position: relative;
+  float: left;
+}
+
+.board-info, .user-info {
+  &-title {
+    font-weight: 800;
+  }
+
+  &-text {
+    float: left;
+    padding-left: 12px;
+  }
+}
+
+.user-details .avatar {
+  top: 4px;
+  position: relative;
+  float: left;
+}
+
+.board-details {
+  float: left;
+  background-color: #202225;
+  border-radius: 12px;
+  padding: 4px;
+  width: 350px;
+}
+
+.dropdown-content {
+  background-color: #212121 !important;
+  width: 200px !important;
+  overflow-x: hidden;
+
+  .avatar {
+    top: 0px;
+    position: relative;
+  }
+
+  li:hover {
+    background-color: #353535 !important;
+  }
+
+  .divider {
+    background-color: #414141 !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 7px;
+    border-color: #505050;
+  }
+
+  ::-webkit-scrollbar-track-piece {
+    background-color: #1d1d1d;
+    border: 3px solid #292929;
+    border-radius: 7px;
+  }
+}
+
+.board-selection li {
+  border-radius: 4px;
+  padding-top: 8px;
+  padding-left: 8px;
+
+  .avatar p {
+    top: 0px;
+  }
+
+  .avatar, i {
+    float: left;
+    color: white;
+    margin-right: 12px;
+    position: relative;
+  }
+
+  i {
+    top: 3px;
+  }
+
+  p {
+    color: white;
+    font-size: 16px;
+    display: block;
+    line-height: 30px;
+    margin: 0;
+  }
+}
+
+.top-bar-searchbar {
+  background-color: #1e1e1e;
+  top: -18px;
+  width: 100% !important;
+  border-radius: 8px;
+  box-shadow: 1.5px 1.5px 8px black;
+
+  &-input {
+    color: white;
+    height: 24px;
+    line-height: 12px;
+  }
+
+  &-container {
+    height: 48px;
+  }
+
+  &-btn {
+    box-shadow: 1.5px 1.5px 8px black;
+  }
+}
+
+.btn-floating-container {
+  width: fit-content;
+  margin: 0;
+  float: left;
+}
+
+@media screen and (max-width: 900px) {
+  .board-information {
+      margin: 0;
+      width: 40% !important;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .board-information {
+      margin: 0;
+      width: 30% !important;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .top-section {
+      width: 100%;
+  }
+
+  .note-container {
+      width: 100%;
+  }
+
+  .board-information {
+      margin: 0;
+      width: 20% !important;
+  }
+}

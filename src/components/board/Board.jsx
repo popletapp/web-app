@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TopBar, Note } from './../';
+import './Board.scss'
 
 class Board extends Component {
     constructor ({ id, object, notes }) {

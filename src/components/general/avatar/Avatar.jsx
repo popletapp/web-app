@@ -1,4 +1,5 @@
 import React from 'react';
+import './Avatar.scss';
 
 const IMAGE_SIZES = {
     'tiny': 16,

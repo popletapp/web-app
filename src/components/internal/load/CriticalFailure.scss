@@ -1,0 +1,34 @@
+.critical-failure {
+  opacity: 0;
+  padding: 10em 30% 10em 30%;
+  background: linear-gradient(to right, rgba(0,0,0,0.95) 25%,rgba(0,0,0,0.01) 295%,rgba(0,0,0,0) 92%), url('https://live.staticflickr.com/5504/10326267754_80f3a42dc9_b.jpg') no-repeat fixed;
+  background-size: cover;
+  background-position: bottom;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  h1 {
+    font-weight: 800;
+    font-size: 72px;
+    margin-bottom: 4px;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 24px;
+    color: #b71c1c;
+    margin-top: 0;
+    margin-bottom: 64px;
+  }
+
+  h4 {
+    font-size: 24px;
+    color: #bdbdbd;
+  }
+
+  h5 {
+    margin-top: 42px;
+    font-size: 20px;
+    color: #bdbdbd;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from './../../';
+import './Note.scss';
 
 class Note extends Component {
     constructor ({ note }) {

@@ -1,0 +1,33 @@
+.modal-container {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  left: 0; 
+  right: 0;
+  top: 0; 
+  bottom: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: 2;
+}
+
+.poplet-modal {
+  z-index: 3;
+  position: absolute;
+  left: 0; 
+  right: 0;
+  top: 0; 
+  bottom: 0;
+  margin: auto;
+  max-width: 75%;
+  max-height: 75%;
+  height: fit-content;
+  overflow: auto;
+  text-align: center;
+  background-color: #616161;
+
+  .modal-footer {
+    background-color: #424242;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Avatar, RoundedButton } from './../';
 import TimeParser from './../../util/parseTime';
+import './Chatroom.scss';
 
 class Comment extends Component {
     constructor ({ author }) {

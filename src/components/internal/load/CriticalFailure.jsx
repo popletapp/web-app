@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './CriticalFailure.scss';
 
 class CriticalFailure extends Component {
     constructor () {
