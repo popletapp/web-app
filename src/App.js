@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import App from './components/App';
-import "./App.css";
+import App from './components/internal/main/App';
+import './App.scss';
 
 class Poplet extends Component {
   constructor ({ board }) {
     super();
     this.board = board;
-  }
+  }s
 
   render () {
     return ( /* get the current selected board, this is a placeholder object */

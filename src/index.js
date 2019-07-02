@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Application from './App';
-import CriticalFailure from './components/CriticalFailure';
-import Login from './components/Login';
-import Loader from './components/Loader';
+import CriticalFailure from './components/internal/load/CriticalFailure';
+import Login from './components/login/Login';
+import Loader from './components/internal/load/Loader';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 
@@ -62,6 +62,9 @@ async function render () {
             }
 
             ReactDOM.render(<Application board={Poplet.boards.selected} />, document.getElementById('root'));
+            setTimeout(() => {
+                window.M.AutoInit();
+            }, 100)
         }));
 }
 
