@@ -8,9 +8,15 @@ class Modal extends Component {
         this.state = {};
     }
 
-    actionMade () {
-        console.log(this.state)
+    actionMade (type) {
         new ModalRenderer().obliterate();
+        if (type) {
+            if (type === 'cancel') {
+                return this.props.onCancel()
+            } else {
+                return this.props.onConfirm(this.state);
+            }
+        }
     }
 
     render () {
@@ -21,7 +27,8 @@ class Modal extends Component {
                     <p>{this.props.content}</p>
                 </div>
                 <div className="modal-footer">
-                    <button onClick={this.actionMade} className="modal-close waves-effect waves-white btn-flat green">OK</button>
+                    <button onClick={() => this.actionMade('cancel')} className="modal-close waves-effect waves-white btn-flat grey">{this.props.cancelText || 'Cancel'}</button>
+                    <button onClick={() => this.actionMade('confirm')} className="modal-close waves-effect waves-white btn-flat green">{this.props.confirmText || 'OK'}</button>
                 </div>
             </div>
         );
