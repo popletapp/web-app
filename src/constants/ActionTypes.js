@@ -1,0 +1,2 @@
+export const CREATE_BOARD = 'CREATE_BOARD';
+export const SWITCH_BOARD = 'SWITCH_BOARD';
