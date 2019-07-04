@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
+import store from './store.js';
+
 import './index.css';
 import Application from './App';
 import CriticalFailure from './components/internal/load/CriticalFailure';
@@ -13,12 +16,11 @@ const BASE_URL = 'http://localhost:7777/api/v1';
 
 axios.defaults.baseURL = BASE_URL;
 
-global.Poplet = {
+let Poplet = {
     API: {
         BASE_URL
     }
 };
-let Poplet = global.Poplet;
 
 async function render () {
     await axios.get('/gateway/connect')
@@ -61,10 +63,15 @@ async function render () {
                 }  
             }
 
-            ReactDOM.render(<Application board={Poplet.boards.selected} />, document.getElementById('root'));
-            setTimeout(() => {
-                window.M.AutoInit();
-            }, 100)
+            store.subscribe(() => console.log('Store: ', store.getState()));
+
+            window.store = store;
+
+            ReactDOM.render(
+                <Provider store={store}>
+                    <Application board={Poplet.boards.selected} />
+                </Provider>
+            , document.getElementById('root'));
         }));
 }
 
