@@ -10,7 +10,7 @@ class Button extends Component {
 
     render() {
         return (
-            <button data-target={this.props['data-target']}
+            <button {...this.props}
             className={`waves-effect waves-light btn-small${this.color ? ` ${this.color}` : ''}${this.props.className ? ` ${this.props.className}` : ''}`}>
                 {this.text || this.props.children}
             </button>

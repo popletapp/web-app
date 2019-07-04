@@ -21,7 +21,7 @@ class Comment extends Component {
                 <div className='chatroom-comment-content'>
                     <p>{comment.props.children}</p>
                 </div>
-            </div>
+            </div>     
         );
     }
 }

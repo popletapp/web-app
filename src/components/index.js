@@ -11,6 +11,7 @@ export { default as Avatar } from './general/avatar/Avatar'
 export { default as Button } from './general/button/Button'
 export { default as RoundedButton } from './general/button/RoundedButton'
 export { default as Modal } from './general/modal/Modal'
+export { default as BoardCreationModal } from './general/modal/BoardCreationModal';
 export { default as SearchBar } from './general/searchbar/SearchBar'
 
 // Internal

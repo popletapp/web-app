@@ -89,6 +89,7 @@
   background-color: #212121 !important;
   width: 200px !important;
   overflow-x: hidden;
+  max-height: 400px;
 
   .avatar {
     top: 0px;
@@ -103,12 +104,12 @@
     background-color: #414141 !important;
   }
 
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     width: 5px;
     height: 14px;
   }
 
-  ::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     background-clip: padding-box;
     border-width: 3px;
     border-style: solid;
@@ -116,7 +117,7 @@
     border-color: #505050;
   }
 
-  ::-webkit-scrollbar-track-piece {
+  &::-webkit-scrollbar-track-piece {
     background-color: #1d1d1d;
     border: 3px solid #292929;
     border-radius: 7px;

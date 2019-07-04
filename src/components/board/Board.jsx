@@ -3,9 +3,8 @@ import { TopBar, Note } from './../';
 import './Board.scss'
 
 class Board extends Component {
-    constructor ({ id, object, notes }) {
+    constructor ({ object, notes }) {
         super();
-        this.id = id;
         this.object = object;
         this.notes = notes;
     }
@@ -24,7 +23,7 @@ class Board extends Component {
         });
 	}
 
-    render (args) {
+    render () {
         return (
             <div className='board'>
                 <TopBar board={this.object} />
