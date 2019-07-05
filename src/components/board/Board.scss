@@ -1,21 +1,34 @@
-
-.vertical-rule  {
-  border-left: 1px solid #fff;
-  float: left;
-}
-
 .top-section {
   padding-top: 12px;
   margin-bottom: 12px;
-  float: left;
   width: 80%;
   background-color: #292929;
   box-shadow: 3px 4px 2px #212121;
 }
 
+.board-top-section {
+  padding: 1em;
+  padding-top: 0.5em;
+  display: flex;
+  flex-flow: row nowrap;
+  > * {
+    flex: 1 100%;
+  }
+}
+
 .board-information {
-  float: left;
   margin-right: 24px;
+  flex: 0 300px;
+}
+
+.vertical-rule  {
+  border-left: 1px solid #fff;
+  flex: 0 auto;
+}
+
+.options-top-section-left {
+  margin-left: 24px;
+  flex: 0 300px;
 }
 
 .large-invite-members-btn {
@@ -48,10 +61,6 @@
     height: 24px !important;
     line-height: 24px !important;
   }
-}
-
-.options-top-section-left {
-  float: right;
 }
 
 .board-details .avatar {
@@ -107,20 +116,20 @@
   &::-webkit-scrollbar {
     width: 5px;
     height: 14px;
-  }
 
-  &::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-    border-width: 3px;
-    border-style: solid;
-    border-radius: 7px;
-    border-color: #505050;
-  }
+    &-thumb {
+      background-clip: padding-box;
+      border-width: 3px;
+      border-style: solid;
+      border-radius: 7px;
+      border-color: #505050;
+    }
 
-  &::-webkit-scrollbar-track-piece {
-    background-color: #1d1d1d;
-    border: 3px solid #292929;
-    border-radius: 7px;
+    &-track-piece {
+      background-color: #1d1d1d;
+      border: 3px solid #292929;
+      border-radius: 7px;
+    }
   }
 }
 
@@ -153,26 +162,8 @@
   }
 }
 
-.top-bar-searchbar {
-  background-color: #1e1e1e;
-  top: -18px;
-  width: 100% !important;
-  border-radius: 8px;
-  box-shadow: 1.5px 1.5px 8px black;
-
-  &-input {
-    color: white;
-    height: 24px;
-    line-height: 12px;
-  }
-
-  &-container {
-    height: 48px;
-  }
-
-  &-btn {
-    box-shadow: 1.5px 1.5px 8px black;
-  }
+.searchbar-container {
+  padding-bottom: 12px;
 }
 
 .btn-floating-container {
