@@ -1,5 +1,8 @@
 .note {
   position: absolute;
+  border-radius: 4px;
+  padding: 1em;
+  max-width: 400px;
 
   &-container {
     clear: left;
@@ -29,12 +32,25 @@
 
   &-header {
     font-weight: 700 !important;
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  &-body {
+    margin-bottom: 20px;
   }
 
   &-footer {
+    button.btn-small {
+      line-height: 24px;
+      height: 24px;
+    }
+
     &-label {
       font-size: 11px;
       color: lightgrey;
+      margin: 0;
+      margin-top: 8px;
     }
   }
 }
