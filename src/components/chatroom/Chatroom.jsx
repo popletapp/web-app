@@ -38,8 +38,8 @@ class Chatroom extends Component {
             return null;
         }
         return (
-            <div className='chatroom-container row'>
-                <div className='chatroom-root col'>
+            <div className='chatroom-container'>
+                <div className='chatroom-root'>
                     <div className='chatroom-header'>
                         <div className='chatroom-header-information'>
                             <div className='chatroom-title'>
@@ -59,8 +59,8 @@ class Chatroom extends Component {
                         {chatroom.messages && chatroom.messages.map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
                     </div>
 
-                    <div className='chatroom-textarea'>
-                        <textarea placeholder='Enter text here...' className='materialize-textarea'></textarea>
+                    <div className='chatroom-textarea-container'>
+                        <textarea placeholder='Enter text here...' className='chatroom-textarea'></textarea>
                     </div>
                 </div>
             </div>

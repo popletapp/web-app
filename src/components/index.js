@@ -12,7 +12,7 @@ export { default as Button } from './general/button/Button'
 export { default as RoundedButton } from './general/button/RoundedButton'
 export { default as Modal } from './general/modal/Modal'
 export { default as BoardCreationModal } from './general/modal/BoardCreationModal';
-export { default as SearchBar } from './general/searchbar/SearchBar'
+export { default as Input } from './general/input/Input'
 
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure'

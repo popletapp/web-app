@@ -47,13 +47,13 @@ class Login extends Component {
                         <h4 className='login-header-error'>{this.state.error}</h4>
                     </div>
                     <form id='login' className='col s6'>
-                        <div className='row'>
+                        <div className='username-container'>
                             <div class='input-field col s12'>
                                 <input onChange={(e) => this.setState({ username: e.target.value })} id='username' type='text' class='validate'></input>
                                 <label htmlFor='username'>Username</label>
                             </div>
                         </div>
-                        <div className='row'>
+                        <div className='password-container'>
                             <div className='input-field col s12'>
                                 <input onChange={(e) => this.setState({ password: e.target.value })} id='password' type='password' className='validate'></input>
                                 <label htmlFor='password'>Password</label>
