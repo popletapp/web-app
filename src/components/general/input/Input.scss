@@ -1,0 +1,31 @@
+.text-input-container {
+  display: flex;
+  width: 200px;
+  height: 24px;
+}
+
+.text-input {
+  width: 87%;
+  height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  min-height: 18px;
+
+  br {
+    display: none;
+  }
+
+  * {
+    display: inline;
+    white-space: nowrap;
+  }
+}
+
+div.input-icon {
+    width: 18px;
+    height: 18px;
+    color: #bdbdbd;
+    i {
+      font-size: 18px;
+    }
+}
