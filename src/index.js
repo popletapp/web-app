@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import store from './store.js';
 
-import './index.css';
+import './index.scss';
 import Application from './App';
 import CriticalFailure from './components/internal/load/CriticalFailure';
 import Login from './components/login/Login';
@@ -11,12 +11,11 @@ import Loader from './components/internal/load/Loader';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 
-// there should be a log in thing here but lets just say theoretically we've already done that
 const BASE_URL = 'http://localhost:7777/api/v1';
 
 axios.defaults.baseURL = BASE_URL;
 
-let Poplet = {
+const Poplet = {
     API: {
         BASE_URL
     }
@@ -38,41 +37,40 @@ async function render () {
     } else {
         axios.defaults.headers.common['Authorization'] = token;
         const user = await getCurrentUser();
-        console.log(`Logged in as ${user.username} (${user.id})!`)
+        console.log(`Logged in as ${user.username} (${user.id})`)
         Poplet.user = user;
     }
 
     const getUserBoards = () => axios.get(`/user/${Poplet.user.id}/boards`).then(res => res.data);
     const getBoard = (boardID) => axios.get(`/board/${boardID}`).then(res => res.data);
     
-    axios.all([ getUserBoards() ])
-        .then(axios.spread(async function (boards) {
-            Poplet.boards = []; // Array of board objects
-            // Get the current list of ID's of the boards that this user is in and create new board objects from the ID's
-            // Fetch from the API to convert ID's to objects
-            Poplet.boards = await Promise.all(boards.map(board => getBoard(board)))
-            Poplet.boards.selected = Poplet.boards[0]; // Make a GET request to determine the last board selected, otherwise `null` (send to homepage)
-            
-            Poplet.users = [];
-            Poplet.notes = [];
-            // Same applies for users: fetch all users inside of the board that were fetched above (each board will have a `members` property with IDs)
-            for (const board of Poplet.boards) {
-                if (board) {
-                    Poplet.users = Poplet.users.concat(board.members); // Array of cached users
-                    Poplet.notes = Poplet.notes.concat(board.notes); // Some notes should be cached to prevent having to call the API each time
-                }  
-            }
+    const boards = await getUserBoards();
 
-            store.subscribe(() => console.log('Store: ', store.getState()));
+    Poplet.boards = []; // Array of board objects
+    // Get the current list of ID's of the boards that this user is in and create new board objects from the ID's
+    // Fetch from the API to convert ID's to objects
+    Poplet.boards = await Promise.all(boards.map(board => getBoard(board)))
+    Poplet.boards.selected = Poplet.boards[0]; // Make a GET request to determine the last board selected, otherwise `null` (send to homepage)
+    
+    Poplet.users = [];
+    Poplet.notes = [];
+    // Same applies for users: fetch all users inside of the board that were fetched above (each board will have a `members` property with IDs)
+    for (const board of Poplet.boards) {
+        if (board) {
+            Poplet.users = Poplet.users.concat(board.members); // Array of cached users
+            Poplet.notes = Poplet.notes.concat(board.notes); // Some notes should be cached to prevent having to call the API each time
+        }  
+    }
 
-            window.store = store;
+    store.subscribe(() => console.log('Store: ', store.getState()));
 
-            ReactDOM.render(
-                <Provider store={store}>
-                    <Application board={Poplet.boards.selected} />
-                </Provider>
-            , document.getElementById('root'));
-        }));
+    window.store = store;
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <Application board={Poplet.boards.selected} />
+        </Provider>
+    , document.getElementById('root'));
 }
 
 render();
