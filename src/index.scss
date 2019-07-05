@@ -1,0 +1,48 @@
+@charset 'UTF-8';
+
+// Roboto
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+// Global
+div:not(p) {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+}
+
+// Materialize variables + normalize
+@import '../node_modules/materialize-css/sass/components/color-variables';
+@import '../node_modules/materialize-css/sass/components/color-classes';
+@import '../node_modules/materialize-css/sass/components/normalize';
+@import '../node_modules/materialize-css/sass/components/_variables';
+@import '../node_modules/materialize-css/sass/components/global';
+
+// Buttons
+@import '../node_modules/materialize-css/sass/components/buttons';
+.btn-floating {
+  border-radius: 9px;
+}
+
+@import '../node_modules/materialize-css/sass/components/dropdown';
+@import '../node_modules/materialize-css/sass/components/cards';
+
+// Input
+.text-input-container, select, textarea {
+  background-color: #616161;
+  color: #dddddd;
+  padding: 4px;
+  margin: 4px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+}
