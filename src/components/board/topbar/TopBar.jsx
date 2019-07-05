@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Avatar, SearchBar, RoundedButton, BoardCreationModal } from './../../';
+import { Button, Avatar, Input, RoundedButton, BoardCreationModal } from './../../';
 import { switchBoard, createBoard } from './../../../actions/board';
+import { beginCreateNote } from './../../../actions/note';
 import { Modal } from '../../../modules';
 import Poplet from '../../..';
 
@@ -14,7 +15,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
     return {
         switchBoard: board => dispatch(switchBoard(board)),
-        createBoard: board => dispatch(createBoard(board))
+        createBoard: board => dispatch(createBoard(board)),
+        beginCreateNote: () => dispatch(beginCreateNote())
     };
 }
 
@@ -28,8 +30,8 @@ class TopBar extends Component {
     render () {
         const board = this.props.board;
         return (
-            <div className='top-section row'>
-                <div className='board-top-section-left row col s9'>
+            <div className='top-section'>
+                <div className='board-top-section'>
                     <div className='board-information col s6'>
                         <div className='dropdown-trigger board-details' data-target='board-dropdown'>
                             <Avatar url={board.avatar} alt={board.name} size={32} />
@@ -91,14 +93,14 @@ class TopBar extends Component {
                     
                     <div style={{ height: 90 }} className='vertical-rule'></div>
                     <div className='options-top-section-left'>
-                        <div className='row'>
-                            <SearchBar />
+                        <div className='searchbar-container'>
+                            <Input />
                         </div>
-                        <div className='row'>
-                            <RoundedButton label='New Note' onClick={() => <Modal />} icon='add' className='top-bar-floating-btn' />
-                            <RoundedButton label='Chatroom' icon='chat_bubble' color='green darken-1' className='top-bar-floating-btn' />
+                        <div className='toolbar-container'>
+                            <RoundedButton label='New Note' onClick={() => this.props.beginCreateNote()} icon='add' className='top-bar-floating-btn' />
+                            <RoundedButton label='Chatroom' icon='chat_bubble' color='green' className='top-bar-floating-btn' />
                             <RoundedButton label='List View' icon='format_list_bulleted' color='yellow darken-2' className='top-bar-floating-btn' />
-                            <RoundedButton label='Help' icon='help' color='grey darken-1' className='top-bar-floating-btn' />
+                            <RoundedButton label='Help' icon='help' color='grey' className='top-bar-floating-btn' />
                         </div>
                     </div>
                 </div>
