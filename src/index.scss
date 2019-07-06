@@ -1,5 +1,12 @@
 @charset 'UTF-8';
 
+// Make the application take up the entire screen
+html, body, #root, .poplet-root {
+  height: 100%; 
+  width: 100%;
+  margin: 0;
+}
+
 // Roboto
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 * {
