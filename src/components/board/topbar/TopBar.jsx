@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Avatar, Input, RoundedButton, BoardCreationModal } from './../../';
-import { switchBoard, createBoard } from './../../../actions/board';
+import { selectBoard, createBoard } from './../../../actions/board';
 import { beginCreateNote } from './../../../actions/note';
-import { Modal } from '../../../modules';
+import { Modal, getBoard, switchBoard } from '../../../modules';
 import Poplet from '../../..';
 
 function mapStateToProps (state) {
     return {
-        board: state.board
+        board: state.boards[state.selectedBoard]
     };
 }
 
 function mapDispatchToProps (dispatch) {
     return {
-        switchBoard: board => dispatch(switchBoard(board)),
+        selectBoard: boardId => dispatch(selectBoard(boardId)),
         createBoard: board => dispatch(createBoard(board)),
         beginCreateNote: () => dispatch(beginCreateNote())
     };
@@ -82,8 +82,8 @@ class TopBar extends Component {
                                 </li>
                             </div>
                             <li className="divider" tabIndex="-1"></li>
-                            {Poplet.boards.slice(0, -1).map((item, i) => item.id !== board.id ? 
-                                (<div key={i} className='board-selection' onClick={() => this.props.switchBoard(item)}>
+                            {Poplet.boards.map((item, i) => item.id !== board.id ? 
+                                (<div key={i} className='board-selection' onClick={() => switchBoard(item.id)}>
                                     <li><Avatar url={item.avatar} alt='Board Avatar' size={32} /><p>{item.name}</p></li>
                                 </div>) 
                                 : '')}
