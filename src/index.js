@@ -18,18 +18,39 @@ axios.defaults.baseURL = BASE_URL;
 const Poplet = {
     API: {
         BASE_URL
-    }
+    },
+    ws: {
+        BASE_URL: 'ws://localhost:7979'
+    },
+    store
 };
+
+console.log(Poplet)
+export default Poplet;
 
 async function render () {
     await axios.get('/gateway/connect')
         .then(() => {
             ReactDOM.render(<Loader />, document.getElementById('root'));
         })
-        .catch(err => {
+        .catch(() => {
             ReactDOM.render(<CriticalFailure />, document.getElementById('root'));
         });
-    
+
+    store.subscribe(() => console.log('Store: ', store.getState()));
+
+    const ws = new WebSocket(Poplet.ws.BASE_URL);
+    ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        console.log(data);
+        if (data.type) {
+            store.dispatch(data);
+        } else {
+            console.log(`Received websocket but no type information was provided: ${data}`)
+        }
+    };
+    Poplet.ws = { ...Poplet.ws, ...ws };
+
     const getCurrentUser = () => axios.get(`/user/me`).then(res => res.data);
     const token = localStorage.getItem('token');
     if (!token) {
@@ -50,6 +71,7 @@ async function render () {
     // Get the current list of ID's of the boards that this user is in and create new board objects from the ID's
     // Fetch from the API to convert ID's to objects
     Poplet.boards = await Promise.all(boards.map(board => getBoard(board)))
+    store.dispatch({ type: 'POPULATE_BOARDS', array: Poplet.boards })
     Poplet.boards.selected = Poplet.boards[0]; // Make a GET request to determine the last board selected, otherwise `null` (send to homepage)
     
     Poplet.users = [];
@@ -61,10 +83,6 @@ async function render () {
             Poplet.notes = Poplet.notes.concat(board.notes); // Some notes should be cached to prevent having to call the API each time
         }  
     }
-
-    store.subscribe(() => console.log('Store: ', store.getState()));
-
-    window.store = store;
 
     ReactDOM.render(
         <Provider store={store}>
@@ -80,5 +98,4 @@ render();
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-export default Poplet;
 export { render };
