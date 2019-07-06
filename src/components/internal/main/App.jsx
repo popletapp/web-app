@@ -3,20 +3,21 @@ import { Board, Chatroom } from '../..';
 import axios from 'axios';
 import Poplet from './../../../'
 import { connect } from "react-redux";
-import { switchBoard } from './../../../actions/board';
-import { initializeNotes } from './../../../actions/note';
+import { selectBoard } from './../../../actions/board';
+import { getNotes } from './../../../actions/note';
+import { switchBoard } from './../../../modules';
 
 function mapStateToProps (state) {
     return {
-        board: state.board,
+        board: state.selectedBoard,
         notes: state.notes
     }
 }
 
 function mapDispatchToProps (dispatch) {
     return {
-        switchBoard: board => dispatch(switchBoard(board)),
-        initializeNotes: notes => dispatch(initializeNotes(notes))
+        selectBoard: boardId => dispatch(selectBoard(boardId)),
+        getNotes: boardId => dispatch(getNotes(boardId))
     };
 }
 
@@ -29,38 +30,38 @@ class App extends Component {
         };
     }
 
-    componentWillMount () {
-        this.props.switchBoard(Poplet.boards.selected)
-        this.board = Poplet.boards.selected
-    }
-
-    async initialize () {
-        const board = this.board;
-        const notes = await axios.post(`/notes/multiple`, { ids: board.notes }).then(res => res.data);
-        const chatroom = await axios.get(`/chatroom/${board.chatrooms[0]}`).then(res => res.data);
+    async changeBoard (id) {
+        let { board, notes } = await switchBoard(id)
+        this.board = board;
+        console.log('Switching to', board.name, board.id)
+        if ('notes' in notes) {
+            notes = notes.notes;
+        }
+        const chatroom = board.chatrooms.length ? await axios.get(`/chatroom/${board.chatrooms[0]}`).then(res => res.data) : null;
         this.setState({
             notes,
             chatroom,
             loaded: true
         });
-        console.log(notes)
-        this.props.initializeNotes(notes);
     }
 
     async componentDidMount () {
-        await this.initialize();
+        await this.changeBoard(Poplet.boards.selected.id);
     }
 
-    shouldComponentUpdate () {
-        console.log('update')
-        return true;
+    async componentDidUpdate (prevProps, prevState) {
+        // If the component updated (not including the load state changing)
+        if (prevProps.board !== this.props.board && (this.state.loaded && !prevState.loaded)) {
+            await this.changeBoard(this.props.board);
+        }
     }
 
     render () {
-        let board = this.props.board || {};
+        const board = this.board || {};
         if (!this.state.loaded) {
             return null;
         }
+        console.log(board)
         setTimeout(() => {
             window.M.AutoInit();
         }, 20)
