@@ -12,10 +12,15 @@ class RoundedButton extends Component {
 
     render() {
         const { small, icon, color, label } = this.props;
+        const dontInclude = [ 'small', 'icon', 'color', 'label' ];
         return (
             <div className='btn-floating-container'>
                 <div className='floating-btn-button'>
-                    <button {...this.props}
+                    <button 
+                    {...Object.fromEntries(Object.entries(this.props)
+                        .filter(item => !dontInclude.includes(item[0]))
+                    )
+                    }
                     className={`${small ? 'btn-small' : ''} btn-floating ${color}`}>
                         <i className="material-icons">{icon}</i>
                     </button>
