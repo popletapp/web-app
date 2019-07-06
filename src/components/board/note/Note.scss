@@ -6,12 +6,13 @@
 
   &-container {
     clear: left;
-    overflow-y: scroll;
+    overflow: auto;
+    position: relative;
     width: 80%;
-    height: 700px;
+    height: 100%;
     
     &::-webkit-scrollbar {
-      width: 5px;
+      width: 14px;
       height: 14px;
     }
 
@@ -20,13 +21,17 @@
       border-width: 3px;
       border-style: solid;
       border-radius: 7px;
-      border-color: #202225;
+      background-color: #202225;
+      border-color: #2f3136;
     }
 
     &::-webkit-scrollbar-track-piece {
       background-color: #2f3136;
-      border: 3px solid #36393f;
       border-radius: 7px;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
     }
   }
 
@@ -38,6 +43,7 @@
 
   &-body {
     margin-bottom: 20px;
+    white-space: pre-wrap;
   }
 
   &-footer {
