@@ -1,3 +1,10 @@
+.board {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+}
+
 .top-section {
   padding-top: 12px;
   margin-bottom: 12px;
@@ -171,6 +178,7 @@
   margin: 0;
   float: left;
 }
+
 
 @media screen and (max-width: 900px) {
   .board-information {
