@@ -50,15 +50,17 @@ class Board extends Component {
     }
 
     render () {
-        const notes = this.props.notes;
-        console.log('Render board', this.props.notes)
+        console.log(this.props.notes)
+        const notes = this.props.notes.items;
+        const board = this.props.object;
+        console.log('Render board', notes, board)
         return (
             <div className='board'>
-                <TopBar board={this.object} />
+                <TopBar board={board} />
                 <div onDragOver={(event) => this.onDragOver(event)}
                 onDrop={(event) => this.onDrop(event)}
                 className='note-container drag-container droppable'>
-                    {notes && notes.map(note => <Note key={note.id} boardId={this.object.id} exists={!!note.id} note={note} />)}
+                    {notes && notes.map(note => <Note key={note.id} boardId={board.id} exists={!!note.id} note={note} />)}
                 </div>
             </div>
         )
