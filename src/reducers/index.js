@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import board from './board';
-import notes from './notes';
+import { selectedBoard, boards } from './board';
+import { notesByBoard, notes } from './notes';
 
-const rootReducer = combineReducers({ board, notes })
+const rootReducer = combineReducers({ boards, selectedBoard, notes, notesByBoard })
 
 export default rootReducer;
