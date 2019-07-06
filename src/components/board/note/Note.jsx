@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Markdown from 'react-markdown';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/tomorrow-night.css';
+
 import { connect } from 'react-redux';
 import { Button } from './../../';
 import axios from 'axios';
@@ -40,6 +43,7 @@ class Note extends Component {
     async onBlur (event, type) {
         const { exists } = this.props;
         const { note } = this.state;
+
         const content = event.target.textContent.replace('<br>', '\\n');
         const newNote = { ...note, [type]: content };
 
@@ -71,6 +75,15 @@ class Note extends Component {
         }
     }
 
+    highlight () {
+        const block = document.querySelector('pre:not(.hljs)');
+        block && hljs.highlightBlock(block);
+    }
+
+    componentDidUpdate () {
+        this.highlight();
+    }
+
     render () {
         const { note, editing } = this.state;
         if (!note.options) {
@@ -82,16 +95,24 @@ class Note extends Component {
                 className={`draggable note ${note.options.color || 'blue-grey'} darken-1`} 
                 style={{ ...(this.state.style || {}), width: 'fit-content' }}>
                 <div className='note-content white-text'>
-                    <div contenteditable='true' onBlur={(e) => this.onBlur(e, 'title')} className='note-header'>
+                    <div contentEditable='true' 
+                    suppressContentEditableWarning={true} 
+                    onBlur={(e) => this.onBlur(e, 'title')} 
+                    className='note-header'>
                         {note.title > 64 ? `${note.title.slice(0, 61)}...` : note.title}
                     </div>
-                    <div contenteditable='true' onFocus={(e) => this.onFocus(e, 'content')} onBlur={(e) => this.onBlur(e, 'content')} className='note-body'>
+                    <div contentEditable='true' 
+                    suppressContentEditableWarning={true} 
+                    onFocus={(e) => this.onFocus(e, 'content')} 
+                    onBlur={(e) => this.onBlur(e, 'content')} 
+                    className='note-body'>
                         {editing ? note.content : <Markdown source={note.content > 255 ? `${note.content.slice(0, 252)}...` : note.content} />}
                     </div>
                 </div>
                 <div className='note-footer'>
                     <Button text='View' color='red'></Button>
-                    <h6 className='note-footer-label'>Last modified on <strong>{new Date(note.lastModified).toDateString()}</strong></h6>
+                    <h6 className='note-footer-label'>Last modified on <strong>{new Date(note.modifiedAt).toDateString()}</strong></h6>
+                    <h6 className='note-footer-label'>by <strong>{note.modifiedBy && note.modifiedBy.username}</strong></h6>
                 </div>
             </div>
         )
