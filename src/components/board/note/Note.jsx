@@ -24,9 +24,24 @@ class Note extends Component {
         // Whether or not this note is currently being created
         this.exists = exists || true;
         this.state = {
-            note: this.note || this.props.note,
+            selected: false,
             editing: false
         };
+        this.listener = (event) => {
+            let el = event.target;
+            do {
+                if (el.matches('.note')) return el;
+                el = el.parentElement || el.parentNode;
+            } while (el !== null && el.nodeType === 1);
+
+            if (el && el.classList && el.classList.contains('note')) {
+                this.onClick();
+            } else {
+                this.unselect();
+            }
+            
+        }
+        document.addEventListener('click', this.listener, false);
     }
 
     onDragStart (event) {
@@ -34,15 +49,22 @@ class Note extends Component {
     	event.obj = this;
     }
 
-    onFocus (event, type) {
+    onFocus () {
         this.setState({
             editing: true
         })
     }
 
+    onClick (event) {
+        this.setState({ selected: true })
+    }
+
+    unselect () {
+        this.setState({ selected: false });
+    }
+
     async onBlur (event, type) {
-        const { exists } = this.props;
-        const { note } = this.state;
+        const { note, exists } = this.props;
 
         const content = event.target.textContent.replace('<br>', '\\n');
         const newNote = { ...note, [type]: content };
@@ -64,7 +86,7 @@ class Note extends Component {
     }
     
     componentDidMount () {
-        const note = this.state.note;
+        const { note } = this.props;
         if (note.options && note.options.position) {
             this.setState({
                 style: {
@@ -85,23 +107,27 @@ class Note extends Component {
     }
 
     render () {
-        const { note, editing } = this.state;
+        const { note } = this.props;
+        const { editing, selected } = this.state;
         if (!note.options) {
             note.options = {};
         }
 
         return (
-            <div draggable={true} onDragStart={(event) => this.onDragStart(event)}
-                className={`draggable note ${note.options.color || 'blue-grey'} darken-1`} 
+            <div draggable={true}
+                onClick={(event) => this.onClick(event)}
+                onDragStart={(event) => this.onDragStart(event)}
+                className={`draggable note ${note.options.color || 'blue-grey'} darken-1${selected ? ' selected' : ''}`} 
                 style={{ ...(this.state.style || {}), width: 'fit-content' }}>
+                {selected && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
                 <div className='note-content white-text'>
-                    <div contentEditable='true' 
+                    <div contentEditable={selected ? 'true' : 'false'}
                     suppressContentEditableWarning={true} 
                     onBlur={(e) => this.onBlur(e, 'title')} 
                     className='note-header'>
                         {note.title > 64 ? `${note.title.slice(0, 61)}...` : note.title}
                     </div>
-                    <div contentEditable='true' 
+                    <div contentEditable={selected ? 'true' : 'false'} 
                     suppressContentEditableWarning={true} 
                     onFocus={(e) => this.onFocus(e, 'content')} 
                     onBlur={(e) => this.onBlur(e, 'content')} 
