@@ -18,14 +18,12 @@
   padding-top: 0.5em;
   display: flex;
   flex-flow: row nowrap;
-  > * {
-    flex: 1 100%;
-  }
 }
 
 .board-information {
   margin-right: 24px;
-  flex: 0 300px;
+  max-width: 350px;
+  flex: initial;
 }
 
 .vertical-rule  {
@@ -35,7 +33,7 @@
 
 .options-top-section-left {
   margin-left: 24px;
-  flex: 0 300px;
+  flex: 1 100%;
 }
 
 .large-invite-members-btn {
@@ -53,6 +51,7 @@
 }
 
 .user-details {
+  position: relative;
   margin-top: 12px;
   float: left;
   background-color: #202225;
@@ -179,32 +178,61 @@
   float: left;
 }
 
-
-@media screen and (max-width: 900px) {
-  .board-information {
-      margin: 0;
-      width: 40% !important;
+@media screen and (max-width: 800px) {
+  .btn-floating {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 13px;
+    
+    i {
+      line-height: 32px;
+    }
   }
 }
 
-@media screen and (max-width: 750px) {
-  .board-information {
-      margin: 0;
-      width: 30% !important;
-  }
-}
-
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 700px) {
   .top-section {
-      width: 100%;
-  }
-
-  .note-container {
-      width: 100%;
+    width: 100%;
   }
 
   .board-information {
-      margin: 0;
-      width: 20% !important;
+    flex: 1;
+    width: fit-content;
+  }
+
+  .user-info-misc-info, .board-info-member-count {
+    display: none;
+  }
+
+  .user-details, .board-details {
+    width: 200px;
+  }
+
+  .board-selector-btn, .large-invite-members-btn {
+    position: absolute;
+    top: 20px;
+    left: 35px;
+    line-height: 14px;
+    height: 14px;
+  }
+
+  .large-invite-members-btn {
+    top: 40px;
+    left: 50px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .btn-floating-container {
+    width: 47px;
+
+    .floating-btn-label {
+      display: none;
+    }
+  }
+
+  .text-input-container {
+    width: 100px !important;
   }
 }
