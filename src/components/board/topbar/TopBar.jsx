@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Avatar, Input, RoundedButton, BoardCreationModal } from './../../';
 import { selectBoard, createBoard } from './../../../actions/board';
 import { beginCreateNote } from './../../../actions/note';
-import { Modal, getBoard, switchBoard } from '../../../modules';
+import { Modal, switchBoard } from '../../../modules';
 import Poplet from '../../..';
 
 function mapStateToProps (state) {
@@ -64,7 +64,7 @@ class TopBar extends Component {
                                 <div className='user-info-title'>
                                     {Poplet.user.username}
                                 </div>
-                                <div className='user-info-member-count'>
+                                <div className='user-info-misc-info'>
                                     {Poplet.user.id}
                                 </div>
                             </div>
@@ -83,9 +83,9 @@ class TopBar extends Component {
                             </div>
                             <li className="divider" tabIndex="-1"></li>
                             {Poplet.boards.map((item, i) => item.id !== board.id ? 
-                                (<div key={i} className='board-selection' onClick={() => switchBoard(item.id)}>
-                                    <li><Avatar url={item.avatar} alt='Board Avatar' size={32} /><p>{item.name}</p></li>
-                                </div>) 
+                                (<div key={i} className='board-selection' onClick={async () => await switchBoard(item.id)}>
+                                    <li><Avatar url={item.avatar} alt={item.name} size={32} /><p>{item.name}</p></li>
+                                </div>)
                                 : '')}
                         </ul>
                         </div>
@@ -94,7 +94,7 @@ class TopBar extends Component {
                     <div style={{ height: 90 }} className='vertical-rule'></div>
                     <div className='options-top-section-left'>
                         <div className='searchbar-container'>
-                            <Input />
+                            <Input icon='search' />
                         </div>
                         <div className='toolbar-container'>
                             <RoundedButton label='New Note' onClick={() => this.props.beginCreateNote()} icon='add' className='top-bar-floating-btn' />
