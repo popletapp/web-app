@@ -72,8 +72,7 @@ async function render () {
     // Fetch from the API to convert ID's to objects
     Poplet.boards = await Promise.all(boards.map(board => getBoard(board)))
     store.dispatch({ type: 'POPULATE_BOARDS', array: Poplet.boards })
-    Poplet.boards.selected = Poplet.boards[0]; // Make a GET request to determine the last board selected, otherwise `null` (send to homepage)
-    
+
     Poplet.users = [];
     Poplet.notes = [];
     // Same applies for users: fetch all users inside of the board that were fetched above (each board will have a `members` property with IDs)
