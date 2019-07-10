@@ -12,7 +12,7 @@
   z-index: 2;
 }
 
-.poplet-modal {
+.modal {
   z-index: 3;
   position: absolute;
   left: 0; 
@@ -20,20 +20,41 @@
   top: 0; 
   bottom: 0;
   margin: auto;
+  width: fit-content;
   max-width: 75%;
+  border-radius: 6px;
   max-height: 75%;
   height: fit-content;
   overflow: auto;
   text-align: center;
-  background-color: #616161;
+  background-color: #2b2b2b;
 
-  .modal-footer {
-    background-color: #424242;
+  &-content {
+    padding: 1em;
+    text-align: left;
   }
-}
 
-.modal-error {
-  color: #bd4949;
-  font-size: 22px;
-  text-align: left;
+  &-header {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  &-footer {
+    text-align: right;
+    background-color: #212121;
+    padding: 4px;
+    
+    button {
+      margin-left: 6px;
+      margin-right: 6px;
+    }
+  }
+
+  &-error {
+    color: #bd4949;
+    font-size: 14px;
+    text-align: left;
+  }
 }
