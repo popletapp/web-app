@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { beginCreateNote, updateNote } from './../../actions/note';
+import { updateNote } from './../../modules';
+import { beginCreateNote } from './../../actions/note';
 import { TopBar, Note } from './../';
 import './Board.scss'
 
@@ -45,12 +45,10 @@ class Board extends Component {
         });
         note.options = note.options || {};
         note.options.position = position;
-        this.props.updateNote(note);
-        await axios.post(`/notes/update/${note.id}`, note);
+        await updateNote(note);        
     }
 
     render () {
-        console.log(this.props.notes)
         const notes = this.props.notes.items;
         const board = this.props.object;
         console.log('Render board', notes, board)
