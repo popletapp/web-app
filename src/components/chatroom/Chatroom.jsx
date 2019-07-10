@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Avatar, RoundedButton } from './../';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
+
+function mapStateToProps (state) {
+    return {
+        chatroom: state.boards[state.selectedBoard].chatrooms[0],
+    }
+}
 
 class Comment extends Component {
     constructor ({ author }) {
@@ -33,7 +40,8 @@ class Chatroom extends Component {
     }
 
     render () {
-        const chatroom = this.chatroom;
+        const { chatroom } = this.props;
+        console.log(chatroom)
         if (!chatroom) {
             return null;
         }
@@ -68,4 +76,4 @@ class Chatroom extends Component {
     }
 }
 
-export default Chatroom;
+export default connect(mapStateToProps, null)(Chatroom);
