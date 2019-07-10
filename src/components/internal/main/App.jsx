@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Board, Chatroom } from '../..';
-import axios from 'axios';
 import Poplet from './../../../'
 import { connect } from "react-redux";
 import { selectBoard } from './../../../actions/board';
@@ -9,7 +8,7 @@ import { switchBoard } from './../../../modules';
 
 function mapStateToProps (state) {
     return {
-        board: state.selectedBoard,
+        board: state.boards[state.selectedBoard],
         notes: state.notes
     }
 }
@@ -31,44 +30,29 @@ class App extends Component {
     }
 
     async changeBoard (id) {
-        let { board, notes } = await switchBoard(id)
-        this.board = board;
-        console.log('Switching to', board.name, board.id)
-        if ('notes' in notes) {
-            notes = notes.notes;
-        }
-        const chatroom = board.chatrooms.length ? await axios.get(`/chatroom/${board.chatrooms[0]}`).then(res => res.data) : null;
+        await switchBoard(id);
         this.setState({
-            notes,
-            chatroom,
             loaded: true
         });
     }
 
     async componentDidMount () {
-        await this.changeBoard(Poplet.boards.selected.id);
-    }
-
-    async componentDidUpdate (prevProps, prevState) {
-        // If the component updated (not including the load state changing)
-        if (prevProps.board !== this.props.board && (this.state.loaded && !prevState.loaded)) {
-            await this.changeBoard(this.props.board);
-        }
+        await this.changeBoard(Poplet.boards[0].id);
     }
 
     render () {
-        const board = this.board || {};
+        const board = this.props.board || {};
         if (!this.state.loaded) {
             return null;
         }
-        console.log(board)
+
         setTimeout(() => {
             window.M.AutoInit();
         }, 20)
         return (
             <div className='poplet-root'>
                 <div className='modal-container'></div>
-                <Board key={board.id} object={board} notes={this.state.notes || []} />
+                <Board key={board.id} object={board} notes={[]} />
                 <Chatroom chatroom={this.state.chatroom}/>
             </div>
         )
