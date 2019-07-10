@@ -3,6 +3,7 @@
   border-radius: 4px;
   padding: 1em;
   max-width: 400px;
+  transition: all 0.5s;
 
   &-container {
     clear: left;
@@ -58,5 +59,32 @@
       margin: 0;
       margin-top: 8px;
     }
+  }
+
+  &.selected {
+    box-shadow: 6px 8px 8px 1px rgb(22, 22, 22);
+    border: 2px solid white;
+    transform: scale(1.035);
+  }
+
+  .selected-checkmark {
+    position: absolute;
+    text-align: right;
+    top: -10px;
+    bottom: 0;
+    left: 0;
+    right: 10px;
+    background: rgb(255, 255, 255);
+    color: rgb(110, 110, 110);
+    line-height: 18px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .note-container {
+      width: 100%;
   }
 }
