@@ -13,7 +13,7 @@ export const selectedBoard = (state = {}, action) => {
 export const boards = (state = {}, action) => {
   switch (action.type) {
     case 'CREATE_BOARD':
-      return state
+      return { ...state, [action.board.id]: action.board };
     case 'RECEIVE_BOARDS':
     case 'POPULATE_BOARDS':
     case 'REQUEST_BOARDS':
