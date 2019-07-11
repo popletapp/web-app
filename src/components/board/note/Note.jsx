@@ -5,9 +5,8 @@ import 'highlight.js/styles/tomorrow-night.css';
 
 import { connect } from 'react-redux';
 import { Button } from './../../';
-import axios from 'axios';
 import './Note.scss';
-import { updateNote, createNote } from './../../../actions/note';
+import { updateNote, createNote } from './../../../modules';
 
 function mapDispatchToProps (dispatch) {
     return {
@@ -75,12 +74,9 @@ class Note extends Component {
         })
         if (note[type] !== newNote[type]) {
             if (exists) {
-                this.props.updateNote(newNote);
-                await axios.post(`/notes/update/${note.id}`, newNote);
+                updateNote(this.boardId, newNote);
             } else {
-                // Send to API
-                this.props.createNote(newNote);
-                await axios.post('/notes/create', { ...note, boardID: this.boardId });
+                createNote(this.boardId, newNote);
             }
         }
     }
