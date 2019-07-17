@@ -16,6 +16,7 @@ class ModalRenderer {
   create () {
     const container = document.querySelector('.modal-container')
     container.style.display = 'block';
+    container.style.opacity = '1';
     ReactDOM.render(this.element, document.querySelector('.modal-container'));
   }
 
@@ -27,6 +28,7 @@ class ModalRenderer {
     const container = document.querySelector('.modal-container');
     ReactDOM.render(null, container);
     container.style.display = 'none';
+    container.style.opacity = '0';
     document.removeEventListener('click', this.listener, false);
   }
 }
