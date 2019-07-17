@@ -1,6 +1,6 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
-import { Home, Board, Landing } from './../../../pages'
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { Home, Board, Landing } from './../../../pages';
 
 export default function App () {
   return (
@@ -9,5 +9,5 @@ export default function App () {
       <Route exact path='/home' component={Home} />
       <Route path='/boards/:id' component={Board} />
     </Switch>
-  )
+  );
 }

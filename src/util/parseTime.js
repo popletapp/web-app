@@ -11,19 +11,19 @@ const epochs = [
 
 // Get duration
 const getDuration = (timeAgoInSeconds) => {
-  for (let [ name, seconds ] of epochs) {
-      const interval = Math.floor(timeAgoInSeconds / seconds);
+  for (const [name, seconds] of epochs) {
+    const interval = Math.floor(timeAgoInSeconds / seconds);
 
-      if (interval >= 1) {
-          return {
-              interval: interval,
-              epoch: name
-          };
-      }
+    if (interval >= 1) {
       return {
-        interval: 0,
-        epoch: null
+        interval: interval,
+        epoch: name
       };
+    }
+    return {
+      interval: 0,
+      epoch: null
+    };
   }
 };
 

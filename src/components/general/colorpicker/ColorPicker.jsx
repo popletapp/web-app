@@ -13,8 +13,8 @@ class ColorPicker extends Component {
     return <div className='color-picker'>
       <button style={{ backgroundColor: this.color, width: '50px', height: '25px', border: 'none' }} data-for='color-picker-popout' data-tip='1' data-event='click' data-event-off='dblclick'></button>
       <Tooltip id='color-picker-popout' clickable={true} getContent={() => <TwitterPicker triangle='hide' width='205px' onChangeComplete={(color) => this.onChangeComplete(color)} />}></Tooltip>
-    </div>
+    </div>;
   }
 }
 
-export default ColorPicker; 
+export default ColorPicker;

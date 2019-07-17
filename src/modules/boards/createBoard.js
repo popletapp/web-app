@@ -15,4 +15,4 @@ export default async (obj) => {
   } else {
     return Promise.resolve('Invalid object provided for BOARD_CREATE');
   }
-}
+};

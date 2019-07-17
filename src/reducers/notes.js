@@ -3,11 +3,11 @@ export const notes = (state = {
   didInvalidate: false,
   items: []
 }, action) => {
-  console.log(action.type)
+  console.log(action.type);
   switch (action.type) {
     case 'BEGIN_CREATE_NOTE': {
       return Object.assign({}, state, {
-        items: [ ...state.items, { title: 'Title', content: 'Content' } ]
+        items: [...state.items, { title: 'Title', content: 'Content' }]
       });
     }
     case 'END_CREATE_NOTE': {
@@ -17,7 +17,7 @@ export const notes = (state = {
     }
     case 'CREATE_NOTE': {
       return Object.assign({}, state, {
-        items: [ ...state.items, action.note ]
+        items: [...state.items, action.note]
       });
     }
     case 'UPDATE_NOTE': {
@@ -36,7 +36,7 @@ export const notes = (state = {
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: true
-      })
+      });
     }
     case 'RECEIVE_NOTES': {
       return Object.assign({}, state, {
@@ -44,13 +44,13 @@ export const notes = (state = {
         didInvalidate: false,
         items: action.notes,
         lastUpdated: action.receivedAt
-      })
+      });
     }
 
     default:
       return state;
   }
-}
+};
 
 export const notesByBoard = (state = {}, action) => {
   switch (action.type) {
@@ -61,8 +61,8 @@ export const notesByBoard = (state = {}, action) => {
     case 'REQUEST_NOTES':
       return Object.assign({}, state, {
         [action.board.toString()]: notes(state[action.board], action)
-      })
+      });
     default:
-      return state
+      return state;
   }
-}
+};

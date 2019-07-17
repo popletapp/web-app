@@ -9,12 +9,12 @@ class ModalRenderer {
     this.listener = (event) => {
       if (event.target.closest('.modal')) return;
       this.obliterate();
-    }
+    };
     document.addEventListener('click', this.listener, false);
   }
 
   create () {
-    const container = document.querySelector('.modal-container')
+    const container = document.querySelector('.modal-container');
     container.style.display = 'block';
     container.style.opacity = '1';
     ReactDOM.render(this.element, document.querySelector('.modal-container'));

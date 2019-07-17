@@ -1,15 +1,14 @@
-import { 
+import {
   REQUEST_NOTES,
   RECEIVE_NOTES,
-  INITIALIZE_NOTES, 
+  INITIALIZE_NOTES,
   BEGIN_CREATE_NOTE,
   END_CREATE_NOTE,
-  CREATE_NOTE, 
+  CREATE_NOTE,
   UPDATE_NOTE,
   DELETE_NOTE
 } from '../../constants/ActionTypes';
 import axios from 'axios';
-
 
 export const requestNotes = board => ({
   type: REQUEST_NOTES,
@@ -37,15 +36,15 @@ export const initializeNotes = (notes) => ({
 });
 
 export const fetchNotes = boardId => dispatch => {
-  console.log('Fetching notes for ' + boardId)
-  dispatch(requestNotes(boardId))
+  console.log('Fetching notes for ' + boardId);
+  dispatch(requestNotes(boardId));
   return axios.get(`/boards/${boardId}/notes`)
     .then(res => dispatch(receiveNotes(boardId, res.data)))
-    .catch((err) => dispatch(receiveNotes(boardId, [])))
-}
+    .catch(() => dispatch(receiveNotes(boardId, [])));
+};
 
 function shouldFetchNotes (state, boardId) {
-  const notes = state.notesByBoard[boardId]
+  const notes = state.notesByBoard[boardId];
   if (!notes) {
     return true;
   } else if (notes.isFetching) {
@@ -58,11 +57,11 @@ function shouldFetchNotes (state, boardId) {
 export function getNotes (boardId) {
   return (dispatch, getState) => {
     if (shouldFetchNotes(getState(), boardId)) {
-      return dispatch(fetchNotes(boardId))
+      return dispatch(fetchNotes(boardId));
     } else {
-      return Promise.resolve(getState().notesByBoard[boardId].items)
+      return Promise.resolve(getState().notesByBoard[boardId].items);
     }
-  }
+  };
 }
 
 export const createNote = (board, note) => ({

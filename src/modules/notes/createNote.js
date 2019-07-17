@@ -7,4 +7,4 @@ export default async (boardID, note) => {
   const value = await axios.put(`/boards/${boardID}/notes`, { ...note, boardID }).then(res => res.data);
   await store.dispatch(createNote(boardID, value));
   return value;
-}
+};

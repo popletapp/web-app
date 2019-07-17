@@ -9,8 +9,8 @@ export default async (id) => {
     return Promise.resolve(contents.boards[id]);
   } else {
     // Grab from API
-    return await axios.get(`/boards/${id}`)
+    return axios.get(`/boards/${id}`)
       .then(res => res.data)
-      .catch(err => err)
+      .catch(err => err);
   }
-}
+};

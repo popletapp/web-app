@@ -8,4 +8,4 @@ export default async (boardID, note) => {
   await axios.delete(`/boards/${boardID}/notes/${id}`);
   await store.dispatch(deleteNote(boardID, note));
   return note;
-}
+};
