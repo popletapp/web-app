@@ -12,7 +12,9 @@ export { default as Button } from './general/button/Button'
 export { default as RoundedButton } from './general/button/RoundedButton'
 export { default as Modal } from './general/modal/Modal'
 export { default as BoardCreationModal } from './general/modal/BoardCreationModal';
+export { default as NoteDetailedView } from './general/modal/NoteDetailedView';
 export { default as Input } from './general/input/Input'
+export { default as ColorPicker } from './general/colorpicker/ColorPicker'
 
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure'
