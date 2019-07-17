@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { render } from './../../';
+import { renderApplication } from './../../';
 import './Login.scss';
 
 class Login extends Component {
@@ -21,7 +21,7 @@ class Login extends Component {
             })
             return;
         }
-        const response = await axios.post('/user/authenticate', { username, password }).catch(e => e.response);
+        const response = await axios.post('/users/authenticate', { username, password }).catch(e => e.response);
         if (response.status === 403) {
             // Stay here, login failed
             this.setState({
@@ -33,14 +33,14 @@ class Login extends Component {
             });
         } else {
             // Authenticated, remove login page
-            render();
+            renderApplication();
             localStorage.setItem('token', response.data.token)
         }
     }
 
     render () {
         return (
-            <div className='poplet-root login-container row animated fadeIn'>  
+            <div className='login-container row animated fadeIn'>  
                 <div className='col s12 offset-s2'>
                     <div className='login-header'>
                         <h1>Login to Poplet</h1>
