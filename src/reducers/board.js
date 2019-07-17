@@ -28,3 +28,15 @@ export const boards = (state = {}, action) => {
       return state;
   }
 }
+
+// 0 is default, 1 is list view
+export const viewByBoard = (state = {}, action) => {
+  switch (action.type) {
+    case 'UPDATE_VIEW':
+      return Object.assign({}, state, {
+        [action.board.toString()]: action.view
+      })
+    default:
+      return state
+  }
+}
