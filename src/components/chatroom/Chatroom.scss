@@ -28,12 +28,7 @@
 
 .chatroom-root {
   background-color: #333333;
-  width: 20%;
   height: 100% !important;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  float: right;
   padding: 0 !important;
 }
 
@@ -55,8 +50,7 @@
 }
 
 .chatroom-container {
-  float: right;
-  width: 20%;
+  display: flex;
 }
 
 .chatroom-comment {
