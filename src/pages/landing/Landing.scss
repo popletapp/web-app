@@ -1,3 +1,27 @@
 .landing {
   padding: 1em;
 }
+
+.title {
+  display: flex;
+  flex-direction: row;
+  flex: 1 auto;
+}
+
+.main-title {
+  width: fit-content;
+}
+
+section {
+	padding: 10em 0 10em 0;
+	background: linear-gradient(to right, rgba(0,0,0,0.95) 10%,rgba(0,0,0,0.01) 300%,rgba(0,0,0,0) 52%), url(./svg/poplet-background-dark.svg) no-repeat fixed;
+	background-size: cover;
+	background-position: bottom;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	text-align: center;
+	position: relative;
+	width: 100%;
+	height: 75%;
+	box-shadow: 0px 5px 10px black;
+}
