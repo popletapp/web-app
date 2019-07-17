@@ -1,5 +1,6 @@
 .modal-container {
   display: none;
+  opacity: 0;
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
   left: 0; 
@@ -10,6 +11,7 @@
   max-width: 100%;
   max-height: 100%;
   z-index: 2;
+  transition: all 0.27s;
 }
 
 .modal {
@@ -25,7 +27,6 @@
   border-radius: 6px;
   max-height: 75%;
   height: fit-content;
-  overflow: auto;
   text-align: center;
   background-color: #2b2b2b;
 
@@ -56,5 +57,47 @@
     color: #bd4949;
     font-size: 14px;
     text-align: left;
+  }
+}
+
+.note-detailed-view > .modal-content {
+  display: flex;
+  flex-direction: row;
+
+  > .modal-note-content-text {
+    display: flex;
+    flex-direction: column;
+    min-height: 70%;
+    min-width: 70%;
+    height: 500px;
+    width: 500px;
+    padding-right: 48px;
+
+    > .modal-header {
+      text-transform: none;
+      font-size: 26px;
+      font-weight: 700;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+  }
+
+  > .modal-note-settings {
+    flex-direction: column;
+    min-width: 33%;
+
+    > .modal-note-settings-header {
+      color: #bdbdbd;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      text-transform: uppercase;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      margin-top: 24px;
+      margin-bottom: 6px;
+    }
   }
 }
