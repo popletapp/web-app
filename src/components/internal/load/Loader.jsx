@@ -9,50 +9,11 @@ class Loader extends Component {
 
     render () {
         return (
-            <div className='poplet-root center-on-page'>
-                <h1 className='loading-poplet-label'>Loading Poplet...</h1>
-                <div className="preloader-wrapper big active">
-                    <div className="spinner-layer spinner-blue">
-                        <div className="circle-clipper left">
-                        <div className="circle"></div>
-                        </div><div className="gap-patch">
-                        <div className="circle"></div>
-                        </div><div className="circle-clipper right">
-                        <div className="circle"></div>
-                        </div>
-                    </div>
-
-                    <div className="spinner-layer spinner-red">
-                        <div className="circle-clipper left">
-                        <div className="circle"></div>
-                        </div><div className="gap-patch">
-                        <div className="circle"></div>
-                        </div><div className="circle-clipper right">
-                        <div className="circle"></div>
-                        </div>
-                    </div>
-
-                    <div className="spinner-layer spinner-yellow">
-                        <div className="circle-clipper left">
-                        <div className="circle"></div>
-                        </div><div className="gap-patch">
-                        <div className="circle"></div>
-                        </div><div className="circle-clipper right">
-                        <div className="circle"></div>
-                        </div>
-                    </div>
-
-                    <div className="spinner-layer spinner-green">
-                        <div className="circle-clipper left">
-                        <div className="circle"></div>
-                        </div><div className="gap-patch">
-                        <div className="circle"></div>
-                        </div><div className="circle-clipper right">
-                        <div className="circle"></div>
-                        </div>
-                    </div>
+            <div className='poplet-loading'>
+                <div className='poplet-loading-icon fadeOutZoomIn'>
+                    <img src='./assets/icons/poplet_white_no_bg_window.svg' alt=''></img>
                 </div>
-            </div>
+            </div> 
         )
     }
 }
