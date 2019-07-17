@@ -1,14 +1,14 @@
 .board {
   display: flex;
   flex-flow: column;
+  flex: 1 1 80%;
   height: 100%;
-  width: 100%;
+  width: auto;
 }
 
 .top-section {
   padding-top: 12px;
   margin-bottom: 12px;
-  width: 80%;
   background-color: #292929;
   box-shadow: 3px 4px 2px #212121;
 }
@@ -78,11 +78,21 @@
 .board-info, .user-info {
   &-title {
     font-weight: 800;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &-text {
     float: left;
     padding-left: 12px;
+    overflow: hidden;
+    display: block;
+    width: 40%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 
@@ -177,6 +187,7 @@
   margin: 0;
   float: left;
 }
+
 
 @media screen and (max-width: 800px) {
   .btn-floating {
