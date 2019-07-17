@@ -6,14 +6,18 @@
   display: flex;
   flex-direction: row;
   flex: 1 auto;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-title {
   width: fit-content;
+  padding-left: 24px;
+  font-size: 82px;
 }
 
 section {
-	padding: 10em 0 10em 0;
+	padding: 10em 10em 10em 10em;
 	background: linear-gradient(to right, rgba(0,0,0,0.95) 10%,rgba(0,0,0,0.01) 300%,rgba(0,0,0,0) 52%), url(./svg/poplet-background-dark.svg) no-repeat fixed;
 	background-size: cover;
 	background-position: bottom;
