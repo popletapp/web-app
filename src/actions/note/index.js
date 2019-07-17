@@ -2,9 +2,11 @@ import {
   REQUEST_NOTES,
   RECEIVE_NOTES,
   INITIALIZE_NOTES, 
-  BEGIN_CREATE_NOTE, 
+  BEGIN_CREATE_NOTE,
+  END_CREATE_NOTE,
   CREATE_NOTE, 
-  UPDATE_NOTE
+  UPDATE_NOTE,
+  DELETE_NOTE
 } from '../../constants/ActionTypes';
 import axios from 'axios';
 
@@ -25,6 +27,10 @@ export const beginCreateNote = () => ({
   type: BEGIN_CREATE_NOTE
 });
 
+export const endCreateNote = () => ({
+  type: END_CREATE_NOTE
+});
+
 export const initializeNotes = (notes) => ({
   type: INITIALIZE_NOTES,
   notes
@@ -33,8 +39,9 @@ export const initializeNotes = (notes) => ({
 export const fetchNotes = boardId => dispatch => {
   console.log('Fetching notes for ' + boardId)
   dispatch(requestNotes(boardId))
-  return axios.get(`/board/notes/${boardId}`)
+  return axios.get(`/boards/${boardId}/notes`)
     .then(res => dispatch(receiveNotes(boardId, res.data)))
+    .catch((err) => dispatch(receiveNotes(boardId, [])))
 }
 
 function shouldFetchNotes (state, boardId) {
@@ -53,18 +60,25 @@ export function getNotes (boardId) {
     if (shouldFetchNotes(getState(), boardId)) {
       return dispatch(fetchNotes(boardId))
     } else {
-      console.log(getState().notesByBoard[boardId].items)
       return Promise.resolve(getState().notesByBoard[boardId].items)
     }
   }
 }
 
-export const createNote = (note) => ({
+export const createNote = (board, note) => ({
   type: CREATE_NOTE,
+  board,
   note
 });
 
-export const updateNote = (note) => ({
+export const updateNote = (board, note) => ({
   type: UPDATE_NOTE,
+  board,
+  note
+});
+
+export const deleteNote = (board, note) => ({
+  type: DELETE_NOTE,
+  board,
   note
 });
