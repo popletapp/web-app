@@ -17,10 +17,7 @@ class RoundedButton extends Component {
             <div className='btn-floating-container'>
                 <div className='floating-btn-button'>
                     <button 
-                    {...Object.fromEntries(Object.entries(this.props)
-                        .filter(item => !dontInclude.includes(item[0]))
-                    )
-                    }
+                    {...Object.fromEntries(Object.entries(this.props).filter(item => !dontInclude.includes(item[0])))}
                     className={`${small ? 'btn-small' : ''} btn-floating ${color}`}>
                         <i className="material-icons">{icon}</i>
                     </button>
