@@ -3,15 +3,29 @@
   border-radius: 4px;
   padding: 1em;
   max-width: 400px;
+  max-height: 400px;
+  min-width: 175px;
   transition: all 0.5s;
 
   &-container {
     clear: left;
     overflow: auto;
     position: relative;
-    width: 80%;
     height: 100%;
     
+    &.list-view {
+      display: flex;
+      flex-direction: column;
+
+      > div.note[style] {
+        margin: 1em;
+        position: relative;
+        width: 100%;
+        top: 0;
+        left: 0;
+      }
+    }
+
     &::-webkit-scrollbar {
       width: 14px;
       height: 14px;
@@ -43,14 +57,26 @@
   }
 
   &-body {
-    margin-bottom: 20px;
+    padding-bottom: 14px;
     white-space: pre-wrap;
   }
 
   &-footer {
-    button.btn-small {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    margin: -1em;
+    padding: 0.5em;
+    background-color: rgba(22, 22, 22, 0.5);
+
+    button {
       line-height: 24px;
+      padding: 0;
+      margin: 0;
       height: 24px;
+      min-width: 68px;
+      max-width: 100px;
     }
 
     &-label {
@@ -59,12 +85,28 @@
       margin: 0;
       margin-top: 8px;
     }
+
+    > * {
+      flex: 1 1 0px;
+      height: fit-content;
+    }
+
+    .vertical-rule {
+      flex: 0 1 0px;
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+
+    &-comments-container, &-settings-container {
+      width: fit-content;
+      min-width: 32px;
+      max-width: 48px;
+    }
   }
 
   &.selected {
-    box-shadow: 6px 8px 8px 1px rgb(22, 22, 22);
+    box-shadow: 6px 8px 8px 1px rgba(22, 22, 22, 0.4);
     border: 2px solid white;
-    transform: scale(1.035);
   }
 
   .selected-checkmark {
@@ -80,6 +122,12 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
+  }
+
+  &-btn {
+    &-view {
+      margin-top: 12px;
+    }
   }
 }
 
