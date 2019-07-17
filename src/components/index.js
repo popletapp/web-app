@@ -20,6 +20,4 @@ export { default as ColorPicker } from './general/colorpicker/ColorPicker';
 export { default as CriticalFailure } from './internal/load/CriticalFailure';
 export { default as Loader } from './internal/load/Loader';
 export { default as App } from './internal/main/App';
-
-// Login
-export { default as Login } from './login/Login';
+export { default as PopletBase } from './internal/main/PopletBase';
