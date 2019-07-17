@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Avatar } from './../../components';
+import { PopletBase, Avatar } from './../../components';
 import { Link } from 'react-router-dom';
 import './Home.scss';
 
@@ -11,7 +11,7 @@ function mapStateToProps (state) {
   };
 }
 
-class Home extends Component {
+class Home extends PopletBase {
   render () {
     const { boards, user } = this.props;
     return (

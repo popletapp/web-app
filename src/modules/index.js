@@ -18,3 +18,5 @@ export { default as getChatroom } from './chatroom/getChatroom.js';
 export { default as toggleChatroomVisibility } from './chatroom/toggleChatroomVisibility.js';
 
 export { default as Modal } from './Modal';
+export { default as connect } from './internal/connect';
+export { default as established } from './internal/established';

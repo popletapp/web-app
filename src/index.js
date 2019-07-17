@@ -32,7 +32,7 @@ async function render () {
   ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
-        <Application board={Poplet.boards[0]} />
+        <Application />
       </BrowserRouter>
     </Provider>
     , document.getElementById('root'));
