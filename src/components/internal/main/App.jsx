@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Home, Board, Landing } from './../../../pages';
+import { Home, Board, Landing, Login } from './../../../pages';
 
-export default function App () {
-  return (
-    <Switch>
-      <Route exact path='/' component={Landing} />
-      <Route exact path='/home' component={Home} />
-      <Route path='/boards/:id' component={Board} />
-    </Switch>
-  );
+class App extends Component {
+  render () {
+    return (
+      <Switch>
+        <Route exact path='/' component={Landing} />
+        <Route exact path='/home' component={Home} />
+        <Route exact path='/login' component={Login} />
+        <Route path='/boards/:id' component={Board} />
+      </Switch>
+    );
+  }
 }
+
+export default App;
