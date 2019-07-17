@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Avatar, Input, RoundedButton, BoardCreationModal } from './../../';
-import { selectBoard, createBoard } from './../../../actions/board';
+import { selectBoard, createBoard, updateView } from './../../../actions/board';
 import { beginCreateNote } from './../../../actions/note';
-import { Modal, switchBoard } from '../../../modules';
+import { Modal, switchBoard, toggleChatroomVisibility } from '../../../modules';
 import Poplet from '../../..';
 
 function mapStateToProps (state) {
     return {
-        board: state.boards[state.selectedBoard]
+        board: state.boards[state.selectedBoard],
+        listView: !!state.viewByBoard[state.selectedBoard]
     };
 }
 
@@ -16,7 +17,8 @@ function mapDispatchToProps (dispatch) {
     return {
         selectBoard: boardId => dispatch(selectBoard(boardId)),
         createBoard: board => dispatch(createBoard(board)),
-        beginCreateNote: () => dispatch(beginCreateNote())
+        beginCreateNote: () => dispatch(beginCreateNote()),
+        updateView: (board, view) => dispatch(updateView(board, view)),
     };
 }
 
@@ -28,7 +30,7 @@ class TopBar extends Component {
     }
 
     render () {
-        const board = this.props.board;
+        const { board, listView } = this.props;
         return (
             <div className='top-section'>
                 <div className='board-top-section'>
@@ -98,8 +100,12 @@ class TopBar extends Component {
                         </div>
                         <div className='toolbar-container'>
                             <RoundedButton label='New Note' onClick={() => this.props.beginCreateNote()} icon='add' className='top-bar-floating-btn' />
-                            <RoundedButton label='Chatroom' icon='chat_bubble' color='green' className='top-bar-floating-btn' />
-                            <RoundedButton label='List View' icon='format_list_bulleted' color='yellow darken-2' className='top-bar-floating-btn' />
+                            <RoundedButton label='Chatroom' onClick={() => toggleChatroomVisibility()} icon='chat_bubble' color='green' className='top-bar-floating-btn' />
+                            <RoundedButton label={listView ? 'Note View' : 'List View'} 
+                            onClick={() => this.props.updateView(board.id, listView ? 0 : 1)} 
+                            icon={!listView ? 'format_list_bulleted' : 'dashboard'}
+                            color='yellow darken-2' 
+                            className='top-bar-floating-btn' />
                             <RoundedButton label='Help' icon='help' color='grey' className='top-bar-floating-btn' />
                         </div>
                     </div>
