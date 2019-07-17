@@ -7,6 +7,10 @@ html, body, #root, .poplet-root {
   margin: 0;
 }
 
+.poplet-root {
+  display: flex;
+}
+
 // Roboto
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 * {
