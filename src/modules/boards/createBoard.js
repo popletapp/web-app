@@ -5,9 +5,9 @@ import axios from 'axios';
 export default async (obj) => {
   const store = Poplet.store;
   if (obj && obj.name) {
-    const board = await axios.post('/board/create', obj);
+    const board = await axios.post('/boards', obj).then(res => res.data);
     if (board) {
-      await store.dispatch(createBoard(board.id));
+      await store.dispatch(createBoard(board));
       return board;
     } else {
       return null;
