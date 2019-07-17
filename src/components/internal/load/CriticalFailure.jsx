@@ -9,7 +9,7 @@ class CriticalFailure extends Component {
 
     render () {
         return (
-            <div className='poplet-root center-on-page critical-failure animated fadeIn'>
+            <div className='center-on-page critical-failure animated fadeIn'>
                 <h1>Damn.</h1>
                 <h2>An error occured whilst trying to load Poplet</h2>
                 <h4>Sorry about that. Looks like we're experiencing some technical difficulties at the moment, and we're unable to connect you to Poplet.</h4>
