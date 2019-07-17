@@ -71,7 +71,7 @@ class BoardCreationModal extends Modal {
 
     render () {
         return (
-            <div className='modal poplet-modal' style={{ display: 'block' }}>
+            <div className='modal poplet-modal fadeInZoomOut' style={{ display: 'block' }}>
                 <div className='modal-content'>
                     <div className='modal-header'>
                         Create New Board
