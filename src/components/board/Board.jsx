@@ -7,7 +7,8 @@ import './Board.scss'
 
 function mapStateToProps (state) {
     return {
-        notes: state.notes
+        notes: state.notes,
+        listView: !!state.viewByBoard[state.selectedBoard]
     };
 }
 
@@ -45,20 +46,20 @@ class Board extends Component {
         });
         note.options = note.options || {};
         note.options.position = position;
-        await updateNote(note);        
+        await updateNote(this.props.object.id, note);        
     }
 
     render () {
         const notes = this.props.notes.items;
-        const board = this.props.object;
+        const { object: board, listView } = this.props;
         console.log('Render board', notes, board)
         return (
             <div className='board'>
                 <TopBar board={board} />
                 <div onDragOver={(event) => this.onDragOver(event)}
                 onDrop={(event) => this.onDrop(event)}
-                className='note-container drag-container droppable'>
-                    {notes && notes.map(note => <Note key={note.id} boardId={board.id} exists={!!note.id} note={note} />)}
+                className={`note-container${!listView ? ' drag-container droppable' : ' list-view'}`}>
+                    {notes && notes.map(note => <Note key={note.id} boardId={board.id} note={note} listView={listView} />)}
                 </div>
             </div>
         )
