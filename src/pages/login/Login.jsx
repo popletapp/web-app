@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { render } from '../..';
 import './Login.scss';
 
 class Login extends Component {
   constructor () {
     super();
     this.state = {
-      username: null,
+      email: null,
       password: null,
       error: null
     };
   }
 
   async loginButtonClicked () {
-    const { username, password } = this.state;
-    if (!username || !password) {
+    const { email, password } = this.state;
+    if (!email || !password) {
       this.setState({
-        error: 'You need to enter a username and password.'
+        error: 'You need to enter an e-mail and password.'
       });
       return;
     }
-    const response = await axios.post('/users/authenticate', { username, password }).catch(e => e.response);
+    const response = await axios.post('/users/authenticate', { email, password }).catch(e => e.response);
     if (response.status === 403) {
       // Stay here, login failed
       this.setState({
@@ -33,34 +32,38 @@ class Login extends Component {
       });
     } else {
       // Authenticated, remove login page
-      render();
       localStorage.setItem('token', response.data.token);
+      window.location.replace('/home');
     }
   }
 
   render () {
     return (
-      <div className='login-container row animated fadeIn'>
-        <div className='col s12 offset-s2'>
-          <div className='login-header'>
-            <h1>Login to Poplet</h1>
-            <h4 className='login-header-error'>{this.state.error}</h4>
-          </div>
-          <form id='login' className='col s6'>
-            <div className='username-container'>
-              <div class='input-field col s12'>
-                <input onChange={(e) => this.setState({ username: e.target.value })} id='username' type='text' class='validate'></input>
-                <label htmlFor='username'>Username</label>
-              </div>
+      <div className='authentication-page-container'>
+        <section className='cinematic-authentication'></section>
+        <div className='authentication-container animated fadeIn'>
+          <div className='authentication'>
+            <div className='authentication-header'>
+              <h1>Login to Poplet</h1>
+              <h4 className='authentication-header-error'>{this.state.error}</h4>
             </div>
-            <div className='password-container'>
-              <div className='input-field col s12'>
-                <input onChange={(e) => this.setState({ password: e.target.value })} id='password' type='password' className='validate'></input>
+            <form id='login' className='login-form'>
+              <div className='username-container'>
+                <label htmlFor='email'>E-mail</label>
+                <input onInput={(e) => this.setState({ email: e.target.value })}
+                  id='email' type='text' className={`text-input-container ${this.state.error && this.state.errorOccured === 'email' ? 'invalid-text-input' : ''}`} />
+              </div>
+
+              <div className='password-container'>
                 <label htmlFor='password'>Password</label>
+                <div className='password-component'>
+                  <input onInput={(e) => this.setState({ password: e.target.value || '' })}
+                    id='username' type='password' className='text-input-container'></input>
+                </div>
               </div>
-            </div>
-          </form>
-          <button className='btn login-button' onClick={() => this.loginButtonClicked()}>Submit</button>
+            </form>
+            <button className='btn login-button' onClick={() => this.loginButtonClicked()}>Submit</button>
+          </div>
         </div>
       </div>
     );

@@ -1,21 +1,51 @@
-.login-container {
-  padding: 10em;
-  background: linear-gradient(to right, rgba(0,0,0,0.95) 25%,rgba(0,0,0,0.01) 295%,rgba(0,0,0,0) 92%), url('https://blogs.urz.uni-halle.de/geofox/wp-content/themes/modern/assets/images/header/pixabay.canada-407701.jpg') no-repeat fixed;
-  background-size: cover;
-  background-position: bottom;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+.authentication-page-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  height: 100%;
+  width: 100%;
   position: absolute;
-  left: 0; 
-  right: 0;
-  top: 0; 
+  top: 0;
+  left: 0;
   bottom: 0;
+  right: 0;
   margin: auto;
-  max-width: 100%;
-  max-height: 100%;
+}
+
+section.cinematic-authentication {
+  padding: 5em;
+	background: linear-gradient(to right, rgba(0,0,0,0.95) 10%,rgba(0,0,0,0.01) 300%,rgba(0,0,0,0) 52%), url(./../svg/poplet-background-dark.svg) no-repeat fixed;
+	background-size: cover;
+	background-position: bottom;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	text-align: center;
+  position: relative;
+  flex: 1 1 45%;
+  height: 100%;
+  width: 50%;
+  box-shadow: 0px 5px 10px black;
+}
+
+.username-container, .password-container {
+  margin-bottom: 8px;
+}
+
+.password-container {
+  margin-bottom: 32px;
+}
+
+.authentication-container {
+  position: relative;
+  display: flex;
+  flex: 1 0 35%;
+  margin-left: 12em;
+  height: 30%;
+  top: 20%;
 
   h1 {
-    font-weight: 700;
+    font-weight: 800;
+    font-family: 'Poppins', sans-serif;
     font-size: 48px;
     margin-bottom: 12px;
   }
@@ -23,14 +53,23 @@
   input {
     color: white;
   }
+
+  label {
+    color: #b1b1b1;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
 }
 
-.login-header {
+.authentication-header {
   margin-bottom: 48px;
 
   &-error {
     color: #bd4949;
-    font-size: 22px;
+    margin-top: -1em;
+    margin-bottom: -1em;
+    display: inline-block;
+    font-size: 12px;
     text-align: left;
   }
 }
@@ -38,4 +77,14 @@
 .btn.login-button {
   background-color: #5ba367;
   position: relative;
+}
+
+.invalid-text-input {
+  border: 1px solid #d32f2f;
+  transition: all 0.3s;
+}
+
+.valid-text-input {
+  border: 1px solid #4caf50;
+  transition: all 0.3s;
 }
