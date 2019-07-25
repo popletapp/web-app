@@ -1,15 +1,15 @@
 .text-input-container {
   display: flex;
+  flex-direction: row;
   width: 200px;
   height: 24px;
 }
 
 .text-input {
-  width: 87%;
-  height: 18px;
-  white-space: nowrap;
+  flex: 1 1 auto;
   overflow: hidden;
-  min-height: 18px;
+  min-height: 20px;
+  white-space: nowrap;
 
   br {
     display: none;
@@ -22,6 +22,7 @@
 }
 
 div.input-icon {
+    flex: 0 0 auto;
     width: 18px;
     height: 18px;
     color: #bdbdbd;
