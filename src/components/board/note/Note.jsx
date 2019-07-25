@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
-import Markdown from 'react-markdown';
+import ReactDOM from 'react-dom';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 
 import { connect } from 'react-redux';
-import { Button, NoteDetailedView } from './../../';
+import { Button, Editor, NoteDetailedView } from './../../';
 import './Note.scss';
 import { endCreateNote } from './../../../actions/note';
-import { Modal, updateNote, createNote } from './../../../modules';
+import { Modal, updateNote, createNote, saveNote } from './../../../modules';
+import ComponentTypes from './../../../constants/ComponentTypes';
+
+import { DragSource } from 'react-dnd';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 
 function mapStateToProps (state, props) {
   return {
-    note: (state.notesByBoard[props.boardId] || {}).items ? state.notesByBoard[props.boardId].items.find(note => note.id === props.note.id) : props.note
+    note: (state.notesByBoard[props.boardId] || {}).items ? state.notesByBoard[props.boardId].items.find(note => note.id === props.id) : props.note,
+    selectedArea: state.selectionArea,
+    listView: !!state.viewByBoard[state.selectedBoard]
   };
 }
 
@@ -22,10 +28,12 @@ function mapDispatchToProps (dispatch) {
 }
 
 class Note extends Component {
-  constructor ({ note, boardId }) {
+  constructor ({ note, boardId, preview }) {
     super();
     this.note = note;
+    this.noteRef = React.createRef();
     this.boardId = boardId;
+    this.preview = preview;
 
     // Whether or not this note is currently being created
     this.state = {
@@ -47,12 +55,7 @@ class Note extends Component {
         this.unselect();
       }
     };
-    document.addEventListener('click', this.listener, false);
-  }
-
-  onDragStart (event) {
-    event.offset = { x: event.pageX - event.target.offsetLeft, y: event.pageY - event.target.offsetTop };
-    event.obj = this;
+    document.addEventListener('click', this.listener);
   }
 
   onFocus () {
@@ -69,7 +72,17 @@ class Note extends Component {
   }
 
   unselect () {
-    this.setState({ selected: false });
+    if (!this.state.boxSelection) {
+      this.setState({ selected: false });
+    }
+    this.setState({ boxSelection: false });
+  }
+
+  onInput (event, type) {
+    const { note } = this.props;
+    const content = event.target.textContent.replace('<br>', '\\n');
+    const newNote = { ...note, [type]: content };
+    updateNote(this.boardId, newNote);
   }
 
   async onBlur (event, type) {
@@ -85,7 +98,7 @@ class Note extends Component {
     });
     if (note[type] !== newNote[type]) {
       if (exists) {
-        await updateNote(this.boardId, newNote);
+        await saveNote(this.boardId, newNote);
       } else {
         this.setState({
           unmounted: true,
@@ -98,16 +111,13 @@ class Note extends Component {
     this.setState({ saving: false });
   }
 
-  componentDidMount () {
-    const { note } = this.props;
-    if (note && note.options && note.options.position) {
-      this.setState({
-        style: {
-          top: note.options ? note.options.position.y : 0,
-          left: note.options ? note.options.position.x : 0
-        }
-      });
-    }
+  setPosition (note) {
+    this.setState({
+      style: {
+        top: note.options ? note.options.position.y : 0,
+        left: note.options ? note.options.position.x : 0
+      }
+    });
   }
 
   highlight () {
@@ -115,42 +125,84 @@ class Note extends Component {
     block && hljs.highlightBlock(block);
   }
 
-  componentDidUpdate () {
+  componentDidMount () {
+    const { note, connectDragPreview } = this.props;
+    if (note && note.options && note.options.position) {
+      this.setPosition(note);
+    }
+
+    if (connectDragPreview) {
+      connectDragPreview(getEmptyImage(), {
+        captureDraggingState: true
+      });
+    }
+  }
+
+  componentDidUpdate (oldProps) {
     this.highlight();
+    const { note, selectedArea } = this.props;
+    if (note && oldProps.selectedArea !== selectedArea) {
+      console.log(this.noteRef);
+      const bounding = ReactDOM.findDOMNode(this.noteRef.current).getBoundingClientRect();
+      console.log(bounding.top, selectedArea.y1,
+        bounding.bottom, selectedArea.y2,
+        bounding.left, selectedArea.x1,
+        bounding.right, selectedArea.x2);
+
+      console.log(selectedArea.y1 > bounding.top,
+        selectedArea.y2 < bounding.bottom,
+        selectedArea.x1 < bounding.left,
+        selectedArea.x2 > bounding.right);
+
+      if (selectedArea.y1 > bounding.top &&
+        selectedArea.y2 < bounding.bottom &&
+        selectedArea.x1 < bounding.left &&
+        selectedArea.x2 > bounding.right) {
+        console.log('overlapping!!!!', note);
+        this.setState({ selected: true, boxSelection: true });
+      }
+    }
+    if (note && oldProps.note !== note && note.options && note.options.position) {
+      this.setPosition(note);
+    }
   }
 
   render () {
-    const { note, listView } = this.props;
+    const { note, listView, connectDragSource, preview } = this.props;
     const { editing, selected, style } = this.state;
+    const togglableDragSource = selected && !preview ? connectDragSource : i => i;
+
     if (!note || this.state.unmounted) {
       return null;
     }
-    if (!note.options) {
-      note.options = {};
-    }
+    note.options = note.options || {};
 
-    return (
-      <div draggable={selected}
+    return togglableDragSource(
+      <div ref={this.noteRef}
         onClick={(event) => this.onClick(event)}
-        onDragStart={(event) => this.onDragStart(event)}
-        className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected ? ' selected draggable' : ''}`}
-        style={{ ...(!listView ? style : {}), width: 'fit-content', backgroundColor: note.options.color || '' }}>
-        {selected && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
+        className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
+        style={{ ...(!listView && !preview ? style : {}), width: 'fit-content', backgroundColor: note.options.color || '' }}>
+        {selected && !preview && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
         <div className='note-content white-text'>
-          <div contentEditable={selected ? 'true' : 'false'}
-            suppressContentEditableWarning={true}
+          <Editor
+            type='title'
+            editing={selected}
             onFocus={(e) => this.onFocus(e, 'title')}
+            onInput={(e) => this.onInput(e, 'title')}
             onBlur={(e) => this.onBlur(e, 'title')}
             className='note-header'>
-            {note.title > 64 ? `${note.title.slice(0, 61)}...` : note.title}
-          </div>
-          <div contentEditable={selected ? 'true' : 'false'}
-            suppressContentEditableWarning={true}
+            {editing ? note.title : (note.title > 64 ? `${note.title.slice(0, 61)}...` : note.title)}
+          </Editor>
+          <Editor
+            type='content'
+            editing={selected}
             onFocus={(e) => this.onFocus(e, 'content')}
+            onInput={(e) => this.onInput(e, 'content')}
             onBlur={(e) => this.onBlur(e, 'content')}
+            parseMarkdown={!editing}
             className='note-body'>
-            {editing ? note.content : <Markdown source={note.content > 255 ? `${note.content.slice(0, 252)}...` : note.content} />}
-          </div>
+            {editing ? note.content : (note.content > 255 ? `${note.content.slice(0, 252)}...` : note.content)}
+          </Editor>
         </div>
         <div className='note-footer'>
           <Button onClick={(e) => this.view(e)} className='note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Button>
@@ -168,4 +220,19 @@ class Note extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Note);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  DragSource(
+    ComponentTypes.NOTE,
+    {
+      beginDrag (props) {
+        const { note } = props;
+        return note;
+      }
+    },
+    (connect, monitor) => ({
+      connectDragSource: connect.dragSource(),
+      connectDragPreview: connect.dragPreview(),
+      isDragging: monitor.isDragging()
+    })
+  )(Note)
+);
