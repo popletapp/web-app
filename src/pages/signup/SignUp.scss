@@ -1,0 +1,29 @@
+@import './../login/Login.scss';
+
+.password-component {
+  display: flex;
+  flex-direction: row;
+}
+
+.security-measurer {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  top: 6px;
+  margin-left: 12px;
+}
+
+.security-color {
+  transition: all 0.33s;
+  background-color: grey;
+  width: 18px;
+  height: 18px;
+}
+
+.password-container {
+  margin-bottom: 12px;
+}
+
+.email-container {
+  margin-bottom: 32px;
+}
