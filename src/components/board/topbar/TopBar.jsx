@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Avatar, Input, RoundedButton, BoardCreationModal } from './../../';
+import { Button, Avatar, Input, RoundedButton, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal } from './../../';
 import { selectBoard, createBoard, updateView } from './../../../actions/board';
 import { beginCreateNote } from './../../../actions/note';
-import { Modal, switchBoard, toggleChatroomVisibility } from '../../../modules';
+import { Modal, switchBoard, toggleChatroomVisibility, createGroup } from '../../../modules';
 import Poplet from '../../..';
 
 function mapStateToProps (state) {
@@ -45,7 +45,7 @@ class TopBar extends Component {
                   {board.members ? board.members.length : 0} member{board.members && board.members.length === 1 ? '' : 's'}
                 </div>
               </div>
-              <Button color='indigo lighten-2' className='large-invite-members-btn'>Invite Members</Button>
+              <Button onClick={() => new Modal(<BoardInviteMembersModal boardID={board.id} />).create()} color='indigo lighten-2' className='large-invite-members-btn'>Invite Members</Button>
             </div>
             <ul id='board-dropdown' className='dropdown-content'>
               <div className='board-selection'>
@@ -74,11 +74,11 @@ class TopBar extends Component {
               <Button color='red' className='board-selector-btn dropdown-trigger' data-target='board-selector'>Boards</Button>
               <ul id='board-selector' className='dropdown-content'>
                 <div className='board-selection selection-option'>
-                  <li>
+                  <li className='board-selection-join' onClick={() => new Modal(<BoardJoinModal />).create()}>
                     <i className='material-icons'>people</i>
                     <p>Join a Board</p>
                   </li>
-                  <li onClick={() => new Modal(<BoardCreationModal />).create()}>
+                  <li className='board-selection-create' onClick={() => new Modal(<BoardCreationModal />).create()}>
                     <i className='material-icons'>add_circle</i>
                     <p>Create a new Board</p>
                   </li>
@@ -99,13 +99,16 @@ class TopBar extends Component {
               <Input icon='search' />
             </div>
             <div className='toolbar-container'>
-              <RoundedButton label='New Note' onClick={() => this.props.beginCreateNote()} icon='add' className='top-bar-floating-btn' />
-              <RoundedButton label='Chatroom' onClick={() => toggleChatroomVisibility()} icon='chat_bubble' color='green' className='top-bar-floating-btn' />
+              <RoundedButton label='New Note' color='red' onClick={() => this.props.beginCreateNote()} icon='add' className='top-bar-floating-btn' />
+              <RoundedButton label='New Group' color='orange' onClick={() => createGroup(board.id, { name: 'board' })} icon='add' className='top-bar-floating-btn' />
+
               <RoundedButton label={listView ? 'Note View' : 'List View'}
                 onClick={() => this.props.updateView(board.id, listView ? 0 : 1)}
                 icon={!listView ? 'format_list_bulleted' : 'dashboard'}
                 color='yellow darken-2'
                 className='top-bar-floating-btn' />
+              <RoundedButton label='Chatroom' onClick={() => toggleChatroomVisibility()} icon='chat_bubble' color='green' className='top-bar-floating-btn' />
+
               <RoundedButton label='Help' icon='help' color='grey' className='top-bar-floating-btn' />
             </div>
           </div>
