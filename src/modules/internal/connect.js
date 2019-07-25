@@ -4,10 +4,11 @@ import established from './established';
 export default async () => {
   await axios.get('/gateway/connect')
     .then(() => {
-      established();
-      Promise.resolve();
+      established().then(() => {
+        Promise.resolve();
+      });
     })
     .catch((err) => {
-      Promise.reject(new Error(err));
+      throw new Error(err);
     });
 };
