@@ -2,15 +2,28 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import { connect } from './../../../modules';
-import { CriticalFailure, Loader } from '../..';
+import { Loader, CriticalFailure } from '../..';
 
 class PopletBase extends Component {
-  async componentWillMount () {
-    ReactDOM.render(<Loader />, document.querySelector('#loader'));
-    await connect()
-      .catch(() => {
-        ReactDOM.render(<CriticalFailure />, document.querySelector('#root'));
-      });
+  constructor () {
+    super();
+    this.state = {
+      connected: false
+    };
+  }
+
+  async init () {
+    if (!this.state.connected) {
+      ReactDOM.render(<Loader />, document.querySelector('#loader'));
+      await connect()
+        .then(() => {
+          console.log('connected');
+          this.setState({ connected: true });
+        })
+        .catch(() => {
+          ReactDOM.render(<CriticalFailure />, document.querySelector('#root'));
+        });
+    }
   }
 }
 
