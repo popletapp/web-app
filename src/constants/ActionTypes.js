@@ -1,8 +1,15 @@
 // Board
 export const CREATE_BOARD = 'CREATE_BOARD';
 export const SELECT_BOARD = 'SELECT_BOARD';
+export const JOIN_BOARD = 'JOIN_BOARD';
 export const UPDATE_VIEW = 'UPDATE_VIEW';
 export const POPULATE_BOARDS = 'POPULATE_BOARDS';
+export const BEGIN_SELECTION = 'BEGIN_SELECTION';
+export const END_SELECTION = 'END_SELECTION';
+export const RECEIVE_GROUPS = 'RECEIVE_GROUPS';
+export const CREATE_GROUP = 'CREATE_GROUP';
+export const UPDATE_GROUP = 'UPDATE_GROUP';
+export const DELETE_GROUP = 'DELETE_GROUP';
 
 // Note
 export const REQUEST_NOTES = 'REQUEST_NOTES';
