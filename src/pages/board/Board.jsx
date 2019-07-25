@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Poplet from './../../';
 import { connect } from 'react-redux';
 import { selectBoard } from './../../actions/board';
 import { getNotes } from './../../actions/note';
 import { switchBoard } from './../../modules';
 
-import { Board, Chatroom } from './../../components';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
+import { Board, Chatroom, PopletBase, CustomDragLayer } from './../../components';
 
 function mapStateToProps (state) {
   return {
@@ -21,7 +24,7 @@ function mapDispatchToProps (dispatch) {
   };
 }
 
-class App extends Component {
+class BoardComponent extends PopletBase {
   constructor ({ board }) {
     super();
     this.board = board;
@@ -31,13 +34,13 @@ class App extends Component {
   }
 
   async componentDidMount () {
-    const boardID = this.props.match.params.id;
+    await this.init();
+    const boardID = this.props.match.params.id || Poplet.boards[0].id;
     if (boardID) {
       await switchBoard(boardID);
     } else {
-      await switchBoard(Poplet.boards[0].id);
+      this.props.history.push('/home');
     }
-
     this.setState({ loaded: true });
   }
 
@@ -53,11 +56,14 @@ class App extends Component {
     return (
       <div className='poplet-root'>
         <div className='modal-container'></div>
-        <Board key={board.id} object={board} notes={[]} />
-        <Chatroom chatroom={this.state.chatroom}/>
+        <DndProvider backend={HTML5Backend}>
+          <Board key={board.id} object={board} notes={[]} />
+          <CustomDragLayer />
+          <Chatroom chatroom={this.state.chatroom}/>
+        </DndProvider>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
