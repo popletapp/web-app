@@ -18,8 +18,8 @@ const Poplet = {
   API: {
     BASE_URL
   },
-  ws: {
-    BASE_URL: 'ws://localhost:7979'
+  constants: {
+    WS_BASE_URL: 'ws://localhost:7777'
   },
   store
 };
