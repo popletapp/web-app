@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 
@@ -7,7 +6,8 @@ import { connect } from 'react-redux';
 import { Button, Editor, NoteDetailedView } from './../../';
 import './Note.scss';
 import { endCreateNote } from './../../../actions/note';
-import { Modal, updateNote, createNote, saveNote } from './../../../modules';
+import { updateNote, createNote, saveNote, createModal } from './../../../modules';
+import { Link } from 'react-router-dom';
 import ComponentTypes from './../../../constants/ComponentTypes';
 
 import { DragSource } from 'react-dnd';
@@ -15,7 +15,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 function mapStateToProps (state, props) {
   return {
-    note: (state.notesByBoard[props.boardId] || {}).items ? state.notesByBoard[props.boardId].items.find(note => note.id === props.id) : props.note,
+    note: props.id ? state.notesByBoard[props.boardId][props.id] : props.note,
     selectedArea: state.selectionArea,
     listView: !!state.viewByBoard[state.selectedBoard]
   };
@@ -23,7 +23,7 @@ function mapStateToProps (state, props) {
 
 function mapDispatchToProps (dispatch) {
   return {
-    endCreateNote: () => dispatch(endCreateNote())
+    endCreateNote: board => dispatch(endCreateNote(board))
   };
 }
 
@@ -64,11 +64,14 @@ class Note extends Component {
 
   view (event) {
     event.preventDefault();
-    new Modal(<NoteDetailedView note={this.props.note} boardId={this.boardId} />).create();
+    createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.boardId} />);
   }
 
   onClick () {
-    this.setState({ selected: true });
+    const { preview } = this.props;
+    if (!preview) {
+      this.setState({ selected: true });
+    }
   }
 
   unselect () {
@@ -105,7 +108,7 @@ class Note extends Component {
           exists: true
         });
         await createNote(this.boardId, newNote);
-        this.props.endCreateNote();
+        this.props.endCreateNote(this.boardId);
       }
     }
     this.setState({ saving: false });
@@ -118,6 +121,10 @@ class Note extends Component {
         left: note.options ? note.options.position.x : 0
       }
     });
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('click', this.listener);
   }
 
   highlight () {
@@ -142,7 +149,7 @@ class Note extends Component {
     this.highlight();
     const { note, selectedArea } = this.props;
     if (note && oldProps.selectedArea !== selectedArea) {
-      console.log(this.noteRef);
+      /* console.log(this.noteRef);
       const bounding = ReactDOM.findDOMNode(this.noteRef.current).getBoundingClientRect();
       console.log(bounding.top, selectedArea.y1,
         bounding.bottom, selectedArea.y2,
@@ -160,7 +167,7 @@ class Note extends Component {
         selectedArea.x2 > bounding.right) {
         console.log('overlapping!!!!', note);
         this.setState({ selected: true, boxSelection: true });
-      }
+      } */
     }
     if (note && oldProps.note !== note && note.options && note.options.position) {
       this.setPosition(note);
@@ -168,7 +175,7 @@ class Note extends Component {
   }
 
   render () {
-    const { note, listView, connectDragSource, preview } = this.props;
+    const { note, listView, connectDragSource, preview, boardId } = this.props;
     const { editing, selected, style } = this.state;
     const togglableDragSource = selected && !preview ? connectDragSource : i => i;
 
@@ -205,15 +212,14 @@ class Note extends Component {
           </Editor>
         </div>
         <div className='note-footer'>
-          <Button onClick={(e) => this.view(e)} className='note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Button>
+          {!preview && <Button onClick={(e) => this.view(e)} className='note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Button>}
+          {(preview || !note.id) && <Link to={`/boards/${boardId}`} className='btn-small note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Link>}
+
           <div className='vertical-rule' style={{ height: 24 }}></div>
           {/* TODO: Implement comments */}
           {true && <div className='note-footer-comments-container'>
             <i className='material-icons' style={{ fontSize: '14px' }}>comment</i> 0
           </div>}
-          <div className='note-footer-settings-container'>
-            <i className='material-icons' style={{ fontSize: '22px' }}>settings</i>
-          </div>
         </div>
       </div>
     );
@@ -225,8 +231,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     ComponentTypes.NOTE,
     {
       beginDrag (props) {
-        const { note } = props;
-        return note;
+        const { note, boardId } = props;
+        return { item: note, boardId };
       }
     },
     (connect, monitor) => ({

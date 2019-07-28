@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Note } from './../../';
+import { Note, Editor } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import './Group.scss';
-import { addNoteToGroup } from '../../../modules';
+import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup } from '../../../modules';
 
 function mapStateToProps (state, props) {
   return {
-    notes: state.notesByBoard[props.boardId].items.filter(note => props.notes.includes(note.id)),
-    group: state.groups[props.id],
+    notes: state.groupsByBoard[state.selectedBoard][props.id].items.map(note => state.notesByBoard[state.selectedBoard][note]),
+    group: state.groupsByBoard[state.selectedBoard][props.id],
     listView: !!state.viewByBoard[state.selectedBoard]
   };
 }
@@ -20,7 +20,9 @@ class Group extends Component {
     super();
     this.boardId = boardId;
     this.group = group;
-    this.state = {};
+    this.state = {
+      editingName: false
+    };
   }
 
   componentDidMount () {
@@ -51,27 +53,42 @@ class Group extends Component {
     });
   }
 
-  render () {
-    const { group, notes, boardId, listView, connectDragSource, connectDropTarget, dragging } = this.props;
-    const { style } = this.state;
+  async updateGroupName (event) {
+    const { boardId, group } = this.props;
+    const newName = event.target.textContent;
+    group.name = newName;
+    await updateGroup(boardId, group);
+    this.setState({ editingName: false });
+  }
 
+  render () {
+    const { group, notes, boardId, listView, connectDragSource, connectDropTarget } = this.props;
+    const { style, editingName } = this.state;
+    console.log(notes)
     if (!group || this.state.unmounted) {
       return null;
     }
 
     group.options = group.options || {};
-    console.log('Rendering group with notes ', notes);
     return connectDropTarget(connectDragSource(
       <div className='group-container'
         style={{ ...(!listView ? style : {}), backgroundColor: group.options.color || '' }}>
         <div className='group-header'>
-          {group.name}
+          <Editor
+            maxLength='64'
+            className='group-header-name'
+            editing={editingName.toString()}
+            onMouseEnter={() => this.setState({ editingName: true })}
+            onBlur={(e) => this.updateGroupName(e)}>
+            {group.name}
+          </Editor>
+
           <div className='group-header-note-count'>
             {group.items.length} note{group.items.length === 1 ? '' : 's'}
           </div>
         </div>
         <div className='group'>
-          {notes && notes.map(note => <Note key={note.id} id={note.id} boardId={boardId} />)}
+          {notes && notes.filter(Boolean).map((note, i) => <Note key={i} id={note.id} boardId={boardId} />)}
         </div>
       </div>
     ));
@@ -83,12 +100,14 @@ export default connect(mapStateToProps, null)(
     ComponentTypes.NOTE,
     {
       drop (props, monitor, component) {
-        if (!component) {
-          return;
-        }
+        const { item } = monitor.getItem();
+        const delta = monitor.getDifferenceFromInitialOffset();
+        const left = Math.round(item.options.position.x + delta.x);
+        const top = Math.round(item.options.position.y + delta.y);
 
-        const item = monitor.getItem();
-        console.log(item);
+        if (isNoteInGroup(item.id)) {
+          moveNote(props.boardId, item.id, { x: left, y: top });
+        }
         addNoteToGroup(props.boardId, props.id, item.id);
       }
     },
@@ -102,7 +121,7 @@ export default connect(mapStateToProps, null)(
         const { group } = props;
         group.options = group.options || {};
         group.options.position = group.options.position || { x: 0, y: 0 };
-        return group;
+        return { item: group };
       }
     },
     (connect, monitor) => ({
