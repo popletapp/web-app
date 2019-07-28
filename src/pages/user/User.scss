@@ -1,0 +1,17 @@
+@import './../../index.scss';
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+
+  &-username {
+    font-size: 48px;
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+.user-profile-container {
+  padding: 1em;
+  margin-left: 4em;
+  margin-right: 4em;
+}
