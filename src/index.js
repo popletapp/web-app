@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 import './index.scss';
 import './App.scss';
@@ -27,13 +29,16 @@ const Poplet = {
 export default Poplet;
 
 async function render () {
-  store.subscribe(() => console.log('Store: ', store.getState()));
-
+  store.subscribe(() => console.log(store.getState()))
   ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter>
-        <Application />
-      </BrowserRouter>
+      <DndProvider backend={HTML5Backend}>
+        <BrowserRouter>
+          <Switch>
+            <Route path='/' component={Application} />
+          </Switch>
+        </BrowserRouter>
+      </DndProvider>
     </Provider>
     , document.getElementById('root'));
 }
