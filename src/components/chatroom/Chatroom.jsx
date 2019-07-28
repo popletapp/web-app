@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Avatar, RoundedButton } from './../';
+import { Avatar, Scroller, HorizontalScroller, RoundedButton, Flex, FlexChild } from './../';
+import { createChatroom, deleteChatroom } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
 
-function mapStateToProps (state) {
+function mapStateToProps (state, props) {
   return {
-    chatroom: state.boards[state.selectedBoard].chatrooms[0]
+    chatroom: state.chatroomsByBoard[state.selectedBoard] ? state.chatroomsByBoard[state.selectedBoard][props.id] : null,
+    chatrooms: state.chatroomsByBoard[state.selectedBoard],
+    boardID: state.selectedBoard
   };
 }
 
@@ -34,44 +37,60 @@ class Comment extends Component {
 }
 
 class Chatroom extends Component {
-  constructor ({ chatroom }) {
+  constructor ({ id }) {
     super();
-    this.chatroom = chatroom;
+    this.id = id;
   }
 
   render () {
-    const { chatroom } = this.props;
-    console.log(chatroom);
+    let { chatroom, chatrooms, boardID } = this.props;
+    chatrooms = chatrooms ? Object.values(chatrooms) : null;
     if (!chatroom) {
       return null;
     }
     return (
-      <div className='chatroom-container'>
-        <div className='chatroom-root'>
-          <div className='chatroom-header'>
-            <div className='chatroom-header-information'>
+      <Flex className='chatroom-container'>
+        <FlexChild className='chatroom-root'>
+          <Flex grow={0} className='chatroom-tabs' direction='row'>
+            <HorizontalScroller style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+              {chatrooms && chatrooms.map((cr, i) =>
+                <FlexChild basis={'150px'} grow={0} key={i} className='chatroom-tab-room' direction='row'>
+                  <div className='chatroom-tab-room-name'>{cr.name}</div>
+                  <i className='material-icons'>close</i>
+                </FlexChild>
+              )}
+              <FlexChild onClick={() => createChatroom(boardID, { name: 'Chatroom' })} grow={0} className='chatroom-tab-room' justify='center' direction='row' style={{ width: '35px' }}>
+                <i className='material-icons'>add</i>
+              </FlexChild>
+            </HorizontalScroller>
+          </Flex>
+
+          <Flex grow={0} className='chatroom-header' direction='row'>
+            <FlexChild className='chatroom-header-information'>
               <div className='chatroom-title'>
                 {chatroom.name}
               </div>
               <div className='chatroom-last-active-label'>
                 {chatroom.lastMessage ? `Last message sent ${TimeParser.timeAgo(chatroom.lastMessage)}` : 'Not active'}
               </div>
-            </div>
-            <div className='chatroom-header-btns'>
+            </FlexChild>
+            <FlexChild className='chatroom-header-btns' direction='column'>
+              <RoundedButton onClick={() => deleteChatroom(boardID, chatroom.id)} icon='close' color='red lighten-1' small={true} />
               <RoundedButton icon='help' color='grey' small={true} />
-              <RoundedButton icon='close' color='red lighten-3' small={true} />
-            </div>
-          </div>
+            </FlexChild>
+          </Flex>
 
-          <div className='chatroom-body'>
-            {chatroom.messages && chatroom.messages.map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
-          </div>
+          <Flex className='chatroom-body'>
+            <Scroller style={{ width: '100%' }}>
+              {chatroom.messages && chatroom.messages.map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
+            </Scroller>
+          </Flex>
 
           <div className='chatroom-textarea-container'>
             <textarea placeholder='Enter text here...' className='chatroom-textarea'></textarea>
           </div>
-        </div>
-      </div>
+        </FlexChild>
+      </Flex>
     );
   }
 }
