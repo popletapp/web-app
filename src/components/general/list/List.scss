@@ -1,0 +1,14 @@
+@import './../../../index.scss';
+
+.list-container {
+  background-color: $dark-accent-color-2;
+  min-height: 100px;
+  min-width: 200px;
+  height: 200px;
+  border-radius: 4px;
+}
+
+.list {
+  width: 100%;
+  height: 100%;
+}
