@@ -1,0 +1,112 @@
+@import './../../../index.scss';
+
+.board-settings > .modal-content {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+
+  > .board-settings-left-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 40%;
+    padding: 1em;
+    background-color: $dark-accent-color-1;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+
+  > .board-settings-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 1em;
+  }
+}
+
+.board-settings {
+  &-content-container {
+    width: 70%;
+  }
+  
+  &-header {
+    text-transform: uppercase;
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+
+  &-header-name {
+    font-size: 18px;
+    color: $text-accent-color;
+    margin-bottom: 32px;
+  }
+
+  &-settings {
+    flex-direction: column;
+    min-width: 33%;
+  }
+
+  &-subheader {
+    color: $text-subheading-color;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 24px;
+    margin-bottom: 6px;
+  }
+
+  &-text {
+    font-size: 15px;
+    color: $text-accent-color;
+    margin-bottom: 8px;
+  }
+
+  &-settings-container {
+    margin: 0;
+  }
+
+  &-setting {
+    color: white;
+    padding: 6px 12px 6px 12px;
+    border-radius: 8px;
+    transition: 0.2s;
+
+    &:hover {
+      transform: translateX(12px);
+      background-color: $light-accent-color-1;
+    }
+
+    &:active {
+      background-color: $light-accent-color-3;
+    }
+  }
+
+  &-ranks {
+    margin-top: 24px;
+
+    &-content{
+      padding: 1em;
+      padding-top: 0em;
+    }
+
+    &-permissions {
+      margin-top: 24px;
+
+      &-permission {
+        margin-top: 0.25em;
+        margin-bottom: 0.25em;
+      }
+    }
+  }
+}
