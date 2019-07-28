@@ -1,24 +1,35 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import { connect } from './../../../modules';
+import { connect as popletConnect } from './../../../modules';
+import { connect } from 'react-redux';
 import { Loader, CriticalFailure } from '../..';
+
+function mapStateToProps (state) {
+  return {
+    user: state.user
+  };
+}
 
 class PopletBase extends Component {
   constructor () {
     super();
     this.state = {
+      connecting: false,
       connected: false
     };
   }
 
   async init () {
-    if (!this.state.connected) {
+    const { user } = this.props;
+    const { connecting, connected } = this.props;
+
+    if (!connected && !connecting && ((user && !user.id) || !user)) {
+      this.setState({ connecting: true });
       ReactDOM.render(<Loader />, document.querySelector('#loader'));
-      await connect()
+      await popletConnect()
         .then(() => {
-          console.log('connected');
-          this.setState({ connected: true });
+          this.setState({ connected: true, connecting: false });
         })
         .catch(() => {
           ReactDOM.render(<CriticalFailure />, document.querySelector('#root'));
@@ -27,4 +38,5 @@ class PopletBase extends Component {
   }
 }
 
+connect(mapStateToProps, null)(PopletBase);
 export default PopletBase;
