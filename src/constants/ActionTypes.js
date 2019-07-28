@@ -1,22 +1,32 @@
 // Board
+export const REQUEST_BOARDS = 'REQUEST_BOARDS';
+export const RECEIVE_BOARDS = 'RECEIVE_BOARDS';
 export const CREATE_BOARD = 'CREATE_BOARD';
 export const SELECT_BOARD = 'SELECT_BOARD';
 export const JOIN_BOARD = 'JOIN_BOARD';
 export const UPDATE_VIEW = 'UPDATE_VIEW';
-export const POPULATE_BOARDS = 'POPULATE_BOARDS';
 export const BEGIN_SELECTION = 'BEGIN_SELECTION';
 export const END_SELECTION = 'END_SELECTION';
+export const REQUEST_GROUPS = 'REQUEST_GROUPS';
 export const RECEIVE_GROUPS = 'RECEIVE_GROUPS';
 export const CREATE_GROUP = 'CREATE_GROUP';
 export const UPDATE_GROUP = 'UPDATE_GROUP';
 export const DELETE_GROUP = 'DELETE_GROUP';
+export const REQUEST_MEMBERS = 'REQUEST_MEMBERS';
+export const RECEIVE_MEMBERS = 'RECEIVE_MEMBERS';
+export const ADD_RANK = 'ADD_RANK';
+export const REMOVE_RANK = 'REMOVE_RANK';
+export const UPDATE_RANK = 'UPDATE_RANK';
+export const REQUEST_CHATROOMS = 'REQUEST_CHATROOMS';
+export const RECEIVE_CHATROOMS = 'RECEIVE_CHATROOMS';
+export const CREATE_CHATROOM = 'CREATE_CHATROOM';
+export const UPDATE_CHATROOM = 'UPDATE_CHATROOM';
+export const DELETE_CHATROOM = 'DELETE_CHATROOM';
 
 // Note
 export const REQUEST_NOTES = 'REQUEST_NOTES';
 export const RECEIVE_NOTES = 'RECEIVE_NOTES';
-
 export const INITIALIZE_NOTES = 'INITIALIZE_NOTES';
-
 export const BEGIN_CREATE_NOTE = 'BEGIN_CREATE_NOTE';
 export const END_CREATE_NOTE = 'END_CREATE_NOTE';
 export const CREATE_NOTE = 'CREATE_NOTE';
@@ -26,3 +36,13 @@ export const DELETE_NOTE = 'DELETE_NOTE';
 // User
 export const INITIALIZE_USER = 'INITIALIZE_USER';
 export const UPDATE_USER = 'UPDATE_USER';
+export const REQUEST_USER = 'REQUEST_USER';
+export const REQUEST_USERS = 'REQUEST_USERS';
+export const RECEIVE_USER = 'RECEIVE_USER';
+export const RECEIVE_USERS = 'RECEIVE_USERS';
+
+// Internal
+export const MODAL_PUSH = 'MODAL_PUSH';
+export const MODAL_POP = 'MODAL_POP';
+export const POPOUT_PUSH = 'POPOUT_PUSH';
+export const POPOUT_POP = 'POPOUT_POP';
