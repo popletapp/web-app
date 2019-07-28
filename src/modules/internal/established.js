@@ -5,6 +5,7 @@ import openSocket from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Connecting } from '../../components';
+import { getBoards } from './../../actions/board';
 
 let LAST_HEARTBEAT_TIMESTAMP = Date.now();
 
@@ -21,13 +22,11 @@ export default async () => {
     Poplet.user = user;
 
     const socket = openSocket('http://localhost:7777');
-    console.log(socket);
     Poplet.ws = socket;
   }
 
   Poplet.ws.emit('authorize', { userID: Poplet.user.id, authToken: token });
   Poplet.ws.on('message', (data) => {
-    console.log(data);
     if (data.type) {
       store.dispatch(data);
     } else {
@@ -35,27 +34,29 @@ export default async () => {
     }
   });
 
+  let reconnecting = false;
   Poplet.ws.emit('heartbeat');
   setInterval(() => {
     Poplet.ws.emit('heartbeat');
     if (Date.now() - LAST_HEARTBEAT_TIMESTAMP > 30e3) {
       ReactDOM.render(<Connecting />, document.querySelector('#root'));
+      reconnecting = true;
+    } else {
+      if (reconnecting) {
+        window.location.reload();
+      }
     }
   }, 10000);
   Poplet.ws.on('heartbeat', () => {
     LAST_HEARTBEAT_TIMESTAMP = Date.now();
   });
 
-  const getUserBoards = () => axios.get(`/users/${Poplet.user.id}/boards`).then(res => res.data);
-
-  const boards = await getUserBoards();
-
+  const boards = await store.dispatch(getBoards(Poplet.user.id));
   Poplet.boards = []; // Array of board objects
   // Get the current list of ID's of the boards that this user is in and create new board objects from the ID's
   // Fetch from the API to convert ID's to objects
   Poplet.boards = boards;
   Poplet.boards = !Poplet.boards.length ? [] : Poplet.boards;
-  store.dispatch({ type: 'POPULATE_BOARDS', array: Poplet.boards });
 
   Poplet.users = [];
   Poplet.notes = [];

@@ -1,7 +1,6 @@
 import Poplet from '../..';
-import getGroups from './../groups/getGroups';
-import { selectBoard } from '../../actions/board';
-import { getNotes, receiveNotes } from '../../actions/note';
+import { selectBoard, getMembers, getGroups, getChatrooms } from '../../actions/board';
+import { getNotes } from '../../actions/note';
 import getBoard from './getBoard.js';
 
 export default async (id) => {
@@ -9,15 +8,12 @@ export default async (id) => {
   const board = await getBoard(id);
   if (board) {
     store.dispatch(selectBoard(id));
-    const groups = await getGroups(id);
-    let notes = await store.dispatch(getNotes(id));
-    if (notes.notes) {
-      notes = notes.notes;
-    } else {
-      await store.dispatch(receiveNotes(id, notes));
-    }
-    console.log(`Switching to ${board.id} (${board.name})`, board, notes);
-    return { board, notes, groups };
+    const groups = await store.dispatch(getGroups(id)).then(g => g.groups);
+    const notes = await store.dispatch(getNotes(id));
+    const members = await store.dispatch(getMembers(id)).then(g => g.members);
+    const chatrooms = await store.dispatch(getChatrooms(id)).then(g => g.chatrooms);
+    console.log(`Switching to ${board.id} (${board.name})`, { board, notes, groups, members, chatrooms });
+    return { board, notes, groups, members, chatrooms };
   } else {
     return Promise.reject(new Error('Board ID is invalid'));
   }

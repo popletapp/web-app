@@ -5,7 +5,12 @@ class ModalRenderer {
     this.element = modal;
 
     this.container = document.querySelector('.modal-container');
+  }
 
+  createBackdrop () {
+    const container = document.querySelector('.modal-container');
+    container.style.display = 'block';
+    container.style.opacity = '1';
     this.listener = (event) => {
       if (event.target.closest('.modal')) return;
       this.obliterate();
@@ -13,11 +18,10 @@ class ModalRenderer {
     document.addEventListener('click', this.listener, false);
   }
 
-  create () {
+  hideBackdrop () {
     const container = document.querySelector('.modal-container');
-    container.style.display = 'block';
-    container.style.opacity = '1';
-    ReactDOM.render(this.element, document.querySelector('.modal-container'));
+    container.style.display = 'none';
+    container.style.opacity = '0';
   }
 
   destroy () {
