@@ -1,18 +1,39 @@
+.btn, .btn-small {
+  font-size: 13px !important;
+  font-family: 'Heebo', sans-serif;
+  font-weight: 600;
+}
+
 .btn {
   background-color: #535353;
   box-shadow: 1px 1px 2px #1e1e1e;
   line-height: 24px;
   height: 24px;
-  font-size: 11px;
 }
 
-.btn-floating {
-  margin-left: 12px;
-  margin-right: 12px;
+.btn-floating-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .floating-btn-label {
   padding-top: 6px;
   font-size: 12px;
   color: rgb(189, 189, 189);
+}
+
+.minimalistic-button {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: white;
+  -webkit-user-select: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: 0;
+  }
 }

@@ -13,7 +13,7 @@ class Input extends Component {
   render () {
     const { icon, prefixIcon, className } = this.props;
     const dontInclude = ['prefixIcon'];
-    return <div className={`${className} text-input-container`}>
+    return <div className={`${className} text-input`}>
       {icon && prefixIcon &&
               <div className='input-icon'>
                 <i className='material-icons'>{icon}</i>
@@ -21,7 +21,7 @@ class Input extends Component {
       }
       <div
         {...Object.fromEntries(Object.entries(this.props).filter(item => !dontInclude.includes(item[0])))}
-        className='text-input'
+        className='poplet-input'
         contentEditable='true'
         suppressContentEditableWarning={true}
         role='textbox'

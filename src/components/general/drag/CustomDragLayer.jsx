@@ -1,25 +1,53 @@
 import React, { Component } from 'react';
+import { DragLayer } from 'react-dnd';
+import { Note } from './../../';
+import ComponentTypes from './../../../constants/ComponentTypes';
+
+function getItemStyles (props) {
+  const { initialOffset, currentOffset } = props;
+  if (!initialOffset || !currentOffset) {
+    return {
+      display: 'none'
+    };
+  }
+  const { x, y } = currentOffset;
+  console.log(x, y);
+  const transform = `translate(${y}px, ${x}px)`;
+  return {
+    transform,
+    WebkitTransform: transform
+  };
+}
 
 class CustomDragLayer extends Component {
   render () {
-    const { item, itemType, isDragging } = this.props;
+    const { item: note, itemType, isDragging } = this.props;
     function renderItem () {
-      console.log(item);
       switch (itemType) {
-        case 'note':
-          return item;
+        case ComponentTypes.NOTE:
+          return <Note key='dragging-1' id={note.item.id} boardId={note.boardId} />;
         default:
           return null;
       }
     }
     if (!isDragging) {
-      console.log('dragging!');
       return null;
     }
+
     return (
-      <div>{renderItem()}</div>
+      <div style={getItemStyles(this.props)}>
+        <div style={{ transform: 'rotate(-7deg)' }}>
+          {renderItem()}
+        </div>
+      </div>
     );
   }
 }
 
-export default CustomDragLayer;
+export default DragLayer(monitor => ({
+  item: monitor.getItem(),
+  itemType: monitor.getItemType(),
+  initialOffset: monitor.getInitialSourceClientOffset(),
+  currentOffset: monitor.getSourceClientOffset(),
+  isDragging: monitor.isDragging()
+}))(CustomDragLayer);
