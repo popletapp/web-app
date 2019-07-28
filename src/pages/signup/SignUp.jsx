@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import './SignUp.scss';
 
 class SignUp extends Component {
@@ -116,7 +117,7 @@ class SignUp extends Component {
     } else {
       // Stay here, login failed
       this.setState({
-        error: response.data.message
+        error: response.data
       });
     }
   }
@@ -136,20 +137,20 @@ class SignUp extends Component {
               <div className='username-container'>
                 <label htmlFor='username'>Username</label>
                 <input onInput={(e) => this.setState({ username: e.target.value }, () => this.checkUsername())}
-                  id='username' type='text' className={`text-input-container ${this.state.error && this.state.errorOccured === 'username' ? 'invalid-text-input' : ''}`} />
+                  id='username' type='text' className={`text-input ${this.state.error && this.state.errorOccured === 'username' ? 'invalid-text-input' : ''}`} />
               </div>
 
               <div className='email-container'>
                 <label htmlFor='username'>E-mail</label>
                 <input onInput={(e) => this.setState({ email: e.target.value }, () => this.checkEmail())}
-                  id='username' type='email' className={`text-input-container ${this.state.error && this.state.errorOccured === 'email' ? 'invalid-text-input' : ''}`} />
+                  id='email' type='email' className={`text-input ${this.state.error && this.state.errorOccured === 'email' ? 'invalid-text-input' : ''}`} />
               </div>
 
               <div className='password-container'>
                 <label htmlFor='password'>Password</label>
                 <div className='password-component'>
                   <input onInput={(e) => this.setState({ password: e.target.value || '' }, () => this.checkSecurity())}
-                    id='username' type='password' className='text-input-container'></input>
+                    id='password' type='password' className='text-input'></input>
                   <div className='security-measurer'>
                     <div className='security-color' style={{ backgroundColor: this.state.securityStatus.color }}></div>
                   </div>
@@ -159,10 +160,13 @@ class SignUp extends Component {
               <div className='password-container'>
                 <label htmlFor='password'>Re-enter password</label>
                 <input onInput={(e) => this.setState({ passwordReentry: e.target.value || '' }, () => this.checkIfSame(this.state.passwordReentry))}
-                  id='username' type='password' className={`text-input-container ${this.state.passwordsDontMatch === null ? '' : (this.state.passwordsDontMatch ? 'invalid-text-input' : 'valid-text-input')}`}></input>
+                  id='pass-reenter' type='password' className={`text-input ${this.state.passwordsDontMatch === null ? '' : (this.state.passwordsDontMatch ? 'invalid-text-input' : 'valid-text-input')}`}></input>
               </div>
             </form>
             <button className='btn login-button' onClick={() => this.signupButtonClicked()}>Submit</button>
+            <div className='account-exists'>
+              Already have an account? <Link className='account-exists-link' to='/login'>Sign in here.</Link>
+            </div>
           </div>
         </div>
       </div>
