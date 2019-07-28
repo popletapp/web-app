@@ -38,8 +38,8 @@ section.cinematic-authentication {
 .authentication-container {
   position: relative;
   display: flex;
-  flex: 1 0 35%;
-  margin-left: 12em;
+  flex: 1 0 50%;
+  margin-left: 8em;
   height: 30%;
   top: 20%;
 
@@ -87,4 +87,8 @@ section.cinematic-authentication {
 .valid-text-input {
   border: 1px solid #4caf50;
   transition: all 0.3s;
+}
+
+.no-account {
+  margin-top: 2em;
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.scss';
 
@@ -51,18 +52,21 @@ class Login extends Component {
               <div className='username-container'>
                 <label htmlFor='email'>E-mail</label>
                 <input onInput={(e) => this.setState({ email: e.target.value })}
-                  id='email' type='text' className={`text-input-container ${this.state.error && this.state.errorOccured === 'email' ? 'invalid-text-input' : ''}`} />
+                  id='email' type='text' className={`text-input ${this.state.error && this.state.errorOccured === 'email' ? 'invalid-text-input' : ''}`} />
               </div>
 
               <div className='password-container'>
                 <label htmlFor='password'>Password</label>
                 <div className='password-component'>
                   <input onInput={(e) => this.setState({ password: e.target.value || '' })}
-                    id='username' type='password' className='text-input-container'></input>
+                    id='username' type='password' className='text-input'></input>
                 </div>
               </div>
             </form>
             <button className='btn login-button' onClick={() => this.loginButtonClicked()}>Submit</button>
+            <div className='no-account'>
+              Don't have an account? <Link className='no-account-link' to='/signup'>Sign up</Link> today for free!
+            </div>
           </div>
         </div>
       </div>
