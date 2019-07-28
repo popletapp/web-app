@@ -16,16 +16,16 @@
   font-size: 82px;
 }
 
-section {
+section.landing-cinematic {
 	padding: 10em 10em 10em 10em;
-	background: linear-gradient(to right, rgba(0,0,0,0.95) 10%,rgba(0,0,0,0.01) 300%,rgba(0,0,0,0) 52%), url(./svg/poplet-background-dark.svg) no-repeat fixed;
+	background: linear-gradient(to right, rgba(0,0,0,0.95) 10%,rgba(0,0,0,0.01) 300%,rgba(0,0,0,0) 52%), url(./../svg/poplet-background-dark.svg) repeat;
+	background-repeat: repeat;
 	background-size: cover;
-	background-position: bottom;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
+	background-position: 0px -400px;
 	text-align: center;
-	position: relative;
+	max-width: 100%;
 	width: 100%;
 	height: 75%;
+	max-height: 75%;
 	box-shadow: 0px 5px 10px black;
 }
