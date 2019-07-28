@@ -1,0 +1,55 @@
+@import './../../../index.scss';
+
+.toggle-switch {
+  width: 64px;
+  height: 32px;
+  border-radius: 32px;
+  transition: all 0.35s;
+  background-color: $light-accent-color-4;
+
+  &.switch-on {
+    background-color: $poplet-green;
+
+    > .toggle-switch-knob {
+      transition: all 0.35s;
+      transform: translateX(32px);
+    }
+  }
+
+  &.switch-off {
+    background-color: $poplet-red;
+
+    > .toggle-switch-knob {
+      transition: all 0.35s;
+      transform: initial;
+    }
+  }
+
+  &-knob {
+    width: 32px;
+    height: 32px;
+    border-radius: 100%;
+    background-color: white;
+    box-shadow: 1px 1px 1px black;
+    transform: translateX(0px);
+  }
+
+  &.switch-small {
+    width: 32px;
+    height: 16px;
+
+    > .toggle-switch-knob {
+      width: 16px;
+      height: 16px;
+    }
+
+    &.switch-on {
+      background-color: $poplet-green;
+  
+      > .toggle-switch-knob {
+        transition: all 0.35s;
+        transform: translateX(16px);
+      }
+    }
+  }
+}
