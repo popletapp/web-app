@@ -1,34 +1,66 @@
+@import './../../index.scss';
+
 .home {
   display: flex;
   flex-direction: column;
 }
 
-.home-header {
-  display: flex;
-  padding: 2em;
-  background-color: #242424;
-
-  &-text {
-    padding-left: 0.75em;
-    margin: 0;
-  }
-}
-
 .home-content-container {
   display: flex;
+  margin-top: 2em;
   flex-direction: row;
   padding-left: 2em;
   padding-right: 2em;
 }
 
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  justify-items: left;
+  text-align: left;
+  background-color: $light-accent-color-1;
+  padding: 1em;
+  min-height: 300px;
+  max-height: 500px;
+  min-width: 500px;
+
+  &-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 38px;
+    margin-bottom: 24px;
+  }
+
+  &-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+
+    > div.note[style] {
+      margin: 1em;
+      position: relative;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+
 .board-selector {
-  margin-top: 2em;
-  background-color: rgb(31, 31, 31);
+  margin-right: 4em;
+  background-color: $light-accent-color-2;
   padding: 1em;
   text-align: left;
+  height: fit-content;
   
   > h2 {
-    font-size: 24px;
+    font-size: 26px;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     margin-bottom: 12px;
   }
@@ -54,20 +86,18 @@
   }
 
   &:hover {
-    transform: translateX(12px);
-    background-color: rgb(46, 46, 46);
+    transform: translateX(6px);
+    -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+    -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
     border-radius: 5%;
   }
-}
 
-.user-container {
-  margin-left: auto;
-  display: flex;
-  flex-direction: row;
-}
+  &-join {
+    background-color: $board-join-color;
+  }
 
-.user-username {
-  padding-left: 12px;
-  display: flex;
-  align-items: center;
+  &-create {
+    background-color: $board-create-color;
+  }
 }

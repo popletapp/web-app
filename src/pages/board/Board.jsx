@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { selectBoard } from './../../actions/board';
 import { getNotes } from './../../actions/note';
 import { switchBoard } from './../../modules';
+import { Link } from 'react-router-dom';
 
-import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import './Board.scss';
 
-import { Board, Chatroom, PopletBase, CustomDragLayer } from './../../components';
+import { Board, Chatroom, PopletBase, CustomDragLayer, NavBar } from './../../components';
 
 function mapStateToProps (state) {
   return {
@@ -50,17 +50,28 @@ class BoardComponent extends PopletBase {
       return null;
     }
 
+    if (!board) {
+      return (
+        <div>
+          <NavBar />
+          <div className='board-invalid'>
+            <h1>Board not found</h1>
+            <h4>This board either doesn't exist, or you don't have access to see it.</h4>
+            <Link to='/home'>Go back home</Link>
+          </div>
+        </div>
+      );
+    }
+
     setTimeout(() => {
       window.M.AutoInit();
     }, 20);
     return (
       <div className='poplet-root'>
         <div className='modal-container'></div>
-        <DndProvider backend={HTML5Backend}>
-          <Board key={board.id} object={board} notes={[]} />
-          <CustomDragLayer />
-          <Chatroom chatroom={this.state.chatroom}/>
-        </DndProvider>
+        <Board key={board.id} id={board.id} />
+        <CustomDragLayer />
+        <Chatroom id={board.chatrooms[0]}/>
       </div>
     );
   }
