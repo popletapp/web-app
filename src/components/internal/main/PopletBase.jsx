@@ -22,7 +22,7 @@ class PopletBase extends Component {
 
   async init () {
     const { user } = this.props;
-    const { connecting, connected } = this.props;
+    const { connecting, connected } = this.state;
 
     if (!connected && !connecting && ((user && !user.id) || !user)) {
       this.setState({ connecting: true });

@@ -10,7 +10,8 @@ function mapStateToProps (state) {
 
 class InviteSettingsScreen extends Component {
   render () {
-    const { users } = this.props;
+    let { users } = this.props;
+    users = users ? users.items : [];
     const invites = {};
 
     return (
