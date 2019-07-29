@@ -20,7 +20,7 @@ class Home extends PopletBase {
 
   render () {
     let { boards, notes } = this.props;
-    notes = notes.items;
+    notes = notes.items || [];
     const activityFeedNotes = notes
       .sort((a, b) => b.modifiedAt - a.modifiedAt)
       .slice(0, 10)
