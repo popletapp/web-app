@@ -15,7 +15,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 
 function mapStateToProps (state, props) {
   return {
-    note: props.id ? state.notesByBoard[props.boardId][props.id] : props.note,
+    note: props.id ? (state.notesByBoard[props.boardId] || {})[props.id] : props.note,
     selectedArea: state.selectionArea,
     listView: !!state.viewByBoard[state.selectedBoard]
   };
