@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
+import Poplet from './../../../';
 import { connect as popletConnect } from './../../../modules';
 import { connect } from 'react-redux';
 import { Loader, CriticalFailure } from '../..';
-
-function mapStateToProps (state) {
-  return {
-    user: state.user
-  };
-}
 
 class PopletBase extends Component {
   constructor () {
@@ -21,15 +15,17 @@ class PopletBase extends Component {
   }
 
   async init () {
-    const { user } = this.props;
-    const { connecting, connected } = this.state;
-
-    if (!connected && !connecting && ((user && !user.id) || !user)) {
+    const store = Poplet.store;
+    const state = store.getState();
+    const { user = {}, connected } = state;
+    const { connecting } = this.state;
+    console.log(connected, connecting, user)
+    if (!connected && !connecting && (user && !user.id)) {
       this.setState({ connecting: true });
       ReactDOM.render(<Loader />, document.querySelector('#loader'));
       await popletConnect()
         .then(() => {
-          this.setState({ connected: true, connecting: false });
+          this.setState({ connecting: false });
         })
         .catch(() => {
           ReactDOM.render(<CriticalFailure />, document.querySelector('#root'));
@@ -38,5 +34,4 @@ class PopletBase extends Component {
   }
 }
 
-connect(mapStateToProps, null)(PopletBase);
 export default PopletBase;

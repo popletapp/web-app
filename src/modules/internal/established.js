@@ -21,7 +21,7 @@ export default async () => {
     store.dispatch({ type: 'INITIALIZE_USER', user });
     Poplet.user = user;
 
-    const socket = openSocket('http://localhost:7777');
+    const socket = openSocket('https://popletapp.com');
     Poplet.ws = socket;
   }
 
@@ -67,4 +67,5 @@ export default async () => {
       Poplet.notes = Poplet.notes.concat(board.notes); // Some notes should be cached to prevent having to call the API each time
     }
   }
+  store.dispatch({ type: 'CONNECT' });
 };

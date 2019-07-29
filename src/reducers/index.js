@@ -19,9 +19,10 @@ import {
   chatroomComments,
   commentsByChatroom
 } from './chatroom';
-import { modals } from './internal';
+import { modals, connected } from './internal';
 
 const rootReducer = combineReducers({
+  connected,
   boards,
   selectedBoard,
   notes,

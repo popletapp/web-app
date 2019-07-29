@@ -21,3 +21,14 @@ export const popouts = (state = [], action) => {
       return state;
   }
 };
+
+export const connected = (state = false, action) => {
+  switch (action.type) {
+    case 'CONNECT':
+      return true;
+    case 'DISCONNECT':
+      return false;
+    default:
+      return state;
+  }
+};
