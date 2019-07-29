@@ -9,12 +9,16 @@ import {
   groups,
   groupsByBoard,
   ranks,
-  ranksByBoard,
-  chatrooms,
-  chatroomsByBoard
+  ranksByBoard
 } from './board';
 import { notesByBoard, notes } from './notes';
 import { user, users } from './user';
+import {
+  chatrooms,
+  chatroomsByBoard,
+  chatroomComments,
+  commentsByChatroom
+} from './chatroom';
 import { modals } from './internal';
 
 const rootReducer = combineReducers({
@@ -34,7 +38,9 @@ const rootReducer = combineReducers({
   ranks,
   ranksByBoard,
   chatrooms,
-  chatroomsByBoard
+  chatroomsByBoard,
+  chatroomComments,
+  commentsByChatroom
 });
 
 export default rootReducer;

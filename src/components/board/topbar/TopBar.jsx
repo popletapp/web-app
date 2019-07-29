@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Avatar, Input, RoundedButton, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal } from './../../';
+import { Button, Avatar, Input, RoundedButton, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal, Flex, FlexChild } from './../../';
 import { selectBoard, createBoard, updateView } from './../../../actions/board';
 import { beginCreateNote } from './../../../actions/note';
-import { switchBoard, toggleChatroomVisibility, createGroup, createModal } from '../../../modules';
+import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal } from '../../../modules';
+import { Link } from 'react-router-dom';
 
 function mapStateToProps (state) {
   return {
@@ -50,9 +51,16 @@ class TopBar extends Component {
                 </div>
                 <li className="divider" tabIndex="-1"></li>
                 {Object.values(boards).map((item, i) => item.id !== board.id
-                  ? (<div key={i} className='board-selection' onClick={async () => switchBoard(item.id)}>
-                    <li><Avatar url={item.avatar} alt={item.name} size={32} /><p>{item.name}</p></li>
-                  </div>)
+                  ? (
+                    <div key={i} direction='row' className='board-selection'>
+                      <li>
+                        <Link to={`/boards/${item.id}`}>
+                          <Avatar url={item.avatar} alt={item.name} size={32} />
+                          <p>{item.name}</p>
+                        </Link>
+                      </li>
+                    </div>
+                  )
                   : '')}
               </ul>
             </div>
@@ -65,9 +73,16 @@ class TopBar extends Component {
                     {board.name}
                     <i className='material-icons'>keyboard_arrow_down</i>
                   </div>
-                  <div className='board-info-member-count'>
-                    {board.members ? board.members.length : 0} member{board.members && board.members.length === 1 ? '' : 's'}
-                  </div>
+                  <Flex direction='row' align='center' className='board-info-member-count'>
+                    <FlexChild align='left'>
+                      {board.members ? board.members.length : 0} member{board.members && board.members.length === 1 ? '' : 's'}
+                    </FlexChild>
+                    <FlexChild className='member-list-btn' align='right'>
+                      <Link onClick={() => toggleMemberListVisibility()}>
+                      Member List
+                      </Link>
+                    </FlexChild>
+                  </Flex>
                 </div>
               </div>
               <Button onClick={() => createModal(<BoardInviteMembersModal boardID={board.id} />)} color='indigo lighten-2' className='large-invite-members-btn'>Invite Members</Button>

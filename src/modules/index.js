@@ -10,6 +10,7 @@ export { default as endSelection } from './boards/endSelection.js';
 export { default as addRank } from './boards/addRank.js';
 export { default as updateRank } from './boards/updateRank.js';
 export { default as deleteRank } from './boards/deleteRank.js';
+export { default as toggleMemberListVisibility } from './boards/toggleMemberListVisibility.js';
 
 // Groups
 export { default as createGroup } from './groups/createGroup.js';
@@ -39,6 +40,7 @@ export { default as createChatroom } from './chatroom/createChatroom.js';
 export { default as updateChatroom } from './chatroom/updateChatroom.js';
 export { default as deleteChatroom } from './chatroom/deleteChatroom.js';
 export { default as toggleChatroomVisibility } from './chatroom/toggleChatroomVisibility.js';
+export { default as createChatroomComment } from './chatroom/createChatroomComment.js';
 
 export { default as Modal } from './Modal';
 

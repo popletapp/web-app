@@ -33,8 +33,7 @@ class BoardComponent extends PopletBase {
     };
   }
 
-  async componentDidMount () {
-    await this.init();
+  async load () {
     const boardID = this.props.match.params.id || Poplet.boards[0].id;
     if (boardID) {
       await switchBoard(boardID);
@@ -42,6 +41,17 @@ class BoardComponent extends PopletBase {
       this.props.history.push('/home');
     }
     this.setState({ loaded: true });
+  }
+
+  async componentDidMount () {
+    await this.init();
+    this.load();
+  }
+
+  async componentDidUpdate (oldProps) {
+    if (this.props.match.params.id !== oldProps.match.params.id) {
+      this.load();
+    }
   }
 
   render () {

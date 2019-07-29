@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { TopBar, NoteContainer, BoardNavBar } from './../';
+import { TopBar, NoteContainer, BoardNavBar, Flex, FlexChild, MembersList } from './../';
 import './Board.scss';
 
 function mapStateToProps (state) {
@@ -26,7 +26,12 @@ class Board extends Component {
       <div className='board'>
         <BoardNavBar />
         <TopBar board={board} />
-        <NoteContainer />
+        <Flex direction='row' shrink={1} grow={0} style={{ minHeight: '100%' }}>
+          <FlexChild grow={1} shrink={0} style={{ minHeight: '100%' }}>
+            <MembersList />
+          </FlexChild>
+          <NoteContainer />
+        </Flex>
       </div>
     );
   }

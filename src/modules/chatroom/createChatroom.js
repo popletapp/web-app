@@ -1,5 +1,5 @@
 import Poplet from '../..';
-import { createChatroom } from '../../actions/board';
+import { createChatroom } from '../../actions/chatroom';
 import axios from 'axios';
 
 export default async (boardId, chatroom) => {

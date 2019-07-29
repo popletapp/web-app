@@ -212,7 +212,7 @@ class Note extends Component {
           </Editor>
         </div>
         <div className='note-footer'>
-          {!preview && <Button onClick={(e) => this.view(e)} className='note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Button>}
+          {!preview && note.id && <Button onClick={(e) => this.view(e)} className='note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Button>}
           {(preview || !note.id) && <Link to={`/boards/${boardId}`} className='btn-small note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Link>}
 
           <div className='vertical-rule' style={{ height: 24 }}></div>

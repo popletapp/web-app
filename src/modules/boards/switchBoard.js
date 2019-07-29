@@ -1,5 +1,6 @@
 import Poplet from '../..';
-import { selectBoard, getMembers, getGroups, getChatrooms } from '../../actions/board';
+import { selectBoard, getMembers, getGroups } from '../../actions/board';
+import { getChatrooms } from '../../actions/chatroom';
 import { getNotes } from '../../actions/note';
 import getBoard from './getBoard.js';
 

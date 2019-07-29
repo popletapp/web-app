@@ -3,7 +3,7 @@ import Modal from './Modal';
 import { Flex, Button } from '../../';
 import './Modal.scss';
 
-class BoardJoinModal extends Modal {
+class BetaModal extends Modal {
   render () {
     return (
       <div>
@@ -23,4 +23,4 @@ class BoardJoinModal extends Modal {
   }
 }
 
-export default BoardJoinModal;
+export default BetaModal;

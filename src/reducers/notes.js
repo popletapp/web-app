@@ -52,7 +52,6 @@ export const notes = (state = {
 export const notesByBoard = (state = {}, action) => {
   switch (action.type) {
     case 'BEGIN_CREATE_NOTE': {
-      console.log(action.board)
       return { ...state,
         [action.board]: {
           ...state[action.board],

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { DragLayer } from 'react-dnd';
-import { Note } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 
 function getItemStyles (props) {
@@ -11,21 +10,24 @@ function getItemStyles (props) {
     };
   }
   const { x, y } = currentOffset;
-  console.log(x, y);
-  const transform = `translate(${y}px, ${x}px)`;
+  const transform = `translate(${x}px, ${y}px)`;
   return {
     transform,
-    WebkitTransform: transform
+    WebkitTransform: transform,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    opacity: 0.3
   };
 }
 
 class CustomDragLayer extends Component {
   render () {
-    const { item: note, itemType, isDragging } = this.props;
+    const { itemType, isDragging } = this.props;
     function renderItem () {
       switch (itemType) {
         case ComponentTypes.NOTE:
-          return <Note key='dragging-1' id={note.item.id} boardId={note.boardId} />;
+          return null; // <Note preview key='dragging-1' id={note.item.id} boardId={note.boardId} />;
         default:
           return null;
       }
@@ -36,7 +38,7 @@ class CustomDragLayer extends Component {
 
     return (
       <div style={getItemStyles(this.props)}>
-        <div style={{ transform: 'rotate(-7deg)' }}>
+        <div>
           {renderItem()}
         </div>
       </div>

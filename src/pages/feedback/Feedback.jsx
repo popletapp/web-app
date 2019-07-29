@@ -131,11 +131,11 @@ class Feedback extends PopletBase {
         </ul>
 
         <ul id='component-dropdown' className='dropdown-content'>
-          <li className="divider feedback-subheader-dropdown" tabIndex="-1">Pages</li>
+          <li className="feedback-divider feedback-subheader-dropdown" tabIndex="-1">Pages</li>
           <li onClick={(e) => this.setState({ area: { friendly: e.target.innerText, id: 'landing' } })} className='board-item'>Landing Page</li>
           <li onClick={(e) => this.setState({ area: { friendly: e.target.innerText, id: 'home' } })} className='board-item'>Home Screen</li>
 
-          <li className="divider feedback-subheader-dropdown" tabIndex="-1">Specific Board</li>
+          <li className="feedback-divider feedback-subheader-dropdown" tabIndex="-1">Specific Board</li>
           {Object.values(boards).map(board => {
             return (
               <li onClick={() => this.setState({ area: { friendly: `Board - ${board.name} (${board.id})`, id: `board-${board.id}` } })} className='board-item'>

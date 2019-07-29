@@ -12,7 +12,7 @@ import Application from './components/internal/main/App';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:7777/api/v1';
+const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:7777/api/v1' : 'https://popletapp.com/api/v1';
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -21,7 +21,7 @@ const Poplet = {
     BASE_URL
   },
   constants: {
-    WS_BASE_URL: 'ws://localhost:7777'
+    WS_BASE_URL: 'wss://popletapp.com:7777'
   },
   store
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Avatar, Scroller, HorizontalScroller, RoundedButton, Flex, FlexChild } from './../';
-import { createChatroom, deleteChatroom } from './../../modules';
+import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
 
@@ -9,6 +9,8 @@ function mapStateToProps (state, props) {
   return {
     chatroom: state.chatroomsByBoard[state.selectedBoard] ? state.chatroomsByBoard[state.selectedBoard][props.id] : null,
     chatrooms: state.chatroomsByBoard[state.selectedBoard],
+    commentsByChatroom: state.commentsByChatroom[props.id],
+    user: state.user,
     boardID: state.selectedBoard
   };
 }
@@ -40,11 +42,30 @@ class Chatroom extends Component {
   constructor ({ id }) {
     super();
     this.id = id;
+    this.state = {
+      content: ''
+    };
+  }
+
+  handleChange (event) {
+    this.setState({ content: event.target.value });
+    event.stopPropagation();
+  }
+
+  async createComment (event) {
+    event.preventDefault();
+    const { user } = this.props;
+    const { content } = this.state;
+    await createChatroomComment(this.id, {
+      author: user,
+      content
+    });
   }
 
   render () {
-    let { chatroom, chatrooms, boardID } = this.props;
+    let { chatroom, chatrooms, boardID, comments } = this.props;
     chatrooms = chatrooms ? Object.values(chatrooms) : null;
+    comments = comments ? Object.values(comments) : null;
     if (!chatroom) {
       return null;
     }
@@ -82,12 +103,15 @@ class Chatroom extends Component {
 
           <Flex className='chatroom-body'>
             <Scroller style={{ width: '100%' }}>
-              {chatroom.messages && chatroom.messages.map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
+              {comments && comments.map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
             </Scroller>
           </Flex>
 
           <div className='chatroom-textarea-container'>
-            <textarea placeholder='Enter text here...' className='chatroom-textarea'></textarea>
+            <form onSubmit={(e) => this.createComment(e)}>
+              <textarea onChange={(e) => this.handleChange(e)} value={this.state.content} placeholder='Enter text here...' className='chatroom-textarea'></textarea>
+              <input type="submit" style={{ height: '0px', width: '0px', border: 'none', padding: '0px' }} hidefocus="true" />
+            </form>
           </div>
         </FlexChild>
       </Flex>

@@ -1,10 +1,16 @@
 import saveNote from './saveNote';
+import createNote from './createNote';
+import { endCreateNote } from './../../actions/note';
 import Poplet from '../../';
 
 export default async (boardId, noteId, position) => {
   const store = Poplet.store;
   const state = store.getState();
-  const note = state.notesByBoard[boardId][noteId] || state.notesByBoard[boardId]['-1'];
+  const note = noteId ? state.notesByBoard[boardId][noteId] : state.notesByBoard[boardId]['-1'];
+
+  if (!note) {
+    throw new Error('Attempt to move invalid note');
+  }
 
   const { x, y } = position;
   note.options = note.options || {};
@@ -19,5 +25,8 @@ export default async (boardId, noteId, position) => {
   if (note.id) {
     await saveNote(boardId, note);
     return note;
+  } else {
+    store.dispatch(endCreateNote(boardId));
+    await createNote(boardId, note);
   }
 };

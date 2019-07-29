@@ -7,7 +7,7 @@ class Scroller extends Component {
     const { className, children, style } = this.props;
     return (
       <div style={style} className='scroller-container'>
-        <div className={joinClasses('scroller', className)}>
+        <div className={joinClasses('scroller ', className)}>
           {children}
         </div>
       </div>

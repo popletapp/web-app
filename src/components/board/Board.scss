@@ -16,7 +16,6 @@
 }
 
 .top-section {
-  margin-bottom: 12px;
   background-color: $light-accent-color-2;
   box-shadow: 3px 4px 2px #212121;
 }
@@ -120,6 +119,10 @@
     position: relative;
   }
 
+  li > a {
+    padding: 0 !important;
+  }
+
   li:hover {
     -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
     -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
@@ -129,6 +132,7 @@
   .divider {
     background-color: $light-accent-color-3 !important;
     margin-top: 1em;
+    padding: 0;
     margin-bottom: 0.5em;
   }
 
@@ -203,6 +207,11 @@
     flex: 1 1 auto;
     margin: 0 4px 0 4px;
   }
+}
+
+.member-list-btn {
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 

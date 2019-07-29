@@ -1,0 +1,17 @@
+@import './../../../index.scss';
+
+.members-list {
+  >.list-container {
+    min-height: 100vh;
+    height: 100%;
+  }
+
+  &-header {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 1em;
+    width: 100%;
+    background-color: $light-accent-color-2;
+  }
+}

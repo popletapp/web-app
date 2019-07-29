@@ -3,12 +3,11 @@ export { default as Board } from './board/Board';
 export { default as Note } from './board/note/Note';
 export { default as TopBar } from './board/topbar/TopBar';
 export { default as Group } from './board/group/Group';
+export { default as NoteContainer } from './board/NoteContainer';
+export { default as MembersList } from './board/memberslist/MembersList';
 
 // Chatroom
 export { default as Chatroom } from './chatroom/Chatroom';
-
-// Board
-export { default as NoteContainer } from './board/NoteContainer';
 
 // General
 export { default as Avatar } from './general/avatar/Avatar';
