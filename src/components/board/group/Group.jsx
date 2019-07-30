@@ -9,9 +9,9 @@ import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup } fro
 
 function mapStateToProps (state, props) {
   return {
-    notes: state.groupsByBoard[state.selectedBoard][props.id].items.map(note => state.notesByBoard[state.selectedBoard][note]),
-    group: state.groupsByBoard[state.selectedBoard][props.id],
-    listView: !!state.viewByBoard[state.selectedBoard]
+    notes: state.groupsByBoard[props.boardId][props.id].items.map(note => state.notesByBoard[props.boardId][note]),
+    group: state.groupsByBoard[props.boardId][props.id],
+    listView: !!state.viewByBoard[props.boardId]
   };
 }
 
