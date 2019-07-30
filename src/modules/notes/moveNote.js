@@ -1,5 +1,4 @@
-import saveNote from './saveNote';
-import createNote from './createNote';
+import { createNote, saveNote } from './../';
 import { endCreateNote } from './../../actions/note';
 import Poplet from '../../';
 
@@ -11,7 +10,12 @@ export default async (boardId, noteId, position) => {
   if (!note) {
     throw new Error('Attempt to move invalid note');
   }
+  /* TODO: expand group when note falls outside
+  const group = isNoteInGroup(note.id);
+  if (group) {
 
+  }
+  */
   const { x, y } = position;
   note.options = note.options || {};
   note.options.position = { x, y };
@@ -23,10 +27,10 @@ export default async (boardId, noteId, position) => {
     throw new Error('One or more position values are not valid integers');
   }
   if (note.id) {
-    await saveNote(boardId, note);
+    saveNote(boardId, note);
     return note;
   } else {
     store.dispatch(endCreateNote(boardId));
-    await createNote(boardId, note);
+    createNote(boardId, note);
   }
 };

@@ -4,6 +4,6 @@ import axios from 'axios';
 
 export default async (boardID, noteId) => {
   const store = Poplet.store;
-  await axios.delete(`/boards/${boardID}/notes/${noteId}`);
   await store.dispatch(deleteNote(boardID, noteId));
+  await axios.delete(`/boards/${boardID}/notes/${noteId}`);
 };
