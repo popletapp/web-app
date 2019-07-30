@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Note, Editor } from './../../';
+import { Note, Editor, FlexChild, Flex, MinimalisticButton } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import './Group.scss';
-import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup } from '../../../modules';
+import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup } from '../../../modules';
 
 function mapStateToProps (state, props) {
   return {
@@ -39,8 +39,11 @@ class Group extends Component {
 
   componentDidUpdate (oldProps) {
     const { group } = this.props;
-    if (group && oldProps.group !== group && group.options && group.options.position) {
-      this.setPosition(group);
+    const { style } = this.state;
+    if (group && group.options && group.options.position) {
+      if (style.top !== group.options.position.y || style.left !== group.options.position.x) {
+        this.setPosition(group);
+      }
     }
   }
 
@@ -61,10 +64,14 @@ class Group extends Component {
     this.setState({ editingName: false });
   }
 
+  async deleteGroup () {
+    const { boardId, group } = this.props;
+    await deleteGroup(boardId, group.id);
+  }
+
   render () {
     const { group, notes, boardId, listView, connectDragSource, connectDropTarget } = this.props;
     const { style, editingName } = this.state;
-    console.log(notes)
     if (!group || this.state.unmounted) {
       return null;
     }
@@ -73,20 +80,26 @@ class Group extends Component {
     return connectDropTarget(connectDragSource(
       <div className='group-container'
         style={{ ...(!listView ? style : {}), backgroundColor: group.options.color || '' }}>
-        <div className='group-header'>
-          <Editor
-            maxLength='64'
-            className='group-header-name'
-            editing={editingName.toString()}
-            onMouseEnter={() => this.setState({ editingName: true })}
-            onBlur={(e) => this.updateGroupName(e)}>
-            {group.name}
-          </Editor>
+        <Flex direction='row' align='center' className='group-header'>
+          <FlexChild direction='row' align='center'>
+            <Editor
+              maxLength='64'
+              className='group-header-name'
+              editing={editingName.toString()}
+              onMouseEnter={() => this.setState({ editingName: true })}
+              onBlur={(e) => this.updateGroupName(e)}>
+              {group.name}
+            </Editor>
 
-          <div className='group-header-note-count'>
-            {group.items.length} note{group.items.length === 1 ? '' : 's'}
-          </div>
-        </div>
+            <div className='group-header-note-count'>
+              {group.items.length} note{group.items.length === 1 ? '' : 's'}
+            </div>
+          </FlexChild>
+
+          <FlexChild align='right' direction='row'>
+            <MinimalisticButton icon='close' onClick={() => this.deleteGroup()}></MinimalisticButton>
+          </FlexChild>
+        </Flex>
         <div className='group'>
           {notes && notes.filter(Boolean).map((note, i) => <Note key={i} id={note.id} boardId={boardId} />)}
         </div>
@@ -107,8 +120,9 @@ export default connect(mapStateToProps, null)(
 
         if (isNoteInGroup(item.id)) {
           moveNote(props.boardId, item.id, { x: left, y: top });
+        } else {
+          addNoteToGroup(props.boardId, props.id, item.id);
         }
-        addNoteToGroup(props.boardId, props.id, item.id);
       }
     },
     connect => ({
