@@ -17,9 +17,12 @@
   padding: 12px;
 
   &-btns {
-    padding: 12px;
-    padding-left: 0px;
     margin-left: 0px;
+    
+    .btn-small {
+      width: 12px;
+      height: 12px;
+    }
   }
 }
 
@@ -35,11 +38,23 @@
     margin-left: 6px;
     margin-right: 6px;
     padding: 6px 12px 6px 12px;
-    background-color: $poplet-blue;
+    background-color: $light-accent-color-1;
     height: 32px;
     border-top-right-radius: 12px;
     border-top-left-radius: 12px;
     max-width: 150px;
+
+    &-btn i {
+      font-size: 20px;
+
+      &-close {
+        margin-left: 6px;
+      }
+    }
+
+    &:last-child {
+      background-color: $dark-accent-color-1;
+    }
 
     &-name {
       white-space: nowrap; 
@@ -55,44 +70,46 @@
 }
 
 .chatroom-body {
-  margin-top: 12px;
   width: 100%;
 }
 
 .chatroom-textarea {
   position: absolute;
   bottom: 0;
-  width: 100%;
   background-color: #1a1a1a;
-
-  textarea {
-    margin: 12px;
-    width: 90%;
-  }
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  max-width: 100%;
+  resize: none;
 }
 
 .chatroom-container {
   max-width: 250px;
+  width: 100%;
+  box-shadow: 0px 0px 18px $dark-accent-color-5;
 }
 
 .chatroom-comment {
+  &-container {
+    padding: 8px;
+  }
+
   &-author {
-    height: 32px;
+    height: 16px;
 
     &-username {
-      top: -10px;
-      padding-left: 12px;
+      margin-left: 12px;
       position: relative;
     }
   }
 
-  &-content {
+  &-content p {
     color: rgb(202, 202, 202);
-
-    p {
-      padding-top: 5px;
-      margin-top: 5px;
-    }
+    margin-left: 45px;
+    overflow-wrap: normal;
+    word-wrap: break-word;
+    width: 100%;
   }
 }
 
@@ -100,6 +117,10 @@
   .chatroom-title {
       font-size: 24px;
       font-weight: 700;
+  }
+
+  .chatroom-container {
+    max-width: 200px;
   }
 }
 

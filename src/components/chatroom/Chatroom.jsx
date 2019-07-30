@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Avatar, Scroller, HorizontalScroller, RoundedButton, Flex, FlexChild } from './../';
+import { Avatar, Scroller, HorizontalScroller, RoundedButton, Flex, FlexChild, MinimalisticButton } from './../';
 import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
@@ -9,31 +9,25 @@ function mapStateToProps (state, props) {
   return {
     chatroom: state.chatroomsByBoard[state.selectedBoard] ? state.chatroomsByBoard[state.selectedBoard][props.id] : null,
     chatrooms: state.chatroomsByBoard[state.selectedBoard],
-    commentsByChatroom: state.commentsByChatroom[props.id],
+    comments: state.commentsByChatroom[props.id],
     user: state.user,
     boardID: state.selectedBoard
   };
 }
 
 class Comment extends Component {
-  constructor ({ author }) {
-    super();
-    this.author = author;
-  }
-
   render () {
-    const comment = this;
+    const { author, children } = this.props;
     return (
-      <div className='chatroom-comment-container'>
-        <div style={{ float: 'left' }} className='chatroom-comment-author'>
-          <Avatar style={{ float: 'left' }} url={comment.author.avatar} />
-          <p className='chatroom-comment-author-username'>{comment.author.username}</p>
-        </div>
-        <br />
-        <div className='chatroom-comment-content'>
-          <p>{comment.props.children}</p>
-        </div>
-      </div>
+      <Flex className='chatroom-comment-container'>
+        <FlexChild direction='row' align='center' justify='center' className='chatroom-comment-author'>
+          <Avatar url={author.avatar} alt={author.username} />
+          <p className='chatroom-comment-author-username'>{author.username}</p>
+        </FlexChild>
+        <FlexChild className='chatroom-comment-content'>
+          <p>{children}</p>
+        </FlexChild>
+      </Flex>
     );
   }
 }
@@ -52,11 +46,18 @@ class Chatroom extends Component {
     event.stopPropagation();
   }
 
+  input (event) {
+    if (event.which === 13 && !event.shiftKey) {
+      this.createComment();
+    }
+  }
+
   async createComment (event) {
-    event.preventDefault();
+    const { id } = this.props;
+    this.setState({ content: '' });
     const { user } = this.props;
     const { content } = this.state;
-    await createChatroomComment(this.id, {
+    await createChatroomComment(id, {
       author: user,
       content
     });
@@ -64,11 +65,13 @@ class Chatroom extends Component {
 
   render () {
     let { chatroom, chatrooms, boardID, comments } = this.props;
+    const { content } = this.state;
     chatrooms = chatrooms ? Object.values(chatrooms) : null;
     comments = comments ? Object.values(comments) : null;
     if (!chatroom) {
       return null;
     }
+
     return (
       <Flex className='chatroom-container'>
         <FlexChild className='chatroom-root'>
@@ -76,12 +79,16 @@ class Chatroom extends Component {
             <HorizontalScroller style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
               {chatrooms && chatrooms.map((cr, i) =>
                 <FlexChild basis={'150px'} grow={0} key={i} className='chatroom-tab-room' direction='row'>
-                  <div className='chatroom-tab-room-name'>{cr.name}</div>
-                  <i className='material-icons'>close</i>
+                  <FlexChild>
+                    <div className='chatroom-tab-room-name'>{cr.name}</div>
+                  </FlexChild>
+                  <FlexChild align='right'>
+                    <MinimalisticButton icon='close' className='chatroom-tab-room-btn chatroom-tab-room-btn-close' />
+                  </FlexChild>
                 </FlexChild>
               )}
               <FlexChild onClick={() => createChatroom(boardID, { name: 'Chatroom' })} grow={0} className='chatroom-tab-room' justify='center' direction='row' style={{ width: '35px' }}>
-                <i className='material-icons'>add</i>
+                <MinimalisticButton icon='add' className='chatroom-tab-room-btn' />
               </FlexChild>
             </HorizontalScroller>
           </Flex>
@@ -95,7 +102,7 @@ class Chatroom extends Component {
                 {chatroom.lastMessage ? `Last message sent ${TimeParser.timeAgo(chatroom.lastMessage)}` : 'Not active'}
               </div>
             </FlexChild>
-            <FlexChild className='chatroom-header-btns' direction='column'>
+            <FlexChild className='chatroom-header-btns' grow={0} align='right' direction='column'>
               <RoundedButton onClick={() => deleteChatroom(boardID, chatroom.id)} icon='close' color='red lighten-1' small={true} />
               <RoundedButton icon='help' color='grey' small={true} />
             </FlexChild>
@@ -108,9 +115,14 @@ class Chatroom extends Component {
           </Flex>
 
           <div className='chatroom-textarea-container'>
-            <form onSubmit={(e) => this.createComment(e)}>
-              <textarea onChange={(e) => this.handleChange(e)} value={this.state.content} placeholder='Enter text here...' className='chatroom-textarea'></textarea>
-              <input type="submit" style={{ height: '0px', width: '0px', border: 'none', padding: '0px' }} hidefocus="true" />
+            <form>
+              <textarea
+                type='text'
+                onChange={(e) => this.handleChange(e)}
+                onKeyDown={(e) => this.input(e)}
+                value={content}
+                placeholder='Enter text here...'
+                className='chatroom-textarea'></textarea>
             </form>
           </div>
         </FlexChild>
