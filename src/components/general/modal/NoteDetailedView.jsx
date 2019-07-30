@@ -27,7 +27,7 @@ class NoteDetailedView extends Modal {
 
   async handleColorChange (color) {
     const { note } = this.props;
-    // this.setState({ color: color.hex });
+    this.setState({ color: color.hex });
     const newNote = note;
     newNote.options.color = color.hex;
     await updateNote(this.boardId, newNote);

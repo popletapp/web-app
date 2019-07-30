@@ -37,7 +37,7 @@ class BoardCreationModal extends Modal {
           </div>
         </div>
         <div className='modal-footer'>
-          <button onClick={(e) => this.handleEvent(e, 'cancel')} className='modal-close waves-effect waves-white btn-flat grey'>{this.props.cancelText || 'Close'}</button>
+          <button onClick={(e) => this.close()} className='modal-close btn modal-cancel'>{this.props.cancelText || 'Close'}</button>
         </div>
       </div>
     );

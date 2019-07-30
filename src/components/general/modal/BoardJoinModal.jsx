@@ -40,7 +40,7 @@ class BoardJoinModal extends Modal {
       this.actionMade();
       event.preventDefault();
     } else {
-      const code = event.target.innerText;
+      const code = event.target.value;
       this.setState({
         code,
         error: null
@@ -57,7 +57,7 @@ class BoardJoinModal extends Modal {
 
   async create () {
     const { code } = this.state;
-    const error = this.check({ code });
+    const error = await this.check({ code });
     if (!error) {
       const board = await joinBoard(code, Poplet.user.id);
       if (board) {
@@ -78,7 +78,7 @@ class BoardJoinModal extends Modal {
           <div className='modal-body'>
             <p>Enter an invite code below:</p>
             <p className='modal-error'>{this.state.error}</p>
-            <DefaultInput onInput={(e) => this.handleEvent(e, 'input')} placeholder='Code' />
+            <DefaultInput onChange={(e) => this.handleEvent(e, 'input')} placeholder='Code' />
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
