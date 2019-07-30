@@ -18,10 +18,10 @@ export default ({ url, alt, size }) => {
   }
 
   if (!url && alt) {
-    return <div className={`avatar avatar-${originalSize || 'massive'}`} style={{ width: size, height: size }}><p>{alt.slice(0, 1)}</p></div>;
+    return <div className={`avatar avatar-${originalSize || 'small'}`} style={{ width: size, height: size }}><p>{alt.slice(0, 1)}</p></div>;
   }
 
   return (
-    <img className={`avatar avatar-${originalSize || 'massive'}`} src={url || 'https://www.polytec.com.au/img/products/960-960/white.jpg'} alt={alt || 'Avatar'} style={{ width: size, height: size }}></img>
+    <img className={`avatar avatar-${originalSize || 'small'}`} src={url || 'https://www.polytec.com.au/img/products/960-960/white.jpg'} alt={alt || 'Avatar'} style={{ width: size, height: size }}></img>
   );
 };

@@ -37,6 +37,8 @@ export { default as List } from './general/list/List';
 export { default as SelectableItem } from './general/list/SelectableItem';
 export { default as UsernameText } from './general/text/UsernameText';
 export { default as User } from './general/user/User';
+export { default as Tooltip } from './general/tooltip/Tooltip';
+export { default as Tooltips } from './general/tooltip/Tooltips';
 
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure';

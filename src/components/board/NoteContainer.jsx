@@ -141,7 +141,6 @@ class NoteContainer extends Component {
               for (const group of groups) {
                 notes = notes.filter(note => !group.items.includes(note.id));
               }
-              console.log(notes);
               return notes.map((note, i) => note.id ? <Note key={note.id} id={note.id} boardId={board.id} /> : <Note key={i} note={note} boardId={board.id} />);
             })()}
             {groups && Object.values(groups).map(group => <Group key={group.id} id={group.id} boardId={board.id} />)}

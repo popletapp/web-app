@@ -47,5 +47,7 @@ export { default as Modal } from './Modal';
 // Internal
 export { default as createModal } from './internal/createModal';
 export { default as popModal } from './internal/popModal';
+export { default as createTooltip } from './internal/createTooltip';
+export { default as clearTooltips } from './internal/clearTooltips';
 export { default as connect } from './internal/connect';
 export { default as established } from './internal/established';

@@ -39,7 +39,8 @@ class Note extends Component {
     this.state = {
       selected: false,
       editing: false,
-      exists: this.note ? !!this.note.id : false
+      exists: this.note ? !!this.note.id : false,
+      style: {}
     };
     this.listener = (event) => {
       let el = event.target;
@@ -148,6 +149,7 @@ class Note extends Component {
   componentDidUpdate (oldProps) {
     this.highlight();
     const { note, selectedArea } = this.props;
+    const { style } = this.state;
     if (note && oldProps.selectedArea !== selectedArea) {
       /* console.log(this.noteRef);
       const bounding = ReactDOM.findDOMNode(this.noteRef.current).getBoundingClientRect();
@@ -169,8 +171,11 @@ class Note extends Component {
         this.setState({ selected: true, boxSelection: true });
       } */
     }
-    if (note && oldProps.note !== note && note.options && note.options.position) {
-      this.setPosition(note);
+
+    if (note && note.options && note.options.position) {
+      if (style.top !== note.options.position.y || style.left !== note.options.position.x) {
+        this.setPosition(note);
+      }
     }
   }
 

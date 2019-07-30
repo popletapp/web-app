@@ -1,10 +1,11 @@
 import Poplet from '../..';
-import { createChatroomComment } from '../../actions/chatroom';
+import { createLocalChatroomComment } from '../../actions/chatroom';
 import axios from 'axios';
 
 export default async (chatroomID, comment) => {
   const store = Poplet.store;
+  store.dispatch(createLocalChatroomComment(chatroomID, comment));
   const value = await axios.put(`/chatrooms/${chatroomID}/comments`, comment).then(res => res.data);
-  store.dispatch(createChatroomComment(chatroomID, value));
+  Poplet.ws.emit('message', { type: 'CREATE_CHATROOM_COMMENT', chatroomID, value });
   return value;
 };

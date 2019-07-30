@@ -4,7 +4,8 @@ import { Home, Board, Landing, Login, SignUp, NotFound, User, Feedback } from '.
 import {
   Modals,
   BoardJoinModal,
-  BoardCreationModal
+  BoardCreationModal,
+  Tooltips
 } from './../../../components';
 import { createModal } from './../../../modules';
 
@@ -80,6 +81,7 @@ class App extends Component {
 
         <div data-no-focus-lock='true'>
           <Modals />
+          <Tooltips />
         </div>
       </div>
     );

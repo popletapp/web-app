@@ -4,7 +4,8 @@ import {
   CREATE_CHATROOM,
   UPDATE_CHATROOM,
   DELETE_CHATROOM,
-  CREATE_CHATROOM_COMMENT
+  CREATE_CHATROOM_COMMENT,
+  CREATE_LOCAL_CHATROOM_COMMENT
 } from '../../constants/ActionTypes';
 import axios from 'axios';
 
@@ -66,9 +67,14 @@ export function getChatrooms (boardId) {
   };
 }
 
-export const createChatroomComment = (boardID, chatroomID, comment) => ({
+export const createChatroomComment = (chatroom, comment) => ({
   type: CREATE_CHATROOM_COMMENT,
-  boardID,
-  chatroomID,
+  chatroom,
+  comment
+});
+
+export const createLocalChatroomComment = (chatroom, comment) => ({
+  type: CREATE_LOCAL_CHATROOM_COMMENT,
+  chatroom,
   comment
 });

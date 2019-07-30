@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Poplet from './../../../';
 import { connect as popletConnect } from './../../../modules';
-import { connect } from 'react-redux';
 import { Loader, CriticalFailure } from '../..';
 
 class PopletBase extends Component {
@@ -19,7 +18,7 @@ class PopletBase extends Component {
     const state = store.getState();
     const { user = {}, connected } = state;
     const { connecting } = this.state;
-    console.log(connected, connecting, user)
+
     if (!connected && !connecting && (user && !user.id)) {
       this.setState({ connecting: true });
       ReactDOM.render(<Loader />, document.querySelector('#loader'));

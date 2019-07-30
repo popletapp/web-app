@@ -41,7 +41,6 @@ class RankSettingsScreen extends Component {
   async createRank () {
     const { boardId } = this.props;
     const rank = await addRank(boardId, { name: 'Default', color: null, permissions: 0, position: 0 });
-    console.log(rank);
     if (rank) {
       this.selectRank(rank.id);
     }
@@ -56,10 +55,8 @@ class RankSettingsScreen extends Component {
   }
 
   selectRank (id) {
-    console.log('select');
     const { ranks } = this.props;
     if (!id) {
-      console.log(ranks);
       id = Object.values(ranks)[0].id;
     }
     this.setState({

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default async (code, userID) => {
   const store = Poplet.store;
-  const invite = await axios.get(`/invites/${code}`);
+  const invite = await axios.get(`/invites/${code}`).then(res => res.data);
   if (invite) {
     const board = await axios.put(`/boards/${invite.board}/members/${userID}`, { invite: invite.code }).then(res => res.data);
     if (board) {

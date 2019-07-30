@@ -21,7 +21,6 @@ class UserComponent extends PopletBase {
 
   render () {
     const { user } = this.props;
-    console.log(user);
     return (
       <div className='poplet-root center-on-page user-profile'>
         <NavBar />

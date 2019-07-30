@@ -12,7 +12,7 @@ class DefaultInput extends Component {
   }
 
   render () {
-    const { name, type, placeholder, value, children } = this.props;
+    const { name, type, placeholder, value, children, onChange, onInput } = this.props;
     return (
       <input className='text-input'
         name={name || 'input'}
@@ -20,7 +20,9 @@ class DefaultInput extends Component {
         type={type || 'text'}
         placeholder={placeholder || ''}
         maxLength='999'
-        defaultValue={value || ''}>
+        defaultValue={value || ''}
+        onInput={onInput}
+        onChange={onChange}>
         {children || null}
       </input>
     );

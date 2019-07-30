@@ -21,7 +21,13 @@ export default async () => {
     store.dispatch({ type: 'INITIALIZE_USER', user });
     Poplet.user = user;
 
-    const socket = openSocket('https://popletapp.com');
+    let socket = null;
+    try {
+      socket = openSocket('https://popletapp.com');
+    } catch (e) {
+      console.log(e);
+    }
+
     Poplet.ws = socket;
   }
 
