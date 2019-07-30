@@ -96,12 +96,12 @@ export const groups = (state = {
     case 'UPDATE_GROUP': {
       const old = state;
       const index = old.items.findIndex(group => group.id === action.group.id);
-      old[index] = action.group;
+      old.items[index] = action.group;
       return old;
     }
     case 'DELETE_GROUP': {
       const old = state;
-      delete old.items[action.groupId.toString()];
+      old.items = old.items.filter(group => group.id !== action.groupId);
       return old;
     }
     case 'REQUEST_GROUPS': {

@@ -67,12 +67,9 @@ export const notesByBoard = (state = {}, action) => {
     case 'CREATE_NOTE':
     case 'UPDATE_NOTE': {
       if (action.note) {
-        return { ...state,
-          [action.board]: {
-            ...state[action.board],
-            [action.note.id]: action.note
-          }
-        };
+        return Object.assign({}, state, {
+          [action.board]: Object.assign({}, state[action.board], { [action.note.id]: action.note })
+        });
       } else {
         return state;
       }
@@ -87,7 +84,6 @@ export const notesByBoard = (state = {}, action) => {
       const notesWithBoards = notes(state[action.board], action);
       const standaloneNotes = {};
       if (notesWithBoards.items) {
-        console.log(notesWithBoards);
         for (const note of notesWithBoards.items) {
           standaloneNotes[note.id] = note;
         }

@@ -22,6 +22,17 @@ export const popouts = (state = [], action) => {
   }
 };
 
+export const tooltips = (state = [], action) => {
+  switch (action.type) {
+    case 'CLEAR_TOOLTIPS':
+      return [];
+    case 'TOOLTIP_PUSH':
+      return [...state, action.tooltip];
+    default:
+      return state;
+  }
+};
+
 export const connected = (state = false, action) => {
   switch (action.type) {
     case 'CONNECT':

@@ -98,12 +98,19 @@ export const commentsByChatroom = (state = {}, action) => {
     case 'CREATE_CHATROOM_COMMENT': {
       return { ...state,
         [action.chatroom]: {
-          ...state[action.board],
+          ...state[action.chatroom],
           [action.comment.id]: action.comment
         }
       };
     }
-
+    case 'CREATE_LOCAL_CHATROOM_COMMENT': {
+      return { ...state,
+        [action.chatroom]: {
+          ...state[action.chatroom],
+          [`local-${Math.random() * 100}`]: action.comment
+        }
+      };
+    }
     case 'RECEIVE_CHATROOM_COMMENTS':
     case 'REQUEST_CHATROOM_COMMENTS':
       const chatroomWithComments = chatroomComments(state[action.chatroom], action);
