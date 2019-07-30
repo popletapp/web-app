@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
+import { joinClasses } from './../../../util';
 import './Button.scss';
 
 class MinimalisticButton extends Component {
-  constructor ({ icon, small }) {
-    super();
-    this.icon = icon || 'add';
-    this.small = small || false;
-  }
-
   render () {
-    const { icon, className } = this.props;
-    const dontInclude = ['small', 'icon', 'color', 'label'];
+    const { icon, className, style, onClick } = this.props;
     return (
-      <button {...Object.fromEntries(Object.entries(this.props).filter(item => !dontInclude.includes(item[0])))}
-        className={`minimalistic-button${className && ` ${className}`}`}>
-        <i className="material-icons">{icon}
-        </i>
+      <button
+        style={style}
+        onClick={onClick}
+        className={joinClasses('minimalistic-button', className)}>
+        <i className="material-icons">{icon}</i>
       </button>
     );
   }
