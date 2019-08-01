@@ -47,7 +47,7 @@
 }
 
 .large-invite-members-btn {
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .board-selector-btn {
@@ -70,8 +70,15 @@
   &-text {
     display: flex;
     flex-direction: column;
-    padding-left: 12px;
     width: 100%;
+    padding: 4px;
+    margin-left: 8px;
+    border-radius: 4px;
+    transition: all 0.1s;
+
+    &:hover {
+      background-color: $light-accent-color-1;
+    }
   }
 
   &-title {
@@ -82,7 +89,7 @@
     width: auto;
     white-space: nowrap;
     text-overflow: ellipsis;
-
+    
     > i {
       top: 4px;
       left: 12px;
@@ -93,10 +100,13 @@
   &-member-count {
     overflow: hidden;
     display: block;
-    color: $text-accent-color;
     font-size: 15px;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    > div {
+      color: $text-accent-color-3;
+    }
   }
 }
 
@@ -156,6 +166,11 @@
   }
 }
 
+.board-dropdown-arrow i {
+  border-radius: 4px;
+  background-color: $light-accent-color-1;
+}
+
 .board-selection li {
   padding-top: 8px;
   padding-left: 8px;
@@ -195,17 +210,46 @@
 }
 
 .searchbar-container {
-  padding-bottom: 12px;
+  padding-bottom: 2px;
 }
 
 .toolbar-container {
   display: inline-flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
+  height: 75px;
+  min-width: 250px;
+  max-width: 325px;
 
   > div {
-    flex: 1 1 auto;
-    margin: 0 4px 0 4px;
+    flex: 0 0 auto;
+  }
+}
+
+.toolbar-option {
+  transition: all 0.1s;
+  padding: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $light-accent-color-3;
+  }
+
+  &:active {
+    background-color: $light-accent-color-5;
+  }
+}
+
+.btn-circle.toolbar-btn {
+  margin-left: 2px;
+  margin-right: 8px;
+  border-radius: 100%;
+  width: 24px;
+  height: 24px;
+  
+  > i {
+    font-size: 16px;
+    line-height: 16px;
   }
 }
 
