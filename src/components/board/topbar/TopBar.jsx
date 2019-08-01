@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Avatar, Input, RoundedButton, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal, Flex, FlexChild } from './../../';
+import { Button, Avatar, Input, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal, Flex, FlexChild, CircleButton } from './../../';
 import { selectBoard, createBoard, updateView } from './../../../actions/board';
 import { beginCreateNote } from './../../../actions/note';
 import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal } from '../../../modules';
 import { Link } from 'react-router-dom';
+import MinimalisticButton from '../../general/button/MinimalisticButton';
 
 function mapStateToProps (state) {
   return {
@@ -69,10 +70,14 @@ class TopBar extends Component {
               <div className='board-info'>
                 <Avatar url={board.avatar} alt={board.name} size={32} />
                 <div className='board-info-text'>
-                  <div className='board-info-title dropdown-trigger' data-target='board-dropdown'>
-                    {board.name}
-                    <i className='material-icons'>keyboard_arrow_down</i>
-                  </div>
+                  <Flex direction='row' className='board-info-title dropdown-trigger' data-target='board-dropdown'>
+                    <FlexChild align='left'>
+                      {board.name}
+                    </FlexChild>
+                    <FlexChild align='right'>
+                      <MinimalisticButton icon='keyboard_arrow_down' className='board-dropdown-arrow' />
+                    </FlexChild>
+                  </Flex>
                   <Flex direction='row' align='center' className='board-info-member-count'>
                     <FlexChild align='left'>
                       {board.members ? board.members.length : 0} member{board.members && board.members.length === 1 ? '' : 's'}
@@ -105,19 +110,30 @@ class TopBar extends Component {
             <div className='searchbar-container'>
               <Input icon='search' />
             </div>
-            <div className='toolbar-container'>
-              <RoundedButton label='New Note' color='red' onClick={() => this.props.beginCreateNote(board.id)} icon='add' className='top-bar-floating-btn' />
-              <RoundedButton label='New Group' color='orange' onClick={() => createGroup(board.id, { name: 'board' })} icon='add' className='top-bar-floating-btn' />
+            <Flex wrap={true} className='toolbar-container'>
+              <FlexChild onClick={() => this.props.beginCreateNote(board.id)} className='toolbar-option' direction='row' align='center'>
+                <CircleButton color='red' icon='add' className='toolbar-btn' />
+                <p>New Note</p>
+              </FlexChild>
 
-              <RoundedButton label={listView ? 'Note View' : 'List View'}
-                onClick={() => this.props.updateView(board.id, listView ? 0 : 1)}
-                icon={!listView ? 'format_list_bulleted' : 'dashboard'}
-                color='yellow darken-2'
-                className='top-bar-floating-btn' />
-              <RoundedButton label='Chatroom' onClick={() => toggleChatroomVisibility()} icon='chat_bubble' color='green' className='top-bar-floating-btn' />
+              <FlexChild onClick={() => createGroup(board.id, { name: 'Group' })} className='toolbar-option' direction='row' align='center'>
+                <CircleButton color='orange' icon='add' className='toolbar-btn' />
+                <p>New Group</p>
+              </FlexChild>
 
-              <RoundedButton label='Help' icon='help' color='grey' className='top-bar-floating-btn' />
-            </div>
+              <FlexChild onClick={() => this.props.updateView(board.id, listView ? 0 : 1)} className='toolbar-option' direction='row' align='center'>
+                <CircleButton
+                  icon={!listView ? 'format_list_bulleted' : 'dashboard'}
+                  color='yellow darken-2'
+                  className='toolbar-btn' />
+                <p>{listView ? 'Note View' : 'List View'}</p>
+              </FlexChild>
+
+              <FlexChild onClick={() => toggleChatroomVisibility()} className='toolbar-option' direction='row' align='center'>
+                <CircleButton icon='chat_bubble' color='green' className='toolbar-btn' />
+                <p>Chatroom</p>
+              </FlexChild>
+            </Flex>
           </div>
         </div>
       </div>

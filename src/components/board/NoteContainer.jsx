@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { moveNote, beginSelection, endSelection, moveGroup, isNoteInGroup, removeNoteFromGroup } from './../../modules';
-import { Note, Group, Flex, FlexChild, Scroller } from './../';
+import { Note, Group } from './../';
 import ComponentTypes from './../../constants/ComponentTypes';
 import './Board.scss';
 
