@@ -2,22 +2,13 @@ import React, { Component } from 'react';
 import './Button.scss';
 
 class RoundedButton extends Component {
-  constructor ({ label, color, icon, small }) {
-    super();
-    this.label = label;
-    this.color = color || 'red';
-    this.icon = icon || 'add';
-    this.small = small || false;
-  }
-
   render () {
-    const { small, icon, color, label } = this.props;
-    const dontInclude = ['small', 'icon', 'color', 'label'];
+    const { small, icon, color, label, onClick } = this.props;
     return (
       <div className='btn-floating-container'>
         <div className='floating-btn-button'>
           <button
-            {...Object.fromEntries(Object.entries(this.props).filter(item => !dontInclude.includes(item[0])))}
+            onClick={onClick}
             className={`${small ? 'btn-small' : ''} btn-floating ${color}`}>
             <i className="material-icons">{icon}</i>
           </button>

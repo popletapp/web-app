@@ -1,7 +1,14 @@
-.btn, .btn-small {
-  font-size: 13px !important;
+@import './../../../index.scss';
+
+.btn, .btn-small, .close-button, .minimalistic-button {
+  font-size: 13px;
   font-family: 'Heebo', sans-serif;
   font-weight: 600;
+
+  i {
+    font-size: 1.3rem;
+    font-weight: 400;
+  }
 }
 
 .btn {
@@ -24,16 +31,51 @@
   color: rgb(189, 189, 189);
 }
 
-.minimalistic-button {
+.minimalistic-button, .close-button {
   background: transparent;
   margin: 0;
   padding: 0;
   border: none;
   color: white;
+  height: auto;
   -webkit-user-select: none;
   cursor: pointer;
+  
 
   &:focus {
     outline: 0;
   }
+
+  > i:hover {
+    transition: background-color 0.1s;
+    border-radius: 100%;
+    background-color: $light-accent-color-2;
+  }
+}
+
+.close-button {
+  transition: background-color 0.1s;
+
+  > i {
+    font-size: 20px;
+
+    &:hover {
+      border-radius: 4px;
+      background-color: $light-accent-color-2;
+    }
+  }
+}
+
+.close-button-filled {
+  background-color: $light-accent-color-2;
+  border-radius: 100%;
+  padding: 2px;
+}
+
+button.btn-circle {
+  border-radius: 100%;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
 }
