@@ -1,3 +1,8 @@
+.notes {
+  position: relative;
+  height: 100%;
+}
+
 .note {
   position: absolute;
   border-radius: 4px;
@@ -8,11 +13,13 @@
   transition: all 0.5s;
 
   &-container {
+    flex: 1 1 auto;
     overflow: auto;
-    position: relative;
-    height: 100%;
+    position: absolute;
+    min-height: 0px;
     width: 100%;
-    
+    height: 100%;
+
     &.list-view {
       flex-direction: column;
       transition: all 0.5s;

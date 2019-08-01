@@ -182,14 +182,13 @@ class Note extends Component {
   render () {
     const { note, listView, connectDragSource, preview, boardId } = this.props;
     const { editing, selected, style } = this.state;
-    const togglableDragSource = selected && !preview ? connectDragSource : i => i;
 
     if (!note || this.state.unmounted) {
       return null;
     }
     note.options = note.options || {};
 
-    return togglableDragSource(
+    return connectDragSource(
       <div ref={this.noteRef}
         onClick={(event) => this.onClick(event)}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
