@@ -4,14 +4,20 @@
   flex-direction: column;
   flex: 1 0 auto;
   padding: 1em;
-  margin-top: 2.5em;
   width: inherit;
-  display: inline-block;
 
   > .note {
     border: 1px solid #212121;
     position: absolute;
     display: inline-block;
+  }
+
+  &-settings-btn {
+    margin-right: 4px;
+
+    > i {
+      font-size: 20px;
+    }
   }
 
   &-container {
