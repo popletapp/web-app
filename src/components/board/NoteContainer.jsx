@@ -142,7 +142,7 @@ class NoteContainer extends Component {
           }
           return notes.map((note, i) => note.id ? <Note key={note.id} id={note.id} boardId={board.id} /> : <Note key={i} note={note} boardId={board.id} />);
         })()}
-        {groups.length && Object.values(groups).map(group => <Group key={group.id} id={group.id} boardId={board.id} />)}
+        {!!groups.length && Object.values(groups).map(group => <Group key={group.id} id={group.id} boardId={board.id} />)}
       </div>
     );
   }
