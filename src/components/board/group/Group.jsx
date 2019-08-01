@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Note, Editor, FlexChild, Flex, MinimalisticButton } from './../../';
+import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton, Scroller } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
@@ -9,7 +9,9 @@ import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup } fro
 
 function mapStateToProps (state, props) {
   return {
-    notes: state.groupsByBoard[props.boardId][props.id].items.map(note => state.notesByBoard[props.boardId][note]),
+    notes: state.groupsByBoard[props.boardId][props.id]
+      ? state.groupsByBoard[props.boardId][props.id].items.map(note => state.notesByBoard[props.boardId][note])
+      : [],
     group: state.groupsByBoard[props.boardId][props.id],
     listView: !!state.viewByBoard[props.boardId]
   };
@@ -96,13 +98,19 @@ class Group extends Component {
             </div>
           </FlexChild>
 
-          <FlexChild align='right' direction='row'>
-            <MinimalisticButton icon='close' onClick={() => this.deleteGroup()}></MinimalisticButton>
+          <FlexChild grow={0} align='right' direction='row'>
+            <MinimalisticButton className='group-settings-btn' icon='settings' onClick={() => this.deleteGroup()} />
+            <CloseButton icon='close' onClick={() => this.deleteGroup()} />
           </FlexChild>
         </Flex>
-        <div className='group'>
-          {notes && notes.filter(Boolean).map((note, i) => <Note key={i} id={note.id} boardId={boardId} />)}
-        </div>
+
+        <Scroller>
+          <div className='group'>
+
+            {notes && notes.filter(Boolean).map((note, i) => <Note key={i} id={note.id} boardId={boardId} />)}
+
+          </div>
+        </Scroller>
       </div>
     ));
   }
@@ -132,10 +140,10 @@ export default connect(mapStateToProps, null)(
     ComponentTypes.GROUP,
     {
       beginDrag (props) {
-        const { group } = props;
+        const { group, boardId } = props;
         group.options = group.options || {};
         group.options.position = group.options.position || { x: 0, y: 0 };
-        return { item: group };
+        return { item: group, boardId };
       }
     },
     (connect, monitor) => ({
