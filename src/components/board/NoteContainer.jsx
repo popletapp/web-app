@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { moveNote, beginSelection, endSelection, moveGroup, isNoteInGroup, removeNoteFromGroup } from './../../modules';
-import { Note, Group, Flex, FlexChild } from './../';
+import { Note, Group, Flex, FlexChild, Scroller } from './../';
 import ComponentTypes from './../../constants/ComponentTypes';
 import './Board.scss';
 
@@ -127,25 +127,22 @@ class NoteContainer extends Component {
     groups = groups ? Object.values(groups) : [];
 
     return connectDropTarget(
-      <div style={{ height: '100%', width: '100%', overflowX: 'scroll' }}>
-        <Flex onMouseDown={(e) => this.onMouseDown(e)}
-          onTouchStart={(e) => this.onMouseDown(e)}
-          onMouseMove={(e) => this.onMouseMove(e)}
-          onTouchMove={(e) => this.onMouseMove(e)}
-          onMouseUp={(e) => this.onMouseUp(e)}
-          onTouchEnd={(e) => this.onMouseUp(e)}
-          className={`note-container${!listView ? ' drag-container droppable' : ' list-view'}`}>
-          <div className='select-area' hidden></div>
-          <FlexChild>
-            {(() => {
-              for (const group of groups) {
-                notes = notes.filter(note => !group.items.includes(note.id));
-              }
-              return notes.map((note, i) => note.id ? <Note key={note.id} id={note.id} boardId={board.id} /> : <Note key={i} note={note} boardId={board.id} />);
-            })()}
-            {groups && Object.values(groups).map(group => <Group key={group.id} id={group.id} boardId={board.id} />)}
-          </FlexChild>
-        </Flex>
+      <div
+        onMouseDown={(e) => this.onMouseDown(e)}
+        onTouchStart={(e) => this.onMouseDown(e)}
+        onMouseMove={(e) => this.onMouseMove(e)}
+        onTouchMove={(e) => this.onMouseMove(e)}
+        onMouseUp={(e) => this.onMouseUp(e)}
+        onTouchEnd={(e) => this.onMouseUp(e)}
+        className={`note-container${!listView ? ' drag-container droppable' : ' list-view'}`}>
+        <div className='select-area' hidden></div>
+        {(() => {
+          for (const group of groups) {
+            notes = notes.filter(note => !group.items.includes(note.id));
+          }
+          return notes.map((note, i) => note.id ? <Note key={note.id} id={note.id} boardId={board.id} /> : <Note key={i} note={note} boardId={board.id} />);
+        })()}
+        {groups.length && Object.values(groups).map(group => <Group key={group.id} id={group.id} boardId={board.id} />)}
       </div>
     );
   }
