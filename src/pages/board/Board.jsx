@@ -57,7 +57,14 @@ class BoardComponent extends PopletBase {
   render () {
     const board = this.props.board;
     if (!this.state.loaded) {
-      return null;
+      return (
+        <div>
+          <NavBar />
+          <div className='board-loading center-on-page'>
+            <h1>Loading board...</h1>
+          </div>
+        </div>
+      );
     }
 
     if (!board) {
