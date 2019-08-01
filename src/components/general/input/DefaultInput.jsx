@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { joinClasses } from '../../../util';
 import './Input.scss';
 
 class DefaultInput extends Component {
@@ -12,9 +13,10 @@ class DefaultInput extends Component {
   }
 
   render () {
-    const { name, type, placeholder, value, children, onChange, onInput } = this.props;
+    const { name, type, placeholder, value, children, onChange, onInput, className } = this.props;
     return (
-      <input className='text-input'
+      <input
+        className={joinClasses('text-input', className)}
         name={name || 'input'}
         spellCheck='false'
         type={type || 'text'}

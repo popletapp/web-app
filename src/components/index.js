@@ -39,6 +39,8 @@ export { default as UsernameText } from './general/text/UsernameText';
 export { default as User } from './general/user/User';
 export { default as Tooltip } from './general/tooltip/Tooltip';
 export { default as Tooltips } from './general/tooltip/Tooltips';
+export { default as CircleButton } from './general/button/CircleButton';
+export { default as CloseButton } from './general/button/CloseButton';
 
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure';

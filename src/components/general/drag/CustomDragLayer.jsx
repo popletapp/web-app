@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DragLayer } from 'react-dnd';
 import ComponentTypes from './../../../constants/ComponentTypes';
+import { Note, Group } from './../../'; // eslint-disable-line
 
 function getItemStyles (props) {
   const { initialOffset, currentOffset } = props;
@@ -23,11 +24,13 @@ function getItemStyles (props) {
 
 class CustomDragLayer extends Component {
   render () {
-    const { itemType, isDragging } = this.props;
+    const { item, itemType, isDragging } = this.props; // eslint-disable-line
     function renderItem () {
       switch (itemType) {
         case ComponentTypes.NOTE:
-          return null; // <Note preview key='dragging-1' id={note.item.id} boardId={note.boardId} />;
+          return null; // <Note preview key='dragging-1' id={item.item.id} boardId={item.boardId} />;
+        case ComponentTypes.GROUP:
+          return null; // <Group preview key='dragging-1' id={item.item.id} boardId={item.boardId} />;
         default:
           return null;
       }

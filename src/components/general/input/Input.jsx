@@ -1,18 +1,10 @@
 import React, { Component } from 'react';
+import { joinClasses } from '../../../util';
 import './Input.scss';
 
 class Input extends Component {
-  constructor ({ icon, prefixIcon = false, placeholder }) {
-    super();
-    this.icon = icon;
-    this.prefixIcon = prefixIcon;
-    this.placeholder = placeholder || '';
-    this.state = {};
-  }
-
   render () {
-    const { icon, prefixIcon, className } = this.props;
-    const dontInclude = ['prefixIcon'];
+    const { icon, prefixIcon, className, onClick, style } = this.props;
     return <div className={`${className} text-input`}>
       {icon && prefixIcon &&
               <div className='input-icon'>
@@ -20,13 +12,13 @@ class Input extends Component {
               </div>
       }
       <div
-        {...Object.fromEntries(Object.entries(this.props).filter(item => !dontInclude.includes(item[0])))}
-        className='poplet-input'
+        onClick={onClick}
+        className={joinClasses('poplet-input', className)}
         contentEditable='true'
         suppressContentEditableWarning={true}
         role='textbox'
         spellCheck='false'
-        style={{ outline: 'none', userSelect: 'text', whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}>{this.props.children || ''}
+        style={{ outline: 'none', userSelect: 'text', whiteSpace: 'pre-wrap', overflowWrap: 'break-word', ...style }}>{this.props.children || ''}
       </div>
       {icon && !prefixIcon &&
         <div className='input-icon'>

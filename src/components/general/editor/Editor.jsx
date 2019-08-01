@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { joinClasses } from '../../../util';
 import Markdown from 'react-markdown';
 
 class Editor extends Component {
@@ -33,12 +34,17 @@ class Editor extends Component {
   }
 
   render () {
-    const { editing, parseMarkdown } = this.props;
+    const { editing, parseMarkdown, onClick, className, onBlur, onFocus, onMouseEnter, onMouseLeave } = this.props;
     const { content } = this.state;
-    const dontInclude = ['parseMarkdown', 'editing'];
 
     return (
-      <div {...Object.fromEntries(Object.entries(this.props).filter(item => !dontInclude.includes(item[0])))}
+      <div
+        onClick={onClick}
+        className={joinClasses('editor', className)}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         contentEditable={editing.toString()}
         suppressContentEditableWarning={true}
         onInput={(e) => this.update(e)}

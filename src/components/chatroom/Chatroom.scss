@@ -80,7 +80,7 @@
   width: 100%;
   margin: 0;
   padding: 12px;
-  max-width: 100%;
+  max-width: 250px;
   resize: none;
 }
 
@@ -88,6 +88,7 @@
   max-width: 250px;
   width: 100%;
   box-shadow: 0px 0px 18px $dark-accent-color-5;
+  z-index: 1;
 }
 
 .chatroom-comment {

@@ -14,11 +14,13 @@ class FlexChild extends Component {
       shrink = 1,
       className,
       children,
-      style
+      style,
+      onClick
     } = this.props;
     return (
       <div
         style={{ flex: `${grow} ${shrink} ${basis}`, ...style }}
+        onClick={onClick}
         className={joinClasses(
           'flex',
           className,

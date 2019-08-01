@@ -1,14 +1,15 @@
 .scroller-container {
-  position: relative;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  height: 100%;
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
+  overflow: hidden;
+  height: auto;
+  width: 100%;
 }
 
 .vertical-scroller {
@@ -38,7 +39,7 @@
 }
 
 .horizontal-scroller {
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
@@ -65,7 +66,9 @@
 }
 
 .scroller {
-  overflow: auto;
+  display: block;
+  overflow-y: auto;
+  overflow-x: auto;
   -webkit-box-flex: 1;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
