@@ -4,7 +4,7 @@ import './Input.scss';
 
 class Input extends Component {
   render () {
-    const { icon, prefixIcon, className, onClick, style } = this.props;
+    const { icon, prefixIcon, className, onClick, style, onInput } = this.props;
     return <div className={`${className} text-input`}>
       {icon && prefixIcon &&
               <div className='input-icon'>
@@ -13,6 +13,7 @@ class Input extends Component {
       }
       <div
         onClick={onClick}
+        onInput={onInput}
         className={joinClasses('poplet-input', className)}
         contentEditable='true'
         suppressContentEditableWarning={true}
