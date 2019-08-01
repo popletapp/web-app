@@ -26,11 +26,13 @@ class Board extends Component {
       <div className='board'>
         <BoardNavBar />
         <TopBar board={board} />
-        <Flex direction='row' shrink={1} grow={0} style={{ minHeight: '100%' }}>
-          <FlexChild grow={1} shrink={0} style={{ minHeight: '100%' }}>
+        <Flex direction='row' shrink={1} grow={1}>
+          <FlexChild grow={0} shrink={1} style={{ height: '100%' }}>
             <MembersList />
           </FlexChild>
-          <NoteContainer />
+          <FlexChild className='notes' grow={1} shrink={1}>
+            <NoteContainer />
+          </FlexChild>
         </Flex>
       </div>
     );
