@@ -1,6 +1,5 @@
 import Poplet from '../../';
-import updateGroup from './updateGroup';
-import saveNote from './../notes/saveNote';
+import { updateGroup, saveNote, determineSize } from './../';
 
 export default async (boardId, groupId, noteId) => {
   const store = Poplet.store;
@@ -8,7 +7,8 @@ export default async (boardId, groupId, noteId) => {
   const group = state.groupsByBoard[boardId][groupId];
   if (group && !group.items.includes(noteId)) {
     const note = state.notesByBoard[boardId][noteId];
-    note.options.position = { x: 0, y: 0 };
+    note.position = { x: 0, y: 0 };
+    group.size = determineSize(group);
     group.items.push(noteId);
     await updateGroup(boardId, group);
     await saveNote(boardId, note);
