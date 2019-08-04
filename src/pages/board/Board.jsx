@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import './Board.scss';
 
-import { Board, Chatroom, PopletBase, CustomDragLayer, NavBar } from './../../components';
+import { Board, Chatroom, PopletBase, NavBar } from './../../components';
 
 function mapStateToProps (state) {
   return {
@@ -87,7 +87,6 @@ class BoardComponent extends PopletBase {
       <div className='poplet-root'>
         <div className='modal-container'></div>
         <Board key={board.id} id={board.id} />
-        <CustomDragLayer />
         <Chatroom id={board.chatrooms[0]}/>
       </div>
     );
