@@ -3,7 +3,6 @@ import Poplet from '../../';
 export default (note) => {
   const store = Poplet.store;
   const state = store.getState();
-  const OVERLAP_LIMIT = 0;
 
   // Means inside of the note
   for (const comparison of Object.values(state.notesByBoard[state.selectedBoard])) {

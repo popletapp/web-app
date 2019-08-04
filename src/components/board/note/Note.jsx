@@ -3,7 +3,7 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { Button, Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild } from './../../';
+import { Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild } from './../../';
 import './Note.scss';
 import { endCreateNote } from './../../../actions/note';
 import { updateNote, createNote, saveNote, createModal } from './../../../modules';
@@ -207,7 +207,7 @@ class Note extends Component {
   }
 
   render () {
-    const { note, listView, connectDragSource, preview, boardId, isDragging } = this.props;
+    const { note, listView, connectDragSource, preview, isDragging } = this.props;
     const { editing, selected, style } = this.state;
 
     if (!note || this.state.unmounted) {

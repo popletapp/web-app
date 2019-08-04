@@ -12,6 +12,7 @@ export default (group) => {
       largest.height = newHeight;
     }
   }
+
   group.size = largest;
   return group.size;
 };
