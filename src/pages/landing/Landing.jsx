@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { NavBar } from './../../components';
+import { NavBar, Flex, FlexChild } from './../../components';
+import app from './../../../package.json';
 import './Landing.scss';
 
 class Landing extends Component {
@@ -20,6 +21,18 @@ class Landing extends Component {
             </div>
           </section>
         </div>
+
+        <footer>
+          <Flex align='center' direction='row'>
+            <FlexChild align='left'>
+              Poplet v.{app.version} beta
+            </FlexChild>
+
+            <FlexChild align='right' justify='end'>
+              Yes, this landing page looks pretty barren at the moment - this is only temporary. :)
+            </FlexChild>
+          </Flex>
+        </footer>
       </div>
     );
   }
