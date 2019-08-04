@@ -16,6 +16,7 @@ export default async () => {
     document.location.replace('/login');
   } else {
     axios.defaults.headers.common['Authorization'] = token;
+
     const user = await getCurrentUser();
     console.log(`Logged in as ${user.username} (${user.id})`);
     store.dispatch({ type: 'INITIALIZE_USER', user });
@@ -23,7 +24,7 @@ export default async () => {
 
     let socket = null;
     try {
-      socket = openSocket('https://popletapp.com');
+      socket = openSocket(process.env.NODE_ENV === 'development' ? 'ws://localhost:7777' : 'wss://popletapp.com', { transports: ['websocket'] });
     } catch (e) {
       console.log(e);
     }

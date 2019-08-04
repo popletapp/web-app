@@ -19,15 +19,18 @@ export { default as deleteGroup } from './groups/deleteGroup.js';
 export { default as moveGroup } from './groups/moveGroup.js';
 export { default as addNoteToGroup } from './groups/addNoteToGroup.js';
 export { default as removeNoteFromGroup } from './groups/removeNoteFromGroup.js';
+export { default as determineSize } from './groups/determineSize.js';
+export { default as getNotesInGroup } from './groups/getNotesInGroup.js';
 
 // Notes
 export { default as createNote } from './notes/createNote.js';
 export { default as deleteNote } from './notes/deleteNote.js';
-export { default as receiveNote } from './notes/receiveNote.js';
 export { default as updateNote } from './notes/updateNote.js';
 export { default as saveNote } from './notes/saveNote.js';
 export { default as moveNote } from './notes/moveNote.js';
 export { default as isNoteInGroup } from './notes/isNoteInGroup.js';
+export { default as isNoteOverlapping } from './notes/isNoteOverlapping.js';
+export { default as findNextAvailablePosition } from './notes/findNextAvailablePosition.js';
 
 // Users
 export { default as getCurrentUser } from './user/getCurrentUser.js';

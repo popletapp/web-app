@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
+import * as Sentry from '@sentry/browser';
 import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import Backend from 'react-dnd-html5-backend';
 
 import './index.scss';
 import './App.scss';
@@ -26,13 +27,17 @@ const Poplet = {
   store
 };
 
+if (process.env.NODE_ENV !== 'development') {
+  Sentry.init({ dsn: 'https://c4d63a4af0db44f295ac39635fea9775@sentry.io/1520095' });
+}
+
 export default Poplet;
 
 async function render () {
-  store.subscribe(() => console.log(store.getState()))
+  store.subscribe(() => console.log(store.getState()));
   ReactDOM.render(
     <Provider store={store}>
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={Backend}>
         <BrowserRouter>
           <Switch>
             <Route path='/' component={Application} />

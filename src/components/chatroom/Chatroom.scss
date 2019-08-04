@@ -13,11 +13,12 @@
 .chatroom-header {
   background-color: #5c6bc0;
   width: 100%;
-  height: 15%;
+  height: 130px;
   padding: 12px;
 
   &-btns {
-    margin-left: 0px;
+    margin-left: 12px;
+    margin-right: 12px;
     
     .btn-small {
       width: 12px;
@@ -58,6 +59,8 @@
 
     &-name {
       white-space: nowrap; 
+      max-width: 90px;
+      min-width: 30px;
       overflow: hidden;
       text-overflow: ellipsis;
       margin-right: 12px;
