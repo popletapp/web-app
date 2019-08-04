@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
-
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { Button, Editor, NoteDetailedView } from './../../';
+import { Button, Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild } from './../../';
 import './Note.scss';
 import { endCreateNote } from './../../../actions/note';
 import { updateNote, createNote, saveNote, createModal } from './../../../modules';
-import { Link } from 'react-router-dom';
 import ComponentTypes from './../../../constants/ComponentTypes';
 
 import { DragSource } from 'react-dnd';
-import { getEmptyImage } from 'react-dnd-html5-backend';
 
 function mapStateToProps (state, props) {
   return {
@@ -40,23 +38,25 @@ class Note extends Component {
       selected: false,
       editing: false,
       exists: this.note ? !!this.note.id : false,
-      style: {}
+      style: { }
     };
-    this.listener = (event) => {
-      let el = event.target;
-      if (el.matches('.btn')) return note;
-      do {
-        if (el.matches('.note')) return el;
-        el = el.parentElement || el.parentNode;
-      } while (el !== null && el.nodeType === 1);
+    if (!this.preview) {
+      this.listener = (event) => {
+        let el = event.target;
+        if (el.matches('.btn')) return note;
+        do {
+          if (el.matches('.note')) return el;
+          el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
 
-      if (el && el.classList && el.classList.contains('note')) {
-        this.onClick();
-      } else {
-        this.unselect();
-      }
-    };
-    document.addEventListener('click', this.listener);
+        if (el && el.classList && el.classList.contains('note')) {
+          this.onClick();
+        } else {
+          this.unselect();
+        }
+      };
+      document.addEventListener('click', this.listener);
+    }
   }
 
   onFocus () {
@@ -68,8 +68,10 @@ class Note extends Component {
     createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.boardId} />);
   }
 
-  onClick () {
+  select (e) {
     const { preview } = this.props;
+    e.preventDefault();
+    e.stopPropagation();
     if (!preview) {
       this.setState({ selected: true });
     }
@@ -90,10 +92,11 @@ class Note extends Component {
   }
 
   async onBlur (event, type) {
-    const { note } = this.props;
+    let { note } = this.props;
     const { exists } = this.state;
 
     const content = event.target.textContent.replace('<br>', '\\n');
+    note = this.didSizeChange() || note;
     const newNote = { ...note, [type]: content };
 
     this.setState({
@@ -116,12 +119,38 @@ class Note extends Component {
   }
 
   setPosition (note) {
+    if (note.position.x < 0) {
+      note.position.x = 0;
+    }
+    if (note.position.y < 0) {
+      note.position.y = 0;
+    }
     this.setState({
       style: {
-        top: note.options ? note.options.position.y : 0,
-        left: note.options ? note.options.position.x : 0
+        top: note.position ? note.position.y : 0,
+        left: note.position ? note.position.x : 0
       }
     });
+  }
+
+  didSizeChange () {
+    const { note } = this.props;
+    const node = ReactDOM.findDOMNode(this.noteRef.current);
+    if (!node) {
+      return null;
+    }
+
+    const box = node.getBoundingClientRect();
+
+    const newNote = note;
+    newNote.size = newNote.size || {};
+    newNote.size.width = box.width;
+    newNote.size.height = box.height;
+    if (note.size.width !== newNote.size.width || note.size.height !== newNote.size.height) {
+      return note;
+    } else {
+      return null;
+    }
   }
 
   componentWillUnmount () {
@@ -133,21 +162,19 @@ class Note extends Component {
     block && hljs.highlightBlock(block);
   }
 
-  componentDidMount () {
-    const { note, connectDragPreview } = this.props;
-    if (note && note.options && note.options.position) {
+  async componentDidMount () {
+    const { note } = this.props;
+    if (note && note.position) {
       this.setPosition(note);
     }
-
-    if (connectDragPreview) {
-      connectDragPreview(getEmptyImage(), {
-        captureDraggingState: true
-      });
+    const size = this.didSizeChange();
+    if (size) {
+      await saveNote(this.boardId, size);
     }
   }
 
   componentDidUpdate (oldProps) {
-    this.highlight();
+    // this.highlight();
     const { note, selectedArea } = this.props;
     const { style } = this.state;
     if (note && oldProps.selectedArea !== selectedArea) {
@@ -172,15 +199,15 @@ class Note extends Component {
       } */
     }
 
-    if (note && note.options && note.options.position) {
-      if (style.top !== note.options.position.y || style.left !== note.options.position.x) {
+    if (note && note.position) {
+      if (style.top !== note.position.y || style.left !== note.position.x) {
         this.setPosition(note);
       }
     }
   }
 
   render () {
-    const { note, listView, connectDragSource, preview, boardId } = this.props;
+    const { note, listView, connectDragSource, preview, boardId, isDragging } = this.props;
     const { editing, selected, style } = this.state;
 
     if (!note || this.state.unmounted) {
@@ -190,9 +217,9 @@ class Note extends Component {
 
     return connectDragSource(
       <div ref={this.noteRef}
-        onClick={(event) => this.onClick(event)}
+        onClick={(event) => selected || this.view(event)}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
-        style={{ ...(!listView && !preview ? style : {}), width: 'fit-content', backgroundColor: note.options.color || '' }}>
+        style={{ ...(!listView && !preview ? style : {}), width: 'fit-content', backgroundColor: note.options.color || '', opacity: isDragging ? 0 : 1 }}>
         {selected && !preview && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
         <div className='note-content white-text'>
           <Editor
@@ -215,16 +242,18 @@ class Note extends Component {
             {editing ? note.content : (note.content > 255 ? `${note.content.slice(0, 252)}...` : note.content)}
           </Editor>
         </div>
-        <div className='note-footer'>
-          {!preview && note.id && <Button onClick={(e) => this.view(e)} className='note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Button>}
-          {(preview || !note.id) && <Link to={`/boards/${boardId}`} className='btn-small note-btn-view'><i className='material-icons' style={{ fontSize: '13px' }}>description</i> View</Link>}
+        <Flex direction='row' align='center' className='note-footer'>
+          <FlexChild align='left' direction='row'>
+            {!preview && note.id && <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className='note-btn-view'>Edit</MinimalisticButton>}
+          </FlexChild>
 
-          <div className='vertical-rule' style={{ height: 24 }}></div>
-          {/* TODO: Implement comments */}
-          {true && <div className='note-footer-comments-container'>
-            <i className='material-icons' style={{ fontSize: '14px' }}>comment</i> 0
-          </div>}
-        </div>
+          <FlexChild align='right' direction='row' justify='end'>
+            {/* TODO: Implement comments */}
+            {true && <div className='note-footer-comments-container'>
+              <i className='material-icons' style={{ fontSize: '14px' }}>comment</i> 0
+            </div>}
+          </FlexChild>
+        </Flex>
       </div>
     );
   }
@@ -236,6 +265,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     {
       beginDrag (props) {
         const { note, boardId } = props;
+        note.position = note.position || { x: 0, y: 0 };
         return { item: note, boardId };
       }
     },

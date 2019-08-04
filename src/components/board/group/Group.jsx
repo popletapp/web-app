@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton, Scroller } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
-import { getEmptyImage } from 'react-dnd-html5-backend';
 import './Group.scss';
 import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup } from '../../../modules';
 
@@ -23,37 +22,66 @@ class Group extends Component {
     this.boardId = boardId;
     this.group = group;
     this.state = {
-      editingName: false
+      editingName: false,
+      style: {}
     };
   }
 
   componentDidMount () {
-    const { group, connectDragPreview } = this.props;
-    if (group && group.options && group.options.position) {
+    const { group } = this.props;
+    if (group && group.position) {
       this.setPosition(group);
     }
-    if (connectDragPreview) {
-      connectDragPreview(getEmptyImage(), {
-        captureDraggingState: true
-      });
+    if (group && group.size) {
+      this.setSize(group);
     }
   }
 
-  componentDidUpdate (oldProps) {
+  componentDidUpdate () {
     const { group } = this.props;
     const { style } = this.state;
-    if (group && group.options && group.options.position) {
-      if (style.top !== group.options.position.y || style.left !== group.options.position.x) {
+    if (group && group.position) {
+      if (style.top !== group.position.y || style.left !== group.position.x) {
         this.setPosition(group);
+      }
+    }
+    if (group && group.size) {
+      if (style.height !== group.size.height || style.width !== group.size.width) {
+        this.setSize(group);
       }
     }
   }
 
   setPosition (group) {
+    if (group.position.x < 0) {
+      group.position.x = 0;
+    }
+    if (group.position.y < 0) {
+      group.position.y = 0;
+    }
+
     this.setState({
       style: {
-        top: group.options ? group.options.position.y : 0,
-        left: group.options ? group.options.position.x : 0
+        ...this.state.style,
+        top: group.position ? group.position.y : 0,
+        left: group.position ? group.position.x : 0
+      }
+    });
+  }
+
+  setSize (group) {
+    if (group.size.width < 0) {
+      group.size.width = 100;
+    }
+    if (group.position.y < 0) {
+      group.size.height = 200;
+    }
+
+    this.setState({
+      style: {
+        ...this.state.style,
+        width: group.size ? group.size.width : 100,
+        height: group.size ? group.size.height : 200
       }
     });
   }
@@ -72,16 +100,16 @@ class Group extends Component {
   }
 
   render () {
-    const { group, notes, boardId, listView, connectDragSource, connectDropTarget } = this.props;
+    const { group, notes, boardId, listView, connectDragSource, preview, connectDropTarget, isDragging } = this.props;
     const { style, editingName } = this.state;
     if (!group || this.state.unmounted) {
       return null;
     }
 
     group.options = group.options || {};
-    return connectDropTarget(connectDragSource(
+    return connectDragSource(connectDropTarget(
       <div className='group-container'
-        style={{ ...(!listView ? style : {}), backgroundColor: group.options.color || '' }}>
+        style={{ ...(!listView && !preview ? style : {}), backgroundColor: group.options.color || '', opacity: isDragging ? 0 : 1 }}>
         <Flex direction='row' align='center' className='group-header'>
           <FlexChild direction='row' align='center'>
             <Editor
@@ -99,18 +127,16 @@ class Group extends Component {
           </FlexChild>
 
           <FlexChild grow={0} align='right' direction='row'>
-            <MinimalisticButton className='group-settings-btn' icon='settings' onClick={() => this.deleteGroup()} />
-            <CloseButton icon='close' onClick={() => this.deleteGroup()} />
+            <Flex direction='row' align='center'>
+              <MinimalisticButton className='group-settings-btn' icon='settings' onClick={() => this.deleteGroup()} />
+              <CloseButton icon='close' onClick={() => this.deleteGroup()} />
+            </Flex>
           </FlexChild>
         </Flex>
 
-        <Scroller>
-          <div className='group'>
-
-            {notes && notes.filter(Boolean).map((note, i) => <Note key={i} id={note.id} boardId={boardId} />)}
-
-          </div>
-        </Scroller>
+        <div className='group'>
+          {notes && notes.filter(Boolean).map((note, i) => <Note key={i} id={note.id} boardId={boardId} />)}
+        </div>
       </div>
     ));
   }
@@ -123,8 +149,8 @@ export default connect(mapStateToProps, null)(
       drop (props, monitor, component) {
         const { item } = monitor.getItem();
         const delta = monitor.getDifferenceFromInitialOffset();
-        const left = Math.round(item.options.position.x + delta.x);
-        const top = Math.round(item.options.position.y + delta.y);
+        const left = Math.round(item.position.x + delta.x);
+        const top = Math.round(item.position.y + delta.y);
 
         if (isNoteInGroup(item.id)) {
           moveNote(props.boardId, item.id, { x: left, y: top });
@@ -141,8 +167,7 @@ export default connect(mapStateToProps, null)(
     {
       beginDrag (props) {
         const { group, boardId } = props;
-        group.options = group.options || {};
-        group.options.position = group.options.position || { x: 0, y: 0 };
+        group.position = group.position || {};
         return { item: group, boardId };
       }
     },

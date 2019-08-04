@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { moveNote, beginSelection, endSelection, moveGroup, isNoteInGroup, removeNoteFromGroup } from './../../modules';
+import { moveNote, beginSelection, endSelection, moveGroup, isNoteInGroup, removeNoteFromGroup, isNoteOverlapping } from './../../modules';
 import { Note, Group } from './../';
 import ComponentTypes from './../../constants/ComponentTypes';
 import './Board.scss';
@@ -162,20 +162,27 @@ export default connect(mapStateToProps, null)(DropTarget(
       const data = item.item;
       const type = monitor.getItemType();
       if (delta) {
-        data.options = data.options || {};
-        data.options.position = data.options.position || { x: 0, y: 0 };
+        data.position = data.position || {};
         // TODO: current issue is that the position of a note in a group is 0, so x + negative x makes the note go off screen
         // need to somehow get the client X, or get the relative position from the group
-        let left = Math.round(data.options.position.x + delta.x);
-        let top = Math.round(data.options.position.y + delta.y);
+        let left = Math.round(data.position.x + delta.x);
+        let top = Math.round(data.position.y + delta.y);
         switch (type) {
           case ComponentTypes.NOTE:
+            const temp = data;
+            temp.position.x = left;
+            temp.position.y = top;
+            if (isNoteOverlapping(temp)) {
+              moveNote(props.id, data.id, data.position);
+              return data;
+            }
             const group = isNoteInGroup(data.id);
             if (group) {
-              left = Math.round(cursor.x + delta.x);
-              top = Math.round(cursor.y + delta.y);
-              removeNoteFromGroup(component.props.id, group, data.id);
+              left = Math.round(cursor.x);
+              top = Math.round(cursor.y);
+              removeNoteFromGroup(props.id, group, data.id);
             }
+
             moveNote(props.id, data.id, { y: top, x: left });
             break;
           case ComponentTypes.GROUP:
