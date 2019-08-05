@@ -60,7 +60,7 @@ export const notesByBoard = (state = {}, action) => {
       };
     }
     case 'END_CREATE_NOTE': {
-      const old = state;
+      const old = { ...state };
       delete old[action.board]['-1'];
       return old;
     }
@@ -75,7 +75,7 @@ export const notesByBoard = (state = {}, action) => {
       }
     }
     case 'DELETE_NOTE': {
-      const old = state;
+      const old = { ...state };
       delete old[action.board][action.noteId];
       return old;
     }

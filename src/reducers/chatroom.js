@@ -13,7 +13,7 @@ export const chatrooms = (state = {
       return old;
     }
     case 'DELETE_CHATROOM': {
-      const old = state;
+      const old = { ...state };
       delete old.items[action.chatroom.id.toString()];
       return old;
     }

@@ -3,6 +3,7 @@ export { default as getBoard } from './boards/getBoard.js';
 export { default as switchBoard } from './boards/switchBoard.js';
 export { default as createBoard } from './boards/createBoard.js';
 export { default as joinBoard } from './boards/joinBoard.js';
+export { default as leaveBoard } from './boards/leaveBoard.js';
 export { default as createInvite } from './boards/createInvite.js';
 export { default as checkInvite } from './boards/checkInvite.js';
 export { default as beginSelection } from './boards/beginSelection.js';

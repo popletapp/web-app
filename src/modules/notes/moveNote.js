@@ -6,7 +6,7 @@ export default async (boardId, noteId, position) => {
   const store = Poplet.store;
   const state = store.getState();
   const notes = state.notesByBoard[boardId];
-  const note = noteId ? notes[noteId] : notes[boardId]['-1'];
+  const note = noteId ? notes[noteId] : notes['-1'];
 
   if (!note) {
     throw new Error('Attempt to move invalid note');
@@ -16,7 +16,9 @@ export default async (boardId, noteId, position) => {
     throw new Error('\'moveNote\' requires \'position\' argument to be a valid object with keys (x,y)');
   }
 
-  const { x, y } = position;
+  let { x, y } = position;
+  x = Number(x);
+  y = Number(y);
   if (!Number.isInteger(x) || !Number.isInteger(y)) {
     throw new Error('One or more position values are not valid integers');
   }
@@ -31,7 +33,6 @@ export default async (boardId, noteId, position) => {
   }
 
   if (note.id) {
-    console.log(note.position)
     saveNote(boardId, note);
     return note;
   } else {

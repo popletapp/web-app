@@ -4,6 +4,7 @@ export const RECEIVE_BOARDS = 'RECEIVE_BOARDS';
 export const CREATE_BOARD = 'CREATE_BOARD';
 export const SELECT_BOARD = 'SELECT_BOARD';
 export const JOIN_BOARD = 'JOIN_BOARD';
+export const LEAVE_BOARD = 'LEAVE_BOARD';
 export const UPDATE_VIEW = 'UPDATE_VIEW';
 export const BEGIN_SELECTION = 'BEGIN_SELECTION';
 export const END_SELECTION = 'END_SELECTION';
@@ -17,6 +18,8 @@ export const RECEIVE_MEMBERS = 'RECEIVE_MEMBERS';
 export const ADD_RANK = 'ADD_RANK';
 export const REMOVE_RANK = 'REMOVE_RANK';
 export const UPDATE_RANK = 'UPDATE_RANK';
+export const ADD_MEMBER = 'ADD_MEMBER';
+export const REMOVE_MEMBER = 'REMOVE_MEMBER';
 
 // Note
 export const REQUEST_NOTES = 'REQUEST_NOTES';
