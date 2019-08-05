@@ -1,0 +1,27 @@
+@import './../../../index.scss';
+
+.error {
+  &-boundary {
+    padding: 10em 30% 10em 30%;
+    opacity: 0;
+  }
+
+  &-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: $poplet-red;
+  }
+
+  &-description {
+    margin-top: 6px;
+    color: $text-accent-color-2;
+  }
+
+  &-instructions {
+    margin-top: 3em;
+  }
+
+  &-reload-button {
+    margin-top: 1em;
+  }
+}

@@ -5,7 +5,8 @@ import {
   Modals,
   BoardJoinModal,
   BoardCreationModal,
-  Tooltips
+  Tooltips,
+  ErrorBoundary
 } from './../../../components';
 import { createModal } from './../../../modules';
 
@@ -57,32 +58,34 @@ class App extends Component {
 
     return (
       <div className='app'>
-        <Switch location={isModal ? this.previousLocation : location}>
-          <Route exact path='/home' component={Home} />
-          <Route exact path='/login' component={Login} />
-          <Route exact path='/signup' component={SignUp} />
-          <Route exact path='/feedback' component={Feedback} />
-          <Route exact path='/' component={Landing} />
+        <ErrorBoundary>
+          <Switch location={isModal ? this.previousLocation : location}>
+            <Route exact path='/home' component={Home} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/signup' component={SignUp} />
+            <Route exact path='/feedback' component={Feedback} />
+            <Route exact path='/' component={Landing} />
 
-          <Route path='/boards/:id' component={Board} />
+            <Route path='/boards/:id' component={Board} />
 
-          <Route path='/users/:id' component={User} />
+            <Route path='/users/:id' component={User} />
 
-          <Route path='*' component={NotFound} />
-        </Switch>
+            <Route path='*' component={NotFound} />
+          </Switch>
 
-        { // Modal rendering - Boards
-          !isModal && (
-              <>
-                <Route path='/boards/join' component={Home} />
-                <Route path='/boards/create' component={Home} />
-              </>
-          )}
+          { // Modal rendering - Boards
+            !isModal && (
+                <>
+                  <Route path='/boards/join' component={Home} />
+                  <Route path='/boards/create' component={Home} />
+                </>
+            )}
 
-        <div data-no-focus-lock='true'>
-          <Modals />
-          <Tooltips />
-        </div>
+          <div data-no-focus-lock='true'>
+            <Modals />
+            <Tooltips />
+          </div>
+        </ErrorBoundary>
       </div>
     );
   }
