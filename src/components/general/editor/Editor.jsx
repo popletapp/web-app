@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { joinClasses } from '../../../util';
 import Markdown from 'react-markdown';
+import './Editor.scss';
 
 class Editor extends Component {
   constructor ({ type, editing, content, parseMarkdown }) {
@@ -34,7 +35,7 @@ class Editor extends Component {
   }
 
   render () {
-    const { editing, parseMarkdown, onClick, className, onBlur, onFocus, onMouseEnter, onMouseLeave } = this.props;
+    const { editing, parseMarkdown, onClick, className, onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder } = this.props;
     const { content } = this.state;
 
     return (
@@ -47,6 +48,8 @@ class Editor extends Component {
         onMouseLeave={onMouseLeave}
         contentEditable={editing.toString()}
         suppressContentEditableWarning={true}
+        style={style}
+        placeholder={placeholder}
         onInput={(e) => this.update(e)}
         onChange={(e) => this.change(e)}>
         {parseMarkdown ? <Markdown source={content} /> : content}

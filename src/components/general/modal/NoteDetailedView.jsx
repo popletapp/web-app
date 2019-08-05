@@ -69,9 +69,17 @@ class NoteDetailedView extends Modal {
     this.setState({ saving: false });
   }
 
-  render () {
+  onDelete () {
     const { note, boardId } = this.props;
+    deleteNote(boardId, note.id);
+    this.close();
+  }
+
+  render () {
+    const { note } = this.props;
     const { focused } = this.state;
+
+    note.title = note.title || '';
 
     return (
       <div className='note-detailed-view' style={{ display: 'block' }}>
@@ -84,11 +92,13 @@ class NoteDetailedView extends Modal {
                 onFocus={(e) => this.onFocus(e, 'title')}
                 onInput={(e) => this.onInput(e, 'title')}
                 onBlur={(e) => this.onBlur(e, 'title')}
+                placeholder='Title'
+                style={{ fontSize: '28px' }}
                 className='note-header'>
-                {focused ? note.title : (note.title > 128 ? `${note.title.slice(0, 125)}...` : note.title)}
+                {focused ? note.title : (note.title.length > 128 ? `${note.title.slice(0, 125)}...` : note.title)}
               </Editor>
-
             </div>
+
             <div className='modal-body'>
               <Scroller>
                 <Editor
@@ -98,13 +108,14 @@ class NoteDetailedView extends Modal {
                   onInput={(e) => this.onInput(e, 'content')}
                   onBlur={(e) => this.onBlur(e, 'content')}
                   parseMarkdown={!focused}
+                  placeholder='Content'
                   className='note-body'>
                   {note.content}
                 </Editor>
               </Scroller>
             </div>
           </div>
-          <div className='vertical-rule' style={{ height: '460px', borderColor: '#616161', margin: '16px' }} />
+          <div className='vertical-rule' style={{ height: '460px', borderColor: '#2e2e2e', margin: '16px' }} />
           <div className='modal-note-settings'>
             <div className='modal-note-settings-header'>Color</div>
             <ColorPicker
@@ -124,7 +135,7 @@ class NoteDetailedView extends Modal {
               by {note.modifiedBy.username}
 
             <br />
-            <Button color='red' onClick={() => deleteNote(boardId, note.id)}>Delete Note</Button>
+            <Button color='red' onClick={() => this.onDelete()}>Delete Note</Button>
           </div>
         </div>
       </div>

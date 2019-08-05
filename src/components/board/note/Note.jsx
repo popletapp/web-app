@@ -33,6 +33,8 @@ class Note extends Component {
     this.boardId = boardId;
     this.preview = preview;
 
+    this.wasDraggedByClient = false;
+
     // Whether or not this note is currently being created
     this.state = {
       selected: false,
@@ -174,8 +176,8 @@ class Note extends Component {
   }
 
   componentDidUpdate (oldProps) {
-    // this.highlight();
-    const { note, selectedArea } = this.props;
+    this.highlight();
+    const { note, selectedArea, isDragging } = this.props;
     const { style } = this.state;
     if (note && oldProps.selectedArea !== selectedArea) {
       /* console.log(this.noteRef);
@@ -199,6 +201,11 @@ class Note extends Component {
       } */
     }
 
+    if (!isDragging && oldProps.isDragging) {
+      this.wasDraggedByClient = true;
+      setTimeout(() => { this.wasDraggedByClient = false; }, 500);
+    }
+
     if (note && note.position) {
       if (style.top !== note.position.y || style.left !== note.position.x) {
         this.setPosition(note);
@@ -213,13 +220,21 @@ class Note extends Component {
     if (!note || this.state.unmounted) {
       return null;
     }
+    note.title = note.title || '';
+    note.content = note.content || '';
     note.options = note.options || {};
 
     return connectDragSource(
       <div ref={this.noteRef}
-        onClick={(event) => selected || this.view(event)}
+        onClick={(event) => selected || (note.id && this.view(event))}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
-        style={{ ...(!listView && !preview ? style : {}), width: 'fit-content', backgroundColor: note.options.color || '', opacity: isDragging ? 0 : 1 }}>
+        style={{
+          ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
+          ...(!listView && !preview ? style : {}),
+          width: 'fit-content',
+          backgroundColor: note.options.color || '',
+          opacity: isDragging ? 0 : 1
+        }}>
         {selected && !preview && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
         <div className='note-content white-text'>
           <Editor
@@ -228,8 +243,10 @@ class Note extends Component {
             onFocus={(e) => this.onFocus(e, 'title')}
             onInput={(e) => this.onInput(e, 'title')}
             onBlur={(e) => this.onBlur(e, 'title')}
+            style={{ display: note.title ? 'block' : 'none' }}
+            placeholder='Title'
             className='note-header'>
-            {editing ? note.title : (note.title > 64 ? `${note.title.slice(0, 61)}...` : note.title)}
+            {editing ? note.title : (note.title.length > 64 ? `${note.title.slice(0, 61)}...` : note.title)}
           </Editor>
           <Editor
             type='content'
@@ -238,13 +255,14 @@ class Note extends Component {
             onInput={(e) => this.onInput(e, 'content')}
             onBlur={(e) => this.onBlur(e, 'content')}
             parseMarkdown={!editing}
+            placeholder='Content'
             className='note-body'>
-            {editing ? note.content : (note.content > 255 ? `${note.content.slice(0, 252)}...` : note.content)}
+            {editing ? note.content : (note.content.length > 255 ? `${note.content.slice(0, 252)}...` : note.content)}
           </Editor>
         </div>
         <Flex direction='row' align='center' className='note-footer'>
           <FlexChild align='left' direction='row'>
-            {!preview && note.id && <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className='note-btn-view'>Edit</MinimalisticButton>}
+            {!preview && <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className='note-btn-view'>Edit</MinimalisticButton>}
           </FlexChild>
 
           <FlexChild align='right' direction='row' justify='end'>

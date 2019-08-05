@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton, Scroller } from './../../';
+import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
 import './Group.scss';

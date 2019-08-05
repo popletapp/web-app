@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Avatar, Input, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal, Flex, FlexChild, CircleButton } from './../../';
 import { selectBoard, createBoard, updateView } from './../../../actions/board';
 import { beginCreateNote } from './../../../actions/note';
-import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal } from '../../../modules';
+import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal, leaveBoard } from '../../../modules';
 import { Link } from 'react-router-dom';
 import MinimalisticButton from '../../general/button/MinimalisticButton';
 
@@ -102,6 +102,7 @@ class TopBar extends Component {
               <div className='board-selection selection-option'>
                 <li onClick={() => createModal(<BoardSettingsModal />)}><i className='material-icons'>settings</i><p>Settings</p></li>
                 <li><i className='material-icons'>notifications_active</i><p>Notification Settings</p></li>
+                <li onClick={() => leaveBoard(board.id)} className='leave-board'><i className='material-icons'>subdirectory_arrow_right</i><p>Leave Board</p></li>
               </div>
             </ul>
           </div>

@@ -110,7 +110,7 @@ class Chatroom extends Component {
 
           <Flex className='chatroom-body'>
             <Scroller style={{ width: '100%' }}>
-              {comments && comments.map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
+              {comments && comments.sort((a, b) => b.timestamp - a.timestamp).map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
             </Scroller>
           </Flex>
 
