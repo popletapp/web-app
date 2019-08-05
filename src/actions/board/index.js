@@ -4,6 +4,7 @@ import {
   CREATE_BOARD,
   SELECT_BOARD,
   JOIN_BOARD,
+  LEAVE_BOARD,
   UPDATE_VIEW,
   BEGIN_SELECTION,
   END_SELECTION,
@@ -16,7 +17,9 @@ import {
   REQUEST_MEMBERS,
   ADD_RANK,
   UPDATE_RANK,
-  REMOVE_RANK
+  REMOVE_RANK,
+  ADD_MEMBER,
+  REMOVE_MEMBER
 } from '../../constants/ActionTypes';
 import axios from 'axios';
 
@@ -29,11 +32,14 @@ export const receiveBoards = (boards) => ({
   boards
 });
 
-export const fetchBoards = userId => dispatch => {
+export const fetchBoards = userId => async dispatch => {
   dispatch(requestBoards());
-  return axios.get(`/users/${userId || 'me'}/boards`)
-    .then(res => dispatch(receiveBoards(res.data)))
-    .catch(() => dispatch(receiveBoards([])));
+  try {
+    const res = await axios.get(`/users/${userId || 'me'}/boards`);
+    return dispatch(receiveBoards(res.data));
+  } catch (e) {
+    return dispatch(receiveBoards([]));
+  }
 };
 
 function shouldFetchBoards () {
@@ -60,8 +66,13 @@ export const selectBoard = (boardId) => ({
   board: boardId
 });
 
-export const joinBoard = (boardId) => ({
+export const joinBoard = (board) => ({
   type: JOIN_BOARD,
+  board
+});
+
+export const leaveBoard = (boardId) => ({
+  type: LEAVE_BOARD,
   board: boardId
 });
 
@@ -83,11 +94,14 @@ export const receiveGroups = (board, groups) => ({
   receivedAt: Date.now()
 });
 
-export const fetchGroups = boardId => dispatch => {
+export const fetchGroups = boardId => async dispatch => {
   dispatch(requestGroups(boardId));
-  return axios.get(`/boards/${boardId}/groups`)
-    .then(res => dispatch(receiveGroups(boardId, res.data)))
-    .catch(() => dispatch(receiveGroups(boardId, [])));
+  try {
+    const res = await axios.get(`/boards/${boardId}/groups`);
+    return dispatch(receiveGroups(boardId, res.data));
+  } catch (e) {
+    return dispatch(receiveGroups(boardId, []));
+  }
 };
 
 function shouldFetchGroups (state, boardId) {
@@ -151,11 +165,14 @@ export const receiveMembers = (board, data) => ({
   receivedAt: Date.now()
 });
 
-export const fetchMembers = boardId => dispatch => {
+export const fetchMembers = boardId => async dispatch => {
   dispatch(requestMembers(boardId));
-  return axios.get(`/boards/${boardId}/members`)
-    .then(res => dispatch(receiveMembers(boardId, res.data)))
-    .catch(() => dispatch(receiveMembers(boardId, [])));
+  try {
+    const res = await axios.get(`/boards/${boardId}/members`);
+    return dispatch(receiveMembers(boardId, res.data));
+  } catch (e) {
+    return dispatch(receiveMembers(boardId, []));
+  }
 };
 
 function shouldFetchMembers (state, boardId) {
@@ -195,4 +212,16 @@ export const updateRank = (boardID, rank) => ({
   type: UPDATE_RANK,
   boardID,
   rank
+});
+
+export const addMember = (boardID, member) => ({
+  type: ADD_MEMBER,
+  board: boardID,
+  member
+});
+
+export const removeMember = (boardID, memberId) => ({
+  type: REMOVE_MEMBER,
+  board: boardID,
+  memberId
 });
