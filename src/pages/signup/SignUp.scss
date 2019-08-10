@@ -1,4 +1,5 @@
 @import './../login/Login.scss';
+@import './../../index.scss';
 
 .password-component {
   display: flex;
@@ -30,4 +31,9 @@
 
 .account-exists {
   margin-top: 2em;
+}
+
+.security-measurer-text {
+  margin-left: 12px;
+  color: $text-accent-color-1;
 }

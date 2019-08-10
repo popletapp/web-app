@@ -13,7 +13,8 @@ class Login extends Component {
     };
   }
 
-  async loginButtonClicked () {
+  async loginButtonClicked (event) {
+    event.preventDefault();
     const { email, password } = this.state;
     if (!email || !password) {
       this.setState({
@@ -48,7 +49,7 @@ class Login extends Component {
               <h1>Login to Poplet</h1>
               <h4 className='authentication-header-error'>{this.state.error}</h4>
             </div>
-            <form id='login' className='login-form'>
+            <form onSubmit={(e) => this.loginButtonClicked(e)} id='login' className='login-form'>
               <div className='username-container'>
                 <label htmlFor='email'>E-mail</label>
                 <input onInput={(e) => this.setState({ email: e.target.value })}
@@ -62,8 +63,9 @@ class Login extends Component {
                     id='username' type='password' className='text-input'></input>
                 </div>
               </div>
+              <button className='btn login-button' type='submit'>Submit</button>
             </form>
-            <button className='btn login-button' onClick={() => this.loginButtonClicked()}>Submit</button>
+
             <div className='no-account'>
               Don't have an account? <Link className='no-account-link' to='/signup'>Sign up</Link> today for free!
             </div>

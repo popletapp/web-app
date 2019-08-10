@@ -14,7 +14,7 @@
 
 section.cinematic-authentication {
   padding: 5em;
-	background: linear-gradient(to right, rgba(0,0,0,0.95) 10%,rgba(0,0,0,0.01) 300%,rgba(0,0,0,0) 52%), url(./../svg/poplet-background-dark.svg) no-repeat fixed;
+	background: linear-gradient(96deg, rgba(0,0,0,0.924) 24%,rgba(0,0,0,0.0) 100%,rgba(0,0,0,0) 30%), url(./../svg/poplet-background-dark.svg) no-repeat fixed;
 	background-size: cover;
 	background-position: bottom;
 	background-attachment: fixed;
@@ -57,6 +57,7 @@ section.cinematic-authentication {
   label {
     color: #b1b1b1;
     font-size: 12px;
+    font-weight: 700;
     text-transform: uppercase;
   }
 }

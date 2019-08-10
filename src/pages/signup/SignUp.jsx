@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Flex } from './../../components';
 import { Link } from 'react-router-dom';
 import './SignUp.scss';
 
@@ -94,7 +95,8 @@ class SignUp extends Component {
     }
   }
 
-  async signupButtonClicked () {
+  async signupButtonClicked (event) {
+    event.preventDefault();
     const { username, password, email, passwordsDontMatch } = this.state;
     if (!username || !password) {
       return this.setState({
@@ -133,7 +135,7 @@ class SignUp extends Component {
               <h4 className='description'>Welcome to Poplet!</h4>
               <h4 className='authentication-header-error'>{this.state.error}</h4>
             </div>
-            <form id='signup' className='signup-form'>
+            <form onSubmit={(e) => this.signupButtonClicked(e)} className='signup-form'>
               <div className='username-container'>
                 <label htmlFor='username'>Username</label>
                 <input onInput={(e) => this.setState({ username: e.target.value }, () => this.checkUsername())}
@@ -151,9 +153,10 @@ class SignUp extends Component {
                 <div className='password-component'>
                   <input onInput={(e) => this.setState({ password: e.target.value || '' }, () => this.checkSecurity())}
                     id='password' type='password' className='text-input'></input>
-                  <div className='security-measurer'>
+                  <Flex direction='row' align='center' className='security-measurer'>
                     <div className='security-color' style={{ backgroundColor: this.state.securityStatus.color }}></div>
-                  </div>
+                    <p className='security-measurer-text'>{this.state.securityStatus.text}</p>
+                  </Flex>
                 </div>
               </div>
 
@@ -162,8 +165,9 @@ class SignUp extends Component {
                 <input onInput={(e) => this.setState({ passwordReentry: e.target.value || '' }, () => this.checkIfSame(this.state.passwordReentry))}
                   id='pass-reenter' type='password' className={`text-input ${this.state.passwordsDontMatch === null ? '' : (this.state.passwordsDontMatch ? 'invalid-text-input' : 'valid-text-input')}`}></input>
               </div>
+              <button className='btn login-button' type='submit'>Submit</button>
             </form>
-            <button className='btn login-button' onClick={() => this.signupButtonClicked()}>Submit</button>
+
             <div className='account-exists'>
               Already have an account? <Link className='account-exists-link' to='/login'>Sign in here.</Link>
             </div>
