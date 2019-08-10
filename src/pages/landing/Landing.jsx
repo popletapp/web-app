@@ -1,25 +1,59 @@
 import React, { Component } from 'react';
-import { NavBar, Flex, FlexChild } from './../../components';
+import { NavBar, Flex, FlexChild, Button } from './../../components';
+import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './Landing.scss';
 
 class Landing extends Component {
   render () {
     return (
-      <div>
-        <NavBar />
+      <div className='landing-body'>
         <div className='landing'>
           <section className='landing-cinematic'>
+            <NavBar icon='poplet_black_no_bg' />
             <div className='inner'>
-              <div className='title'>
-                <img alt='Poplet' src='./assets/icons/poplet_white.svg' width='64' height='64'></img>
-                <h1 className='main-title'>Poplet</h1>
+              <div className='intro-title'>
+                <h1 className='main-title'>Thinking rethought.</h1>
+                <p className='intro-description'>Some ideas are more complex than others.<br />Poplet strives to let you take notes the way you want.</p>
+                <Flex direction='row' align='center' className='intro-details'>
+                  <Button className='intro-getstarted-btn'>Get started</Button>
+                  <Link to='/about'>or learn more</Link>
+                </Flex>
               </div>
               <div className='lower-half animated animatedFadeInUp fadeInUp'>
                 <h3 className='bio'></h3>
               </div>
             </div>
           </section>
+        </div>
+
+        <div className='landing-content'>
+          <div className='landing-content-card'>
+            <h2 className='landing-content-card-title'>
+              It's everything you want from note-taking apps, and more.
+            </h2>
+            <h2 className='landing-content-card-desc'>
+              Including features that you're used to like assigning members to notes, due dates, importance sorting and more.
+            </h2>
+          </div>
+
+          <div className='landing-content-card'>
+            <h2 className='landing-content-card-title'>
+              Customization to the extreme.
+            </h2>
+            <h2 className='landing-content-card-desc'>
+              The ability to fine-tune the nitty gritty details, such as the positioning and style of your notes
+            </h2>
+          </div>
+
+          <div className='landing-content-card'>
+            <h2 className='landing-content-card-title'>
+              Simple collaboration with advanced features.
+            </h2>
+            <h2 className='landing-content-card-desc'>
+              Getting work done with your mates couldn't be easier.
+            </h2>
+          </div>
         </div>
 
         <footer>
