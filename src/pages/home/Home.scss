@@ -3,14 +3,33 @@
 .home {
   display: flex;
   flex-direction: column;
+  background-color: $primary-color;
+  height: 100%;
+  width: 100%;
+
+  .navbar {
+    background-color: $dark-accent-color-purple-3;
+
+    &-user-container {
+      &:hover {
+        background-color: $dark-accent-color-purple-1;
+      }
+    }
+  }
+}
+
+.home-container {
+  margin-top: -1.25em;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
 }
 
 .home-content-container {
   display: flex;
-  margin-top: 2em;
   flex-direction: row;
-  padding-left: 2em;
-  padding-right: 2em;
+  width: 100%;
 }
 
 .activity-feed {
@@ -18,14 +37,15 @@
   flex-direction: column;
   justify-items: left;
   text-align: left;
-  background-color: $light-accent-color-1;
-  padding: 1em;
+  background-color: $dark-accent-color-purple-4;
+  padding: 2em;
   min-height: 300px;
-  max-height: 500px;
   min-width: 500px;
+  width: 100%;
 
   &-title {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
     font-size: 38px;
     margin-bottom: 24px;
   }
@@ -33,8 +53,10 @@
   &-subtitle {
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 13px;
+    text-transform: uppercase;
     margin-bottom: 12px;
+    color: $text-accent-color-3;
   }
 
   &-content {
@@ -52,15 +74,17 @@
 }
 
 .board-selector {
-  margin-right: 4em;
-  background-color: $light-accent-color-2;
+  background-color: $dark-accent-color-purple-5;
   padding: 1em;
   text-align: left;
-  height: fit-content;
+  height: 100%;
   
   > h2 {
+    padding-top: 0.25em;
+    padding-left: 0.25em;
     font-size: 26px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
     margin: 0;
     margin-bottom: 12px;
   }
@@ -71,8 +95,10 @@
   display: flex;
   flex: 0 1 auto;
   justify-content: flex-start;
-  padding: 1em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  margin: 4px 0 4px 0;
   margin-left: 0;
+  border-radius: 6px;
 
   &-name {
     padding-left: 12px;
@@ -90,10 +116,10 @@
     -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
     -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
     box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
-    border-radius: 5%;
   }
 
   &-join {
+    margin-top: 2em;
     background-color: $board-join-color;
   }
 

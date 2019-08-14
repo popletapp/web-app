@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PopletBase, Avatar, Note, NavBar, BetaModal } from './../../components';
+import { PopletBase, Avatar, Note, NavBar, BetaModal, Scroller } from './../../components';
 import { createModal } from './../../modules';
 import { Link } from 'react-router-dom';
 import './Home.scss';
@@ -43,7 +43,7 @@ class Home extends PopletBase {
           createModal(<BetaModal />);
         })()}
 
-        <div className='home-content-container'>
+        <div className='home-container'>
           <div className='board-selector'>
             <h2>Boards</h2>
             {Object.values(boards).map(board => {
@@ -62,7 +62,7 @@ class Home extends PopletBase {
               state: { modal: true }
             }}>
               <div className='board-item-name'>
-                Join a Board
+                  Join a Board
               </div>
             </Link>
 
@@ -71,27 +71,30 @@ class Home extends PopletBase {
               state: { modal: true }
             }}>
               <div className='board-item-name'>
-                Create a new Board
+                  Create a new Board
               </div>
             </Link>
           </div>
-          <div className='activity-feed'>
-            <div className='activity-feed-title'>Activity Feed</div>
-            <div className='activity-feed-subtitle'>Recently Modified</div>
-            <div className='activity-feed-content'>
-              {(() => {
-                if (!notes.length) {
-                  return <div>Nothing new on your feed.</div>;
-                } else {
-                  return (
+
+          <div className='home-content-container'>
+            <Scroller className='activity-feed'>
+              <div className='activity-feed-title'>Activity Feed</div>
+              <div className='activity-feed-subtitle'>Recently Modified</div>
+              <div className='activity-feed-content'>
+                {(() => {
+                  if (!notes.length) {
+                    return <div>Nothing new on your feed.</div>;
+                  } else {
+                    return (
                     <>
                       {activityFeedNotes}
                       {notes.length > 10 && <p>... and {notes.slice(0, 10).length} more notes</p>}
                     </>
-                  );
-                }
-              })()}
-            </div>
+                    );
+                  }
+                })()}
+              </div>
+            </Scroller>
           </div>
         </div>
       </div>
