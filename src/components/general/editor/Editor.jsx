@@ -36,7 +36,10 @@ class Editor extends Component {
 
   render () {
     const { editing, parseMarkdown, onClick, className, onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder } = this.props;
-    const { content } = this.state;
+    let { content } = this.state;
+    if (content && parseMarkdown) {
+      content = content.replace(/\n/g, '<br />');
+    }
 
     return (
       <div
@@ -52,7 +55,7 @@ class Editor extends Component {
         placeholder={placeholder}
         onInput={(e) => this.update(e)}
         onChange={(e) => this.change(e)}>
-        {parseMarkdown ? <Markdown source={content} /> : content}
+        {parseMarkdown ? <Markdown source={content} skipHtml={false} escapeHtml={false} /> : content}
       </div>
     );
   }
