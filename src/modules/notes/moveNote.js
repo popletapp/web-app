@@ -1,4 +1,4 @@
-import { createNote, saveNote, updateGroup, isNoteInGroup, determineSize } from './../';
+import { createNote, saveNote, updateGroup, isNoteInGroup, determineSize, isNoteOverlapping } from './../';
 import { endCreateNote } from './../../actions/note';
 import Poplet from '../../';
 
@@ -23,7 +23,13 @@ export default async (boardId, noteId, position) => {
     throw new Error('One or more position values are not valid integers');
   }
 
+  const oldNote = { ...note };
   note.position = { x, y };
+  const overlapping = isNoteOverlapping(note, oldNote);
+
+  if (overlapping) {
+    note.position = overlapping;
+  }
 
   const groupId = isNoteInGroup(note.id);
   if (groupId) {
