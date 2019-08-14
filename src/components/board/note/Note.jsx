@@ -211,6 +211,12 @@ class Note extends Component {
         this.setPosition(note);
       }
     }
+    if (note && note.size) {
+      const size = this.didSizeChange();
+      if (size) {
+        saveNote(this.boardId, size);
+      }
+    }
   }
 
   render () {

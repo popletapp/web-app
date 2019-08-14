@@ -96,6 +96,14 @@
       height: 24px;
       min-width: 48px;
       max-width: 48px;
+      transition: 0.1s;
+      border-radius: 4px;
+      
+      &:hover {
+        -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+        -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+      }
     }
 
     &-label {
