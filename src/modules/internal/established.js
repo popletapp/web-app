@@ -45,7 +45,7 @@ export default async () => {
   Poplet.ws.emit('heartbeat');
   setInterval(() => {
     Poplet.ws.emit('heartbeat');
-    if (Date.now() - LAST_HEARTBEAT_TIMESTAMP > 30e3) {
+    if (Date.now() - LAST_HEARTBEAT_TIMESTAMP > 50e3) {
       ReactDOM.render(<Connecting />, document.querySelector('#root'));
       reconnecting = true;
     } else {
