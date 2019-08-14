@@ -8,8 +8,6 @@
 
 body {
     background-color: $primary-color;
-    overflow-y: hidden;
-    overflow-x: hidden;
 }
 
 div {
@@ -102,15 +100,11 @@ p {
     99% {
         -webkit-transform: scale(40);
         transform: scale(40);
-        filter: blur(0);
-        -webkit-filter: blur(0);
         opacity: 1;
 	}
     100% {
         -webkit-transform: scale(40);
         transform: scale(40);
-        filter: blur(0);
-        -webkit-filter: blur(0);
         opacity: 0;
         z-index: -10;
 	}
@@ -125,15 +119,11 @@ p {
     99% {
         -webkit-transform: scale(40);
         transform: scale(40);
-        filter: blur(0);
-        -webkit-filter: blur(0);
         opacity: 1;
 	}
     100% {
         -webkit-transform: scale(40);
         transform: scale(40);
-        filter: blur(0);
-        -webkit-filter: blur(0);
         opacity: 0;
         z-index: -10;
 	}
@@ -146,16 +136,14 @@ p {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: optimize-contrast;
     -ms-interpolation-mode: nearest-neighbor;
-    filter: blur(0);
-    -webkit-filter: blur(0);
-    animation-delay: 2s;
-    animation-duration: 2s;
+    animation-delay: 1s;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
 	animation-fill-mode: both;
-	-webkit-animation-duration: 2s;
 	-webkit-animation-fill-mode: both;
     opacity: 0;
     animation-name: fadeOutZoomIn;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: cubic-bezier(.93,.01,.01,1);
 	-webkit-animation-name: fadeOutZoomIn;
 }
 
@@ -182,7 +170,7 @@ p {
 }
 
 .openWindow {
-    animation-delay: 2s;
+    animation-delay: 1s;
     animation-duration: 0.6s;
 	animation-fill-mode: both;
 	-webkit-animation-duration: 0.6s;
@@ -243,7 +231,6 @@ div[class^="poplet-icon-bg"] {
     height: 100%;
     max-width: 100%;
     max-height: 100%;
-    overflow: auto;
     text-align: center;
 }
 

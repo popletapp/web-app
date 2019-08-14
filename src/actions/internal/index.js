@@ -1,8 +1,8 @@
 import {
   MODAL_POP,
   MODAL_PUSH,
-  POPOUT_PUSH,
-  POPOUT_POP,
+  POPOUT_ADD,
+  POPOUT_REMOVE,
   TOOLTIP_PUSH,
   CLEAR_TOOLTIPS
 } from '../../constants/ActionTypes';
@@ -17,14 +17,15 @@ export const popTopModal = () => ({
   type: MODAL_POP
 });
 
-export const createPopout = (id, popout) => ({
-  type: POPOUT_PUSH,
+export const createPopout = (id, popout, options) => ({
+  type: POPOUT_ADD,
   id,
-  popout
+  popout,
+  options
 });
 
-export const popTopPopout = () => ({
-  type: POPOUT_POP
+export const removePopout = () => ({
+  type: POPOUT_REMOVE
 });
 
 export const createTooltip = (id, tooltip) => ({

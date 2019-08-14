@@ -3,19 +3,58 @@
   <head>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!-- Compiled and minified CSS -->
 
-    <!-- Compiled and minified JavaScript -->
+    <!-- Meta properties -->
+    <title>Poplet</title>
+    <meta name="theme-color" content="#8d5dd9" />
+    <meta property="og:title" content="Poplet" />
+    <meta property="og:description" content="Some ideas are more complex than others. Poplet strives to let you take notes the way you want." />
+    <meta property="og:url" content="https://popletapp.com" />
+    <meta property="og:image" content="https://popletapp.com/assets/icons/poplet_black_no_bg.svg" />
+
+    <!-- Compiled and minified JavaScript for Materialize -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>Poplet</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-145372454-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-145372454-1');
+    </script>
+
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="loader"></div>
-    <div id="root"></div>
+    <div id="root">
+      <div id="loader"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+    <script>
+      window.cookieconsent.initialise({
+        "palette": {
+          "popup": {
+            "background": "#252e39"
+          },
+          "button": {
+            "background": "#14a7d0"
+          }
+        },
+        "theme": "edgeless",
+        "content": {
+          "message": "Poplet uses cookies in order to ensure the best experience possible for you.",
+          "dismiss": "Alright, fair enough",
+          "link": "Give me more information"
+        }
+      });
+    </script>
   </body>
 </html>
