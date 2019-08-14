@@ -85,7 +85,6 @@ class BoardComponent extends PopletBase {
     }, 20);
     return (
       <div className='poplet-root'>
-        <div className='modal-container'></div>
         <Board key={board.id} id={board.id} />
         <Chatroom id={board.chatrooms[0]}/>
       </div>

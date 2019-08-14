@@ -1,7 +1,7 @@
 @import './../../index.scss';
 
 .landing-body {
-	background-color: #e0e0e0;
+	background-color: #ececec;
 	overflow-y: auto;
 }
 
@@ -47,7 +47,7 @@ button.intro-getstarted-btn {
 
 .landing-content-card-desc {
 	color: $light-accent-color-1;
-	font-size: 24px;
+	font-size: 20px;
 	margin-right: 32px;
 }
 
@@ -69,7 +69,16 @@ section.landing-cinematic {
 	width: 100%;
 	height: 700px;
 	max-height: 75%;
-	box-shadow: 0px 1px 10px black;
+}
+
+@media screen and (min-width: 1680px) {
+	.main-title {
+		font-size: 112px;
+	}
+
+	.intro-description {
+		font-size: 24px;
+	}
 }
 
 @media screen and (max-width: 1680px) {
@@ -101,6 +110,15 @@ section.landing-cinematic {
 		font-size: 20px;
 	}
 }
+
+@media screen and (max-width: 900px) {
+	section.landing-cinematic {
+		background: linear-gradient(0deg, rgba(255,255,255,0.95) 40%,rgba(255,255,255,0.01) 100%), url(./../svg/intro.svg) no-repeat, white;
+		background-size: cover;
+		background-position: -400px center;
+	}
+}
+
 
 @media screen and (max-width: 768px) {
 	.main-title {
@@ -142,6 +160,8 @@ section > .navbar-container {
 footer {
 	bottom: 0;
 	padding: 12px;
+	z-index: -1;
+	margin-top: 4em;
 	background-color: #131313;
 	width: 100%;
 	height: 50px;

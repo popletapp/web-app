@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { PopletBase, Avatar, NavBar, Button, MinimalisticButton, Flex, FlexChild } from '../../components';
 import './Feedback.scss';
-import Poplet from './../../';
+import Poplet from '../..';
 
 function mapStateToProps (state) {
   return {
@@ -12,7 +12,7 @@ function mapStateToProps (state) {
   };
 }
 
-class Feedback extends PopletBase {
+class Survey extends PopletBase {
   constructor () {
     super();
     this.state = {
@@ -152,4 +152,4 @@ class Feedback extends PopletBase {
   }
 }
 
-export default connect(mapStateToProps, null)(Feedback);
+export default connect(mapStateToProps, null)(Survey);
