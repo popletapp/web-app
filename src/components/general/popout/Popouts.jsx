@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Popout } from './../../';
 
 function mapStateToProps (state) {
   return {
@@ -12,7 +13,7 @@ class Popouts extends Component {
     const { popouts } = this.props;
     return (
       <div className='popouts animated'>
-        {popouts.map((popout, i) => <div style={{ top: popout.position.y, left: popout.position.x }} className='popout' key={i}>{popout.content}</div>)}
+        {popouts.map((popout, i) => <Popout style={{ top: popout.options.position.y, left: popout.options.position.x }} className={`${popout.id}`} key={i}>{popout.popout}</Popout>)}
       </div>
     );
   }
