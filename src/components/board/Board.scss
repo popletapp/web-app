@@ -46,8 +46,14 @@
   flex: 1 1 100%;
 }
 
-.large-invite-members-btn {
+button.large-invite-members-btn {
   margin-top: 12px;
+  background: linear-gradient(74deg, $poplet-purple, $poplet-pinkple);
+  transition: all 0.1s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .leave-board {
@@ -291,10 +297,91 @@
   .board-details {
     width: 200px;
   }
+
+  div.members-list {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .toolbar-option p {
+    display: none;
+  }
+
+  .btn-circle.toolbar-btn {
+    margin: 2px;
+  }
+
+  .toolbar-container {
+    min-width: 40px;
+    max-width: 100px;
+  }
+
+  div.searchbar-container {
+    width: 75px;
+  }
 }
 
 @media screen and (max-width: 500px) {
   .text-input-container {
     width: 100px !important;
+  }
+
+  div.toolbar-container {
+    min-width: 100px;
+    max-width: 150px;
+    flex-wrap: nowrap;
+    flex-direction: row;
+  }
+
+  .options-top-section-left {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 450px) {
+  .options-top-section-left {
+    width: 0px;
+    max-width: 0px;
+    
+    > .searchbar-container {
+      display: none;
+    }
+  }
+
+  .board-information {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+  }
+
+  .board-details {
+    width: 100%;
+  }
+
+  div.toolbar-container {
+    z-index: 2;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    min-width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    background-color: $dark-accent-color-3;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+    > div.toolbar-option {
+      width: 32px;
+      flex: 0 1 auto;
+
+      > button.toolbar-btn {
+        width: 48px;
+        height: 48px;
+        line-height: 0;
+        font-size: 48px;
+      }
+    }
   }
 }

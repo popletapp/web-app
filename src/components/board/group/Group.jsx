@@ -21,6 +21,7 @@ class Group extends Component {
     super();
     this.boardId = boardId;
     this.group = group;
+    this.wasDraggedByClient = false;
     this.state = {
       editingName: false,
       style: {}
@@ -37,9 +38,15 @@ class Group extends Component {
     }
   }
 
-  componentDidUpdate () {
-    const { group } = this.props;
+  componentDidUpdate (oldProps) {
+    const { group, isDragging } = this.props;
     const { style } = this.state;
+
+    if (!isDragging && oldProps.isDragging) {
+      this.wasDraggedByClient = true;
+      setTimeout(() => { this.wasDraggedByClient = false; }, 500);
+    }
+
     if (group && group.position) {
       if (style.top !== group.position.y || style.left !== group.position.x) {
         this.setPosition(group);
@@ -109,7 +116,12 @@ class Group extends Component {
     group.options = group.options || {};
     return connectDragSource(connectDropTarget(
       <div className='group-container'
-        style={{ ...(!listView && !preview ? style : {}), backgroundColor: group.options.color || '', opacity: isDragging ? 0 : 1 }}>
+        style={{
+          ...(this.wasDraggedByClient || isDragging ? { transition: 'none' } : {}),
+          ...(!listView && !preview ? style : {}),
+          backgroundColor: group.options.color || '',
+          opacity: isDragging ? 0 : 1
+        }}>
         <Flex direction='row' align='center' className='group-header'>
           <FlexChild direction='row' align='center'>
             <Editor

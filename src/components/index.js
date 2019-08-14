@@ -38,6 +38,10 @@ export { default as Tooltip } from './general/tooltip/Tooltip';
 export { default as Tooltips } from './general/tooltip/Tooltips';
 export { default as CircleButton } from './general/button/CircleButton';
 export { default as CloseButton } from './general/button/CloseButton';
+export { default as Popout } from './general/popout/Popout';
+export { default as Popouts } from './general/popout/Popouts';
+export { default as MemberPopout } from './general/popout/MemberPopout';
+export { default as Indicator } from './general/indicator/Indicator';
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure';
 export { default as Loader } from './internal/load/Loader';

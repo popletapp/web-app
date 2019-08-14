@@ -21,7 +21,8 @@ class NoteDetailedView extends Modal {
     this.noteId = noteId;
     this.boardId = boardId;
     this.state = {
-      focused: false
+      focused: false,
+      color: null
     };
   }
 
@@ -30,7 +31,7 @@ class NoteDetailedView extends Modal {
     this.setState({ color: color.hex });
     const newNote = note;
     newNote.options.color = color.hex;
-    await updateNote(this.boardId, newNote);
+    await saveNote(this.boardId, newNote);
   }
 
   highlight () {
@@ -77,7 +78,7 @@ class NoteDetailedView extends Modal {
 
   render () {
     const { note } = this.props;
-    const { focused } = this.state;
+    const { focused, color } = this.state;
 
     note.title = note.title || '';
 
@@ -119,7 +120,7 @@ class NoteDetailedView extends Modal {
           <div className='modal-note-settings'>
             <div className='modal-note-settings-header'>Color</div>
             <ColorPicker
-              color={note.options.color || '#546e7a'}
+              color={color || note.options.color || '#546e7a'}
               onChangeComplete={(color) => this.handleColorChange(color)}
             />
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Avatar, Scroller, HorizontalScroller, RoundedButton, Flex, FlexChild, MinimalisticButton } from './../';
+import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, MinimalisticButton } from './../';
 import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
@@ -75,25 +75,27 @@ class Chatroom extends Component {
     return (
       <Flex className='chatroom-container'>
         <FlexChild className='chatroom-root'>
-          <Flex grow={0} className='chatroom-tabs' direction='row'>
-            <HorizontalScroller style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
-              {chatrooms && chatrooms.map((cr, i) =>
-                <FlexChild basis={'150px'} grow={0} key={i} className='chatroom-tab-room' direction='row'>
-                  <FlexChild>
-                    <div className='chatroom-tab-room-name'>{cr.name}</div>
+          <Flex grow={0} className='chatroom-tabs' align='center' direction='row'>
+            <HorizontalScroller style={{ width: '100%' }}>
+              <Flex direction='row' align='left'>
+                {chatrooms && chatrooms.map((cr, i) =>
+                  <FlexChild grow={0} key={i} className='chatroom-tab-room' justify='start' align='left' direction='row'>
+                    <FlexChild align='left' justify='start'>
+                      <div className='chatroom-tab-room-name'>{cr.name}</div>
+                    </FlexChild>
+                    <FlexChild align='right' justify='end'>
+                      <MinimalisticButton icon='close' className='chatroom-tab-room-btn chatroom-tab-room-btn-close' />
+                    </FlexChild>
                   </FlexChild>
-                  <FlexChild align='right'>
-                    <MinimalisticButton icon='close' className='chatroom-tab-room-btn chatroom-tab-room-btn-close' />
-                  </FlexChild>
+                )}
+                <FlexChild onClick={() => createChatroom(boardID, { name: 'Chatroom' })} grow={0} className='chatroom-tab-room' justify='center' direction='row'>
+                  <MinimalisticButton icon='add' className='chatroom-tab-room-btn' />
                 </FlexChild>
-              )}
-              <FlexChild onClick={() => createChatroom(boardID, { name: 'Chatroom' })} grow={0} className='chatroom-tab-room' justify='center' direction='row' style={{ width: '35px' }}>
-                <MinimalisticButton icon='add' className='chatroom-tab-room-btn' />
-              </FlexChild>
+              </Flex>
             </HorizontalScroller>
           </Flex>
 
-          <Flex grow={0} className='chatroom-header' direction='row'>
+          <Flex grow={0} className='chatroom-header' align='left' direction='column'>
             <FlexChild className='chatroom-header-information'>
               <div className='chatroom-title'>
                 {chatroom.name}
@@ -102,15 +104,16 @@ class Chatroom extends Component {
                 {chatroom.lastMessage ? `Last message sent ${TimeParser.timeAgo(chatroom.lastMessage)}` : 'Not active'}
               </div>
             </FlexChild>
-            <FlexChild className='chatroom-header-btns' grow={0} align='right' direction='column'>
-              <RoundedButton onClick={() => deleteChatroom(boardID, chatroom.id)} icon='close' color='red lighten-1' small={true} />
-              <RoundedButton icon='help' color='grey' small={true} />
+            <FlexChild className='chatroom-header-btns' grow={0} align='center' justify='right' direction='column'>
+              <MinimalisticButton icon='edit' />
+              <MinimalisticButton icon='help' />
+              <MinimalisticButton onClick={() => deleteChatroom(boardID, chatroom.id)} icon='close' />
             </FlexChild>
           </Flex>
 
           <Flex className='chatroom-body'>
             <Scroller style={{ width: '100%' }}>
-              {comments && comments.sort((a, b) => b.timestamp - a.timestamp).map(comment => <Comment key={comment.id} author={comment.author}>{comment.content}</Comment>)}
+              {comments && comments.sort((a, b) => b.timestamp - a.timestamp).map((comment, i) => <Comment key={i} author={comment.author}>{comment.content}</Comment>)}
             </Scroller>
           </Flex>
 

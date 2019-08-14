@@ -11,27 +11,46 @@
 }
 
 .chatroom-header {
+  position: relative;
   background-color: #5c6bc0;
   width: 100%;
   height: 130px;
   padding: 12px;
+  margin-bottom: 12px;
 
   &-btns {
-    margin-left: 12px;
-    margin-right: 12px;
-    
-    .btn-small {
-      width: 12px;
-      height: 12px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    > button {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      transition: 0.1s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      &:last-child {
+        background-color: rgba($poplet-red, 0.3);
+
+        &:hover {
+          background-color: rgba($poplet-red, 0.6);
+        }
+      }
     }
   }
 }
 
 .chatroom-root {
   background-color: #333333;
-  height: 100% !important;
+  height: 100%;
   width: 100%;
-  padding: 0 !important;
+  padding: 0;
 }
 
 .chatroom-tab {
@@ -55,6 +74,11 @@
 
     &:last-child {
       background-color: $dark-accent-color-1;
+      border-radius: 0px;
+      width: 41px;
+      margin: 0;
+      margin-left: auto;
+      cursor: pointer;
     }
 
     &-name {
@@ -143,7 +167,7 @@
 }
 
 @media screen and (max-width: 700px) {
-  .chatroom-container {
+  div.chatroom-container {
       display: none;
   }
 }
