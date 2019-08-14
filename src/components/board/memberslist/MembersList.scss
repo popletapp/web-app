@@ -1,9 +1,16 @@
 @import './../../../index.scss';
 
 .members-list {
-  >.list-container {
+  > .list-container {
     min-height: 100vh;
     height: 100%;
+
+    > .list > .scroller-container > .scroller > .selectable-item:hover {
+      -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
+      -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
+      box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+    }
   }
 
   &-header {
@@ -14,4 +21,6 @@
     width: 100%;
     background-color: $light-accent-color-2;
   }
+
+  
 }
