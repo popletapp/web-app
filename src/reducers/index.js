@@ -19,7 +19,7 @@ import {
   chatroomComments,
   commentsByChatroom
 } from './chatroom';
-import { modals, connected, tooltips } from './internal';
+import { modals, connected, tooltips, popouts } from './internal';
 
 const rootReducer = combineReducers({
   connected,
@@ -42,7 +42,8 @@ const rootReducer = combineReducers({
   chatroomsByBoard,
   chatroomComments,
   commentsByChatroom,
-  tooltips
+  tooltips,
+  popouts
 });
 
 export default rootReducer;

@@ -11,11 +11,9 @@ export const modals = (state = [], action) => {
 
 export const popouts = (state = [], action) => {
   switch (action.type) {
-    case 'POPOUT_POP':
-      const array = state;
-      array.pop();
-      return array;
-    case 'POPOUT_PUSH':
+    case 'POPOUT_REMOVE':
+      return state.slice(0, -1);
+    case 'POPOUT_ADD':
       return [...state, action];
     default:
       return state;
