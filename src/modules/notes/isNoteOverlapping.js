@@ -13,8 +13,6 @@ export default (note, prevNote) => {
     // If the comparison note is not in the same group as the note being tested
     const comparisonNoteInGroup = isNoteInGroup(b.id);
     const originalNoteInGroup = isNoteInGroup(a.id);
-    const grouped = originalNoteInGroup && comparisonNoteInGroup;
-    console.log(grouped)
     if (originalNoteInGroup !== comparisonNoteInGroup) return;
     // If the position data for either note is not available
     if (!a.position || !b.position) return;
