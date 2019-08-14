@@ -1,6 +1,6 @@
 {
-  "name": "app",
-  "version": "0.1.4",
+  "name": "poplet",
+  "version": "0.1.6",
   "private": true,
   "dependencies": {
     "@sentry/browser": "^5.5.0",
