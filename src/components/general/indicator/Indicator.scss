@@ -1,0 +1,17 @@
+@import './../../../index.scss';
+
+.indicator {
+  width: 12px;
+  height: 12px;
+
+  &-text {
+    color: $text-accent-color-1;
+    margin-left: 16px;
+  }
+
+  &.online {
+    background-color: $poplet-green;
+    border-radius: 100%;
+  }
+}
+
