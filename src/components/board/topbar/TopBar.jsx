@@ -83,14 +83,12 @@ class TopBar extends Component {
                       {board.members ? board.members.length : 0} member{board.members && board.members.length === 1 ? '' : 's'}
                     </FlexChild>
                     <FlexChild className='member-list-btn' align='right'>
-                      <Link onClick={() => toggleMemberListVisibility()}>
-                      Member List
-                      </Link>
+                      <MinimalisticButton icon='group' onClick={() => toggleMemberListVisibility()} className='board-dropdown-arrow' />
                     </FlexChild>
                   </Flex>
                 </div>
               </div>
-              <Button onClick={() => createModal(<BoardInviteMembersModal boardID={board.id} />)} color='indigo lighten-2' className='large-invite-members-btn'>Invite Members</Button>
+              <Button onClick={() => createModal(<BoardInviteMembersModal boardID={board.id} />)} className='large-invite-members-btn'>Invite Members</Button>
             </div>
             <ul id='board-dropdown' className='dropdown-content'>
               <div className='board-selection'>
@@ -113,25 +111,25 @@ class TopBar extends Component {
             </div>
             <Flex wrap={true} className='toolbar-container'>
               <FlexChild onClick={() => this.props.beginCreateNote(board.id)} className='toolbar-option' direction='row' align='center'>
-                <CircleButton color='red' icon='add' className='toolbar-btn' />
+                <CircleButton color='purple lighten-2' icon='note_add' className='toolbar-btn' />
                 <p>New Note</p>
               </FlexChild>
 
               <FlexChild onClick={() => createGroup(board.id, { name: 'Group' })} className='toolbar-option' direction='row' align='center'>
-                <CircleButton color='orange' icon='add' className='toolbar-btn' />
+                <CircleButton color='purple lighten-1' icon='library_add' className='toolbar-btn' />
                 <p>New Group</p>
               </FlexChild>
 
               <FlexChild onClick={() => this.props.updateView(board.id, listView ? 0 : 1)} className='toolbar-option' direction='row' align='center'>
                 <CircleButton
                   icon={!listView ? 'format_list_bulleted' : 'dashboard'}
-                  color='yellow darken-2'
+                  color='pink lighten-2'
                   className='toolbar-btn' />
                 <p>{listView ? 'Note View' : 'List View'}</p>
               </FlexChild>
 
               <FlexChild onClick={() => toggleChatroomVisibility()} className='toolbar-option' direction='row' align='center'>
-                <CircleButton icon='chat_bubble' color='green' className='toolbar-btn' />
+                <CircleButton icon='chat_bubble' color='pink lighten-1' className='toolbar-btn' />
                 <p>Chatroom</p>
               </FlexChild>
             </Flex>
