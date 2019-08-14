@@ -14,11 +14,11 @@
 
 section.cinematic-authentication {
   padding: 5em;
-	background: linear-gradient(96deg, rgba(0,0,0,0.924) 24%,rgba(0,0,0,0.0) 100%,rgba(0,0,0,0) 30%), url(./../svg/poplet-background-dark.svg) no-repeat fixed;
+	background: url(./../svg/login.svg) no-repeat fixed white;
 	background-size: cover;
-	background-position: bottom;
 	background-attachment: fixed;
-	background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  background-position: -250px center;
 	text-align: center;
   position: relative;
   flex: 1 1 45%;
@@ -92,4 +92,31 @@ section.cinematic-authentication {
 
 .no-account {
   margin-top: 2em;
+}
+
+@media only screen and (min-width: 1500px) {
+  section.cinematic-authentication {
+      background-size: 50%;
+      background-position: -50px 0px;
+  }
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1500px) {
+  section.cinematic-authentication {
+      background-size: 100%;
+      background-position: -300px -400px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  section.cinematic-authentication {
+      background-size: contain;
+      background-position: -100px center;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  section.cinematic-authentication {
+      display: none;
+  }
 }

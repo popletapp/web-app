@@ -1,6 +1,11 @@
 @import './../login/Login.scss';
 @import './../../index.scss';
 
+.authentication-container {
+  top: 8em;
+  left: 2em;
+}
+
 .password-component {
   display: flex;
   flex-direction: row;
