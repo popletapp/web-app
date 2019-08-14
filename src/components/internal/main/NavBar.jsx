@@ -17,11 +17,11 @@ class NavBar extends Component {
   }
 
   render () {
-    const { user, name } = this.props;
+    const { user, name, icon = 'poplet_white_no_bg' } = this.props;
     return (
       <div className='navbar-container'>
         <div className='navbar'>
-          <img src='./../../assets/icons/poplet_white_no_bg.svg' width='32' height='32' alt=''></img>
+          <img src={`./../../assets/icons/${icon}.svg`} width='32' height='32' alt=''></img>
           <Link to='/home' className='navbar-text'>
             {name || 'Poplet'}
             <div className='beta-badge'>Beta</div>
@@ -37,8 +37,10 @@ class NavBar extends Component {
               );
             } else {
               return (
-                <div className='navbar-user-container'>
-                  <Link className='navbar-user-container-username' to='/login'>Sign in</Link>
+                <div className='navbar-register'>
+                  <Link className='navbar-register-login' to='/login'>Log in</Link>
+                  <p className='navbar-register-or'>or</p>
+                  <Link className='navbar-register-login' to='/signup'>Sign up</Link>
                 </div>
               );
             }

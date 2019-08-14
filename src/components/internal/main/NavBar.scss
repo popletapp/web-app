@@ -15,9 +15,9 @@
   align-items: center;
 
   &-text {
-    padding-left: 0.75em;
+    padding-left: 0.45em;
     margin: 0;
-    font-size: 1.95em;
+    font-size: 2.35em;
     font-weight: 800;
     color: white;
   }
@@ -31,6 +31,18 @@
     &:hover {
       background-color: $light-accent-color-2;
       transition: all 0.125s;
+    }
+  }
+
+  &-register {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+
+    &-or {
+      color: grey;
+      padding: 0 0.5em 0 0.5em;
+      text-transform: lowercase;
     }
   }
 

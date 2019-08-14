@@ -6,6 +6,7 @@ import {
   BoardJoinModal,
   BoardCreationModal,
   Tooltips,
+  Popouts,
   ErrorBoundary
 } from './../../../components';
 import { createModal } from './../../../modules';
@@ -58,6 +59,7 @@ class App extends Component {
 
     return (
       <div className='app'>
+        <div id='loader' />
         <ErrorBoundary>
           <Switch location={isModal ? this.previousLocation : location}>
             <Route exact path='/home' component={Home} />
@@ -84,6 +86,7 @@ class App extends Component {
           <div data-no-focus-lock='true'>
             <Modals />
             <Tooltips />
+            <Popouts />
           </div>
         </ErrorBoundary>
       </div>

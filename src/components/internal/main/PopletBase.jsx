@@ -21,10 +21,14 @@ class PopletBase extends Component {
 
     if (!connected && !connecting && (user && !user.id)) {
       this.setState({ connecting: true });
-      ReactDOM.render(<Loader />, document.querySelector('#loader'));
+      const loader = document.querySelector('#loader');
+      ReactDOM.render(<Loader />, loader);
       await popletConnect()
         .then(() => {
           this.setState({ connecting: false });
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 2000);
         })
         .catch(() => {
           ReactDOM.render(<CriticalFailure />, document.querySelector('#root'));
