@@ -71,7 +71,7 @@ class TopBar extends Component {
                 <Avatar url={board.avatar} alt={board.name} size={32} />
                 <div className='board-info-text'>
                   <Flex direction='row' className='board-info-title dropdown-trigger' data-target='board-dropdown'>
-                    <FlexChild align='left'>
+                    <FlexChild className='board-info-title-text' align='left'>
                       {board.name}
                     </FlexChild>
                     <FlexChild align='right'>

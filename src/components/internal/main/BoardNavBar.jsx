@@ -21,7 +21,7 @@ class NavBar extends Component {
     return (
       <div className='navbar-container'>
         <div className='board-navbar'>
-          <img src='./../../assets/icons/poplet_white_no_bg.svg' width='26' height='26' alt=''></img>
+          <Link to='/home'><img src='./../../assets/icons/poplet_white_no_bg.svg' width='26' height='26' alt=''></img></Link>
           <Link to='/home' className='navbar-text'>
             {name || 'Poplet'}
           </Link>
