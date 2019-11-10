@@ -30,7 +30,7 @@ class Landing extends Component {
         <div className='landing-content'>
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              It's everything you want from note-taking apps, and more.
+              It's everything you want from note-taking apps, and more
             </h2>
             <h2 className='landing-content-card-desc'>
               Including features that you're used to like assigning members to notes, due dates, importance sorting and more.
@@ -39,16 +39,16 @@ class Landing extends Component {
 
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              Customization to the extreme.
+              Customization to the extreme
             </h2>
             <h2 className='landing-content-card-desc'>
-              The ability to fine-tune the nitty gritty details, such as the positioning and style of your notes
+              The ability to fine-tune the nitty gritty details, such as the positioning and style of your notes.
             </h2>
           </div>
 
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              Simple collaboration with advanced features.
+              Simple collaboration with advanced features
             </h2>
             <h2 className='landing-content-card-desc'>
               Getting work done with your mates couldn't be easier.
