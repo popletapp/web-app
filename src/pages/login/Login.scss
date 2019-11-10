@@ -10,6 +10,7 @@
   bottom: 0;
   right: 0;
   margin: auto;
+  overflow-y: visible;
 }
 
 section.cinematic-authentication {
@@ -92,6 +93,13 @@ section.cinematic-authentication {
 
 .no-account {
   margin-top: 2em;
+}
+
+@media only screen and (max-height: 768px) {
+  .authentication-container {
+    top: 2em;
+    height: auto;
+  }
 }
 
 @media only screen and (min-width: 1500px) {
