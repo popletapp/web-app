@@ -114,7 +114,7 @@
 .chatroom-container {
   max-width: 250px;
   width: 100%;
-  box-shadow: 0px 0px 18px $dark-accent-color-5;
+  box-shadow: -2px 0px 3px $dark-accent-color-5;
   z-index: 1;
 }
 
@@ -159,14 +159,14 @@
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 800px) {
     .chatroom-header-btns {
         padding: 0;
         padding-top: 6px;
     }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 770px) {
   div.chatroom-container {
       display: none;
   }
