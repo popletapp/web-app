@@ -92,13 +92,15 @@ button.large-invite-members-btn {
   }
 
   &-title {
-    font-weight: 800;
-    overflow: hidden;
-    display: block;
-    font-size: 24px;
-    width: auto;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    &-text {
+      font-weight: 800;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      font-size: 24px;
+      max-width: 125px;
+    }
     
     > i {
       top: 4px;
@@ -283,6 +285,10 @@ button.large-invite-members-btn {
   .toolbar-container .floating-btn-label {
     display: none;
   }
+
+  .options-top-section-left {
+    margin-left: 0;
+  }
 }
 
 @media screen and (max-width: 700px) {
@@ -358,6 +364,15 @@ button.large-invite-members-btn {
 
   .board-details {
     width: 100%;
+  }
+
+  .board-info-title-text {
+    max-width: 270px;
+  }
+
+  div.note-container {
+    overflow-x: auto;
+    height: calc(100% - 75px);
   }
 
   div.toolbar-container {
