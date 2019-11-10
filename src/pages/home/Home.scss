@@ -26,6 +26,41 @@
   width: 100%;
 }
 
+@media screen and (max-width: 648px) {
+  .home-container {
+    flex-direction: column;
+  }
+
+  .home-content-container {
+    overflow-y: auto;
+  }
+
+  .board-selector {
+    min-height: 350px;
+    height: auto;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+  
+      &-thumb {
+        background-clip: padding-box;
+        border-width: 3px;
+        border-style: solid;
+        border-radius: 7px;
+        border-color: #505050;
+      }
+  
+      &-track-piece {
+        background-color: #1d1d1d;
+        border: 3px solid #292929;
+        border-radius: 7px;
+      }
+    }
+  }
+}
+
 .home-content-container {
   display: flex;
   flex-direction: row;
@@ -77,7 +112,6 @@
   background-color: $dark-accent-color-purple-5;
   padding: 1em;
   text-align: left;
-  height: 100%;
   
   > h2 {
     padding-top: 0.25em;
