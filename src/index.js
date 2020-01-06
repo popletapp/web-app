@@ -10,6 +10,7 @@ import Backend from 'react-dnd-html5-backend';
 import './index.scss';
 import './App.scss';
 import Application from './components/internal/main/App';
+import { log as Logger } from './util';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 
@@ -24,8 +25,11 @@ const Poplet = {
   constants: {
     WS_BASE_URL: 'wss://popletapp.com:7777'
   },
-  store
+  store,
+  log: new Logger()
 };
+
+Poplet.log.prefix('START').debug('Poplet initializing...');
 
 if (process.env.NODE_ENV !== 'development') {
   Sentry.init({ dsn: 'https://c4d63a4af0db44f295ac39635fea9775@sentry.io/1520095' });
@@ -34,7 +38,7 @@ if (process.env.NODE_ENV !== 'development') {
 export default Poplet;
 
 async function render () {
-  store.subscribe(() => console.log(store.getState()));
+  store.subscribe(() => Poplet.log.prefix(Poplet.log.PREFIX_TYPES.STORE).debug('Current store state', store.getState()));
   ReactDOM.render(
     <Provider store={store}>
       <DndProvider backend={Backend}>

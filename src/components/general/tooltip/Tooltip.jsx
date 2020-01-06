@@ -10,7 +10,7 @@ class Tooltip extends Component {
   }
 
   hover (event) {
-    function isParent (refNode, otherNode) {
+    /* function isParent (refNode, otherNode) {
       var parent = otherNode.parentNode;
       do {
         if (refNode === parent) {
@@ -20,7 +20,7 @@ class Tooltip extends Component {
         }
       } while (parent);
       return false;
-    }
+    } */
 
     const { placement = 'top', text } = this.props;
     this.setState({ isShowing: true });

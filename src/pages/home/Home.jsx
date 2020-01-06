@@ -46,9 +46,9 @@ class Home extends PopletBase {
         <div className='home-container'>
           <div className='board-selector'>
             <h2>Boards</h2>
-            {Object.values(boards).map(board => {
+            {Object.values(boards).map((board, i) => {
               return (
-                <Link className='board-item' to={`/boards/${board.id}`}>
+                <Link key={i} className='board-item' to={`/boards/${board.id}`}>
                   <Avatar url={board.avatar} alt={board.name} size={32} />
                   <div className='board-item-name'>
                     {board.name}
@@ -77,13 +77,31 @@ class Home extends PopletBase {
           </div>
 
           <div className='home-content-container'>
+            <Scroller className='recently-viewed'>
+              <div className='recently-viewed-title'>Recently Viewed</div>
+              <div className='recently-viewed-content'>
+                {(() => {
+                  if (!notes.length) {
+                    return <div>You haven't recently viewed anything.</div>;
+                  } else {
+                    return (
+                    <>
+                      {activityFeedNotes}
+                      {notes.length > 10 && <p>... and {notes.slice(0, 10).length} more notes</p>}
+                    </>
+                    );
+                  }
+                })()}
+              </div>
+            </Scroller>
+
             <Scroller className='activity-feed'>
               <div className='activity-feed-title'>Activity Feed</div>
               <div className='activity-feed-subtitle'>Recently Modified</div>
               <div className='activity-feed-content'>
                 {(() => {
                   if (!notes.length) {
-                    return <div>Nothing new on your feed.</div>;
+                    return <div>Nothing new on your feed. Check back later!</div>;
                   } else {
                     return (
                     <>

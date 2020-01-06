@@ -18,7 +18,7 @@ export default async () => {
     axios.defaults.headers.common['Authorization'] = token;
 
     const user = await getCurrentUser();
-    console.log(`Logged in as ${user.username} (${user.id})`);
+    Poplet.log.prefix(Poplet.log.PREFIX_TYPES.GATEWAY).info(`Logged in as ${user.username} (${user.id})`);
     store.dispatch({ type: 'INITIALIZE_USER', user });
     Poplet.user = user;
 

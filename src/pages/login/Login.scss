@@ -128,3 +128,13 @@ section.cinematic-authentication {
       display: none;
   }
 }
+
+@media only screen and (max-width: 468px) {
+  .authentication-container {
+      margin: 0;
+
+      h1 {
+        font-size: 40px;
+      }
+  }
+}

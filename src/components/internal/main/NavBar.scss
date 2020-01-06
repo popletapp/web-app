@@ -125,7 +125,7 @@
 }
 
 .beta-badge {
-  top: -3px;
+  top: -6px;
   font-family: "Roboto", sans-serif;
   margin: 5px;
   margin-left: 14px;
@@ -133,10 +133,10 @@
   padding-right: 5px;
   height: auto;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 11px;
   background-color: $poplet-blue;
   display: inline-block;
   border-radius: 5px;
-  line-height: 2em;
+  line-height: 1.75em;
   position: relative;
 }
