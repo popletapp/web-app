@@ -56,6 +56,7 @@ $board-create-color: #658fa3;
 // HSL should be 45% 45%
 $poplet-green: #3fa650;
 $poplet-red: #a63f3f;
+$poplet-lightred: #ef5350;
 $poplet-blue: #6fa2bf;
 
 $poplet-default: #8d5dd9;
@@ -131,4 +132,116 @@ input:focus, textarea:focus {
 
 .dropdown-content li:hover {
   background-color: initial;
+}
+
+@keyframes jumpIn {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+
+@keyframes fadeInAndBounceDown {
+  from {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(200px);
+  }
+}
+
+@keyframes fadeOutAndZoom {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes fadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(-40px);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100vw);
+  }
+
+  to {
+    transform: translate(0%);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100vw);
+  }
+
+  to {
+    transform: translateX(calc(100vw - 100%))
+  }
+}
+
+@keyframes beginAtMiddleFlyToTop {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+
+  to {
+    transform: scale(0.7) translate(-15%, -90%);
+  }
 }
