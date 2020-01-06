@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavBar, Flex, FlexChild, Button } from './../../components';
+import { NavBar, Flex, FlexChild } from './../../components';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './Landing.scss';
@@ -14,14 +14,14 @@ class Landing extends Component {
             <div className='inner'>
               <div className='intro-title'>
                 <h1 className='main-title'>Thinking rethought.</h1>
-                <p className='intro-description'>Some ideas are more complex than others.<br />Poplet strives to let you take notes the way you want.</p>
+                <h3 className='intro-description-title'>A note-taking application with rich features</h3>
+                <p className='intro-description'>Some ideas are more complex than others — Poplet strives to let you take notes the way you want.</p>
                 <Flex direction='row' align='center' className='intro-details'>
-                  <Button className='intro-getstarted-btn'>Get started</Button>
+                  <Link to='/login' className='btn intro-getstarted-btn'>Get started</Link>
                   <Link to='/about'>or learn more</Link>
                 </Flex>
               </div>
               <div className='lower-half animated animatedFadeInUp fadeInUp'>
-                <h3 className='bio'></h3>
               </div>
             </div>
           </section>

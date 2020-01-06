@@ -21,15 +21,21 @@ div.landing-body {
 .intro-description {
 	color: $light-accent-color-3;
 	font-size: 24px;
-	margin-top: 2em;
 	margin-right: 32px;
+
+	&-title {
+		color: black;
+		margin: 0;
+		font-size: 28px;
+		margin-top: 2em;
+	}
 }
 
 .intro-details {
 	margin-top: 5em;
 }
 
-button.intro-getstarted-btn {
+.intro-getstarted-btn {
 	margin-right: 24px;
 	border-radius: 24px;
 	height: 48px;
@@ -137,7 +143,7 @@ section.landing-cinematic {
 
 @media screen and (max-width: 768px) {
 	.main-title {
-		font-size: 80px;
+		font-size: 65px;
 	}
 
 	.intro-description {
@@ -147,6 +153,12 @@ section.landing-cinematic {
 	section.landing-cinematic {
 		background-position: -700px 0px;
 		background-size: 300%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.main-title {
+		font-size: 55px;
 	}
 }
 
@@ -161,7 +173,15 @@ section.landing-cinematic {
 	}
 
 	.main-title {
-		font-size: 58px;
+		font-size: 52px;
+	}
+
+	.intro-description {
+		font-size: 18px;
+
+		&-title {
+			font-size: 24px;
+		}
 	}
 
 	.navbar-text {
