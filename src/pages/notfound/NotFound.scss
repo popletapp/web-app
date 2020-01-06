@@ -1,0 +1,36 @@
+@import './../../index.scss';
+
+.notfound {
+  height: 100vh;
+  background-color: #8EC5FC;
+  background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+  z-index: 0;
+
+  section {
+    padding: 2em;
+
+    > h3 {
+      margin-bottom: 4em;
+      font-size: 14px;
+      color: $poplet-lightred;
+      padding: 1em;
+      background-color: #212121b9;
+      width: auto;
+    }
+  }
+
+  &-mask {
+    height: 100vh;
+    background-image: linear-gradient(90deg, #21212163 0%, #00000044 100%);
+  }
+
+  &-main-title {
+    font-size: 7em;
+    margin: 0;
+    z-index: 1;
+
+    > img {
+      margin-left: 1em;
+    }
+  }
+}
