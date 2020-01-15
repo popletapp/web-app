@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import store from './store.js';
 import * as Sentry from '@sentry/browser';
 import { DndProvider } from 'react-dnd';
-import Backend from 'react-dnd-html5-backend';
+import TouchBackend from 'react-dnd-touch-backend';
+import HTML5Backend from 'react-dnd-html5-backend';
+import mobile from 'is-mobile';
 
 import './index.scss';
 import './App.scss';
@@ -41,7 +43,7 @@ async function render () {
   store.subscribe(() => Poplet.log.prefix(Poplet.log.PREFIX_TYPES.STORE).debug('Current store state', store.getState()));
   ReactDOM.render(
     <Provider store={store}>
-      <DndProvider backend={Backend}>
+      <DndProvider backend={mobile() ? TouchBackend : HTML5Backend} options={{ enableMouseEvents: true }}>
         <BrowserRouter>
           <Switch>
             <Route path='/' component={Application} />
