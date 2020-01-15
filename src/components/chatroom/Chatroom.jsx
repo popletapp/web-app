@@ -37,8 +37,41 @@ class Chatroom extends Component {
     super();
     this.id = id;
     this.state = {
-      content: ''
+      content: '',
+      dragging: false
     };
+    this.barMouseMove = this.barMouseMove.bind(this);
+    this.barMouseUp = this.barMouseUp.bind(this);
+    this.mouseMoveListener = document.addEventListener('mousemove', this.barMouseMove);
+    this.mouseUpListener = document.addEventListener('mouseup', this.barMouseUp);
+    this.touchMoveListener = document.addEventListener('touchmove', this.barMouseMove);
+    this.touchUpListener = document.addEventListener('touchup', this.barMouseUp);
+  }
+
+  barMouseDown () {
+    this.setState({ dragging: true });
+  }
+
+  barMouseMove (event) {
+    const { dragging } = this.state;
+    if (dragging) {
+      const percentage = (event.pageX / window.innerWidth) * 100;
+      const mainPercentage = 100 - percentage;
+
+      const chatroom = document.getElementsByClassName('chatroom-container')[0];
+      const board = document.getElementsByClassName('board')[0];
+      if (chatroom && board) {
+        board.style.width = `${percentage}%`;
+        chatroom.style.width = `${mainPercentage}%`;
+      }
+    }
+  }
+
+  barMouseUp () {
+    const { dragging } = this.state;
+    if (dragging) {
+      this.setState({ dragging: false });
+    }
   }
 
   handleChange (event) {
@@ -74,6 +107,7 @@ class Chatroom extends Component {
 
     return (
       <Flex className='chatroom-container'>
+        <div className='chatroom-dragbar' onTouchStart={(e) => this.barMouseDown(e)} onMouseDown={(e) => this.barMouseDown(e)}></div>
         <FlexChild className='chatroom-root'>
           <Flex grow={0} className='chatroom-tabs' align='center' direction='row'>
             <HorizontalScroller style={{ width: '100%' }}>
