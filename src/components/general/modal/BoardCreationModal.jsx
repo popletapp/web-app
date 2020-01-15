@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from './Modal';
-import Input from './../input/Input.jsx';
+import { Input, Flex } from './../..';
 import { switchBoard, createBoard } from './../../../modules';
 import './Modal.scss';
 import * as errors from './../../../constants/ErrorMessages.js';
@@ -76,9 +76,28 @@ class BoardCreationModal extends Modal {
             Create New Board
           </div>
           <div className='modal-body'>
-            <p>Give your new board a name:</p>
+            <div className='board-creation-header'>Board Name</div>
             <p className='modal-error'>{this.state.error}</p>
             <Input onInput={(e) => this.handleEvent(e, 'input')} placeholder='Board Name' />
+            <br />
+            <div className='board-creation-header'>Board Type</div>
+            <Flex direction='row' className='board-creation-type'>
+              <Flex className='board-creation-type-option' align='center' direction='column'>
+                <Flex className='board-creation-type-option-display' align='center'>
+                  <h2 className='board-creation-type-option-header'>Freeplace</h2>
+                  <img alt='Freeplace' src='./../../../assets/icons/freeplace.svg' width='128' height='128'></img>
+                </Flex>
+                <div className='board-creation-type-option-desc'>Freeplace allows you to place notes without restrictions in any position</div>
+              </Flex>
+
+              <Flex className='board-creation-type-option' align='center' direction='column'>
+                <Flex className='board-creation-type-option-display' align='center'>
+                  <h2 className='board-creation-type-option-header'>Grid</h2>
+                  <img alt='Grid' src='./../../../assets/icons/snaptogrid.svg' width='128' height='128'></img>
+                </Flex>
+                <div className='board-creation-type-option-desc'>Snap to Grid means all notes/groups can only be placed on grid lines</div>
+              </Flex>
+            </Flex>
           </div>
         </div>
         <div className='modal-footer'>

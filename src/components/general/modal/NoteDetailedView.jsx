@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './Modal';
 import { connect } from 'react-redux';
-import { ColorPicker, Editor, Scroller, Button } from './../../';
+import { ColorPicker, Editor, Scroller, Button, DatePicker } from './../../';
 import { updateNote, saveNote, deleteNote } from './../../../modules';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
@@ -49,7 +49,7 @@ class NoteDetailedView extends Modal {
 
   onInput (event, type) {
     const { note } = this.props;
-    const content = event.target.textContent.replace('<br>', '\\n');
+    const content = event.target.innerText;
     const newNote = { ...note, [type]: content };
     updateNote(this.boardId, newNote);
   }
@@ -57,7 +57,7 @@ class NoteDetailedView extends Modal {
   async onBlur (event, type) {
     const { note } = this.props;
 
-    const content = event.target.textContent.replace('<br>', '\\n');
+    const content = event.target.innerText;
     const newNote = { ...note, [type]: content };
 
     this.setState({
@@ -65,6 +65,17 @@ class NoteDetailedView extends Modal {
       saving: true
     });
     if (note[type] !== newNote[type]) {
+      await saveNote(this.boardId, newNote);
+    }
+    this.setState({ saving: false });
+  }
+
+  async saveDueDate (date) {
+    const { note } = this.props;
+    const newNote = { ...note, dueDate: date };
+
+    this.setState({ saving: true });
+    if (note.dueDate !== newNote.dueDate) {
       await saveNote(this.boardId, newNote);
     }
     this.setState({ saving: false });
@@ -133,8 +144,12 @@ class NoteDetailedView extends Modal {
             <div className='modal-note-settings-header'>Modified</div>
             {new Date(note.modifiedAt).toLocaleDateString()} at {new Date(note.modifiedAt).toLocaleTimeString()}
             <br />
-              by {note.modifiedBy.username}
-
+              by <strong>{note.modifiedBy.username}</strong>
+            <br />
+            <div className='modal-note-settings-editrevision'>View Edit Revisions</div>
+            <div className='modal-note-settings-header'>Due Date</div>
+            <DatePicker initial={note.dueDate ? new Date(note.dueDate) : null} onChange={(date) => this.saveDueDate(date)} />
+            <br />
             <br />
             <Button color='red' onClick={() => this.onDelete()}>Delete Note</Button>
           </div>
