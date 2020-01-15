@@ -27,7 +27,10 @@
 }
 
 @media screen and (min-width: 748px) {
-  .board-selector {
+  div.board-selector {
+    overflow: auto;
+    padding-bottom: 6em;
+
     > .board-item {
       > .avatar {
         border-radius: 6px;
