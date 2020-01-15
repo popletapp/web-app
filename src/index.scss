@@ -90,7 +90,7 @@ html, body {
 }
 
 // Roboto
-@import url('https://fonts.googleapis.com/css?family=Roboto|Bai+Jamjuree:700|Poppins:800|Heebo|Raleway:800|Rubik|Days+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,600,700,800|Bai+Jamjuree:700|Poppins:800|Heebo|Raleway:800|Rubik|Days+One&display=swap');
 * {
   font-family: 'Roboto', sans-serif;
 }
@@ -132,6 +132,11 @@ input:focus, textarea:focus {
 
 .dropdown-content li:hover {
   background-color: initial;
+}
+
+// Firefox fix
+.scroller, .note-container {
+  scrollbar-color: #1d1d1d #505050;
 }
 
 @keyframes jumpIn {

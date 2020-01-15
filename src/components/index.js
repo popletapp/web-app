@@ -25,6 +25,7 @@ export { default as Input } from './general/input/Input';
 export { default as DefaultInput } from './general/input/DefaultInput';
 export { default as Editor } from './general/editor/Editor';
 export { default as ColorPicker } from './general/colorpicker/ColorPicker';
+export { default as DatePicker } from './general/datepicker/DatePicker';
 export { default as ToggleSwitch } from './general/toggleswitch/ToggleSwitch';
 export { default as Scroller } from './general/scroller/Scroller';
 export { default as HorizontalScroller } from './general/scroller/HorizontalScroller';
