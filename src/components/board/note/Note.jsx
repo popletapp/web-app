@@ -61,13 +61,11 @@ class Note extends Component {
     }
   }
 
-  onFocus () {
-    this.setState({ editing: true });
-  }
-
   view (event) {
     event.preventDefault();
-    createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.boardId} />);
+    if (!this.state.selected) {
+      createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.boardId} />);
+    }
   }
 
   select (e) {
@@ -75,49 +73,51 @@ class Note extends Component {
     e.preventDefault();
     e.stopPropagation();
     if (!preview) {
-      this.setState({ selected: true });
+      this.setState({ selected: true, editing: true });
     }
   }
 
   unselect () {
     if (!this.state.boxSelection) {
-      this.setState({ selected: false });
+      this.setState({ selected: false, editing: false });
     }
-    this.setState({ boxSelection: false });
+    this.setState({ boxSelection: false, selected: false, editing: false });
   }
 
   onInput (event, type) {
     const { note } = this.props;
-    const content = event.target.textContent.replace('<br>', '\\n');
+    const content = event.target.innerText.replace(/<br\s*[\\/]?>/gi, '\n');
     const newNote = { ...note, [type]: content };
     updateNote(this.boardId, newNote);
   }
 
   async onBlur (event, type) {
     let { note } = this.props;
-    const { exists } = this.state;
+    const { exists, selected, editing } = this.state;
 
-    const content = event.target.textContent.replace('<br>', '\\n');
-    note = this.didSizeChange() || note;
-    const newNote = { ...note, [type]: content };
+    if (selected && editing) {
+      const content = event.target.innerText.replace(/<br\s*[\\/]?>/gi, '\n');
+      note = this.didSizeChange() || note;
+      const newNote = { ...note, [type]: content };
 
-    this.setState({
-      editing: false,
-      saving: true
-    });
-    if (note[type] !== newNote[type]) {
-      if (exists) {
-        await saveNote(this.boardId, newNote);
-      } else {
-        this.setState({
-          unmounted: true,
-          exists: true
-        });
-        await createNote(this.boardId, newNote);
-        this.props.endCreateNote(this.boardId);
+      this.setState({
+        editing: false,
+        saving: true
+      });
+      if (note[type] !== newNote[type]) {
+        if (exists) {
+          await saveNote(this.boardId, newNote);
+        } else {
+          this.setState({
+            unmounted: true,
+            exists: true
+          });
+          await createNote(this.boardId, newNote);
+          this.props.endCreateNote(this.boardId);
+        }
       }
+      this.setState({ saving: false });
     }
-    this.setState({ saving: false });
   }
 
   setPosition (note) {
@@ -180,25 +180,14 @@ class Note extends Component {
     const { note, selectedArea, isDragging } = this.props;
     const { style } = this.state;
     if (note && oldProps.selectedArea !== selectedArea) {
-      /* console.log(this.noteRef);
       const bounding = ReactDOM.findDOMNode(this.noteRef.current).getBoundingClientRect();
-      console.log(bounding.top, selectedArea.y1,
-        bounding.bottom, selectedArea.y2,
-        bounding.left, selectedArea.x1,
-        bounding.right, selectedArea.x2);
-
-      console.log(selectedArea.y1 > bounding.top,
-        selectedArea.y2 < bounding.bottom,
-        selectedArea.x1 < bounding.left,
-        selectedArea.x2 > bounding.right);
-
-      if (selectedArea.y1 > bounding.top &&
+      if (selectedArea.y1 > bounding.y &&
         selectedArea.y2 < bounding.bottom &&
-        selectedArea.x1 < bounding.left &&
+        selectedArea.x1 < bounding.x &&
         selectedArea.x2 > bounding.right) {
         console.log('overlapping!!!!', note);
         this.setState({ selected: true, boxSelection: true });
-      } */
+      }
     }
 
     if (!isDragging && oldProps.isDragging) {
@@ -232,7 +221,7 @@ class Note extends Component {
 
     return connectDragSource(
       <div ref={this.noteRef}
-        onClick={(event) => selected || (note.id && this.view(event))}
+        onClick={(event) => note.id && this.view(event)}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
         style={{
           ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
@@ -246,7 +235,6 @@ class Note extends Component {
           <Editor
             type='title'
             editing={selected}
-            onFocus={(e) => this.onFocus(e, 'title')}
             onInput={(e) => this.onInput(e, 'title')}
             onBlur={(e) => this.onBlur(e, 'title')}
             style={{ display: note.title ? 'block' : 'none' }}
@@ -257,7 +245,6 @@ class Note extends Component {
           <Editor
             type='content'
             editing={selected}
-            onFocus={(e) => this.onFocus(e, 'content')}
             onInput={(e) => this.onInput(e, 'content')}
             onBlur={(e) => this.onBlur(e, 'content')}
             parseMarkdown={!editing}
