@@ -35,7 +35,8 @@ class NoteContainer extends Component {
     this.selection = this.defaultSelection;
     this.state = {
       beganSelectionAt: {},
-      selecting: false
+      selecting: false,
+      mouseDown: false
     };
   }
 
@@ -61,14 +62,19 @@ class NoteContainer extends Component {
 
   calculateSelection () {
     const { x1, x2, y1, y2 } = this.selectionPoints;
-    var x3 = Math.min(x1, x2);
-    var x4 = Math.max(x1, x2);
-    var y3 = Math.min(y1, y2);
-    var y4 = Math.max(y1, y2);
-    this.selectArea.style.left = `${x3}px`;
-    this.selectArea.style.top = `${y3}px`;
-    this.selectArea.style.width = `${x4 - x3}px`;
-    this.selectArea.style.height = `${y4 - y3}px`;
+    const container = document.getElementsByClassName('note-container')[0];
+    if (container) {
+      const bounding = container.getBoundingClientRect();
+      const x3 = Math.min(x1, x2) - bounding.x;
+      const x4 = Math.max(x1, x2) - bounding.x;
+      const y3 = Math.min(y1, y2) - bounding.y;
+      const y4 = Math.max(y1, y2) - bounding.y;
+
+      this.selectArea.style.left = `${x3}px`;
+      this.selectArea.style.top = `${y3}px`;
+      this.selectArea.style.width = `${x4 - x3}px`;
+      this.selectArea.style.height = `${y4 - y3}px`;
+    }
   }
 
   onMouseDown (e) {
@@ -81,8 +87,8 @@ class NoteContainer extends Component {
     this.cancelSelect();
   }
 
-  onMouseMove (e) {
-    if (this.state.mouseDown) {
+  onMouseMove (e, touch = false) {
+    if (this.state.mouseDown || touch) {
       if (!this.state.selecting && Math.abs((e.clientX + e.clientY) - (this.state.beganSelectionAt.x + this.state.beganSelectionAt.y)) > 30) {
         this.selectArea.hidden = 0;
         this.setState({ selecting: true });
@@ -129,9 +135,9 @@ class NoteContainer extends Component {
     return connectDropTarget(
       <div
         onMouseDown={(e) => this.onMouseDown(e)}
-        onTouchStart={(e) => this.onMouseDown(e)}
+        onTouchStart={(e) => this.onMouseDown(e, true)}
         onMouseMove={(e) => this.onMouseMove(e)}
-        onTouchMove={(e) => this.onMouseMove(e)}
+        onTouchMove={(e) => this.onMouseMove(e, true)}
         onMouseUp={(e) => this.onMouseUp(e)}
         onTouchEnd={(e) => this.onMouseUp(e)}
         className={`note-container${!listView ? ' drag-container droppable' : ' list-view'}`}>
@@ -146,6 +152,12 @@ class NoteContainer extends Component {
       </div>
     );
   }
+}
+
+function snapToGrid (x, y) {
+  const snappedX = Math.round(x / 32) * 32;
+  const snappedY = Math.round(y / 32) * 32;
+  return [snappedX, snappedY];
 }
 
 export default connect(mapStateToProps, null)(DropTarget(
@@ -167,6 +179,13 @@ export default connect(mapStateToProps, null)(DropTarget(
         // need to somehow get the client X, or get the relative position from the group
         let left = Math.round(data.position.x + delta.x) || 0;
         let top = Math.round(data.position.y + delta.y) || 0;
+        // Snap to grid functionality
+        if (props.snapToGrid) {
+          const [leftPos, topPos] = snapToGrid(left, top);
+          left = leftPos;
+          top = topPos;
+        }
+
         switch (type) {
           case ComponentTypes.NOTE:
             const group = isNoteInGroup(data.id);
@@ -183,10 +202,6 @@ export default connect(mapStateToProps, null)(DropTarget(
           default:
             break;
         }
-      }
-
-      if (props.snapToGrid) {
-      // [left, top] = snapToGrid(left, top);
       }
     }
   },
