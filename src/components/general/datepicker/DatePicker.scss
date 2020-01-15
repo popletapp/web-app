@@ -1,0 +1,13 @@
+@import './../../../index.scss';
+
+.datepicker {
+  font-size: 13px;
+  color: $text-accent-color-1;
+  background-color: $dark-accent-color-1;
+  border: none;
+  padding: 4px;
+}
+
+li.react-datepicker__time-list-item {
+  color: black;
+}
