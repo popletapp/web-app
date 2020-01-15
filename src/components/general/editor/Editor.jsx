@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { joinClasses } from '../../../util';
-import Markdown from 'react-markdown';
+import SimpleMarkdown from 'simple-markdown';
 import './Editor.scss';
+
+const mdParse = SimpleMarkdown.defaultBlockParse;
+const mdOutput = SimpleMarkdown.defaultReactOutput;
 
 class Editor extends Component {
   constructor ({ type, editing, content, parseMarkdown }) {
@@ -20,7 +23,7 @@ class Editor extends Component {
   }
 
   change (event) {
-    this.setState({ content: event.target.value });
+    this.setState({ content: event.target.innerHTML });
   }
 
   componentDidMount () {
@@ -36,15 +39,15 @@ class Editor extends Component {
 
   render () {
     const { editing, parseMarkdown, onClick, className, onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder } = this.props;
-    let { content } = this.state;
-    if (content && parseMarkdown) {
-      content = content.replace(/\n/g, '<br />');
-    }
+    const { content } = this.state;
+    if (!content) return null;
 
     return (
       <div
+        aria-multiline='true'
+        role='textbox'
         onClick={onClick}
-        className={joinClasses('editor', className)}
+        className={joinClasses('editor', className, editing ? '' : 'editor-cursor')}
         onBlur={onBlur}
         onFocus={onFocus}
         onMouseEnter={onMouseEnter}
@@ -55,7 +58,7 @@ class Editor extends Component {
         placeholder={placeholder}
         onInput={(e) => this.update(e)}
         onChange={(e) => this.change(e)}>
-        {parseMarkdown ? <Markdown source={content} skipHtml={false} escapeHtml={false} /> : content}
+        {parseMarkdown ? mdOutput(mdParse(content)) : content}
       </div>
     );
   }
