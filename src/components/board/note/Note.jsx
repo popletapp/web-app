@@ -275,9 +275,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     ComponentTypes.NOTE,
     {
       beginDrag (props) {
+        const container = document.getElementsByClassName('note-container')[0];
+        container.style.backgroundSize = '32px 32px';
+        container.style.backgroundImage = 'radial-gradient(circle, #424242 1px, transparent 1px)';
+
         const { note, boardId } = props;
         note.position = note.position || { x: 0, y: 0 };
         return { item: note, boardId };
+      },
+
+      endDrag () {
+        const container = document.getElementsByClassName('note-container')[0];
+        container.style.backgroundSize = '';
+        container.style.backgroundImage = '';
       }
     },
     (connect, monitor) => ({

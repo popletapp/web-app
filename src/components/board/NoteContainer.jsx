@@ -142,6 +142,7 @@ class NoteContainer extends Component {
         onTouchEnd={(e) => this.onMouseUp(e)}
         className={`note-container${!listView ? ' drag-container droppable' : ' list-view'}`}>
         <div className='select-area' hidden></div>
+        <div className='grid-formation'></div>
         {(() => {
           for (const group of groups) {
             notes = notes.filter(note => !group.items.includes(note.id));
@@ -179,8 +180,9 @@ export default connect(mapStateToProps, null)(DropTarget(
         // need to somehow get the client X, or get the relative position from the group
         let left = Math.round(data.position.x + delta.x) || 0;
         let top = Math.round(data.position.y + delta.y) || 0;
+
         // Snap to grid functionality
-        if (props.snapToGrid) {
+        if (props.object.type === 1) {
           const [leftPos, topPos] = snapToGrid(left, top);
           left = leftPos;
           top = topPos;
@@ -193,8 +195,10 @@ export default connect(mapStateToProps, null)(DropTarget(
               left = Math.round(cursor.x);
               top = Math.round(cursor.y);
               removeNoteFromGroup(props.id, group, data.id);
+              setTimeout(() => moveNote(props.id, data.id, { y: top, x: left }), 100);
+            } else {
+              moveNote(props.id, data.id, { y: top, x: left });
             }
-            moveNote(props.id, data.id, { y: top, x: left });
             break;
           case ComponentTypes.GROUP:
             moveGroup(props.id, data.id, { y: top, x: left });
