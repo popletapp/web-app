@@ -10,6 +10,7 @@ class BoardCreationModal extends Modal {
     super();
     this.state = {
       name: '',
+      type: 0,
       error: null
     };
   }
@@ -56,10 +57,10 @@ class BoardCreationModal extends Modal {
   }
 
   async create () {
-    const { name } = this.state;
+    const { name, type } = this.state;
     const error = this.check({ name });
     if (!error) {
-      const board = await createBoard({ name });
+      const board = await createBoard({ name, type });
       if (board) {
         await switchBoard(board.id);
       }
@@ -69,6 +70,7 @@ class BoardCreationModal extends Modal {
   }
 
   render () {
+    const { type, error } = this.state;
     return (
       <div>
         <div className='modal-content'>
@@ -77,12 +79,12 @@ class BoardCreationModal extends Modal {
           </div>
           <div className='modal-body'>
             <div className='board-creation-header'>Board Name</div>
-            <p className='modal-error'>{this.state.error}</p>
+            <p className='modal-error'>{error}</p>
             <Input onInput={(e) => this.handleEvent(e, 'input')} placeholder='Board Name' />
             <br />
             <div className='board-creation-header'>Board Type</div>
             <Flex direction='row' className='board-creation-type'>
-              <Flex className='board-creation-type-option' align='center' direction='column'>
+              <Flex onClick={() => this.setState({ type: 0 })} className={`board-creation-type-option${type === 0 ? ' board-creation-type-option-active' : ''}`} align='center' direction='column'>
                 <Flex className='board-creation-type-option-display' align='center'>
                   <h2 className='board-creation-type-option-header'>Freeplace</h2>
                   <img alt='Freeplace' src='./../../../assets/icons/freeplace.svg' width='128' height='128'></img>
@@ -90,7 +92,7 @@ class BoardCreationModal extends Modal {
                 <div className='board-creation-type-option-desc'>Freeplace allows you to place notes without restrictions in any position</div>
               </Flex>
 
-              <Flex className='board-creation-type-option' align='center' direction='column'>
+              <Flex onClick={() => this.setState({ type: 1 })} className={`board-creation-type-option${type === 1 ? ' board-creation-type-option-active' : ''}`}  align='center' direction='column'>
                 <Flex className='board-creation-type-option-display' align='center'>
                   <h2 className='board-creation-type-option-header'>Grid</h2>
                   <img alt='Grid' src='./../../../assets/icons/snaptogrid.svg' width='128' height='128'></img>
