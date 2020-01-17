@@ -26,7 +26,6 @@
   width: 100%;
   height: 130px;
   padding: 12px;
-  margin-bottom: 12px;
 
   &-btns {
     position: absolute;
@@ -108,6 +107,9 @@
 
 .chatroom-body {
   width: 100%;
+  height: 100%;
+  max-height: 100%;
+  padding-left: 4px;
 }
 
 .chatroom-textarea-container {
@@ -120,7 +122,8 @@
 }
 
 .chatroom-textarea {
-  bottom: 0;
+  position: relative;
+  bottom: -4px;
   background-color: #1a1a1a;
   width: 100%;
   height: 100%;

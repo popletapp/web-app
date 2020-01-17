@@ -75,11 +75,12 @@ class Chatroom extends Component {
   }
 
   handleChange (event) {
-    this.setState({ content: event.target.value });
     event.stopPropagation();
+    this.setState({ content: event.target.value });
   }
 
   input (event) {
+    event.stopPropagation();
     if (event.which === 13 && !event.shiftKey) {
       this.createComment();
     }
@@ -145,8 +146,8 @@ class Chatroom extends Component {
             </FlexChild>
           </Flex>
 
-          <Flex className='chatroom-body'>
-            <Scroller style={{ width: '100%' }}>
+          <Flex className='chatroom-body' grow={0}>
+            <Scroller style={{ width: '100%', maxWidth: '100%' }}>
               {comments && comments.sort((a, b) => b.timestamp - a.timestamp).map((comment, i) => <Comment key={i} author={comment.author}>{comment.content}</Comment>)}
             </Scroller>
           </Flex>
