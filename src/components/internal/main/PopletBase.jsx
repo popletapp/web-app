@@ -19,6 +19,10 @@ class PopletBase extends Component {
     const { user = {}, connected } = state;
     const { connecting } = this.state;
 
+    setTimeout(() => {
+      window.M.AutoInit();
+    }, 200);
+
     if (!connected && !connecting && (user && !user.id)) {
       this.setState({ connecting: true });
       const loader = document.querySelector('#loader');

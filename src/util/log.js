@@ -4,7 +4,8 @@ class Logger {
     this.PREFIX_TYPES = {
       GATEWAY: 'GATEWAY',
       STORE: 'STORE',
-      CLIENT: 'CLIENT'
+      CLIENT: 'CLIENT',
+      NETWORK: 'NETWORK'
     };
   }
 

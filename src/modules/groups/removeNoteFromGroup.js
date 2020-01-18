@@ -9,6 +9,6 @@ export default async (boardId, groupId, noteId) => {
   if (group) {
     group.size = determineSize(group);
     group.items = group.items.filter(note => note !== noteId);
-    await updateGroup(boardId, group);
+    updateGroup(boardId, group);
   }
 };

@@ -80,9 +80,6 @@ class BoardComponent extends PopletBase {
       );
     }
 
-    setTimeout(() => {
-      window.M.AutoInit();
-    }, 20);
     return (
       <div className='poplet-root'>
         <Board key={board.id} id={board.id} />
