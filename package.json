@@ -1,6 +1,6 @@
 {
   "name": "poplet",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "private": true,
   "dependencies": {
     "@sentry/browser": "^5.5.0",
@@ -51,6 +51,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
   },
   "devDependencies": {
     "eslint-config-node": "^4.0.0",
