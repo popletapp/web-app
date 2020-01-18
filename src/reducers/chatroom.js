@@ -72,9 +72,6 @@ export const chatroomComments = (state = {
   items: []
 }, action) => {
   switch (action.type) {
-    case 'CREATE_CHATROOM_COMMENT': {
-      return { ...state, items: [...state.items, action.comment] };
-    }
     case 'REQUEST_CHATROOM_COMMENTS': {
       return Object.assign({}, state, {
         isFetching: false,
@@ -121,7 +118,7 @@ export const commentsByChatroom = (state = {}, action) => {
         }
       }
       return Object.assign({}, state, {
-        [action.chatroom.toString()]: standaloneChatrooms
+        [action.chatroom]: standaloneChatrooms
       });
     default:
       return state;
