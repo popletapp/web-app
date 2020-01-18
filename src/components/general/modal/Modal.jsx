@@ -14,7 +14,8 @@ class Modal extends Component {
 
   actionMade (type, event) {
     const { onCancel, onConfirm = () => {} } = this.props;
-    this.close();
+
+    this.close()
     if (type) {
       if (type === 'cancel' && onCancel) {
         return onCancel();
@@ -34,6 +35,18 @@ class Modal extends Component {
 
   render () {
     const { children: customModal, title, content, cancelText, confirmText } = this.props;
+
+    // fuck firefox
+    setTimeout(() => {
+      const container = document.getElementsByClassName('modal')[0];
+      const child = container.firstChild;
+      const size = child.getBoundingClientRect();
+      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        container.style.height = `${size.height + 24}px`;
+        container.style.minHeight = `${size.height + 42}px`;
+      }
+    }, 30);
+
     return (
       <div>
         <div className='modal' aria-labelledby='modal-title' aria-describedby='modal-content'>

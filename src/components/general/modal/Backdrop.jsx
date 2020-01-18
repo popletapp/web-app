@@ -3,7 +3,13 @@ import { popModal } from './../../../modules';
 
 class Backdrop extends Component {
   click () {
-    popModal();
+    const container = document.getElementsByClassName('modal')[0]
+    const backdrop = document.getElementsByClassName('backdrop')[0]
+    if (container && backdrop) {
+      container.classList.add('modal-exiting');
+      backdrop.classList.add('backdrop-exiting');
+    }
+    setTimeout(() => popModal(), 150);
   }
 
   render () {
