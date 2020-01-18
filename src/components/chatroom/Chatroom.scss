@@ -25,6 +25,7 @@
   background-color: #5c6bc0;
   width: 100%;
   height: 130px;
+  min-height: 130px;
   padding: 12px;
 
   &-btns {
@@ -53,6 +54,40 @@
       }
     }
   }
+}
+
+@keyframes slideChatroomOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  99% {
+    transform: translateX(200px);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slideChatroomIn {
+  0% {
+    opacity: 1;
+    transform: translateX(200px);
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}
+
+.chatroom-exiting {
+  animation: 0.55s slideChatroomOut 0s forwards cubic-bezier(.15,.97,.51,1.01);
+}
+
+.chatroom-entering {
+  animation: 0.55s slideChatroomIn 0s backwards cubic-bezier(.15,.97,.51,1.01);
 }
 
 .chatroom-root {
