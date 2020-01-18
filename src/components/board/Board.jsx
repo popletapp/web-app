@@ -18,6 +18,9 @@ class Board extends Component {
     super();
     this.object = object;
     this.notes = notes;
+    setTimeout(() => {
+      window.M.AutoInit();
+    }, 20);
   }
 
   render () {
