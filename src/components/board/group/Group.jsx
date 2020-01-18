@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton } from './../../';
+import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton, GroupSettingsModal } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
 import './Group.scss';
-import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup } from '../../../modules';
+import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup, createModal } from '../../../modules';
 
 function mapStateToProps (state, props) {
   return {
@@ -107,7 +107,7 @@ class Group extends Component {
   }
 
   render () {
-    const { group, notes, boardId, listView, connectDragSource, preview, connectDropTarget, isDragging } = this.props;
+    const { group, notes, boardId, listView, connectDragSource, preview, connectDropTarget, isDragging, style: styleProps } = this.props;
     const { style, editingName } = this.state;
     if (!group || this.state.unmounted) {
       return null;
@@ -117,6 +117,7 @@ class Group extends Component {
     return connectDragSource(connectDropTarget(
       <div className='group-container'
         style={{
+          ...styleProps,
           ...(this.wasDraggedByClient || isDragging ? { transition: 'none' } : {}),
           ...(!listView && !preview ? style : {}),
           backgroundColor: group.options.color || '',
@@ -124,6 +125,10 @@ class Group extends Component {
         }}>
         <Flex direction='row' align='center' className='group-header'>
           <FlexChild direction='row' align='center'>
+            <div className='group-header-note-count'>
+              {group.items.length}
+            </div>
+
             <Editor
               maxLength='64'
               className='group-header-name'
@@ -132,15 +137,11 @@ class Group extends Component {
               onBlur={(e) => this.updateGroupName(e)}>
               {group.name}
             </Editor>
-
-            <div className='group-header-note-count'>
-              {group.items.length} note{group.items.length === 1 ? '' : 's'}
-            </div>
           </FlexChild>
 
           <FlexChild grow={0} align='right' direction='row'>
             <Flex direction='row' align='center'>
-              <MinimalisticButton className='group-settings-btn' icon='settings' onClick={() => this.deleteGroup()} />
+              <MinimalisticButton className='group-settings-btn' icon='settings' onClick={() => createModal(<GroupSettingsModal boardID={boardId} groupID={group.id} />)} />
               <CloseButton icon='close' onClick={() => this.deleteGroup()} />
             </Flex>
           </FlexChild>
