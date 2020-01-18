@@ -20,6 +20,7 @@ export { default as NoteDetailedView } from './general/modal/NoteDetailedView';
 export { default as BoardInviteMembersModal } from './general/modal/BoardInviteMembersModal';
 export { default as BoardJoinModal } from './general/modal/BoardJoinModal';
 export { default as BoardSettingsModal } from './general/modal/BoardSettingsModal';
+export { default as GroupSettingsModal } from './general/modal/GroupSettingsModal';
 export { default as BetaModal } from './general/modal/BetaModal';
 export { default as Input } from './general/input/Input';
 export { default as DefaultInput } from './general/input/DefaultInput';

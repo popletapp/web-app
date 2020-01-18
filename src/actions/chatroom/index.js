@@ -5,7 +5,9 @@ import {
   UPDATE_CHATROOM,
   DELETE_CHATROOM,
   CREATE_CHATROOM_COMMENT,
-  CREATE_LOCAL_CHATROOM_COMMENT
+  CREATE_LOCAL_CHATROOM_COMMENT,
+  REQUEST_CHATROOM_COMMENTS,
+  RECEIVE_CHATROOM_COMMENTS
 } from '../../constants/ActionTypes';
 import axios from 'axios';
 
@@ -62,7 +64,7 @@ export function getChatrooms (boardId) {
     if (shouldFetchChatrooms(getState(), boardId)) {
       return dispatch(fetchChatrooms(boardId));
     } else {
-      return Promise.resolve(getState().groupsByBoard[boardId].items);
+      return Promise.resolve(getState().chatroomsByBoard[boardId].items);
     }
   };
 }
@@ -78,3 +80,44 @@ export const createLocalChatroomComment = (chatroom, comment) => ({
   chatroom,
   comment
 });
+
+
+export const fetchChatroomComments = chatroomId => dispatch => {
+  dispatch(requestChatroomComments(chatroomId));
+  return axios.get(`/chatrooms/${chatroomId}/comments`)
+    .then(res => dispatch(receiveChatroomComments(chatroomId, res.data)))
+    .catch(() => dispatch(receiveChatroomComments(chatroomId, [])));
+};
+
+function shouldFetchChatroomComments (state, chatroomId) {
+  const chatroomComments = state.commentsByChatroom[chatroomId];
+  if (!chatroomComments) {
+    return true;
+  } else if (chatroomComments.isFetching) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+export const requestChatroomComments = chatroom => ({
+  type: REQUEST_CHATROOM_COMMENTS,
+  chatroom
+});
+
+export const receiveChatroomComments = (chatroom, comments) => ({
+  type: RECEIVE_CHATROOM_COMMENTS,
+  chatroom,
+  comments,
+  receivedAt: Date.now()
+});
+
+export function getChatroomComments (chatroomId) {
+  return (dispatch, getState) => {
+    if (shouldFetchChatroomComments(getState(), chatroomId)) {
+      return dispatch(fetchChatroomComments(chatroomId));
+    } else {
+      return Promise.resolve(getState().commentsByChatroom[chatroomId].items);
+    }
+  };
+}

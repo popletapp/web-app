@@ -32,11 +32,14 @@ export { default as moveNote } from './notes/moveNote.js';
 export { default as isNoteInGroup } from './notes/isNoteInGroup.js';
 export { default as isNoteOverlapping } from './notes/isNoteOverlapping.js';
 export { default as findNextAvailablePosition } from './notes/findNextAvailablePosition.js';
+export { default as adjustZoomLevel } from './notes/adjustZoomLevel.js';
 
 // Users
 export { default as getCurrentUser } from './user/getCurrentUser.js';
 export { default as getUser } from './user/getUser.js';
 export { default as getUserBoards } from './user/getUserBoards.js';
+export { default as logout } from './user/logout.js';
+export { default as addAvatar } from './user/addAvatar.js';
 
 // Chatroom
 export { default as getChatroom } from './chatroom/getChatroom.js';

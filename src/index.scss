@@ -139,6 +139,83 @@ input:focus, textarea:focus {
   scrollbar-color: #1d1d1d #505050;
 }
 
+.dropdown-content {
+  background-color: $dark-accent-color-2 !important;
+  width: 200px !important;
+  overflow-x: hidden;
+  max-height: 400px;
+
+  .avatar {
+    top: 0px;
+    position: relative;
+  }
+
+  li > a {
+    padding: 0 !important;
+  }
+
+  li:hover {
+    -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+    -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+  }
+
+  .divider {
+    background-color: $light-accent-color-3 !important;
+    margin-top: 1em;
+    padding: 0;
+    margin-bottom: 0.5em;
+  }
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 14px;
+
+    &-thumb {
+      background-clip: padding-box;
+      border-width: 3px;
+      border-style: solid;
+      border-radius: 7px;
+      border-color: #505050;
+    }
+
+    &-track-piece {
+      background-color: #1d1d1d;
+      border: 3px solid #292929;
+      border-radius: 7px;
+    }
+  }
+}
+
+.dropdown-content li {
+  padding-top: 8px;
+  padding-left: 8px;
+
+  .avatar p {
+    top: 0px;
+  }
+
+  .avatar, i {
+    float: left;
+    color: white;
+    margin-right: 12px;
+    position: relative;
+  }
+
+  i {
+    top: 3px;
+  }
+
+  p {
+    color: white;
+    font-size: 16px;
+    display: block;
+    line-height: 30px;
+    margin: 0;
+  }
+}
+
+
 @keyframes jumpIn {
   from {
     opacity: 0;
@@ -162,6 +239,16 @@ input:focus, textarea:focus {
   }
 }
 
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.85;
+  }
+}
+
 @keyframes fadeOut {
   from {
     opacity: 1;
@@ -172,6 +259,15 @@ input:focus, textarea:focus {
   }
 }
 
+@keyframes fadeOutModal {
+  from {
+    opacity: 0.85;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
 
 @keyframes fadeInAndBounceDown {
   from {

@@ -11,7 +11,7 @@ import {
   ranks,
   ranksByBoard
 } from './board';
-import { notesByBoard, notes } from './notes';
+import { notesByBoard, notes, zoomLevel } from './notes';
 import { user, users } from './user';
 import {
   chatrooms,
@@ -19,7 +19,7 @@ import {
   chatroomComments,
   commentsByChatroom
 } from './chatroom';
-import { modals, connected, tooltips, popouts } from './internal';
+import { modals, connected, tooltips, popouts, dev } from './internal';
 
 const rootReducer = combineReducers({
   connected,
@@ -43,7 +43,9 @@ const rootReducer = combineReducers({
   chatroomComments,
   commentsByChatroom,
   tooltips,
-  popouts
+  popouts,
+  dev,
+  zoomLevel
 });
 
 export default rootReducer;

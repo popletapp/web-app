@@ -6,7 +6,8 @@ import {
   END_CREATE_NOTE,
   CREATE_NOTE,
   UPDATE_NOTE,
-  DELETE_NOTE
+  DELETE_NOTE,
+  ADJUST_ZOOM_LEVEL
 } from '../../constants/ActionTypes';
 import axios from 'axios';
 
@@ -81,4 +82,10 @@ export const deleteNote = (board, noteId) => ({
   type: DELETE_NOTE,
   board,
   noteId
+});
+
+export const adjustZoomLevel = (board, amount) => ({
+  type: ADJUST_ZOOM_LEVEL,
+  board,
+  amount
 });
