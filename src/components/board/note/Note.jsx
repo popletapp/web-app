@@ -15,7 +15,8 @@ function mapStateToProps (state, props) {
   return {
     note: props.id ? (state.notesByBoard[props.boardId] || {})[props.id] : props.note,
     selectedArea: state.selectionArea,
-    listView: !!state.viewByBoard[state.selectedBoard]
+    listView: !!state.viewByBoard[state.selectedBoard],
+    board: state.boards[props.boardId]
   };
 }
 
@@ -209,7 +210,7 @@ class Note extends Component {
   }
 
   render () {
-    const { note, listView, connectDragSource, preview, isDragging } = this.props;
+    const { note, listView, connectDragSource, preview, isDragging, style: styleProps = {} } = this.props;
     const { editing, selected, style } = this.state;
 
     if (!note || this.state.unmounted) {
@@ -223,8 +224,9 @@ class Note extends Component {
       <div ref={this.noteRef}
         onClick={(event) => note.id && this.view(event)}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
-        style={{
+        style={{ 
           ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
+          ...styleProps,
           ...(!listView && !preview ? style : {}),
           width: 'fit-content',
           backgroundColor: note.options.color || '',
@@ -275,10 +277,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     ComponentTypes.NOTE,
     {
       beginDrag (props) {
-        const container = document.getElementsByClassName('note-container')[0];
-        container.style.backgroundSize = '32px 32px';
-        container.style.backgroundImage = 'radial-gradient(circle, #424242 1px, transparent 1px)';
-
+        if (props.board.type === 1) {
+          const container = document.getElementsByClassName('note-container')[0];
+          container.style.backgroundSize = '32px 32px';
+          container.style.backgroundImage = 'radial-gradient(circle, #424242 1px, transparent 1px)';
+        }
+        
         const { note, boardId } = props;
         note.position = note.position || { x: 0, y: 0 };
         return { item: note, boardId };

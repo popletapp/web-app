@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Avatar, Input, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal, Flex, FlexChild, CircleButton } from './../../';
 import { selectBoard, createBoard, updateView } from './../../../actions/board';
-import { beginCreateNote } from './../../../actions/note';
+import { beginCreateNote, adjustZoomLevel } from './../../../actions/note';
 import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal, leaveBoard } from '../../../modules';
 import { Link } from 'react-router-dom';
 import MinimalisticButton from '../../general/button/MinimalisticButton';
@@ -21,7 +21,8 @@ function mapDispatchToProps (dispatch) {
     selectBoard: boardId => dispatch(selectBoard(boardId)),
     createBoard: board => dispatch(createBoard(board)),
     beginCreateNote: board => dispatch(beginCreateNote(board)),
-    updateView: (board, view) => dispatch(updateView(board, view))
+    updateView: (board, view) => dispatch(updateView(board, view)),
+    setZoomLevel: (board, amount) => dispatch(adjustZoomLevel(board, amount)),
   };
 }
 
@@ -131,6 +132,15 @@ class TopBar extends Component {
               <FlexChild onClick={() => toggleChatroomVisibility()} className='toolbar-option' direction='row' align='center'>
                 <CircleButton icon='chat_bubble' color='pink lighten-1' className='toolbar-btn' />
                 <p>Chatroom</p>
+              </FlexChild>
+
+              <FlexChild className='zoom-container'>
+                <header>Zoom Options</header>
+                <div className='zoom-options'>
+                  {/* Zoom starts at 1 and increases by 0.5 each time and decreases by 0.25 */}
+                  <div onClick={() => this.props.setZoomLevel(board.id, 0.25)} className='zoom-options-plus'>+</div>
+                  <div onClick={() => this.props.setZoomLevel(board.id, -0.25)} className='zoom-options-minus'>-</div>
+                </div>
               </FlexChild>
             </Flex>
           </div>
