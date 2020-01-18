@@ -87,6 +87,10 @@ class NoteDetailedView extends Modal {
     this.close();
   }
 
+  important () {
+
+  }
+
   render () {
     const { note } = this.props;
     const { focused, color } = this.state;
@@ -151,6 +155,7 @@ class NoteDetailedView extends Modal {
             <DatePicker initial={note.dueDate ? new Date(note.dueDate) : null} onChange={(date) => this.saveDueDate(date)} />
             <br />
             <br />
+            <Button color='orange' onClick={() => this.important()}>Mark as Important</Button>
             <Button color='red' onClick={() => this.onDelete()}>Delete Note</Button>
           </div>
         </div>
