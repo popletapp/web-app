@@ -22,7 +22,7 @@
     color: white;
   }
 
-  >.navbar-user-container {
+  > .navbar-user-container {
     padding: 0.65em;
     border-radius: 12px;
     justify-items: center;
@@ -102,7 +102,17 @@
   }
 }
 
-.board-selector-btn {
+.dev-tools-btn {
+  &-container {
+    height: 100%;
+
+    > p {
+      min-width: 75px;
+    }
+  }
+}
+
+.board-selector-btn, .dev-tools-btn {
   &-container {
     display: flex;
     flex-direction: row;
@@ -139,4 +149,8 @@
   border-radius: 5px;
   line-height: 1.75em;
   position: relative;
+}
+
+.user-settings-dropdown {
+  flex-direction: row;
 }
