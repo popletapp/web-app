@@ -177,8 +177,9 @@ class Note extends Component {
   }
 
   componentDidUpdate (oldProps) {
-    this.highlight();
     const { note, selectedArea, isDragging } = this.props;
+
+    this.highlight();
     const { style } = this.state;
     if (note && oldProps.selectedArea !== selectedArea) {
       const bounding = ReactDOM.findDOMNode(this.noteRef.current).getBoundingClientRect();
@@ -189,11 +190,6 @@ class Note extends Component {
         console.log('overlapping!!!!', note);
         this.setState({ selected: true, boxSelection: true });
       }
-    }
-
-    if (!isDragging && oldProps.isDragging) {
-      this.wasDraggedByClient = true;
-      setTimeout(() => { this.wasDraggedByClient = false; }, 500);
     }
 
     if (note && note.position) {
@@ -216,6 +212,11 @@ class Note extends Component {
     if (!note || this.state.unmounted) {
       return null;
     }
+
+    if (isDragging) {
+      this.wasDraggedByClient = true;
+      setTimeout(() => { this.wasDraggedByClient = false; }, 500);
+    }
     note.title = note.title || '';
     note.content = note.content || '';
     note.options = note.options || {};
@@ -226,11 +227,11 @@ class Note extends Component {
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
         style={{ 
           ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
-          ...styleProps,
           ...(!listView && !preview ? style : {}),
           width: 'fit-content',
           backgroundColor: note.options.color || '',
-          opacity: isDragging ? 0 : 1
+          opacity: isDragging ? 0 : 1,
+          ...styleProps,
         }}>
         {selected && !preview && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
         <div className='note-content white-text'>
