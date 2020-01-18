@@ -11,6 +11,7 @@ let LAST_HEARTBEAT_TIMESTAMP = Date.now();
 const MAX_KEEP_ALIVE_TIME = 50e3;
 const HEARTBEAT_INTERVAL = 10e3;
 const RETRY_TIMES = [5e2, 1e3, 2e3, 5e3, 10e3, 30e3, 60e3, 120e3];
+const DEV_IDS = ['2086124001']
 
 const connectSocket = () => {
   let socket = null;
@@ -30,6 +31,9 @@ export default async () => {
   } else {
     axios.defaults.headers.common['Authorization'] = token;
     const user = await getCurrentUser();
+    if (DEV_IDS.includes(user.id)) {
+      store.dispatch({ type: 'ENABLE_DEV_TOOLS' });
+    }
     Poplet.log.prefix(Poplet.log.PREFIX_TYPES.GATEWAY).info(`Logged in as ${user.username} (${user.id})`);
     store.dispatch({ type: 'INITIALIZE_USER', user });
     Poplet.user = user;

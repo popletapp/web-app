@@ -41,3 +41,14 @@ export const connected = (state = false, action) => {
       return state;
   }
 };
+
+export const dev = (state = false, action) => {
+  switch (action.type) {
+    case 'ENABLE_DEV_TOOLS':
+      return true;
+    case 'DISABLE_DEV_TOOLS':
+      return false;
+    default:
+      return state;
+  }
+};
