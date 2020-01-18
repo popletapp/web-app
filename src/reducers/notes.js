@@ -49,6 +49,24 @@ export const notes = (state = {
   }
 };
 
+export const zoomLevel = (state = {}, action) => {
+  switch (action.type) {
+    case 'ADJUST_ZOOM_LEVEL': {
+      let amount = (state[action.board] || 1) + action.amount
+      if (amount < 0.25) {
+        amount = 0.25;
+      }
+      if (amount > 5) {
+        amount = 5;
+      }
+      return { ...state, [action.board]: amount };
+    }
+
+    default:
+      return state;
+  }
+}
+
 export const notesByBoard = (state = {}, action) => {
   switch (action.type) {
     case 'BEGIN_CREATE_NOTE': {

@@ -13,7 +13,8 @@ function mapStateToProps (state) {
     groups: state.groupsByBoard[state.selectedBoard],
     object: state.boards[state.selectedBoard],
     id: state.boards[state.selectedBoard].id,
-    listView: !!state.viewByBoard[state.selectedBoard]
+    listView: !!state.viewByBoard[state.selectedBoard],
+    zoomLevel: state.zoomLevel[state.selectedBoard]
   };
 }
 
@@ -128,9 +129,10 @@ class NoteContainer extends Component {
   }
 
   render () {
-    let { object: board, listView, connectDropTarget, groups, notes } = this.props;
+    let { object: board, listView, connectDropTarget, groups, notes, zoomLevel } = this.props;
     notes = notes ? Object.values(notes) : [];
     groups = groups ? Object.values(groups) : [];
+    const style = zoomLevel === 1 ? {} : { transform: `scale(${zoomLevel})` };
 
     return connectDropTarget(
       <div
@@ -143,13 +145,14 @@ class NoteContainer extends Component {
         className={`note-container${!listView ? ' drag-container droppable' : ' list-view'}`}>
         <div className='select-area' hidden></div>
         <div className='grid-formation'></div>
+
         {(() => {
           for (const group of groups) {
             notes = notes.filter(note => !group.items.includes(note.id));
           }
-          return notes.map((note, i) => note.id ? <Note key={note.id} id={note.id} boardId={board.id} /> : <Note key={i} note={note} boardId={board.id} />);
+          return notes.map((note, i) => <Note style={style} key={note.id ? note.id : note} id={note.id ? note.id : note} boardId={board.id} />);
         })()}
-        {!!groups.length && Object.values(groups).map(group => <Group key={group.id} id={group.id} boardId={board.id} />)}
+        {!!groups.length && Object.values(groups).map(group => <Group style={style} key={group.id} id={group.id} boardId={board.id} />)}
       </div>
     );
   }
