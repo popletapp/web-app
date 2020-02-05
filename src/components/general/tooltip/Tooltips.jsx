@@ -10,9 +10,10 @@ function mapStateToProps (state) {
 class Tooltips extends Component {
   render () {
     const { tooltips } = this.props;
+    console.log(tooltips)
     return (
       <div className='tooltips animated'>
-        {tooltips.map((tooltip, i) => <div style={{ top: tooltip.position.y, left: tooltip.position.x }} className='tooltip' key={i}>{tooltip.text}</div>)}
+        {tooltips.map((tooltip, i) => <div style={{ top: tooltip.position.y, left: tooltip.position.x }} className='tooltip' key={i}>{tooltip.content}</div>)}
       </div>
     );
   }

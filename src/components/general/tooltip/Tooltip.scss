@@ -1,13 +1,11 @@
-.tooltip
-{
+.tooltip {
   position: absolute;
   left: 0px;
   top: 0px;
-  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   letter-spacing: normal;
-  line-height: 1.42857143;
   text-align: left;
   text-align: start;
   text-shadow: none;
@@ -16,9 +14,10 @@
   word-break: normal;
   word-spacing: normal;
   word-wrap: normal;
-  font-size: 12px;
-  
-  display: inline-block;
+  font-size: 14px;
+  background-color: #000;
+  padding: 0.5em;
+  border-radius: 4px;
 }
 
 .tooltip.right {

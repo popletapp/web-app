@@ -10,41 +10,37 @@ class Tooltip extends Component {
   }
 
   hover (event) {
-    /* function isParent (refNode, otherNode) {
-      var parent = otherNode.parentNode;
-      do {
-        if (refNode === parent) {
-          return true;
-        } else {
-          parent = parent.parentNode;
-        }
-      } while (parent);
-      return false;
-    } */
-
-    const { placement = 'top', text } = this.props;
+    const { placement = 'top', content } = this.props;
     this.setState({ isShowing: true });
+    const pseudoTooltip = document.createElement('div');
+    pseudoTooltip.classList.add('tooltip');
+    pseudoTooltip.innerHTML = content;
+    document.querySelector('.tooltips').appendChild(pseudoTooltip)
+
+    const predicted = pseudoTooltip.getBoundingClientRect();
     const ref = event.target.getBoundingClientRect();
 
-    const TOOLTIP_HEIGHT = 40;
+    const TOOLTIP_HEIGHT = predicted.height;
+    const TOOLTIP_WIDTH = predicted.width;
     let position = {};
     switch (placement) {
       case 'top':
-        position = { x: ref.left + (ref.width / 2), y: ref.y - TOOLTIP_HEIGHT };
+        position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.y - TOOLTIP_HEIGHT };
         break;
       case 'left':
-        position = { x: ref.left, y: ref.y - (ref.offsetHeight / 2) };
+        position = { x: ref.left - predicted.width, y: ref.y };
         break;
       case 'bottom':
-        position = { x: ref.left + (ref.width / 2), y: (ref.y + ref.height) + TOOLTIP_HEIGHT };
+        position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.bottom };
         break;
       case 'right':
-        position = { x: ref.left + ref.width, y: ref.y - (ref.height / 2) };
+        position = { x: ref.left + ref.width, y: ref.y };
         break;
       default:
         break;
     }
-    createTooltip({ text, position });
+    pseudoTooltip.remove();
+    createTooltip({ content, position });
   }
 
   unhover () {
