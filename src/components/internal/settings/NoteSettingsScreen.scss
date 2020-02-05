@@ -1,0 +1,40 @@
+@import './../../../index.scss';
+
+.rule-creating {
+  border: 2px $light-accent-color-4 dashed;
+  padding: 1em;
+  margin-bottom: 1em;
+  margin-right: 0.45em;
+  background-color: #1f1f1f;
+}
+
+.rule-creation-header {
+  font-size: 20px;
+  color: white;
+  font-weight: 800;
+}
+
+.performable {
+  &-creation-text-add {
+    color: $text-accent-color-2;
+    padding-left: 4px;
+    margin-right: 12px;
+    margin-top: 1px;
+    padding-top: 4px;
+  }
+
+  &-creation-section {
+    padding-top: 4px;
+  }
+
+  &-create-btn {
+    border: 1px white solid;
+    padding: 0.1em;
+    line-height: 14px;
+    width: 20px;
+    margin-top: 3px;
+    height: 20px;
+    text-align: center;
+    cursor: pointer;
+  }
+}
