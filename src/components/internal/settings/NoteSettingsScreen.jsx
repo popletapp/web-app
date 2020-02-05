@@ -4,14 +4,6 @@ import { connect } from 'react-redux';
 import './NoteSettingsScreen.scss';
 import RULESETS from '../../../constants/Rulesets';
 
-function mapStateToProps (state) {
-  return {
-    compact: false,
-    board: state.boards[state.selectedBoard],
-    members: state.membersByBoard[state.selectedBoard]
-  };
-}
-
 const BASE_RULE = {
   id: 0,
   name: 'Basic rule', // name
@@ -19,100 +11,49 @@ const BASE_RULE = {
   instructions: 0x0
 }
 
-class SelectablePerformable extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      performables: [],
-      performableFlags: []
-    }
-  }
+function mapStateToProps (state) {
+  return {
+    compact: false,
+    board: state.boards[state.selectedBoard],
+    members: Object.values(state.membersByBoard[state.selectedBoard])
+  };
+}
 
-  addPerformable () {
-    const { onChange = () => void 0 } = this.props;
-    if (onChange) {
-      onChange();
-    }
+function UserPanel (props) {
+  const [users, setUsers] = React.useState(props.members);
+  return (
+    <List style={{ maxHeight: '300px' }}>
+      <Scroller>
+        {users.map((user, i) =>
+          <SelectableItem key={i} className='user-item' id={user.id} selected={false}>
+            <Flex align='left' basis='auto' grow={1} shrink={1}>
+              <FlexChild align='left' direction='row' basis='auto' grow={1} shrink={1}>
+                <User avatar={user.avatar} username={user.username} />
+              </FlexChild>
+            </Flex>
+          </SelectableItem>)}
+      </Scroller>
+    </List>
+  )
+}
+const ConnectedUserPanel = connect(mapStateToProps, null)(UserPanel);
 
-    let { performables } = this.state;
-    performables.push(this.renderPerformableSelection());
-    this.setState({ performables });
-  }
+// Use a bitfield to define the type of rule (what attributes/performables it has)
+// Provide an extra object with the rule for extra stuff (content, members, etc)
 
-  addToPerformableFlags (flag) {
-    const { performableFlags } = this.state;
-    performableFlags.push(flag);
-    this.setState({ performableFlags });
-    console.log(performableFlags)
-  }
+// A maximum of 5 performables per rule
+// Maximum of 5 rules
+function Performable () {
+  const [value, setValue] = React.useState('assign-members');
+  const [removed, isRemoved] = React.useState(false);
 
-  handlePerformableSelect (event) {
-    console.log(event.target.value)
-    switch (event.target.value) {
-      case 'assign-members': {
-        this.addToPerformableFlags(RULESETS.ASSIGN_MEMBERS);
-        break;
-      }
-      case 'set-title': {
-        this.addToPerformableFlags(RULESETS.SET_TITLE);
-        break;
-      }
-      case 'add-content-title': {
-        this.addToPerformableFlags(RULESETS.ADD_CONTENT_TITLE);
-        break;
-      }
-      case 'add-content-desc': {
-        this.addToPerformableFlags(RULESETS.ADD_CONTENT_NOTE);
-        break;
-      }
-      case 'replace-content': {
-        this.addToPerformableFlags(RULESETS.REPLACE_CONTENT);
-        break;
-      }
-      case 'add-due-date': {
-        this.addToPerformableFlags(RULESETS.ADD_DUE_DATE);
-        break;
-      }
-      case 'set-importance': {
-        this.addToPerformableFlags(RULESETS.SET_IMPORTANCE_LEVEL);
-        break;
-      }
-      case 'announce-content': {
-        this.addToPerformableFlags(RULESETS.ANNOUNCE_CONTENT);
-        break;
-      }
-      case 'send-notif': {
-        this.addToPerformableFlags(RULESETS.SEND_NOTIFICATION);
-        break;
-      }
-      default: {
-        
-      }
-    }
-  }
+  const key = Math.random() * 1e5;
+  const selectionHandler = (e) => setValue(e.target.value);
 
-  renderUserPanel () {
-    const users = this.props.members;
-    return (
-      <List style={{ height: '300px', maxHeight: '300px' }}>
-        <Scroller>
-          {users.map((user, i) =>
-            <SelectableItem key={i} className='user-item' id={user.id} selected={false}>
-              <Flex align='left' basis='auto' grow={1} shrink={1}>
-                <FlexChild align='left' direction='row' basis='auto' grow={1} shrink={1}>
-                  <User avatar={user.avatar} username={user.username} />
-                </FlexChild>
-              </Flex>
-            </SelectableItem>)}
-        </Scroller>
-      </List>
-    )
-  }
-
-  renderPerformableSelection (performable) {
-    return (
-      <Flex direction='row' key={Math.random() * 100} grow={1} align='center'>
-        <select onChange={(e) => this.handlePerformableSelect(e)}>
+  return removed ? null : (
+    <Flex direction='column' key={key} grow={1} align='left'>
+      <Flex direction='row' grow={1} align='center'>
+        <select value={value} onChange={(e) => selectionHandler(e)}>
           <option value='assign-members'>assign these members</option>
           <option value='set-title'>set the title to</option>
           <option value='add-content-title'>add content to the notes title</option>
@@ -123,32 +64,79 @@ class SelectablePerformable extends Component {
           <option value='announce-content'>announce content</option>
           <option value='send-notif'>send a notification</option>
         </select>
-        <CloseButton />
-        <br />
+        <CloseButton onClick={() => isRemoved(true)} />
       </Flex>
-    );
+      <div className='performable-custom-content'>
+        {/* Performable specific rendering */
+        (() => {
+          switch (value) {
+            case 'assign-members': {
+              return <ConnectedUserPanel />
+            }
+            case 'set-title': {
+              return <ConnectedUserPanel />
+            }
+            default: {
+              return null;
+            }
+          }
+        })()}
+      </div>
+      <br />
+    </Flex>
+  );
+}
+
+class PerformableGroup extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      performables: []
+    }
   }
 
-  newPerformableButton () {
-    return <div key={Math.random() * 100} onClick={(e) => this.addPerformable()} className='performable-create-btn'>+</div>
+  addPerformable () {
+    const { onChange = () => void 0 } = this.props;
+    if (onChange) {
+      onChange();
+    }
+
+    let { performables } = this.state;
+    performables.push(<Performable />);
+    this.setState({ performables });
+  }
+
+  handlePerformableSelect (event) {
+    const PERFORMABLE_TYPES = {
+      'assign-members': RULESETS.ASSIGN_MEMBERS,
+      'set-title': RULESETS.SET_TITLE,
+      'add-content-title': RULESETS.ADD_CONTENT_TITLE,
+      'add-content-desc': RULESETS.ADD_CONTENT_NOTE,
+      'replace-content': RULESETS.REPLACE_CONTENT,
+      'add-due-date': RULESETS.ADD_DUE_DATE,
+      'set-importance': RULESETS.SET_IMPORTANCE_LEVEL,
+      'announce-content': RULESETS.ANNOUNCE_CONTENT,
+      'send-notif': RULESETS.SEND_NOTIFICATION
+    }
   }
 
   render () {
+    const NewPerformableButton = () => <div key={Math.random() * 100} onClick={(e) => this.addPerformable()} className='performable-create-btn'>+</div>;
+    this.state.performables = this.state.performables.filter(Boolean);
     const { performables } = this.state;
+    
     return performables.length ? <Flex direction='column'>
       <FlexChild direction='column' align='center' justify='center'>
-        {performables.map((performable, i) => {
-          console.log(performable)
-          return this.renderPerformableSelection(performable)
-        })}
+        {performables}
       </FlexChild>
       <FlexChild className='performable-creation-section' direction='row'>
-        <span className='performable-creation-text-add'>and...</span>{this.newPerformableButton()}
+        <span className='performable-creation-text-add'>and...</span>
+        <NewPerformableButton />
       </FlexChild>
-    </Flex> : this.newPerformableButton();
+    </Flex> : <NewPerformableButton />
   }
 }
-const ConnectedSelectablePerformable = connect(mapStateToProps, null)(SelectablePerformable);
+const ConnectedPerformableGroup = connect(mapStateToProps, null)(PerformableGroup);
 
 class Rule extends Component {
   constructor (props) {
@@ -169,6 +157,7 @@ class Rule extends Component {
   }
 
   handleActionTypeSelect (event) {
+    console.log(event.target.value)
     switch (event.target.value) {
       case 'existing-note': {
         this.setState({ existingSelected: true });
@@ -206,9 +195,8 @@ class Rule extends Component {
     const { index } = this.props;
     const { existingSelected } = this.state;
     const rule = this.initialize();
-    const performableMenu = React.createElement(ConnectedSelectablePerformable, { onChange: () => this.forceUpdate() })
-    console.log(this.bitfield)
-    console.log(performableMenu)
+    const performableMenu = React.createElement(ConnectedPerformableGroup, { onChange: () => this.forceUpdate() })
+    console.log(existingSelected)
     return (<div>
       <div className='rule-creating'>
         <Flex align='center' direction='row'>
@@ -217,14 +205,14 @@ class Rule extends Component {
         <div className='board-note-settings-midheader'>
           When <b>
             <select onChange={(e) => this.handleActionTypeSelect(e)}>
-              <option value='existing-note'>an existing</option>
               <option value='new-note'>a new</option>
+              <option value='existing-note'>an existing</option>
             </select>
           </b> note is...
           <select onChange={(e) => this.handleActionTypeSelect(e)}>
-            <option disabled={!existingSelected} selected={rule.NOTE_CREATED || rule.EXISTING_NOTE_CREATED} value='created'>created</option>
-            <option disabled={existingSelected} selected={rule.NOTE_EDITED || rule.EXISTING_NOTE_EDITED} value='edited'>edited</option>
-            <option disabled={existingSelected} selected={rule.NOTE_DELETED || rule.EXISTING_NOTE_DELETED} value='deleted'>deleted</option>
+            {!existingSelected ? <option value={rule.NOTE_CREATED} value='created'>created</option> : null}
+            {existingSelected ? <option value={rule.NOTE_EDITED} value='edited'>edited</option> : null}
+            {existingSelected ? <option value={rule.NOTE_DELETED} value='deleted'>deleted</option> : null}
           </select>
         </div>
         
