@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild } from './../../';
 import './Note.scss';
-import { endCreateNote } from './../../../actions/note';
 import { updateNote, createNote, saveNote, createModal } from './../../../modules';
 import ComponentTypes from './../../../constants/ComponentTypes';
 
@@ -17,12 +16,6 @@ function mapStateToProps (state, props) {
     selectedArea: state.selectionArea,
     listView: !!state.viewByBoard[state.selectedBoard],
     board: state.boards[props.boardId]
-  };
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-    endCreateNote: board => dispatch(endCreateNote(board))
   };
 }
 
@@ -94,7 +87,7 @@ class Note extends Component {
 
   async onBlur (event, type) {
     let { note } = this.props;
-    const { exists, selected, editing } = this.state;
+    const { selected, editing } = this.state;
 
     if (selected && editing) {
       const content = event.target.innerText.replace(/<br\s*[\\/]?>/gi, '\n');
@@ -106,16 +99,7 @@ class Note extends Component {
         saving: true
       });
       if (note[type] !== newNote[type]) {
-        if (exists) {
-          await saveNote(this.boardId, newNote);
-        } else {
-          this.setState({
-            unmounted: true,
-            exists: true
-          });
-          await createNote(this.boardId, newNote);
-          this.props.endCreateNote(this.boardId);
-        }
+        await saveNote(this.boardId, newNote);
       }
       this.setState({ saving: false });
     }
@@ -172,7 +156,7 @@ class Note extends Component {
     }
     const size = this.didSizeChange();
     if (size) {
-      await saveNote(this.boardId, size);
+      saveNote(this.boardId, size);
     }
   }
 
@@ -181,16 +165,6 @@ class Note extends Component {
 
     this.highlight();
     const { style } = this.state;
-    if (note && oldProps.selectedArea !== selectedArea) {
-      const bounding = ReactDOM.findDOMNode(this.noteRef.current).getBoundingClientRect();
-      if (selectedArea.y1 > bounding.y &&
-        selectedArea.y2 < bounding.bottom &&
-        selectedArea.x1 < bounding.x &&
-        selectedArea.x2 > bounding.right) {
-        console.log('overlapping!!!!', note);
-        this.setState({ selected: true, boxSelection: true });
-      }
-    }
 
     if (note && note.position) {
       if (style.top !== note.position.y || style.left !== note.position.x) {
@@ -215,7 +189,7 @@ class Note extends Component {
 
     if (isDragging) {
       this.wasDraggedByClient = true;
-      setTimeout(() => { this.wasDraggedByClient = false; }, 500);
+      setTimeout(() => { this.wasDraggedByClient = false; }, 300);
     }
     note.title = note.title || '';
     note.content = note.content || '';
@@ -273,7 +247,7 @@ class Note extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps, null)(
   DragSource(
     ComponentTypes.NOTE,
     {
