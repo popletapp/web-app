@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton, GroupSettingsModal } from './../../';
+import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton, GroupSettingsModal, ConfirmModal } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
 import './Group.scss';
@@ -103,7 +103,11 @@ class Group extends Component {
 
   async deleteGroup () {
     const { boardId, group } = this.props;
-    await deleteGroup(boardId, group.id);
+    const modal = {
+      title: 'Are you sure?',
+      content: 'Deleting this group will also delete all of the notes inside of it.'
+    }
+    createModal(<ConfirmModal onConfirm={() => deleteGroup(boardId, group.id)} title={modal.title} content={modal.content} />)
   }
 
   render () {
