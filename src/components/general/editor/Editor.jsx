@@ -3,7 +3,7 @@ import { joinClasses } from '../../../util';
 import SimpleMarkdown from 'simple-markdown';
 import './Editor.scss';
 
-const mdParse = SimpleMarkdown.defaultBlockParse;
+const mdParse = SimpleMarkdown.defaultRawParse;
 const mdOutput = SimpleMarkdown.defaultReactOutput;
 
 class Editor extends Component {
@@ -35,12 +35,24 @@ class Editor extends Component {
     if (oldProps.children !== this.props.children) {
       this.setState({ content: this.props.children });
     }
+    /*if (!this.props.editing) {
+      console.time('editor')
+      for (const editor of [ ...document.querySelectorAll('.editor') ]) {
+        editor.contentEditable = 'false';
+        for (const child of [ ...editor.children ]) {
+          child.contentEditable = 'false';
+        }
+      }
+      console.timeEnd('editor')
+    }*/
   }
 
   render () {
-    const { editing, parseMarkdown, onClick, className, onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder } = this.props;
+    const { editing = false, parseMarkdown, onClick, className, onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder } = this.props;
     const { content } = this.state;
-    if (!content) return null;
+    const state = {
+      disableAutoBlockNewlines: false
+    }
 
     return (
       <div
@@ -58,7 +70,7 @@ class Editor extends Component {
         placeholder={placeholder}
         onInput={(e) => this.update(e)}
         onChange={(e) => this.change(e)}>
-        {parseMarkdown ? mdOutput(mdParse(content)) : content}
+        {parseMarkdown ? mdOutput(mdParse(content, state), state) : content}
       </div>
     );
   }
