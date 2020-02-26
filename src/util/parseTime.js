@@ -13,18 +13,18 @@ const epochs = [
 const getDuration = (timeAgoInSeconds) => {
   for (const [name, seconds] of epochs) {
     const interval = Math.floor(timeAgoInSeconds / seconds);
-
     if (interval >= 1) {
       return {
         interval: interval,
         epoch: name
       };
     }
-    return {
-      interval: 0,
-      epoch: null
-    };
   }
+
+  return {
+    interval: 0,
+    epoch: 'second'
+  };
 };
 
 // Calculate
