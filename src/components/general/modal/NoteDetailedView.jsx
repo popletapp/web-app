@@ -1,8 +1,8 @@
 import React from 'react';
 import Modal from './Modal';
 import { connect } from 'react-redux';
-import { ColorPicker, Editor, Scroller, Button, DatePicker } from './../../';
-import { updateNote, saveNote, deleteNote } from './../../../modules';
+import { ColorPicker, Editor, Scroller, Button, DatePicker, ConfirmModal } from './../../';
+import { updateNote, saveNote, deleteNote, createModal } from './../../../modules';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 
@@ -95,6 +95,7 @@ class NoteDetailedView extends Modal {
     const { note } = this.props;
     const { focused, color } = this.state;
 
+    if (!note) return null;
     note.title = note.title || '';
 
     return (
@@ -129,6 +130,14 @@ class NoteDetailedView extends Modal {
                   {note.content}
                 </Editor>
               </Scroller>
+            </div>
+
+            <div className='modal-note-comments'>
+              <div onClick={() => 
+                createModal(<ConfirmModal title={'Hey!'} confirmText={'Understandable'} cancelText={'😡'} content={'Sorry, but comments aren\'t available yet.'} />)} 
+                className='modal-note-comments-view'>
+                View Comments
+              </div>
             </div>
           </div>
           <div className='vertical-rule' style={{ height: '460px', borderColor: '#2e2e2e', margin: '16px' }} />
