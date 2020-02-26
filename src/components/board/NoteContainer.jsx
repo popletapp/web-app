@@ -85,12 +85,11 @@ class NoteContainer extends Component {
       el = el.parentElement || el.parentNode;
     } while (el !== null && el.nodeType === 1);
     this.setState({ mouseDown: true, selecting: false, beganSelectionAt: { x: e.clientX, y: e.clientY } });
-    this.cancelSelect();
   }
 
   onMouseMove (e, touch = false) {
     if (this.state.mouseDown || touch) {
-      if (!this.state.selecting && Math.abs((e.clientX + e.clientY) - (this.state.beganSelectionAt.x + this.state.beganSelectionAt.y)) > 30) {
+      if (!this.state.selecting && Math.abs((e.clientX + e.clientY) - (this.state.beganSelectionAt.x + this.state.beganSelectionAt.y)) > 2) {
         this.selectArea.hidden = 0;
         this.setState({ selecting: true });
         beginSelection(this.defaultSelection);
@@ -110,18 +109,11 @@ class NoteContainer extends Component {
   }
 
   endSelect () {
+    this.selectArea.hidden = 1;
+    this.selection = this.defaultSelection;
+    this.setState({ mouseDown: false, selecting: false, beganSelectionAt: {} });
+    this.selectionPoints = this.defaultSelection;
     endSelection(this.selectionPoints);
-    this.selectArea.hidden = 1;
-    this.selection = this.defaultSelection;
-    this.setState({ mouseDown: false, selecting: false, beganSelectionAt: {} });
-    this.selectionPoints = this.defaultSelection;
-  }
-
-  cancelSelect () {
-    this.selectArea.hidden = 1;
-    this.selection = this.defaultSelection;
-    this.setState({ mouseDown: false, selecting: false, beganSelectionAt: {} });
-    this.selectionPoints = this.defaultSelection;
   }
 
   onMouseUp () {
