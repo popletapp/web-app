@@ -1,7 +1,10 @@
+@import './../../../index.scss';
+
 .notes {
   position: relative;
   height: 100%;
   min-height: 0;
+  background-color: $light-accent-color-4;
 }
 
 .note {
@@ -12,6 +15,7 @@
   max-height: 400px;
   min-width: 175px;
   transition: all 0.5s, opacity 0ms;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 
   &-container {
     flex: 1 1 auto;
@@ -52,11 +56,11 @@
       border-style: solid;
       border-radius: 7px;
       background-color: #202225;
-      border-color: #2f3136;
+      border-color: $light-accent-color-4;
     }
 
     &::-webkit-scrollbar-track-piece {
-      background-color: #2f3136;
+      background-color: $light-accent-color-4;
       border-radius: 7px;
     }
 
