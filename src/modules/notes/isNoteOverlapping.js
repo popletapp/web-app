@@ -1,56 +1,45 @@
 import Poplet from '../../';
 import { isNoteInGroup } from './..';
 
-export default (note, prevNote) => {
+export default (note) => {
   const store = Poplet.store;
   const state = store.getState();
-  const noteBeforePositionChange = prevNote;
 
-  const setNewPosition = (a, b) => {
-    const note = a;
+  if (!note) {
+    return false;
+  }
+
+  const overlaps = (rect1, rect2) => {
+    const obj = {
+      left: rect1.position.x < rect2.position.x + rect2.size.width,
+      right: rect1.position.x + rect1.size.width > rect2.position.x,
+      bottom: rect1.position.y < rect2.position.y + rect2.size.height,
+      top: rect1.position.y + rect1.size.height > rect2.position.y
+    }
+
+    return { overlapping: (obj.left && 
+      obj.right && 
+      obj.bottom && 
+      obj.top), obj };
+  }
+
+  const notes = Object.values(state.notesByBoard[state.selectedBoard]);
+  let overlapping = false;
+  for (const b of notes) {
     // If the current note equals the comparison note
-    if (note === b) return;
+    if (note === b) continue;
     // If the comparison note is not in the same group as the note being tested
     const comparisonNoteInGroup = isNoteInGroup(b.id);
-    const originalNoteInGroup = isNoteInGroup(a.id);
-    if (originalNoteInGroup !== comparisonNoteInGroup) return;
+    const originalNoteInGroup = isNoteInGroup(note.id);
+    if (originalNoteInGroup !== comparisonNoteInGroup) continue;
     // If the position data for either note is not available
-    if (!a.position || !b.position) return;
+    if (!note.position || !b.position) continue;
 
-    const left = a.position.x + a.size.width <= b.position.x;
-    const right = b.position.x + b.size.width <= a.position.x;
-    const bottom = a.position.y + a.size.height <= b.position.y;
-    const top = b.position.y + b.size.height <= a.position.y;
-    const inside = !(left || right || top || bottom);
-
-    if (inside) {
-      const n = noteBeforePositionChange;
-      const oldLeft = n.position.x + n.size.width <= b.position.x;
-      const oldRight = b.position.x + b.size.width <= n.position.x;
-      const oldBottom = n.position.y + n.size.height <= b.position.y;
-      const oldTop = b.position.y + b.size.height <= n.position.y;
-
-      if (oldLeft && !left) {
-        return { x: b.position.x - b.size.width, y: a.position.y };
-      } else if (oldRight && !right) {
-        return { x: b.position.x + b.size.width, y: a.position.y };
-      } else if (oldBottom && !bottom) {
-        return { x: a.position.x, y: b.position.y - b.size.height };
-      } else if (oldTop && !top) {
-        return { x: a.position.x, y: b.position.y + b.size.height };
-      }
-    }
-    return false;
-  };
-
-  let newPosition = note.position;
-  // Means inside of the note
-  for (const b of Object.values(state.notesByBoard[state.selectedBoard])) {
-    const position = setNewPosition(note, b);
-    if (position && position.x) {
-      newPosition = position;
-      note.position = newPosition;
+    const check = overlaps(note, b);
+    if (check.overlapping) {
+      overlapping = overlapping || check.overlapping;
     }
   }
-  return newPosition === note.position ? false : newPosition;
+
+  return overlapping;
 };
