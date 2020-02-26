@@ -23,11 +23,6 @@ export const receiveNotes = (board, data) => ({
   receivedAt: Date.now()
 });
 
-export const beginCreateNote = (board) => ({
-  type: BEGIN_CREATE_NOTE,
-  board
-});
-
 export const endCreateNote = (board) => ({
   type: END_CREATE_NOTE,
   board

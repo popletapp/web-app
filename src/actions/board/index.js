@@ -3,6 +3,8 @@ import {
   RECEIVE_BOARDS,
   CREATE_BOARD,
   SELECT_BOARD,
+  UPDATE_BOARD,
+  DELETE_BOARD,
   JOIN_BOARD,
   LEAVE_BOARD,
   UPDATE_VIEW,
@@ -58,6 +60,12 @@ export function getBoards (userId) {
 
 export const createBoard = (board) => ({
   type: CREATE_BOARD,
+  board
+});
+
+export const updateBoard = (boardId, board) => ({
+  type: UPDATE_BOARD,
+  boardId,
   board
 });
 
