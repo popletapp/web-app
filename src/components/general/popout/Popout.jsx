@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { removePopout } from './../../../modules';
+import { createPopout, removePopout } from './../../../modules';
 import { joinClasses } from './../../../util';
 import './Popout.scss';
 
@@ -8,12 +8,10 @@ class Popout extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      showing: false,
-      firstClick: true
+      isShowing: false
     };
     this.escListener = (e) => e.keyCode === 27 && this.actionMade('cancel', e);
     this.clickListener = (event) => {
-      this.setState({ firstClick: false });
       let el = event.target;
       do {
         if (el.matches('.popout')) return el;
@@ -42,8 +40,51 @@ class Popout extends Component {
     }
   }
 
+  click (event) {
+    const { placement = 'top', style } = this.props;
+    const content = this.content ? this.content() : this.props.content;
+    console.log(content)
+    if (content.props && style) {
+      content.props.style = { top: style.top, left: style.left }
+    }
+    
+    this.setState({ isShowing: true });
+    const pseudoPopout = document.createElement('div');
+    pseudoPopout.classList.add('popout');
+    pseudoPopout.innerHTML = content;
+    document.querySelector('.popouts').appendChild(pseudoPopout)
+
+    const predicted = pseudoPopout.getBoundingClientRect();
+    const ref = event.target.getBoundingClientRect();
+
+    const TOOLTIP_HEIGHT = predicted.height;
+    const TOOLTIP_WIDTH = predicted.width;
+    let position = {};
+    switch (placement) {
+      case 'top':
+        position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.y - TOOLTIP_HEIGHT };
+        break;
+      case 'left':
+        position = { x: ref.left - predicted.width, y: ref.y };
+        break;
+      case 'bottom':
+        position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.bottom };
+        break;
+      case 'right':
+        position = { x: ref.left + ref.width, y: ref.y };
+        break;
+      default:
+        break;
+    }
+
+    pseudoPopout.remove();
+    createPopout('popout', content, { position });
+  }
+
   close () {
-    if (this.state.firstClick) return;
+    this.setState({ isShowing: false });
+    document.removeEventListener('keydown', this.escListener, false);
+    document.removeEventListener('click', this.clickListener, false);
     removePopout();
   }
 
@@ -53,11 +94,17 @@ class Popout extends Component {
   }
 
   render () {
-    const { children, style, className } = this.props;
+    let { children, className, style } = this.props;
+    if (!Array.isArray(children)) {
+      children = [children];
+    }
+    const newChildren = React.Children.map(this.props.children, (child, i) => !i
+      ? React.cloneElement(child, { style, onClick: this.click.bind(this) })
+      : child);
     return (
-      <div className={joinClasses('popout', className)} style={style} aria-labelledby='popout-title' aria-describedby='popout-content'>
-        {children}
-      </div>
+      <>
+        {newChildren}
+      </>
     );
   }
 }

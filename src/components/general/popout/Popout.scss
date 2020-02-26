@@ -1,14 +1,29 @@
 @import './../../../index.scss';
 
 .popout {
-  background-color: $dark-accent-color-2;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-align: left;
+  text-align: start;
+  text-shadow: none;
+  text-transform: none;
+  white-space: normal;
+  word-break: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  background-color: $dark-accent-color-1;
   min-width: 100px;
+  max-width: 250px;
   min-height: 100px;
   position: absolute;
   z-index: 10;
-  border: solid 5px $dark-accent-color-4;
   border-radius: 6px;
-  box-shadow: 1px 1px 10px black;
+  box-shadow: 0px 0px 3px black;
 
   &-content {
     padding: 1em;
