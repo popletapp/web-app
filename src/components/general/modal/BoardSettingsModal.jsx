@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './Modal';
 import { connect } from 'react-redux';
-import { InviteSettingsScreen, RankSettingsScreen, Flex, FlexChild } from '../../';
+import { GeneralSettingsScreen, InviteSettingsScreen, CloseButton, RankSettingsScreen, Flex, FlexChild, NoteSettingsScreen, Input } from '../../';
 
 import './Modal.scss';
 import './BoardSettingsModal.scss';
@@ -21,10 +21,15 @@ class BoardSettingsModal extends Modal {
     };
   }
 
-  switchTab (tab) {
+  switchTab (tab, e) {
     this.setState({
       selectedTab: tab.toUpperCase()
     });
+    const tabs = [ ...document.querySelectorAll('.board-settings-setting-selected') ];
+    for (const existingTab of tabs) {
+      existingTab.classList.remove('board-settings-setting-selected');
+    }
+    e.target.classList.add('board-settings-setting-selected');
   }
 
   componentDidMount () {
@@ -38,18 +43,27 @@ class BoardSettingsModal extends Modal {
     return <div className='board-settings'>
       <div className='modal-content'>
         <Flex align='right' className='board-settings-left-panel'>
-          <FlexChild align='right' direction='column' className='board-settings-sidebar'>
-            <div className='board-settings-header'>
-              Settings
-            </div>
+          <FlexChild align='left' grow={0} direction='column'>
+            <Flex direction='row' grow={0} align='center' justify='center'>
+              <div className='board-settings-header'>
+                Settings
+              </div>
+              <CloseButton onClick={() => this.actionMade()} style={{ marginLeft: '50px' }} size='40px' />
+            </Flex>
+
             <div className='board-settings-header-name'>
               {board.name}
             </div>
+            <Input prefixIcon icon='search' placeholder='Search settings' />
+            <br />
+          </FlexChild>
+          <FlexChild align='right' direction='column' className='board-settings-sidebar'>
             <div className='board-settings-body'>
               <ul className='board-settings-settings-container'>
-                <li onClick={() => this.switchTab('general')} className='board-settings-setting'>General</li>
-                <li onClick={() => this.switchTab('ranks')} className='board-settings-setting'>Ranks</li>
-                <li onClick={() => this.switchTab('invites')} className='board-settings-setting'>Invites</li>
+                <li onClick={(e) => this.switchTab('general', e)} className='board-settings-setting'>General</li>
+                <li onClick={(e) => this.switchTab('notes', e)} className='board-settings-setting'>Notes</li>
+                <li onClick={(e) => this.switchTab('ranks', e)} className='board-settings-setting'>Ranks</li>
+                <li onClick={(e) => this.switchTab('invites', e)} className='board-settings-setting'>Invites</li>
               </ul>
             </div>
           </FlexChild>
@@ -59,7 +73,10 @@ class BoardSettingsModal extends Modal {
           {(() => {
             switch (selectedTab) {
               case 'GENERAL': {
-                return <RankSettingsScreen />;
+                return <GeneralSettingsScreen />;
+              }
+              case 'NOTES': {
+                return <NoteSettingsScreen />;
               }
               case 'RANKS': {
                 return <RankSettingsScreen />;
