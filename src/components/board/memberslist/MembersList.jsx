@@ -20,25 +20,25 @@ class MembersList extends Component {
 
     return (
       <Flex direction='column' align='left' className='members-list'>
-        <div className='members-list-header'>
-          Members
-        </div>
-
         <List style={{ height: '100%' }}>
           <Scroller>
+            <header>
+              Members
+            </header>
             {members.map((user, i) =>
-              <SelectableItem
-                onClick={(e) => createPopout('member-popout', <MemberPopout member={user} />, { position: { x: e.clientX, y: e.clientY } })}
-                key={i}
-                className='user-item'
-                id={user.id}
-                selected={false}>
-                <Flex align='left' basis='auto' grow={1} shrink={1}>
-                  <FlexChild align='left' direction='row' basis='auto' grow={1} shrink={1}>
-                    <User avatar={user.avatar} username={user.username} />
-                  </FlexChild>
-                </Flex>
-              </SelectableItem>)}
+              <MemberPopout key={i+4} member={user}>
+                <SelectableItem
+                  key={i}
+                  className='user-item'
+                  id={user.id}
+                  selected={false}>
+                  <Flex align='left' basis='auto' grow={1} shrink={1}>
+                    <FlexChild align='left' direction='row' basis='auto' grow={1} shrink={1}>
+                      <User avatar={user.avatar} username={user.username} />
+                    </FlexChild>
+                  </Flex>
+                </SelectableItem>
+              </MemberPopout>)}
           </Scroller>
         </List>
       </Flex>
