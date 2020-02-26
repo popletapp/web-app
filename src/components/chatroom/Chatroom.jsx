@@ -80,7 +80,6 @@ class Chatroom extends Component {
   }
 
   input (event) {
-    event.stopPropagation();
     if (event.which === 13 && !event.shiftKey) {
       this.createComment();
     }
@@ -89,8 +88,13 @@ class Chatroom extends Component {
   async createComment (event) {
     const { id } = this.props;
     this.setState({ content: '' });
+    
     const { user } = this.props;
     const { content } = this.state;
+
+    if (!content) {
+      return;
+    }
     await createChatroomComment(id, {
       author: user,
       content
@@ -101,10 +105,11 @@ class Chatroom extends Component {
     let { chatroom, chatrooms, boardID, comments } = this.props;
     const { content } = this.state;
     chatrooms = chatrooms ? Object.values(chatrooms) : null;
-    comments = comments ? Object.values(comments) : null;
+    comments = comments ? Object.values(comments) : [];
     if (!chatroom) {
       return null;
     }
+    const sortedComments = comments ? comments.sort((a, b) => b.timestamp - a.timestamp) : [];
 
     return (
       <Flex className='chatroom-container'>
@@ -136,7 +141,7 @@ class Chatroom extends Component {
                 {chatroom.name}
               </div>
               <div className='chatroom-last-active-label'>
-                {chatroom.lastMessage ? `Last message sent ${TimeParser.timeAgo(chatroom.lastMessage)}` : 'Not active'}
+                {sortedComments.length ? `Last active ${TimeParser.timeAgo(sortedComments[0].timestamp)}` : 'Not active'}
               </div>
             </FlexChild>
             <FlexChild className='chatroom-header-btns' grow={0} align='center' justify='right' direction='column'>
@@ -148,7 +153,7 @@ class Chatroom extends Component {
 
           <Flex className='chatroom-body' grow={0}>
             <Scroller style={{ width: '100%', maxWidth: '100%' }}>
-              {comments && comments.sort((a, b) => b.timestamp - a.timestamp).map((comment, i) => <Comment key={i} author={comment.author}>{comment.content}</Comment>)}
+              {comments && sortedComments.map((comment, i) => <Comment key={i} author={comment.author}>{comment.content}</Comment>)}
             </Scroller>
           </Flex>
 

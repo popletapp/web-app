@@ -12,21 +12,27 @@
 
 .chatroom-dragbar {
   width: 3px;
-  background-color: #000;
+  background-color: $dark-accent-color-5;
   opacity: 0.5;
   position: absolute;
   cursor: col-resize;
   height: 100%;
+  overflow: hidden;
   z-index: 9;
 }
 
 .chatroom-header {
   position: relative;
-  background-color: #5c6bc0;
+  background-color: #5c6bc054;
   width: 100%;
   height: 130px;
   min-height: 130px;
   padding: 12px;
+  box-shadow: 0px 0.5px 4px $dark-accent-color-4;
+
+  &-information {
+    width: 80%;
+  }
 
   &-btns {
     position: absolute;
@@ -87,14 +93,15 @@
 }
 
 .chatroom-entering {
-  animation: 0.55s slideChatroomIn 0s backwards cubic-bezier(.15,.97,.51,1.01);
+  animation: 0.45s slideChatroomIn 0s backwards cubic-bezier(.15,.97,.51,1.01);
 }
 
 .chatroom-root {
-  background-color: #333333;
+  background-color: $light-accent-color-2;
   height: 100%;
   width: 100%;
   padding: 0;
+  overflow: hidden;
 }
 
 .chatroom-tab {
@@ -104,12 +111,13 @@
     padding: 6px 12px 6px 12px;
     background-color: $light-accent-color-1;
     height: 32px;
-    border-top-right-radius: 12px;
-    border-top-left-radius: 12px;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
     max-width: 150px;
+    border: 0.8px $dark-accent-color-3 solid;
 
     &-btn i {
-      font-size: 20px;
+      font-size: 18px !important; 
 
       &-close {
         margin-left: 6px;
@@ -145,6 +153,7 @@
   height: 100%;
   max-height: 100%;
   padding-left: 4px;
+  overflow: auto;
 }
 
 .chatroom-textarea-container {
@@ -171,13 +180,13 @@
 .chatroom-container {
   max-width: 500px;
   width: 250px;
-  box-shadow: -2px 0px 3px $dark-accent-color-5;
+  box-shadow: -2px 0px 3px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
 .chatroom-comment {
   &-container {
-    padding: 8px;
+    padding: 10px 8px;
   }
 
   &-author {
