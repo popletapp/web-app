@@ -1,12 +1,11 @@
-import { createNote, saveNote, updateGroup, isNoteInGroup, determineSize, isNoteOverlapping } from './../';
-import { endCreateNote } from './../../actions/note';
+import { createNote, saveNote, updateGroup, isNoteInGroup, determineSize, isNoteOverlapping, findNextAvailablePosition } from './../';
 import Poplet from '../../';
 
 export default async (boardId, noteId, position) => {
   const store = Poplet.store;
   const state = store.getState();
   const notes = state.notesByBoard[boardId];
-  const note = noteId ? notes[noteId] : notes['-1'];
+  const note = notes[noteId];
 
   if (!note) {
     throw new Error('Attempt to move invalid note');
@@ -23,13 +22,7 @@ export default async (boardId, noteId, position) => {
     throw new Error('One or more position values are not valid integers');
   }
 
-  const oldNote = { ...note };
   note.position = { x, y };
-  const overlapping = isNoteOverlapping(note, oldNote);
-
-  if (overlapping) {
-    note.position = overlapping;
-  }
 
   const groupId = isNoteInGroup(note.id);
   if (groupId) {
@@ -42,7 +35,6 @@ export default async (boardId, noteId, position) => {
     saveNote(boardId, note);
     return note;
   } else {
-    store.dispatch(endCreateNote(boardId));
     createNote(boardId, note);
   }
 };
