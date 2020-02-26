@@ -68,10 +68,10 @@ class NavBar extends Component {
                     <MinimalisticButton icon='dashboard' color='red' className='board-selector-btn' />
                     <p>Boards</p>
                   </div>
-                  
+
                   <ul id='user-selector' className='dropdown-content'>
                     <Link className='dropdown-link' to={`/users/${user.id}`}><li><i className='material-icons'>person</i>Profile</li></Link>
-                    <li><i className='material-icons'>settings</i><p>Settings</p></li>
+                    <Link className='dropdown-link' to={`/settings`}><li><i className='material-icons'>settings</i>Settings</li></Link>
                     <li onClick={() => logout()} className='sign-out'><i className='material-icons'>subdirectory_arrow_right</i><p>Sign Out</p></li>
                   </ul>
 

@@ -5,6 +5,10 @@
   flex-direction: column;
 }
 
+a.dropdown-link li {
+  color: white;
+}
+
 .navbar {
   display: flex;
   padding: 0.25em 2em 0.25em 2em;
@@ -27,6 +31,7 @@
     border-radius: 12px;
     justify-items: center;
     align-items: center;
+    background-color: $light-accent-color-2;
 
     &:hover {
       background-color: $light-accent-color-2;
@@ -112,7 +117,7 @@
   }
 }
 
-.board-selector-btn, .dev-tools-btn {
+.board-selector-btn, .dev-tools-btn, .user-settings-btn {
   &-container {
     display: flex;
     flex-direction: row;
@@ -120,8 +125,8 @@
     align-items: center;
     margin-left: 8px;
     margin-right: 8px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 6px;
+    padding-right: 6px;
 
     > p {
       margin-left: 8px;
@@ -153,4 +158,10 @@
 
 .user-settings-dropdown {
   flex-direction: row;
+}
+
+@media screen and (max-width: 540px) {
+  .board-navbar-user-container-username {
+    display: none;
+  }
 }
