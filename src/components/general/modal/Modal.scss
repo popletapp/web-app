@@ -68,6 +68,7 @@
   background-color: $light-accent-color-1;
   overflow-y: auto;
   animation: 0.27s modalEnter 0s forwards;
+  box-shadow: 1px 1px 3px black;
 
   &-exiting {
     animation: 0.15s modalExit 0s forwards;
@@ -154,6 +155,29 @@
       font-family: 'Roboto', sans-serif;
       margin-top: 6px;
       margin-bottom: 6px;
+      cursor: pointer;
+    }
+  }
+}
+
+.modal-note-comments {
+  margin-top: auto;
+
+  &-view {
+    font-weight: 700;
+    font-family: 'Roboto', sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    background-color: $dark-accent-color-3;
+    border-radius: 4px;
+    text-align: center;
+    padding: 0.5em;
+    margin-top: -2em;
+
+    &:hover {
+      -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.02);
+      -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.02);
+      box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.02);
       cursor: pointer;
     }
   }

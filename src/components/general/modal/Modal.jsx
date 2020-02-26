@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
-import { popModal } from './../../../modules';
 import { Flex, FlexChild } from './../../';
 import './Modal.scss';
 
@@ -14,8 +13,7 @@ class Modal extends Component {
 
   actionMade (type, event) {
     const { onCancel, onConfirm = () => {} } = this.props;
-
-    this.close()
+    this.close();
     if (type) {
       if (type === 'cancel' && onCancel) {
         return onCancel();
@@ -26,7 +24,12 @@ class Modal extends Component {
   }
 
   close () {
-    popModal();
+    const backdrops = Array.from(document.querySelectorAll('.backdrop'));
+    console.log(backdrops)
+    const sorted = backdrops.sort((a, b) => b.dataset.timestamp - a.dataset.timestamp);
+    if (sorted[0]) {
+      sorted[0].click();
+    }
   }
 
   componentWillUnmount () {
@@ -39,17 +42,19 @@ class Modal extends Component {
     // fuck firefox
     setTimeout(() => {
       const container = document.getElementsByClassName('modal')[0];
-      const child = container.firstChild;
-      const size = child.getBoundingClientRect();
-      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        container.style.height = `${size.height + 24}px`;
-        container.style.minHeight = `${size.height + 42}px`;
+      if (container) {
+        const child = container.firstChild;
+        const size = child.getBoundingClientRect();
+        if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+          container.style.height = `${size.height + 24}px`;
+          container.style.minHeight = `${size.height + 42}px`;
+        }
       }
     }, 30);
 
     return (
       <div>
-        <div className='modal' aria-labelledby='modal-title' aria-describedby='modal-content'>
+        <div className='modal' data-timestamp={Date.now()} aria-labelledby='modal-title' aria-describedby='modal-content'>
           {(() => {
             if (customModal && customModal.modal) {
               return customModal.modal;
