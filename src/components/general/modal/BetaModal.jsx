@@ -12,7 +12,7 @@ class BetaModal extends Modal {
             Info
           </div>
           <div className='modal-body'>
-            <p>Hey! Thanks for participating in the Poplet public beta.<br />This is one big reminder that Poplet is in an extremely developmental state; downtime, bugs or data loss is possible.</p>
+            <p>Hey! Thanks for participating in the Poplet public beta.<br />Poplet is still under heavy development. Downtime, bugs or data loss may occur.</p>
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
