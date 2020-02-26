@@ -1,13 +1,20 @@
+const DEFAULT_NOTE = {
+  title: 'Title',
+  content: 'Content',
+  labels: [],
+  assignees: [],
+  createdAt: Date.now(),
+  modifiedAt: Date.now(),
+  position: {x: 10, y: 10},
+  size: {width: 175, height: 115},
+  options: {},
+}
+
 export const notes = (state = {
   isFetching: false,
   items: []
 }, action) => {
   switch (action.type) {
-    case 'BEGIN_CREATE_NOTE': {
-      return Object.assign({}, state, {
-        items: [...state.items, { title: 'Title', content: 'Content' }]
-      });
-    }
     case 'END_CREATE_NOTE': {
       return Object.assign({}, state, {
         items: state.items.filter(note => note.id)
@@ -69,14 +76,6 @@ export const zoomLevel = (state = {}, action) => {
 
 export const notesByBoard = (state = {}, action) => {
   switch (action.type) {
-    case 'BEGIN_CREATE_NOTE': {
-      return { ...state,
-        [action.board]: {
-          ...state[action.board],
-          '-1': { title: 'Title', content: 'Content' }
-        }
-      };
-    }
     case 'END_CREATE_NOTE': {
       const old = { ...state };
       delete old[action.board]['-1'];
