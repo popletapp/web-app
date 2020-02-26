@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Avatar, Input, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal, Flex, FlexChild, CircleButton } from './../../';
+import { Button, Avatar, Input, BoardCreationModal, BoardJoinModal, BoardInviteMembersModal, BoardSettingsModal, Flex, FlexChild, CircleButton, Tooltip } from './../../';
 import { selectBoard, createBoard, updateView } from './../../../actions/board';
-import { beginCreateNote, adjustZoomLevel } from './../../../actions/note';
-import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal, leaveBoard } from '../../../modules';
+import { adjustZoomLevel } from './../../../actions/note';
+import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal, leaveBoard, createNote } from '../../../modules';
 import { Link } from 'react-router-dom';
 import MinimalisticButton from '../../general/button/MinimalisticButton';
 
@@ -20,7 +20,6 @@ function mapDispatchToProps (dispatch) {
   return {
     selectBoard: boardId => dispatch(selectBoard(boardId)),
     createBoard: board => dispatch(createBoard(board)),
-    beginCreateNote: board => dispatch(beginCreateNote(board)),
     updateView: (board, view) => dispatch(updateView(board, view)),
     setZoomLevel: (board, amount) => dispatch(adjustZoomLevel(board, amount)),
   };
@@ -82,14 +81,19 @@ class TopBar extends Component {
                   <Flex direction='row' align='center' className='board-info-member-count'>
                     <FlexChild align='left'>
                       {board.members ? board.members.length : 0} member{board.members && board.members.length === 1 ? '' : 's'}
-                    </FlexChild>
+                    </FlexChild>       
                     <FlexChild className='member-list-btn' align='right'>
-                      <MinimalisticButton icon='group' onClick={() => toggleMemberListVisibility()} className='board-dropdown-arrow' />
+                      <Tooltip content='Member List'>
+                        <div>
+                          <MinimalisticButton icon='group' onClick={() => toggleMemberListVisibility()} className='board-dropdown-arrow' />
+                        </div>
+                      </Tooltip>
                     </FlexChild>
                   </Flex>
                 </div>
               </div>
               <Button onClick={() => createModal(<BoardInviteMembersModal boardID={board.id} />)} className='large-invite-members-btn'>Invite Members</Button>
+              
             </div>
             <ul id='board-dropdown' className='dropdown-content'>
               <div className='board-selection'>
@@ -111,18 +115,18 @@ class TopBar extends Component {
               <Input icon='search' />
             </div>
             <Flex wrap={true} className='toolbar-container'>
-              <FlexChild onClick={() => this.props.beginCreateNote(board.id)} className='toolbar-option' direction='row' align='center'>
-                <CircleButton color='purple lighten-2' icon='note_add' className='toolbar-btn' />
+              <FlexChild onClick={() => createNote(board.id, { title: 'Title', content: 'Content' })} className='toolbar-option' direction='row' align='center'>
+                <Button color='purple lighten-2' icon='note_add' className='toolbar-btn' />
                 <p>New Note</p>
               </FlexChild>
 
               <FlexChild onClick={() => createGroup(board.id, { name: 'Group' })} className='toolbar-option' direction='row' align='center'>
-                <CircleButton color='purple lighten-1' icon='library_add' className='toolbar-btn' />
+                <Button color='purple lighten-1' icon='library_add' className='toolbar-btn' />
                 <p>New Group</p>
               </FlexChild>
 
               <FlexChild onClick={() => this.props.updateView(board.id, listView ? 0 : 1)} className='toolbar-option' direction='row' align='center'>
-                <CircleButton
+                <Button
                   icon={!listView ? 'format_list_bulleted' : 'dashboard'}
                   color='pink lighten-2'
                   className='toolbar-btn' />
@@ -130,7 +134,7 @@ class TopBar extends Component {
               </FlexChild>
 
               <FlexChild onClick={() => toggleChatroomVisibility()} className='toolbar-option' direction='row' align='center'>
-                <CircleButton icon='chat_bubble' color='pink lighten-1' className='toolbar-btn' />
+                <Button icon='chat_bubble' color='pink lighten-1' className='toolbar-btn' />
                 <p>Chatroom</p>
               </FlexChild>
 
@@ -138,8 +142,12 @@ class TopBar extends Component {
                 <header>Zoom Options</header>
                 <div className='zoom-options'>
                   {/* Zoom starts at 1 and increases by 0.5 each time and decreases by 0.25 */}
-                  <div onClick={() => this.props.setZoomLevel(board.id, 0.25)} className='zoom-options-plus'>+</div>
-                  <div onClick={() => this.props.setZoomLevel(board.id, -0.25)} className='zoom-options-minus'>-</div>
+                  <Tooltip content='Zoom In'>
+                    <div onClick={() => this.props.setZoomLevel(board.id, 0.25)} className='zoom-options-plus'>+</div>
+                  </Tooltip>
+                  <Tooltip content='Zoom Out'>
+                    <div onClick={() => this.props.setZoomLevel(board.id, -0.25)} className='zoom-options-minus'>-</div>
+                  </Tooltip>
                 </div>
               </FlexChild>
             </Flex>
