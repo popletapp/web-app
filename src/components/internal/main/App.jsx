@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
-import { Home, Board, Landing, Login, SignUp, NotFound, User, Feedback } from './../../../pages';
+import { Home, Board, DevBlog, Landing, Login, SignUp, NotFound, User, Feedback, UserSettings } from './../../../pages';
 import {
   Modals,
   BoardJoinModal,
@@ -66,6 +66,8 @@ class App extends Component {
             <Route exact path='/login' component={Login} />
             <Route exact path='/signup' component={SignUp} />
             <Route exact path='/feedback' component={Feedback} />
+            <Route exact path='/settings' component={UserSettings} />
+            <Route exact path='/blog' component={DevBlog} />
             <Route exact path='/' component={Landing} />
 
             <Route path='/boards/:id' component={Board} />
