@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PopletBase, Avatar, Note, NavBar, BetaModal, Scroller } from './../../components';
+import { PopletBase, Avatar, Note, NavBar, BetaModal, Scroller, Flex } from './../../components';
 import { createModal } from './../../modules';
 import { Link } from 'react-router-dom';
 import './Home.scss';
@@ -57,23 +57,28 @@ class Home extends PopletBase {
               );
             })}
 
-            <Link className='board-item board-item-join' to={{
-              pathname: '/boards/join',
-              state: { modal: true }
-            }}>
-              <div className='board-item-name'>
+            <Flex className='board-add-items' direction='row' align='center' justify='center'>
+              <Link className='board-item board-item-join' to={{
+                pathname: '/boards/join',
+                state: { modal: true }
+              }}>
+                <div className='board-item-name'>
                   Join a Board
-              </div>
-            </Link>
+                </div>
+              </Link>
 
-            <Link className='board-item board-item-create' to={{
-              pathname: '/boards/create',
-              state: { modal: true }
-            }}>
-              <div className='board-item-name'>
+              <header>or</header>
+
+              <Link className='board-item board-item-create' to={{
+                pathname: '/boards/create',
+                state: { modal: true }
+              }}>
+                <div className='board-item-name'>
                   Create a new Board
-              </div>
-            </Link>
+                </div>
+              </Link>
+            </Flex>
+            
           </div>
 
           <div className='home-content-container'>

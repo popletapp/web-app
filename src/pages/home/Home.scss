@@ -26,6 +26,45 @@
   width: 100%;
 }
 
+.board-add-items {
+  background-color: rgba(0, 0, 0, 0.4);
+  margin-left: -1em;
+  margin-right: -1em;
+  margin-bottom: -1.2em;
+  margin-top: 0.5em;
+  padding: 0.5em;
+
+  header {
+    position: relative;
+    width: auto;
+    overflow: visible;
+    top: -8px;
+    padding: 0.5em;
+  }
+
+  .board-item {
+    width: 50%;
+    text-align: center;
+    margin-left: 4px;
+    margin-right: 4px;
+
+    .board-item-name {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}
+
+.board-item-join, .board-item-create {
+  margin: 0;
+
+  > .board-item-name {
+    font-weight: 400;
+    padding: 0;
+    font-size: 14px;
+  }
+}
+
 @media screen and (min-width: 748px) {
   div.board-selector {
     overflow: auto;
@@ -39,12 +78,6 @@
       .board-item-name {
         font-weight: 600;
         font-size: 18px;
-      }
-    }
-
-    .board-item-join, .board-item-create {
-      .board-item-name {
-        font-weight: 200;
       }
     }
   }
@@ -91,6 +124,7 @@
   flex-direction: column;
   flex: 1 1 auto;
   width: 100%;
+  overflow-y: auto;
 }
 
 .activity-feed {
@@ -105,7 +139,7 @@
   width: 100%;
 
   &-title {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Heebo', sans-serif;
     font-weight: 800;
     font-size: 38px;
     margin-bottom: 24px;
@@ -147,7 +181,7 @@
   width: 100%;
 
   &-title {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Heebo', sans-serif;
     font-weight: 800;
     font-size: 38px;
     margin-bottom: 24px;
@@ -187,8 +221,8 @@
     padding-top: 0.25em;
     padding-left: 0.25em;
     font-size: 26px;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 800;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 900;
     margin: 0;
     margin-bottom: 12px;
   }
@@ -200,7 +234,6 @@
   flex: 0 1 auto;
   justify-content: flex-start;
   padding: 0.5em 0.5em 0.5em 0.5em;
-  margin: 4px 0 4px 0;
   margin-left: 0;
   border-radius: 6px;
 
@@ -215,7 +248,7 @@
     align-items: center;
   }
 
-  &:hover {
+  &:hover:not(.board-item-join):not(.board-item-create) {
     transform: translateX(6px);
     -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
     -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
@@ -223,7 +256,6 @@
   }
 
   &-join {
-    margin-top: 2em;
     background-color: $board-join-color;
   }
 
