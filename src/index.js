@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import store from './store.js';
 import * as Sentry from '@sentry/browser';
 import { DndProvider } from 'react-dnd';
-import TouchBackend from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend';
+import TouchBackend from 'react-dnd-touch-backend';
 import mobile from 'is-mobile';
 
 import './index.scss';
@@ -39,11 +39,31 @@ if (process.env.NODE_ENV !== 'development') {
 
 export default Poplet;
 
+const hasNative =
+document && (document.elementsFromPoint || document.msElementsFromPoint)
+
+function getDropTargetElementsAtPoint(x, y, dropTargets) {
+return dropTargets.filter(t => {
+  const rect = t.getBoundingClientRect()
+  return (
+    x >= rect.left &&
+    x <= rect.right &&
+    y <= rect.bottom &&
+    y >= rect.top
+  )
+})
+}
+
+// use custom function only if elementsFromPoint is not supported
+const backendOptions = {
+getDropTargetElementsAtPoint: !hasNative && getDropTargetElementsAtPoint,
+}
+
 async function render () {
   store.subscribe(() => Poplet.log.prefix(Poplet.log.PREFIX_TYPES.STORE).debug('Current store state', store.getState()));
   ReactDOM.render(
     <Provider store={store}>
-      <DndProvider backend={mobile() ? TouchBackend : HTML5Backend} options={{ enableMouseEvents: true }}>
+      <DndProvider backend={mobile() ? TouchBackend : HTML5Backend} options={backendOptions}>
         <BrowserRouter>
           <Switch>
             <Route path='/' component={Application} />
