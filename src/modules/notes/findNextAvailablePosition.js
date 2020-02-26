@@ -1,22 +1,27 @@
 import Poplet from '../..';
-import { isNoteOverlapping } from './../';
 
-export default async (boardId) => {
+export default (boardId, newNote, dontCheckOverlaps = true) => {
   const state = Poplet.store.getState();
-  const notes = Object.values(state.notesByBoard[boardId]);
+  let notes = [ ...Object.values(state.notesByBoard[boardId]), ...Object.values(state.groupsByBoard[boardId]) ];
 
   let firstAvailablePosition = null;
   let nextAvailablePosition = { x: 0, y: 0 };
+
+  const positions = [];
   for (const note of notes) {
-    for (const compare of notes) {
-      if (compare !== note) {
-        if (isNoteOverlapping(note, compare)) {
-          nextAvailablePosition = { x: note.position.x, y: note.position.y };
-          firstAvailablePosition = firstAvailablePosition || nextAvailablePosition;
-        }
-      }
-    }
+    if (!note) continue;
+    positions.push({ ...note.position, total: note.position.x + note.position.y, id: note.id });
   }
+
+  const map = positions.sort((a, b) => b.total - a.total);
+  const furthestNote = notes.find(n => n.id === map[0].id);
+
+  if (furthestNote) {
+    nextAvailablePosition = { x: furthestNote.position.x + furthestNote.size.width + 5, y: furthestNote.position.y + furthestNote.size.height + 5 };
+  }
+  firstAvailablePosition = firstAvailablePosition || nextAvailablePosition;
+
+  newNote.position = firstAvailablePosition;
   return firstAvailablePosition;
 }
-;
+
