@@ -1,7 +1,7 @@
 import Poplet from '../..';
 import { updateGroup, determineSize } from './../';
 
-export default async (boardId, groupId, noteId) => {
+export default (boardId, groupId, noteId) => {
   const store = Poplet.store;
   const state = store.getState();
   const group = state.groupsByBoard[boardId][groupId];

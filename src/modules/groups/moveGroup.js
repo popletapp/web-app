@@ -1,7 +1,7 @@
 import updateGroup from './updateGroup';
 import Poplet from '../../';
 
-export default async (boardId, groupId, position) => {
+export default (boardId, groupId, position) => {
   const store = Poplet.store;
   const state = store.getState();
   const group = state.groupsByBoard[boardId][groupId];
@@ -17,6 +17,6 @@ export default async (boardId, groupId, position) => {
     throw new Error('One or more position values are not valid integers');
   }
   group.position = { x, y };
-  await updateGroup(boardId, group);
+  updateGroup(boardId, group);
   return group;
 };
