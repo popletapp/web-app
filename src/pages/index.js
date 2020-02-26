@@ -6,3 +6,5 @@ export { default as SignUp } from './signup/SignUp';
 export { default as User } from './user/User';
 export { default as NotFound } from './notfound/NotFound';
 export { default as Feedback } from './feedback/Feedback';
+export { default as UserSettings } from './usersettings/UserSettings';
+export { default as DevBlog } from './devblog/DevBlog';
