@@ -17,7 +17,8 @@
 
 .top-section {
   background-color: $light-accent-color-2;
-  box-shadow: 3px 4px 2px #212121;
+  box-shadow: 0px 0.8px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .board-top-section {
@@ -85,10 +86,6 @@ button.large-invite-members-btn {
     margin-left: 8px;
     border-radius: 4px;
     transition: all 0.1s;
-
-    &:hover {
-      background-color: $light-accent-color-1;
-    }
   }
 
   &-title {
@@ -156,6 +153,7 @@ button.large-invite-members-btn {
   margin-left: 2em;
   height: 250px;
   width: 250px;
+  position: relative;
 
   header {
     position: relative;
@@ -213,7 +211,9 @@ button.large-invite-members-btn {
 
 .toolbar-option {
   transition: all 0.1s;
-  padding: 4px;
+  padding: 6px;
+  border-radius: 4px;
+  margin-left: 4px;
   cursor: pointer;
 
   &:hover {
@@ -225,16 +225,16 @@ button.large-invite-members-btn {
   }
 }
 
-.btn-circle.toolbar-btn {
-  margin-left: 2px;
+.btn-small.toolbar-btn {
   margin-right: 8px;
-  border-radius: 100%;
-  width: 24px;
+  width: 16px;
   height: 24px;
   
   > i {
     font-size: 16px;
     line-height: 16px;
+    position: relative;
+    left: -7px;
   }
 }
 
@@ -298,6 +298,10 @@ button.large-invite-members-btn {
 
   div.searchbar-container {
     width: 75px;
+  }
+
+  .zoom-container {
+    top: 32px;
   }
 }
 
