@@ -22,7 +22,11 @@ class Login extends Component {
       });
       return;
     }
-    const response = await axios.post('/users/authenticate', { email, password }).catch(e => e.response);
+    let response = await axios.post('/users/authenticate', { email, password }).catch(e => e.response);
+    if (!response) {
+      response = { status: 500 }
+    }
+
     if (response.status === 403) {
       // Stay here, login failed
       this.setState({
@@ -46,7 +50,7 @@ class Login extends Component {
         <div className='authentication-container animated fadeIn'>
           <div className='authentication'>
             <div className='authentication-header'>
-              <h1>Login to Poplet</h1>
+              <h1>Log in to Poplet</h1>
               <h4 className='authentication-header-error'>{this.state.error}</h4>
             </div>
             <form onSubmit={(e) => this.loginButtonClicked(e)} id='login' className='login-form'>
