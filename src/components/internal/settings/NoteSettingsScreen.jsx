@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SelectableItem, ToggleSwitch, List, DefaultInput, CloseButton, Flex, FlexChild, User, Scroller } from '../..';
+import { SelectableItem, ToggleSwitch, List, DefaultInput, CloseButton, Flex, FlexChild, User, Scroller, DatePicker } from '../..';
 import { connect } from 'react-redux';
 import './NoteSettingsScreen.scss';
 import RULESETS from '../../../constants/Rulesets';
@@ -46,6 +46,7 @@ const ConnectedUserPanel = connect(mapStateToProps, null)(UserPanel);
 function Performable () {
   const [value, setValue] = React.useState('assign-members');
   const [removed, isRemoved] = React.useState(false);
+  const [options, setOptions] = React.useState({});
 
   const key = Math.random() * 1e5;
   const selectionHandler = (e) => setValue(e.target.value);
@@ -60,7 +61,7 @@ function Performable () {
           <option value='add-content-desc'>add content to the note</option>
           <option value='replace-content'>replace the content of the note</option>
           <option value='add-due-date'>add a due date</option>
-          <option value='set-importance'>set the importance level</option>
+          <option value='set-importance'>mark as important</option>
           <option value='announce-content'>announce content</option>
           <option value='send-notif'>send a notification</option>
         </select>
@@ -74,7 +75,28 @@ function Performable () {
               return <ConnectedUserPanel />
             }
             case 'set-title': {
-              return <ConnectedUserPanel />
+              return <DefaultInput placeholder='Title' onChange={(e) => setOptions({ type: value, title: e.target.value })} />
+            }
+            case 'add-content-title': {
+              return <DefaultInput onChange={(e) => setOptions({ type: value, content: e.target.value })} />
+            }
+            case 'add-content-desc': {
+              return <DefaultInput onChange={(e) => setOptions({ type: value, content: e.target.value })} />
+            }
+            case 'replace-content': {
+              return <DefaultInput onChange={(e) => setOptions({ type: value, content: e.target.value })} />
+            }
+            case 'add-due-date': {
+              return <DatePicker initial={options.type === 'add-due-date' ? options.value : null} onChange={(date) => setOptions({ type: value, value: date })} />
+            }
+            case 'set-importance': {
+              return null;
+            }
+            case 'announce-content': {
+              return <DefaultInput onChange={(e) => setOptions({ type: value, content: e.target.value })} />
+            }
+            case 'send-notif': {
+              return <DefaultInput onChange={(e) => setOptions({ type: value, content: e.target.value })} />
             }
             default: {
               return null;
@@ -157,7 +179,6 @@ class Rule extends Component {
   }
 
   handleActionTypeSelect (event) {
-    console.log(event.target.value)
     switch (event.target.value) {
       case 'existing-note': {
         this.setState({ existingSelected: true });
@@ -192,15 +213,15 @@ class Rule extends Component {
   }
 
   render () {
-    const { index } = this.props;
+    const { index = 0 } = this.props;
     const { existingSelected } = this.state;
     const rule = this.initialize();
     const performableMenu = React.createElement(ConnectedPerformableGroup, { onChange: () => this.forceUpdate() })
-    console.log(existingSelected)
+
     return (<div>
       <div className='rule-creating'>
         <Flex align='center' direction='row'>
-          <span className='rule-creation-header' style={{ marginRight: '12px' }}>Rule</span> <DefaultInput placeholder={rule.name || index}></DefaultInput>
+          <span className='rule-creation-header' style={{ marginRight: '12px' }}>Rule</span> <DefaultInput placeholder={rule.name || index.toString()}></DefaultInput>
         </Flex>
         <div className='board-note-settings-midheader'>
           When <b>
