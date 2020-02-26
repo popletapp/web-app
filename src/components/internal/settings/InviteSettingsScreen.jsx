@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 function mapStateToProps (state) {
   return {
-    users: state.users
+    users: state.members
   };
 }
 
@@ -20,7 +20,7 @@ class InviteSettingsScreen extends Component {
           Invites
         </div>
         <div className='board-settings-text'>
-          You can control who can create invites in the `Ranks` tab.
+          You can control who can create invites in the <code>Ranks</code> tab.
         </div>
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>

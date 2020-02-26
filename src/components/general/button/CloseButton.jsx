@@ -4,13 +4,13 @@ import './Button.scss';
 
 class CloseButton extends Component {
   render () {
-    const { filled, className, style, onClick } = this.props;
+    const { filled, className, style, onClick, size } = this.props;
     return (
       <button
         style={style}
         onClick={onClick}
         className={joinClasses('close-button', filled ? 'close-button-filled' : null, className)}>
-        <i className="material-icons">close</i>
+        <i className="material-icons" style={{ fontSize: size }}>close</i>
       </button>
     );
   }

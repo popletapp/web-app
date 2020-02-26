@@ -1,11 +1,16 @@
 @import './../../../index.scss';
 
 .datepicker {
-  font-size: 13px;
+  font-size: 14px;
+  min-width: 175px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: $text-accent-color-1;
   background-color: $dark-accent-color-1;
   border: none;
-  padding: 4px;
+  padding: 8px;
 }
 
 li.react-datepicker__time-list-item {

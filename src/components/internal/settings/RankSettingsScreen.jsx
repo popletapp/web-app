@@ -75,7 +75,13 @@ class RankSettingsScreen extends Component {
 
   render () {
     const { ranks } = this.props;
-    const { selectedRank } = this.state;
+    let { selectedRank } = this.state;
+    if (!selectedRank) {
+      this.setState({ 
+        selectedRank: (Object.values(ranks)[0] || {})
+      });
+      return null;
+    }
 
     return (
       <Flex direction='column' align='left' className='board-settings-content-container'>
@@ -95,7 +101,7 @@ class RankSettingsScreen extends Component {
             <List style={{ height: '600px', width: '140px', minWidth: '125px' }}>
               <Scroller>
                 {!Object.values(ranks).length && <div className='board-settings-subheader'>No ranks</div>}
-                {!!Object.values(ranks).length && Object.values(ranks).map((rank, i) =>
+                {!!Object.values(ranks).length && Object.values(ranks).map((rank, i) => rank && 
                   <SelectableItem className='user-item' onClick={() => this.selectRank(rank.id)} id={rank.id} key={i.toString()} selected={selectedRank.id === rank.id}>
                     <Flex align='left' basis='auto' grow={1} shrink={1}>
                       <div>

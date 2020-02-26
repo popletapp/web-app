@@ -4,10 +4,10 @@ import { Flex, FlexChild, Avatar, Button, Indicator } from '../../';
 import './Popout.scss';
 
 class MemberPopout extends Popout {
-  render () {
+  content () {
     const { member } = this.props;
     return (
-      <Flex>
+      <Flex className='popout'>
         <FlexChild className='popout-content'>
           <Flex direction='row' className='popout-header member-popout-header'>
             <Avatar url={member.avatar} alt={member.username} size='medium' />
