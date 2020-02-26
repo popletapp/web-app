@@ -1,8 +1,7 @@
 @charset 'UTF-8';
 
 // * Dark Theme
-$primary-color: #1d1d1d;
-
+$primary-color: rgb(46, 45, 50);
 $primary-color-purple: #17131f;
 
 $dark-accent-color-purple-1: #4c4068;
@@ -11,11 +10,14 @@ $dark-accent-color-purple-3: #362e49;
 $dark-accent-color-purple-4: #282236;
 $dark-accent-color-purple-5: #1e1a29;
 
-$dark-accent-color-1: #1a1a1a;
-$dark-accent-color-2: #161616;
-$dark-accent-color-3: #131313;
-$dark-accent-color-4: #0f0f0f;
-$dark-accent-color-5: #080808;
+$dark-accent-color-1: rgb(37, 36, 41);
+$dark-accent-color-2: rgb(34, 33, 38);
+$dark-accent-color-3: rgb(31, 29, 35);
+$dark-accent-color-4: rgb(28, 26, 32);
+$dark-accent-color-5: rgb(25, 23, 29);
+// Anything below dark-accent-color-5 should just be black
+
+$dark-1: #1a1a1a;
 
 $light-accent-color-purple-1: #9A6993;
 $light-accent-color-purple-2: #ad78a5;
@@ -23,11 +25,11 @@ $light-accent-color-purple-3: #c788bd;
 $light-accent-color-purple-4: #d893ce;
 $light-accent-color-purple-5: #f0a9e5;
 
-$light-accent-color-1: #242424;
-$light-accent-color-2: #2e2e2e;
-$light-accent-color-3: #414141;
-$light-accent-color-4: #535353;
-$light-accent-color-5: #5f5f5f;
+$light-accent-color-1: rgb(37, 36, 41);
+$light-accent-color-2: rgb(40, 39, 44);
+$light-accent-color-3: rgb(43, 42, 47);
+$light-accent-color-4: rgb(46, 45, 50);
+$light-accent-color-5: rgb(49, 48, 53);
 
 // Used for headers, titles and other prominent content
 $text-color: #ededed;
@@ -93,6 +95,7 @@ html, body {
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,600,700,800|Bai+Jamjuree:700|Poppins:800|Heebo|Raleway:800|Rubik|Days+One&display=swap');
 * {
   font-family: 'Roboto', sans-serif;
+  text-rendering: optimizeLegibility;
 }
 
 input:focus, textarea:focus {
@@ -117,12 +120,12 @@ input:focus, textarea:focus {
 
 // Input
 .text-input, select, textarea {
-  background-color: #1a1a1a;
+  background-color: $dark-1;
   color: #dddddd;
   padding: 4px;
   margin: 4px;
   font-size: 16px;
-  border: 1px solid #0f0f0f;
+  border: 1px solid $dark-accent-color-4;
   border-radius: 4px;
 }
 
@@ -136,7 +139,7 @@ input:focus, textarea:focus {
 
 // Firefox fix
 .scroller, .note-container {
-  scrollbar-color: #1d1d1d #505050;
+  scrollbar-color: #1d1d1d $light-accent-color-4;
 }
 
 .dropdown-content {
@@ -176,20 +179,22 @@ input:focus, textarea:focus {
       border-width: 3px;
       border-style: solid;
       border-radius: 7px;
-      border-color: #505050;
+      border-color: $light-accent-color-4;
     }
 
     &-track-piece {
       background-color: #1d1d1d;
-      border: 3px solid #292929;
+      border: 3px solid $light-accent-color-4;
       border-radius: 7px;
     }
   }
 }
 
 .dropdown-content li {
-  padding-top: 8px;
-  padding-left: 8px;
+  padding-top: 12px;
+  padding-left: 16px;
+  line-height: 2em;
+  padding-bottom: 4px;
 
   .avatar p {
     top: 0px;
