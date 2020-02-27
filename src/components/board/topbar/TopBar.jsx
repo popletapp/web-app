@@ -6,6 +6,7 @@ import { adjustZoomLevel } from './../../../actions/note';
 import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, createModal, leaveBoard, createNote } from '../../../modules';
 import { Link } from 'react-router-dom';
 import MinimalisticButton from '../../general/button/MinimalisticButton';
+import { permissions } from './../../../util';
 
 function mapStateToProps (state) {
   return {
@@ -92,7 +93,6 @@ class TopBar extends Component {
                   </Flex>
                 </div>
               </div>
-              <Button onClick={() => createModal(<BoardInviteMembersModal boardID={board.id} />)} className='large-invite-members-btn'>Invite Members</Button>
               
             </div>
             <ul id='board-dropdown' className='dropdown-content'>
@@ -103,25 +103,26 @@ class TopBar extends Component {
               </div>
               <li className="divider" tabIndex="-1"></li>
               <div className='board-selection selection-option'>
-                <li onClick={() => createModal(<BoardSettingsModal />)}><i className='material-icons'>settings</i><p>Settings</p></li>
+                {permissions.has(['MODERATOR', 'INVITE_MEMBERS']) && <li className='large-invite-members-btn' onClick={() => createModal(<BoardInviteMembersModal boardID={board.id} />)}>
+                  <i className='material-icons' style={{ width: '24px' }}>add_friend</i><p>Invite Members</p>
+                </li>}
+                {permissions.has('MANAGE_BOARD') && <li onClick={() => createModal(<BoardSettingsModal />)}><i className='material-icons'>settings</i><p>Settings</p></li>}
                 <li><i className='material-icons'>notifications_active</i><p>Notification Settings</p></li>
+                
                 <li onClick={() => leaveBoard(board.id)} className='leave-board'><i className='material-icons'>subdirectory_arrow_right</i><p>Leave Board</p></li>
               </div>
             </ul>
           </div>
 
           <div className='options-top-section-left'>
-            <div className='searchbar-container'>
-              <Input icon='search' />
-            </div>
             <Flex wrap={true} className='toolbar-container'>
               <FlexChild onClick={() => createNote(board.id, { title: 'Title', content: 'Content' })} className='toolbar-option' direction='row' align='center'>
-                <Button color='purple lighten-2' icon='note_add' className='toolbar-btn' />
+                <Button disabled={!permissions.has('MANAGE_NOTES')} color='purple lighten-2' icon='note_add' className='toolbar-btn' />
                 <p>New Note</p>
               </FlexChild>
 
               <FlexChild onClick={() => createGroup(board.id, { name: 'Group' })} className='toolbar-option' direction='row' align='center'>
-                <Button color='purple lighten-1' icon='library_add' className='toolbar-btn' />
+                <Button disabled={!permissions.has('MANAGE_NOTES')} color='purple lighten-1' icon='library_add' className='toolbar-btn' />
                 <p>New Group</p>
               </FlexChild>
 
