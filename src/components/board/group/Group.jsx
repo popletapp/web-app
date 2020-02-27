@@ -5,6 +5,7 @@ import ComponentTypes from './../../../constants/ComponentTypes';
 import { DragSource, DropTarget } from 'react-dnd';
 import './Group.scss';
 import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup, createModal } from '../../../modules';
+import { permissions } from './../../../util';
 
 function mapStateToProps (state, props) {
   return {
@@ -111,10 +112,15 @@ class Group extends Component {
   }
 
   render () {
-    const { group, notes, boardId, listView, connectDragSource, preview, connectDropTarget, isDragging, style: styleProps } = this.props;
+    let { group, notes, boardId, listView, connectDragSource, preview, connectDropTarget, isDragging, style: styleProps } = this.props;
     const { style, editingName } = this.state;
     if (!group || this.state.unmounted) {
       return null;
+    }
+
+    if (!permissions.has('MOVE_NOTES')) {
+      connectDragSource = (value) => value;
+      connectDropTarget = (value) => value;
     }
 
     group.options = group.options || {};
@@ -136,7 +142,7 @@ class Group extends Component {
             <Editor
               maxLength='64'
               className='group-header-name'
-              editing={editingName.toString()}
+              editing={permissions.has('MANAGE_NOTES') && editingName.toString()}
               onMouseEnter={() => this.setState({ editingName: true })}
               onBlur={(e) => this.updateGroupName(e)}>
               {group.name}
@@ -144,10 +150,10 @@ class Group extends Component {
           </FlexChild>
 
           <FlexChild grow={0} align='right' direction='row'>
-            <Flex direction='row' align='center'>
+            {permissions.has('MANAGE_NOTES') && <Flex direction='row' align='center'>
               <MinimalisticButton className='group-settings-btn' icon='settings' onClick={() => createModal(<GroupSettingsModal boardID={boardId} groupID={group.id} />)} />
               <CloseButton icon='close' onClick={() => this.deleteGroup()} />
-            </Flex>
+            </Flex>}
           </FlexChild>
         </Flex>
 
