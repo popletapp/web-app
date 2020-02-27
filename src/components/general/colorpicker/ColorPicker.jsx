@@ -1,6 +1,6 @@
 import { TwitterPicker } from 'react-color';
 import React, { Component } from 'react';
-import { createPopout } from '../../../modules';
+import { Popout, Flex, FlexChild } from '../../';
 
 class ColorPicker extends Component {
   constructor ({ color, onChangeComplete }) {
@@ -14,15 +14,26 @@ class ColorPicker extends Component {
     if (!onChangeComplete) {
       onChangeComplete = () => void 0;
     }
-    const popout = <TwitterPicker style={{ backgroundColor: '#212121', padding: 0 }} triangle='hide' width='205px' onChangeComplete={(color) => onChangeComplete(color)} />;
-    return (<div className='color-picker'>
+
+    const ColorPickerPopout = class ColorPickerPopout extends Popout {
+      content () {
+        return (<Flex className='popout'>
+          <FlexChild className='popout-content'>
+            <TwitterPicker style={{ backgroundColor: '#212121', padding: 0 }} triangle='hide' width='205px' onChangeComplete={(color) => onChangeComplete(color)} />
+          </FlexChild>
+        </Flex>)
+      }
+    }
+
+    return (<ColorPickerPopout>
+    <div className='color-picker'>
       <button
-        onClick={(e) => createPopout('color-picker', popout, { position: { x: e.clientX, y: e.clientY } })}
-        style={{ backgroundColor: color, width: '50px', height: '25px', border: 'none' }}
+        style={{ backgroundColor: color, width: '50px', height: '25px', border: 'none', cursor: 'pointer' }}
         data-for='color-picker-popout'
         data-tip='1'
         data-event='click'></button>
-    </div>);
+      </div>
+    </ColorPickerPopout>);
   }
 }
 
