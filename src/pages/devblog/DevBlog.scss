@@ -1,7 +1,7 @@
 @import './../../index.scss';
 
-.blog-content-card {
-	margin-left: 4em;
+.blog-content {
+	margin: 4em;
 }
 
 .blog-body {
@@ -10,33 +10,41 @@
 	width: 100%;
 }
 
-.blog-content-card-title {
-  font-family: 'Days One', sans-serif;
-	font-weight: 300;
-	font-size: 38px;
-	margin-right: 30%;
-	margin-bottom: 0;
-	color: white;
-	background-color: $dark-accent-color-1;
-	padding: 4px;
-	padding-left: 8px;
-	border-radius: 4px;
-	word-wrap: break-word;
-	border-bottom-left-radius: 0px;
-	border-bottom-right-radius: 0px;
+.blog-content-card {
+	background-color: $dark-accent-color-4;
+	padding: 1em;
+	border-radius: 2px;
+	box-shadow: 1px 1px 4px $dark-1;
+	margin: 2em 0.5em;
+	transition: all 0.25s;
+	cursor: pointer;
+
+	&:hover {
+		transform: scale(1.01);
+	}
+
+	&-title {
+		font-family: 'Rubik', sans-serif;
+		font-weight: 300;
+		font-size: 38px;
+		margin-bottom: 0;
+		color: white;
+		padding: 4px;
+		border-radius: 4px;
+		word-wrap: break-word;
+	}
+
+	&-desc {
+		color: white;
+		padding: 8px;
+		padding-left: 14px;
+		font-size: 16px;
+		margin-right: 35%;
+		margin-top: 0px;
+	}
 }
 
-.blog-content-card-desc {
-	color: white;
-	background-color: $light-accent-color-3;
-	padding: 8px;
-	padding-left: 14px;
-	font-size: 16px;
-	margin-right: 35%;
-	margin-top: 0px;
-}
-
-.main-title {
+.blog-main-title {
 	margin-bottom: 0;
 	margin-left: 0;
 	margin-right: 32px;
