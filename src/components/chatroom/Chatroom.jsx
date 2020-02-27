@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, MinimalisticButton } from './../';
+import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, MinimalisticButton, Tooltip } from './../';
 import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
@@ -85,13 +85,12 @@ class Chatroom extends Component {
     }
   }
 
-  async createComment (event) {
+  async createComment (event, content = this.state.content) {
     const { id } = this.props;
-    this.setState({ content: '' });
-    
     const { user } = this.props;
-    const { content } = this.state;
 
+    this.setState({ content: '' });
+    console.log(content)
     if (!content) {
       return;
     }
@@ -99,6 +98,21 @@ class Chatroom extends Component {
       author: user,
       content
     });
+  }
+
+  textareaOptionsClicked (type) {
+    if (type === 'emoji') {
+      
+    } else if (type === 'send') {
+      this.createComment();
+    } else if (type === 'image') {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.style = 'display: none';
+      input.click();
+    } else if (type === 'upvote') {
+      this.createComment(null, '👍');
+    }
   }
 
   render () {
@@ -158,13 +172,19 @@ class Chatroom extends Component {
           </Flex>
 
           <div className='chatroom-textarea-container'>
+            <div className='chatroom-textarea-options'>
+              <Tooltip placement='left' content='Not working yet!'><div><MinimalisticButton onClick={() => this.textareaOptionsClicked('emoji')} icon='insert_emoticon' /></div></Tooltip>
+              <MinimalisticButton onClick={() => this.textareaOptionsClicked('image')} icon='insert_photo' />
+              <MinimalisticButton onClick={() => this.textareaOptionsClicked('upvote')} icon='thumb_up' />
+              <MinimalisticButton onClick={() => this.textareaOptionsClicked('send')} icon='send' />
+            </div>
             <form>
               <textarea
                 type='text'
                 onChange={(e) => this.handleChange(e)}
                 onKeyDown={(e) => this.input(e)}
                 value={content}
-                placeholder='Enter text here...'
+                placeholder='Send a message to this chatroom'
                 className='chatroom-textarea'></textarea>
             </form>
           </div>

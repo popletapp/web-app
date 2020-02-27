@@ -175,6 +175,25 @@
   margin: 0;
   padding: 12px;
   resize: none;
+  font-family: 'Roboto', sans-serif;
+
+  &-options {
+    display: flex;
+    width: 100%;
+    background-color: $dark-accent-color-4;
+
+    div > button, > button {
+      padding: 1em;
+
+      &:hover {
+        background-color: $dark-accent-color-2;
+      }
+    }
+
+    > :last-child {
+      margin-left: auto;
+    }
+  }
 }
 
 .chatroom-container {
