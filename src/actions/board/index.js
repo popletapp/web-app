@@ -21,7 +21,8 @@ import {
   UPDATE_RANK,
   REMOVE_RANK,
   ADD_MEMBER,
-  REMOVE_MEMBER
+  REMOVE_MEMBER,
+  UPDATE_MEMBER
 } from '../../constants/ActionTypes';
 import axios from 'axios';
 
@@ -232,4 +233,10 @@ export const removeMember = (boardID, memberId) => ({
   type: REMOVE_MEMBER,
   board: boardID,
   memberId
+});
+
+export const updateMember = (boardID, member) => ({
+  type: UPDATE_MEMBER,
+  boardID,
+  member
 });

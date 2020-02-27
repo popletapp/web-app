@@ -44,6 +44,7 @@ export { default as CloseButton } from './general/button/CloseButton';
 export { default as Popout } from './general/popout/Popout';
 export { default as Popouts } from './general/popout/Popouts';
 export { default as MemberPopout } from './general/popout/MemberPopout';
+export { default as RankListPopout } from './general/popout/RankListPopout';
 export { default as Indicator } from './general/indicator/Indicator';
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure';

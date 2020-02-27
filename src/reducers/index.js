@@ -13,6 +13,7 @@ import {
 } from './board';
 import { notesByBoard, notes, zoomLevel } from './notes';
 import { user, users } from './user';
+import { blogPosts } from './blog';
 import {
   chatrooms,
   chatroomsByBoard,
@@ -45,7 +46,8 @@ const rootReducer = combineReducers({
   tooltips,
   popouts,
   dev,
-  zoomLevel
+  zoomLevel,
+  blogPosts
 });
 
 export default rootReducer;

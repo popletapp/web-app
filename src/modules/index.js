@@ -3,6 +3,8 @@ export { default as getBoard } from './boards/getBoard.js';
 export { default as switchBoard } from './boards/switchBoard.js';
 export { default as createBoard } from './boards/createBoard.js';
 export { default as joinBoard } from './boards/joinBoard.js';
+export { default as updateBoard } from './boards/updateBoard.js';
+export { default as deleteBoard } from './boards/deleteBoard.js';
 export { default as leaveBoard } from './boards/leaveBoard.js';
 export { default as createInvite } from './boards/createInvite.js';
 export { default as checkInvite } from './boards/checkInvite.js';
@@ -12,6 +14,7 @@ export { default as addRank } from './boards/addRank.js';
 export { default as updateRank } from './boards/updateRank.js';
 export { default as deleteRank } from './boards/deleteRank.js';
 export { default as toggleMemberListVisibility } from './boards/toggleMemberListVisibility.js';
+export { default as updateMember } from './boards/updateMember.js';
 
 // Groups
 export { default as createGroup } from './groups/createGroup.js';
@@ -58,3 +61,5 @@ export { default as removePopout } from './internal/removePopout';
 export { default as clearTooltips } from './internal/clearTooltips';
 export { default as connect } from './internal/connect';
 export { default as established } from './internal/established';
+
+export { default as getLastPosts } from './blog/getLastPosts';
