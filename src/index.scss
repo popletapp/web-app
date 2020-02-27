@@ -332,6 +332,18 @@ input:focus, textarea:focus {
   }
 }
 
+@keyframes slideInFromLeftFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-100vw);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(0%);
+  }
+}
+
 @keyframes slideInFromRight {
   from {
     transform: translateX(100vw);
@@ -349,5 +361,29 @@ input:focus, textarea:focus {
 
   to {
     transform: scale(0.7) translate(-15%, -90%);
+  }
+}
+
+@keyframes modalEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) perspective(400px) rotateX(10deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) perspective(0px) rotateX(0deg);
+  }
+}
+
+@keyframes modalExit {
+  0% {
+    opacity: 1;
+    transform: scale(1) perspective(0px) rotateX(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.85) perspective(400px) rotateX(10deg);
   }
 }
