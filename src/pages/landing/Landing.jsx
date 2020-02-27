@@ -5,15 +5,35 @@ import app from './../../../package.json';
 import './Landing.scss';
 
 class Landing extends Component {
+  constructor () {
+    super();
+    this.listener = document.addEventListener('click', (e) => {
+      if (e.target.href === window.location.origin + '/login' || e.target.href === window.location.origin + '/signup') {
+        const bg = document.querySelector('.landing-background');
+        if (bg) {
+          bg.classList.add('landing-background-animated');
+        }
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        setTimeout(() => document.location.replace(e.target.href), 350);
+      }
+    })
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('click', this.listener)
+  }
+
   render () {
     return (
       <div className='landing-body'>
+        <div className='landing-background'></div>
         <div className='landing'>
           <section className='landing-cinematic'>
             <NavBar icon='poplet_black_no_bg' />
             <div className='inner'>
               <div className='intro-title'>
-                <h1 className='main-title'>Thinking rethought.</h1>
+                <h1 className='main-title'>Thinking rethought</h1>
                 <h3 className='intro-description-title'>A note-taking application with rich features</h3>
                 <p className='intro-description'>Some ideas are more complex than others — Poplet strives to let you take notes the way you want.</p>
                 <Flex direction='row' align='center' className='intro-details'>
@@ -30,7 +50,7 @@ class Landing extends Component {
         <div className='landing-content'>
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              It's everything you want from note-taking apps, and more
+              Everything you want and more
             </h2>
             <h2 className='landing-content-card-desc'>
               Including features that you're used to like assigning members to notes, due dates, importance sorting and more.

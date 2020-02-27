@@ -76,7 +76,7 @@ div.landing-body {
 	margin-bottom: 0;
 	margin-left: 0;
 	margin-right: 32px;
-	font-size: 64px;
+	font-size: 92px;
 	color: $poplet-purple;
 	font-family: 'Rubik', sans-serif;
 	font-weight: 800;
@@ -92,23 +92,21 @@ section.landing-cinematic {
 	max-height: 75%;
 }
 
-@media screen and (min-width: 1680px) {
-	.main-title {
-		font-size: 112px;
-	}
+.landing-background {
+	background-color: $primary-color;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: clip-path .5s ease-in-out;
+	clip-path: ellipse(0% 0% at 89% 2.55%);
+	z-index: 1;
 
-	.intro-description {
-		font-size: 24px;
-	}
-}
-
-@media screen and (max-width: 1680px) {
-	.main-title {
-		font-size: 112px;
-	}
-
-	.intro-description {
-		font-size: 24px;
+	&-animated {
+		clip-path: ellipse(100% 100% at 50% 50%);
+		opacity: 1;
 	}
 }
 
@@ -160,6 +158,22 @@ section.landing-cinematic {
 	.main-title {
 		font-size: 55px;
 	}
+
+	.landing-content-card {
+		margin-left: 3em;
+
+		&-title {
+			margin-right: 48px;
+		}
+
+		&-desc {
+			margin-right: 72px;
+		}
+	}
+
+	.intro-title {
+		margin-left: 2.5em;
+	}
 }
 
 @media screen and (max-width: 480px) {
@@ -170,6 +184,10 @@ section.landing-cinematic {
 
 	.intro-title {
 		margin-left: 2em;
+	}
+
+	.intro-details {
+		margin-top: 1.5em;
 	}
 
 	.main-title {
