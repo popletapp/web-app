@@ -10,40 +10,52 @@ class Tooltip extends Component {
   }
 
   hover (event) {
-    const { placement = 'top', content } = this.props;
-    this.setState({ isShowing: true });
-    const pseudoTooltip = document.createElement('div');
-    pseudoTooltip.classList.add('tooltip');
-    pseudoTooltip.innerHTML = content;
-    document.querySelector('.tooltips').appendChild(pseudoTooltip)
-
-    const predicted = pseudoTooltip.getBoundingClientRect();
+    const { placement = 'top', content, hoverDuration = 100 } = this.props;
     const ref = event.target.getBoundingClientRect();
 
-    const TOOLTIP_HEIGHT = predicted.height;
-    const TOOLTIP_WIDTH = predicted.width;
-    let position = {};
-    switch (placement) {
-      case 'top':
-        position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.y - TOOLTIP_HEIGHT };
-        break;
-      case 'left':
-        position = { x: ref.left - predicted.width, y: ref.y };
-        break;
-      case 'bottom':
-        position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.bottom };
-        break;
-      case 'right':
-        position = { x: ref.left + ref.width, y: ref.y };
-        break;
-      default:
-        break;
+    const create = () => {
+      this.setState({ isShowing: true });
+      const pseudoTooltip = document.createElement('div');
+      pseudoTooltip.classList.add('tooltip');
+      pseudoTooltip.innerHTML = content;
+      document.querySelector('.tooltips').appendChild(pseudoTooltip)
+      const predicted = pseudoTooltip.getBoundingClientRect();
+      
+      const TOOLTIP_HEIGHT = predicted.height;
+      const TOOLTIP_WIDTH = predicted.width;
+      const PADDING = 4;
+      let position = {};
+      switch (placement) {
+        case 'top':
+          position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.y - TOOLTIP_HEIGHT - PADDING };
+          break;
+        case 'left':
+          position = { x: ref.left - predicted.width - PADDING, y: (ref.y + (ref.height / 2)) - (TOOLTIP_HEIGHT / 2) };
+          break;
+        case 'bottom':
+          position = { x: ref.left + (ref.width / 2) - (TOOLTIP_WIDTH / 2), y: ref.bottom + PADDING };
+          break;
+        case 'right':
+          position = { x: ref.left + ref.width + PADDING, y: ref.y };
+          break;
+        default:
+          break;
+      }
+      pseudoTooltip.remove();
+      createTooltip({ content, position });
     }
-    pseudoTooltip.remove();
-    createTooltip({ content, position });
+
+    if (hoverDuration) {
+      this.hoverInterval = setTimeout(create, hoverDuration);
+    } else {
+      create();
+    }
   }
 
   unhover () {
+    if (this.hoverInterval) {
+      clearTimeout(this.hoverInterval);
+    }
     this.setState({ isShowing: false });
     clearTooltips();
   }
