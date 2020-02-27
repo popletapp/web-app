@@ -1,15 +1,39 @@
 import React, { Component } from 'react';
 import { NavBar, Flex, FlexChild } from '../../components';
+import { getLastPosts } from '../../modules';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './DevBlog.scss';
 
+class BlogPostPreview extends Component {
+  render () {
+    const { post } = this.props;
+    const { title, content, timestamp, type } = post;
+    return (
+      <div className='blog-content-card'>
+        <div className='blog-content-card-title'>{title}</div>
+        <div className='blog-content-card-content'>{content}</div>
+      </div>
+    )
+  }
+}
+
 class DevBlog extends Component {
   constructor () {
-    
+    super();
+    this.state = {
+      posts: []
+    };
+  }
+
+  async componentDidMount () {
+    this.setState({
+      posts: await getLastPosts()
+    })
   }
 
   render () {
+    const { posts } = this.state;
     return (
       <div className='blog-body'>
         <div className='blog'>
@@ -17,7 +41,7 @@ class DevBlog extends Component {
             <NavBar icon='poplet_black_no_bg' />
             <div className='inner'>
               <div className='intro-title'>
-                <h1 className='main-title'>Poplet Blog</h1>
+                <h1 className='blog-main-title'>Poplet Blog</h1>
                 <h3 className='blog-description-title'>Developer Blog + Change Logs</h3>
               </div>
               <div className='lower-half animated animatedFadeInUp fadeInUp'>
@@ -27,7 +51,7 @@ class DevBlog extends Component {
         </div>
 
         <div className='blog-content'>
-
+          {posts.map(post => <BlogPostPreview post={post} />)}
         </div>
       </div>
     );
