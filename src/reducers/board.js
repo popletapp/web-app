@@ -33,30 +33,25 @@ export const boards = (state = {}, action) => {
   }
 };
 
-export const ranks = (state = [], action) => {
+export const ranks = (state = {}, action) => {
   switch (action.type) {
-    case 'ADD_RANK': {
-      return [...state, action.rank];
-    }
+    case 'ADD_RANK':
     case 'UPDATE_RANK': {
-      const old = state;
-      const index = old.items.findIndex(rank => rank.id === action.rank.id);
-      old[index] = action.rank;
-      return old;
+      return { ...state, [action.rank.id]: action.rank };
     }
     case 'DELETE_RANK': {
-      const old = state;
-      old.filter(rank => rank.id !== action.rankId);
+      const old = { ...state };
+      delete old[action.rankID];
       return old;
     }
     case 'RECEIVE_BOARDS': {
-      const ranks = [];
+      const ranks = {};
       for (const board of action.boards) {
         for (const rank of board.ranks) {
-          ranks.push(rank);
+          ranks[rank.id] = rank;
         }
       }
-      return Object.assign([], state, ranks);
+      return Object.assign({}, state, ranks);
     }
     default:
       return state;
@@ -67,11 +62,11 @@ export const ranksByBoard = (state = {}, action) => {
   switch (action.type) {
     case 'UPDATE_RANK':
     case 'ADD_RANK': {
-      return { ...state, [action.board]: { ...(state[action.board] || {}), [action.rank.id]: action.rank } };
+      return { ...state, [action.boardID]: { ...(state[action.boardID] || {}), [action.rank.id]: action.rank } };
     }
     case 'DELETE_RANK': {
       const old = { ...state };
-      delete old[action.board][action.rankId];
+      delete old[action.board][action.rankID];
       return old;
     }
     case 'RECEIVE_BOARDS': {
@@ -195,6 +190,12 @@ export const members = (state = {
       old.items.filter(member => member !== action.memberId);
       return old;
     }
+    case 'UPDATE_MEMBER': {
+      const old = state;
+      const index = old.items.findIndex(member => member.id === action.member.id);
+      old.items[index] = action.member;
+      return old;
+    }
     case 'REQUEST_MEMBERS': {
       return Object.assign({}, state, {
         didInvalidate: true,
@@ -215,7 +216,8 @@ export const members = (state = {
 
 export const membersByBoard = (state = {}, action) => {
   switch (action.type) {
-    case 'ADD_MEMBER': {
+    case 'ADD_MEMBER':
+    case 'UPDATE_MEMBER': {
       if (action.member) {
         return Object.assign({}, state, {
           [action.board]: Object.assign({}, state[action.board], { [action.member.id]: action.member })
