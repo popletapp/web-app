@@ -1,7 +1,10 @@
 import updateGroup from './updateGroup';
 import Poplet from '../../';
+import { permissions } from './../../util';
 
 export default (boardId, groupId, position) => {
+  if (!permissions.has('MOVE_NOTES')) return false;
+
   const store = Poplet.store;
   const state = store.getState();
   const group = state.groupsByBoard[boardId][groupId];

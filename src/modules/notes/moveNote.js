@@ -1,7 +1,10 @@
 import { createNote, saveNote, updateGroup, isNoteInGroup, determineSize, isNoteOverlapping, findNextAvailablePosition } from './../';
 import Poplet from '../../';
+import { permissions } from './../../util';
 
 export default async (boardId, noteId, position) => {
+  if (!permissions.has('MOVE_NOTES')) return false;
+
   const store = Poplet.store;
   const state = store.getState();
   const notes = state.notesByBoard[boardId];

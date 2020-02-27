@@ -1,7 +1,9 @@
 import Poplet from '../../';
 import { updateGroup, saveNote, determineSize } from './../';
+import { permissions } from './../../util';
 
 export default (boardId, groupId, noteId) => {
+  if (!permissions.has('MANAGE_NOTES')) return false;
   const store = Poplet.store;
   const state = store.getState();
   const group = state.groupsByBoard[boardId][groupId];

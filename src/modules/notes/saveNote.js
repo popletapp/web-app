@@ -1,8 +1,11 @@
 import Poplet from '../..';
 import { updateNote } from '../../actions/note';
 import axios from 'axios';
+import { permissions } from './../../util';
 
 export default async (boardID, note) => {
+  if (!permissions.has('MANAGE_NOTES')) return false;
+
   const { id } = note;
   const store = Poplet.store;
   store.dispatch(updateNote(boardID, note));
