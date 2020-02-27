@@ -11,7 +11,7 @@ class Button extends Component {
   render () {
     const { icon } = this.props;
     return (
-      <button className={`btn-small${this.color ? ` ${this.color}` : ''}${this.props.className ? ` ${this.props.className}` : ''}`}>
+      <button {...this.props} className={`btn-small${this.color ? ` ${this.color}` : ''}${this.props.className ? ` ${this.props.className}` : ''}`}>
         {this.text || this.props.children}
         {icon && <i className="material-icons">{icon}</i>}
       </button>

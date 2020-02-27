@@ -25,7 +25,6 @@ class Modal extends Component {
 
   close () {
     const backdrops = Array.from(document.querySelectorAll('.backdrop'));
-    console.log(backdrops)
     const sorted = backdrops.sort((a, b) => b.dataset.timestamp - a.dataset.timestamp);
     if (sorted[0]) {
       sorted[0].click();

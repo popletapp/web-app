@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SelectableItem, ToggleSwitch, List, DefaultInput, CloseButton, Flex, FlexChild, User, Scroller, DatePicker } from '../..';
 import { connect } from 'react-redux';
+import { updateBoard } from './../../../modules';
 import './NoteSettingsScreen.scss';
 import RULESETS from '../../../constants/Rulesets';
 
@@ -13,7 +14,6 @@ const BASE_RULE = {
 
 function mapStateToProps (state) {
   return {
-    compact: false,
     board: state.boards[state.selectedBoard],
     members: Object.values(state.membersByBoard[state.selectedBoard])
   };
@@ -275,9 +275,16 @@ class NoteSettingsScreen extends Component {
 
   }
 
+  async updateBoardCompact (compact) {
+    let { board } = this.props;
+    board = { ...board, compact };
+    await updateBoard(board.id, board);
+  }
+
   render () {
-    let { compact } = this.props;
+    let { board } = this.props;
     let { rules } = this.state;
+    const { compact = false } = board;
 
     return (
       <Flex direction='column' align='left' className='board-settings-content-container'>
@@ -290,7 +297,7 @@ class NoteSettingsScreen extends Component {
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>
           Compact Mode
-          <ToggleSwitch initialState={compact} small={true} style={{ marginLeft: '24px' }} />
+          <ToggleSwitch onChange={(compact) => this.updateBoardCompact(compact)} initialState={compact} small={true} style={{ marginLeft: '24px' }} />
         </Flex>
         Makes notes take up less space on the screen and displays less information
 

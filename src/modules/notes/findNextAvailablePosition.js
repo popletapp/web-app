@@ -1,6 +1,6 @@
 import Poplet from '../..';
 
-export default (boardId, newNote, dontCheckOverlaps = true) => {
+export default (boardId, newNote, returnNote = false) => {
   const state = Poplet.store.getState();
   let notes = [ ...Object.values(state.notesByBoard[boardId]), ...Object.values(state.groupsByBoard[boardId]) ];
 
@@ -10,6 +10,7 @@ export default (boardId, newNote, dontCheckOverlaps = true) => {
   const positions = [];
   for (const note of notes) {
     if (!note) continue;
+    if (!note.position) continue;
     positions.push({ ...note.position, total: note.position.x + note.position.y, id: note.id });
   }
 
@@ -22,6 +23,6 @@ export default (boardId, newNote, dontCheckOverlaps = true) => {
   firstAvailablePosition = firstAvailablePosition || nextAvailablePosition;
 
   newNote.position = firstAvailablePosition;
-  return firstAvailablePosition;
+  return returnNote ? newNote : firstAvailablePosition;
 }
 

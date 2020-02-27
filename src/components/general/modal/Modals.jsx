@@ -15,7 +15,7 @@ class Modals extends Component {
       <div className='modals animated'>
         {modals.map((modal, i) => {
           if (!i) {
-            return <><Backdrop /><Modal key={i}>{modal}</Modal></>;
+            return <div key={i}><Backdrop /><Modal key={i}>{modal}</Modal></div>;
           }
           return <Modal key={i}>{modal}</Modal>;
         })

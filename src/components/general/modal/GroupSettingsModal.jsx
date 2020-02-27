@@ -58,7 +58,6 @@ class GroupSettingsModal extends Modal {
   render () {
     const { group } = this.props;
     const { error, type } = this.state;
-    console.log(group);
     if (!group) return null;
     return (
       <div>

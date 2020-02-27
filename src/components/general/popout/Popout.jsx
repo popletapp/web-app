@@ -38,12 +38,23 @@ class Popout extends Component {
         return onConfirm(this.state);
       }
     }
+    this.forceUpdate();
+  }
+
+  updateSelf () {
+    const { position } = this.state;
+    const content = this.content ? this.content() : this.props.content;
+    if (!content) return null;
+    removePopout();
+    createPopout('popout', content, { position });
   }
 
   click (event) {
     const { placement = 'top', style } = this.props;
     const content = this.content ? this.content() : this.props.content;
-    console.log(content)
+    if (!content) {
+      return event.preventDefault();
+    }
     if (content.props && style) {
       content.props.style = { top: style.top, left: style.left }
     }
@@ -78,11 +89,15 @@ class Popout extends Component {
     }
 
     pseudoPopout.remove();
+    this.setState({ position, content })
     createPopout('popout', content, { position });
   }
 
   close () {
-    this.setState({ isShowing: false });
+    const { onClose = () => void 0 } = this.props;
+    if (typeof onClose === 'function') {
+      onClose();
+    }
     document.removeEventListener('keydown', this.escListener, false);
     document.removeEventListener('click', this.clickListener, false);
     removePopout();

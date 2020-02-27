@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: row;
   width: 200px;
-  height: 26px;
+  height: 32px;
+  align-content: center;
 }
 
 .text-input::placeholder {
@@ -10,10 +11,12 @@
 }
 
 .poplet-input {
+  display: flex;
   flex: 1 1 auto;
   overflow: hidden;
   min-height: 20px;
   white-space: nowrap;
+  align-items: center;
 
   br {
     display: none;

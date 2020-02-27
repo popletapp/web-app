@@ -8,7 +8,6 @@ export default async (code, userID) => {
   if (invite) {
     const board = await axios.get(`/boards/${invite.board}`).then(res => res.data);
     const member = await axios.put(`/boards/${invite.board}/members/${userID}`, { invite: invite.code }).then(res => res.data);
-    console.log(member, board);
     if (board && member) {
       Poplet.ws.emit('message', addMember(board.id, member));
       await store.dispatch(joinBoard(board));

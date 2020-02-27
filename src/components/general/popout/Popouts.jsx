@@ -12,7 +12,6 @@ function mapStateToProps (state) {
 class Popouts extends Component {
   render () {
     const { popouts, className } = this.props;
-    console.log(popouts)
     return (
       <div className='popouts animated'>
         {popouts.map((popout, i) => 

@@ -1,3 +1,5 @@
+@import './../../index.scss';
+
 .authentication-page-container {
   display: flex;
   flex-direction: row;
@@ -26,6 +28,7 @@ section.cinematic-authentication {
   height: 100%;
   width: 50%;
   box-shadow: 0px 5px 10px black;
+  animation: 1s slideInFromLeftFadeIn 0s forwards cubic-bezier(.15,.97,.51,1.01);
 }
 
 .username-container, .password-container {
