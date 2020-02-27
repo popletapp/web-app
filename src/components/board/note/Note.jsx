@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild } from './../../';
 import './Note.scss';
 import { updateNote, createNote, saveNote, createModal } from './../../../modules';
+import { permissions } from './../../../util';
 import ComponentTypes from './../../../constants/ComponentTypes';
 
 import { DragSource } from 'react-dnd';
@@ -179,9 +180,18 @@ class Note extends Component {
     }
   }
 
+  renderContent () {
+    const { note,  board } = this.props;
+    const { editing } = this.state;
+    const { compact = false } = board;
+    let MAX_LENGTH = compact ? 127 : 255;
+    return editing ? note.content : (note.content.length > MAX_LENGTH ? `${note.content.slice(0, MAX_LENGTH - 3)}...` : note.content)
+  }
+
   render () {
-    const { note, listView, connectDragSource, preview, isDragging, style: styleProps = {} } = this.props;
+    let { note, listView, connectDragSource, preview, isDragging, style: styleProps = {}, board } = this.props;
     const { editing, selected, style } = this.state;
+    const { compact = false } = board;
 
     if (!note || this.state.unmounted) {
       return null;
@@ -195,10 +205,15 @@ class Note extends Component {
     note.content = note.content || '';
     note.options = note.options || {};
 
+    if (!permissions.has('MOVE_NOTES')) {
+      connectDragSource = (value) => value; 
+    }
+
     return connectDragSource(
       <div ref={this.noteRef}
+        data-id={note.id.toString()}
         onClick={(event) => note.id && this.view(event)}
-        className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}`}
+        className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}${compact ? ' note-compact' : ''}`}
         style={{ 
           ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
           ...(!listView && !preview ? style : {}),
@@ -227,12 +242,13 @@ class Note extends Component {
             parseMarkdown={!editing}
             placeholder='Content'
             className='note-body'>
-            {editing ? note.content : (note.content.length > 255 ? `${note.content.slice(0, 252)}...` : note.content)}
+            {this.renderContent()}
           </Editor>
         </div>
         <Flex direction='row' align='center' className='note-footer'>
           <FlexChild align='left' direction='row'>
-            {!preview && <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className='note-btn-view'>Edit</MinimalisticButton>}
+            {permissions.has('MANAGE_NOTES') && !preview 
+            && <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className='note-btn-view'>Edit</MinimalisticButton>}
           </FlexChild>
 
           <FlexChild align='right' direction='row' justify='end'>
