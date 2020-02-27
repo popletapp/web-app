@@ -17,6 +17,44 @@
   transition: all 0.5s, opacity 0ms;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 
+  &.note-compact {
+    margin-bottom: -1em;
+    min-width: 100px;
+
+    .note-content {
+      margin: 0;
+      padding: 0;
+      height: 70%;
+      max-height: 90%;
+
+      > .editor {
+        padding: 0;
+        margin: 0;
+      }
+    }
+
+    .note-footer {
+      opacity: 0;
+      bottom: 0;
+      right: 0;
+      margin: 0;
+      width: 100%;
+      position: absolute;
+    }
+
+    &:hover {
+      .note-footer {
+        opacity: 1
+      }
+    }
+  }
+
+  &-creation-flash {
+    animation: 1s noteCreationFlash 0.5s forwards;
+    animation-iteration-count: 2;
+    transform-origin: 50%;
+  }
+
   &-container {
     flex: 1 1 auto;
     overflow: auto;
@@ -91,6 +129,7 @@
     justify-content: left;
     margin: -1em;
     padding: 0.5em;
+    transition: all 0.15s;
     background-color: rgba(22, 22, 22, 0.5);
 
     button, a {
@@ -180,5 +219,22 @@
 @media screen and (max-width: 700px) {
   .note-container {
       width: 100%;
+  }
+}
+
+@keyframes noteCreationFlash {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: initial;
   }
 }
