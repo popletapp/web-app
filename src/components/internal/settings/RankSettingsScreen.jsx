@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { SelectableItem, ToggleSwitch, List, Scroller, Flex, FlexChild, Button, DefaultInput, ColorPicker } from '../..';
-import { addRank, deleteRank, updateRank } from '../../../modules';
+import { addRank, deleteRank, updateRank, updateMember } from '../../../modules';
+import { Permissions }  from './../../../util/permissions';
+import { permissions as PermissionHandler }  from './../../../util';
 import { connect } from 'react-redux';
 
 function mapStateToProps (state) {
@@ -11,21 +13,62 @@ function mapStateToProps (state) {
 }
 
 const PermissionsFriendly = {
-  USER: { name: 'User', description: '' },
-  ADMINISTRATOR: { name: 'Administrator', description: 'Members with administrator have access to all permissions, including editing the board, it\'s notes or any members.' }, // Board Owner
-  MODERATOR: { name: 'Moderator', description: 'Members who are moderators are able to manage members and kick them from the board.' },
-  EDITOR: { name: 'Editor', description: 'Members with this permission have access to edit or delete any notes on the board.' }
+  'MANAGE_NOTES': {
+    id: 'MANAGE_NOTES',
+    name: 'Manage and Edit Notes/Groups',
+    description: 'When this permission is granted, members can create, modify and delete notes and groups'
+  },
+  'MANAGE_MEMBERS': {
+    id: 'MANAGE_MEMBERS',
+    name: 'Manage Members',
+    description: 'Members with this permission can modify the nickname and permissions of other members'
+  },
+  'MOVE_NOTES': {
+    id: 'MOVE_NOTES',
+    name: 'Move Notes/Groups'
+  },
+  'MODERATOR': {
+    id: 'MODERATOR',
+    name: 'Moderator',
+    description: 'Moderators have the ability to invite members to the board as well as kicking members from the board'
+  },
+  'ADMINISTRATOR': {
+    id: 'ADMINISTRATOR',
+    name: 'Administrator',
+    description: 'Members with this permission have full access to the board and can modify everything'
+  },
+  'VIEW_CHATROOMS': {
+    id: 'VIEW_CHATROOMS',
+    name: 'View Chatrooms',
+    description: 'Allows members to access chatrooms in the board'
+  },
+  'ADD_COMMENTS': {
+    id: 'ADD_COMMENTS',
+    name: 'Add Comments to Notes'
+  },
+  'SEND_CHATROOM_MESSAGES': {
+    id: 'SEND_CHATROOM_MESSAGES',
+    name: 'Send Chatroom Messages',
+    description: 'This permission allows members to send messages in chatrooms'
+  },
+  'INVITE_MEMBERS': {
+    id: 'INVITE_MEMBERS',
+    name: 'Invite New Members'
+  },
+  'KICK_MEMBERS': {
+    id: 'KICK_MEMBERS',
+    name: 'Kick Members'
+  },
+  'BAN_MEMBERS': {
+    id: 'BAN_MEMBERS',
+    name: 'Ban Members'
+  },
+  'MANAGE_BOARD': {
+    id: 'MANAGE_BOARD',
+    name: 'Manage Board',
+    description: 'Members with this permission can edit certain settings in the board such as ranks'
+  }
 };
-const Permissions = {
-  0: 'USER',
-  8: 'ADMINISTRATOR', // Board Owner
-  16: 'MODERATOR',
-  32: 'EDITOR'
-};
-// Make it so all permissions are accessible by their bitfield and name
-for (const permission in Permissions) {
-  Permissions[Permissions[permission]] = permission;
-}
 
 class RankSettingsScreen extends Component {
   constructor (props) {
@@ -60,22 +103,40 @@ class RankSettingsScreen extends Component {
       id = Object.values(ranks)[0].id;
     }
     this.setState({
-      selectedRank: Object.values(ranks).find(r => r.id === id)
+      selectedRank: ranks[id]
     });
+    this.forceUpdate();
   }
 
   async updateRankName (e) {
     const { boardId } = this.props;
     const { selectedRank } = this.state;
-    const newName = e.target.textContent;
+    const newName = e.target.value;
     selectedRank.name = newName;
     await updateRank(boardId, selectedRank);
     this.setState({ editingName: false, selectedRank });
   }
 
+  async addPermissionToRank (toggleValue, permissionValue) {
+    const { boardId } = this.props;
+    const { selectedRank } = this.state;
+    permissionValue = Permissions[permissionValue];
+
+    if (toggleValue) {
+      selectedRank.permissions |= permissionValue;
+    } else {
+      selectedRank.permissions ^= permissionValue;
+    }
+    console.log(selectedRank.permissions)
+
+    await updateRank(boardId, selectedRank);
+    this.setState({ selectedRank });
+  }
+
   render () {
     const { ranks } = this.props;
     let { selectedRank } = this.state;
+    console.log(selectedRank.name, selectedRank)
     if (!selectedRank) {
       this.setState({ 
         selectedRank: (Object.values(ranks)[0] || {})
@@ -102,7 +163,7 @@ class RankSettingsScreen extends Component {
               <Scroller>
                 {!Object.values(ranks).length && <div className='board-settings-subheader'>No ranks</div>}
                 {!!Object.values(ranks).length && Object.values(ranks).map((rank, i) => rank && 
-                  <SelectableItem className='user-item' onClick={() => this.selectRank(rank.id)} id={rank.id} key={i.toString()} selected={selectedRank.id === rank.id}>
+                  <SelectableItem className='board-settings-rank-item' onClick={() => this.selectRank(rank.id)} id={rank.id} key={i.toString()} selected={selectedRank.id === rank.id}>
                     <Flex align='left' basis='auto' grow={1} shrink={1}>
                       <div>
                         <Flex align='left' basis='auto' grow={1} shrink={1}>
@@ -163,7 +224,7 @@ class RankSettingsScreen extends Component {
                           </FlexChild>
 
                           <FlexChild align='right'>
-                            <ToggleSwitch small />
+                            <ToggleSwitch onChange={(_) => this.addPermissionToRank(_, permission.id)} small initialState={selectedRank.permissions & Permissions[permission.id]} />
                           </FlexChild>
                         </Flex>
                       )}
