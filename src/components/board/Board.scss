@@ -24,10 +24,11 @@
 .board-top-section {
   display: flex;
   flex-flow: row nowrap;
-  height: 120px;
+  height: 80px;
 }
 
 .board-information {
+  display: flex;
   padding: 1em;
   padding-top: 8px;
   margin-right: 24px;
@@ -42,19 +43,14 @@
 }
 
 .options-top-section-left {
-  padding-top: 8px;
-  margin-left: 24px;
+  padding-top: 2px;
+  margin-left: 0px;
   flex: 1 1 100%;
 }
 
-button.large-invite-members-btn {
-  margin-top: 12px;
+.large-invite-members-btn {
   background: linear-gradient(74deg, $poplet-purple, $poplet-pinkple);
   transition: all 0.1s;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
 }
 
 .leave-board {
@@ -126,6 +122,7 @@ button.large-invite-members-btn {
   width: 250px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .board-dropdown-arrow i {
@@ -152,13 +149,14 @@ button.large-invite-members-btn {
 .zoom-container {
   margin-left: 2em;
   height: 250px;
-  width: 250px;
+  width: 110px;
   position: relative;
+  top: 30px;
 
   header {
     position: relative;
-    top: -50px;
-  }  
+    top: -45px;
+  }
 }
 
 .note, .group {
@@ -215,6 +213,25 @@ button.large-invite-members-btn {
   border-radius: 4px;
   margin-left: 4px;
   cursor: pointer;
+
+  &-markdown {
+    > * {
+      display: inline;
+    }
+
+    > button {
+      height: 16px !important;
+      line-height: 16px;
+
+      > i {
+        font-size: 14px !important;
+      }
+    }
+
+    &:hover {
+      background-color: $light-accent-color-3;
+    }
+  }
 
   &:hover {
     background-color: $light-accent-color-3;
@@ -387,6 +404,10 @@ button.large-invite-members-btn {
         height: 48px;
         line-height: 0;
         font-size: 48px;
+
+        > i {
+          left: 0;
+        }
       }
     }
   }
