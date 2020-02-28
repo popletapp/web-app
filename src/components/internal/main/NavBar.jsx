@@ -22,7 +22,7 @@ class NavBar extends Component {
     return (
       <div className='navbar-container'>
         <div className='navbar'>
-          <Link to='/home'><img src={`./../../assets/icons/${icon}.svg`} width='32' height='32' alt='' /></Link>
+          <Link className='navbar-img' to='/home'><img src={`./../../assets/icons/${icon}.svg`} width='28' height='28' alt='' /></Link>
           <Link to='/home' className='navbar-text'>
             {name || 'Poplet'}
             <div onClick={() => 

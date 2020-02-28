@@ -22,7 +22,7 @@
   border-radius: 4px;
   opacity: 0;
   animation: 0.1s fadeIn 0s forwards;
-  z-index: 9;
+  z-index: 999;
 }
 
 .tooltip.right {

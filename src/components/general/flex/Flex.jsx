@@ -15,6 +15,7 @@ class Flex extends Component {
       className,
       children,
       style,
+      inline = false,
       onClick
     } = this.props;
     return (
@@ -23,7 +24,7 @@ class Flex extends Component {
         data-target={this.props['data-target']}
         onClick={onClick}
         className={joinClasses(
-          'flex',
+          inline ? 'inline-flex' : 'flex',
           className,
           align ? `align-${align}` : null,
           !wrap ? 'no-wrap' : 'flex-wrap',

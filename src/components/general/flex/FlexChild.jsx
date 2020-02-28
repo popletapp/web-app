@@ -15,6 +15,7 @@ class FlexChild extends Component {
       className,
       children,
       style,
+      inline = false,
       onClick
     } = this.props;
     return (
@@ -22,7 +23,7 @@ class FlexChild extends Component {
         style={{ flex: `${grow} ${shrink} ${basis}`, ...style }}
         onClick={onClick}
         className={joinClasses(
-          'flex',
+          inline ? 'inline-flex' : 'flex',
           className,
           align ? `align-${align}` : null,
           !wrap ? 'no-wrap' : 'flex-wrap',

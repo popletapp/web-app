@@ -53,8 +53,8 @@
   transition: all 0.1s;
 }
 
-.leave-board {
-  background-color: $poplet-red;
+.leave-board > p {
+  color: $poplet-red !important;
 }
 
 .board-selector-btn {
@@ -214,6 +214,12 @@
   margin-left: 4px;
   cursor: pointer;
 
+  p {
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.5px;
+  }
+
   &-markdown {
     > * {
       display: inline;
@@ -222,6 +228,9 @@
     > button {
       height: 16px !important;
       line-height: 16px;
+      position: relative;
+      top: -2px;
+      margin-left: 4px;
 
       > i {
         font-size: 14px !important;
@@ -234,7 +243,7 @@
   }
 
   &:hover {
-    background-color: $light-accent-color-3;
+    background-color: $light-accent-color-4;
   }
 
   &:active {
