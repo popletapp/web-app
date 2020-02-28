@@ -9,6 +9,7 @@ class MinimalisticButton extends Component {
     return (
       <button
         style={style}
+        {...this.props}
         onClick={onClick}
         className={joinClasses('minimalistic-button', className)}>
         <Flex direction='row' align='center'>
