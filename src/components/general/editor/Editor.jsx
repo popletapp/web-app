@@ -101,7 +101,7 @@ class Editor extends Component {
         onFocus={onFocus}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        contentEditable={editing.toString()}
+        contentEditable={editing}
         suppressContentEditableWarning={true}
         style={style}
         placeholder={placeholder}
