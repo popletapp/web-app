@@ -28,16 +28,16 @@
 		font-weight: 300;
 		font-size: 38px;
 		margin-bottom: 0;
-		color: white;
+		color: $poplet-blue;
 		padding: 4px;
 		border-radius: 4px;
 		word-wrap: break-word;
 	}
 
-	&-desc {
+	&-content {
 		color: white;
 		padding: 8px;
-		padding-left: 14px;
+		padding-left: 8px;
 		font-size: 16px;
 		margin-right: 35%;
 		margin-top: 0px;

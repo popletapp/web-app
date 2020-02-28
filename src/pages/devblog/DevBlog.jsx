@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavBar, Flex, FlexChild } from '../../components';
+import { NavBar, Flex, FlexChild, Editor } from '../../components';
 import { getLastPosts } from '../../modules';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
@@ -8,11 +8,11 @@ import './DevBlog.scss';
 class BlogPostPreview extends Component {
   render () {
     const { post } = this.props;
-    const { title, content, timestamp, type } = post;
+    const { title, content, timestamp, type, id } = post;
     return (
       <div className='blog-content-card'>
-        <div className='blog-content-card-title'>{title}</div>
-        <div className='blog-content-card-content'>{content}</div>
+        <Link to={`/blog/post/${id}`} className='blog-content-card-title'>{title}</Link>
+        <Editor parseMarkdown={true} editing={false} className='blog-content-card-content'>{content}</Editor>
       </div>
     )
   }
