@@ -11,6 +11,9 @@ class Login extends Component {
       password: null,
       error: null
     };
+    if (localStorage.getItem('token')) {
+      window.location.replace('/home')
+    }
   }
 
   async loginButtonClicked (event) {

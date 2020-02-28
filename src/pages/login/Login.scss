@@ -48,10 +48,17 @@ section.cinematic-authentication {
   top: 20%;
 
   h1 {
-    font-weight: 900;
-    font-family: 'Heebo', sans-serif;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+	  letter-spacing: -1.55px;
     font-size: 48px;
     margin-bottom: 12px;
+  }
+
+  h4 {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.011px;
+    font-weight: 500;
   }
   
   input {
