@@ -1,10 +1,6 @@
-import Poplet from '../..';
-import { addRank } from '../../actions/board';
 import axios from 'axios';
 
-export default async (boardID, rank) => {
-  const store = Poplet.store;
-  const value = await axios.put(`/boards/${boardID}/ranks`, rank).then(res => res.data);
-  store.dispatch(addRank(boardID, value || rank));
+export default async (post) => {
+  const value = await axios.post(`/blog/create`, post).then(res => res.data);
   return value;
 };
