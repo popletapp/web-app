@@ -15,6 +15,23 @@ function mapStateToProps (state, props) {
   };
 }
 
+class StackedComment extends Component {
+  render () {
+    const { author, comments } = this.props;
+    return (
+      <Flex className='chatroom-comment-container'>
+        <FlexChild direction='row' align='center' justify='center' className='chatroom-comment-author'>
+          <Avatar url={author.avatar} alt={author.username} />
+          <p className='chatroom-comment-author-username'>{author.username}</p>
+        </FlexChild>
+        <FlexChild className='chatroom-comment-content'>
+          {comments.map((comment, i) => <p key={i}>{comment.content}</p>)}
+        </FlexChild>
+      </Flex>
+    );
+  }
+}
+
 class Comment extends Component {
   render () {
     const { author, children } = this.props;
@@ -90,7 +107,6 @@ class Chatroom extends Component {
     const { user } = this.props;
 
     this.setState({ content: '' });
-    console.log(content)
     if (!content) {
       return;
     }
@@ -123,7 +139,16 @@ class Chatroom extends Component {
     if (!chatroom) {
       return null;
     }
-    const sortedComments = comments ? comments.sort((a, b) => b.timestamp - a.timestamp) : [];
+    let lastCommentProcessed = null;
+    let shouldStack = false;
+    let stacked = [];
+    for (const comment of comments) {
+      if (!comment.timestamp) {
+        comment.timestamp = new Date().toISOString();
+      }
+    }
+    const sortedComments = comments ? comments.sort((a, b) => new Date(b.timestamp || Date.now()) - new Date(a.timestamp || Date.now())).reverse() : [];
+    console.log(sortedComments)
 
     return (
       <Flex className='chatroom-container'>
@@ -160,14 +185,40 @@ class Chatroom extends Component {
             </FlexChild>
             <FlexChild className='chatroom-header-btns' grow={0} align='center' justify='right' direction='column'>
               <MinimalisticButton icon='edit' />
-              <MinimalisticButton icon='help' />
               <MinimalisticButton onClick={() => deleteChatroom(boardID, chatroom.id)} icon='close' />
             </FlexChild>
           </Flex>
 
           <Flex className='chatroom-body' grow={0}>
             <Scroller style={{ width: '100%', maxWidth: '100%' }}>
-              {comments && sortedComments.map((comment, i) => <Comment key={i} author={comment.author}>{comment.content}</Comment>)}
+              {comments && sortedComments.map((comment, i) => {
+                lastCommentProcessed = sortedComments[i - 1];
+                const doesStack = (comment, previous) => {
+                  if (!comment) return false;
+                  if (!previous) return false;
+                  return (previous && comment.author.id === previous.author.id 
+                    && (new Date(comment.timestamp || Date.now()) - new Date(previous.timestamp || Date.now())) < 6e5)
+                }
+                const willNextCommentStack = sortedComments[i + 1] ? doesStack(sortedComments[i + 1], comment) : false;
+                let final = [];
+
+                if (willNextCommentStack) {
+                  if (comment === sortedComments[i + 1]) {
+                    stacked.push(comment)
+                  } else {
+                    stacked.push(sortedComments[i + 1]);
+                  }
+                  return null;
+                } else {
+                  if (stacked.length) {
+                    final.push(<StackedComment key={i + Math.random()} comments={stacked} author={comment.author} />);
+                    stacked = [];
+                  } else {
+                    final.push(<Comment key={i} author={comment.author}>{comment.content}</Comment>);
+                  }
+                }
+                return final;
+              })}
             </Scroller>
           </Flex>
 
