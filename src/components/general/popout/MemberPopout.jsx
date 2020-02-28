@@ -1,6 +1,6 @@
 import React from 'react';
 import Popout from './Popout';
-import { Flex, FlexChild, Avatar, Button, Indicator, RankListPopout, CloseButton } from '../../';
+import { Flex, FlexChild, Avatar, Button, Indicator, ListPopout, CloseButton } from '../../';
 import './Popout.scss';
 import Poplet from './../../../';
 import { updateMember } from './../../../modules';
@@ -10,7 +10,8 @@ import { permissions } from './../../../util';
 function mapStateToProps (state) {
   return {
     ranks: Object.values(state.ranksByBoard[state.selectedBoard] || {}),
-    boardID: state.selectedBoard
+    boardID: state.selectedBoard,
+    board: state.boards[state.selectedBoard]
   }
 }
 
@@ -22,12 +23,19 @@ class MemberPopout extends Popout {
     this.updateSelf();
   }
 
+  async addRankToMember (rank) {
+    const { member, boardID } = this.props;
+    member.ranks.push(rank.id);
+    await updateMember(boardID, member);
+    this.updateSelf();
+  }
+
   onRankListClose () {
     this.updateSelf();
   }
 
   content () {
-    let { member, ranks, boardID } = this.props;
+    let { member, ranks, boardID, board } = this.props;
     const store = Poplet.store;
     const state = store.getState();
     member = state.membersByBoard[boardID][member.id];
@@ -61,7 +69,7 @@ class MemberPopout extends Popout {
 
           <Flex>
             <div style={{ marginTop: '18px' }} className='member-popout-subheading'>
-              Ranks — {member.ranks.length - 1 /* -1 here because everyone has the default role */}
+              Ranks — {Math.max(0, member.ranks.length - 1) /* -1 here because everyone has the default role */}
             </div>
 
             <Flex className='rank-popout-container' direction='row' align='center'>
@@ -75,9 +83,10 @@ class MemberPopout extends Popout {
                   </Flex>
                 )
               })}
-              {permissions.has('MANAGE_MEMBERS') && <RankListPopout onClose={() => this.onRankListClose()} member={member}>
-                 <div className='rank-add-btn'>+</div>
-              </RankListPopout>}
+              {permissions.has('MANAGE_MEMBERS') && <ListPopout title='Apply Ranks' exclude={board.ranks.filter(l => member.ranks.includes(l.id))} 
+                elements={board.ranks} onOptionSelected={(e) => this.addRankToMember(e)}>
+              <div className='add-btn'>+</div>
+            </ListPopout>}
             </Flex>
           </Flex>
           
