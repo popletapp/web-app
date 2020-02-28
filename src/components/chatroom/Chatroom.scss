@@ -1,13 +1,18 @@
 @import './../../index.scss';
 
 .chatroom-title {
-  font-size: 32px;
+  font-size: 25px;
   font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -1px;
 }
 
 .chatroom-last-active-label {
   font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.2px;
   color: lightgrey;
+  padding-top: 0.5em;
 }
 
 .chatroom-dragbar {
@@ -25,8 +30,8 @@
   position: relative;
   background-color: #5c6bc054;
   width: 100%;
-  height: 130px;
-  min-height: 130px;
+  height: 100px;
+  min-height: 100px;
   padding: 12px;
   box-shadow: 0px 0.5px 4px $dark-accent-color-4;
 
@@ -140,6 +145,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin-right: 12px;
+      color: $text-accent-color-1;
     }
   }
 }
@@ -154,6 +160,10 @@
   max-height: 100%;
   padding-left: 4px;
   overflow: auto;
+
+  > .scroller-container > .scroller {
+    padding-top: 0.5em;
+  }
 }
 
 .chatroom-textarea-container {
@@ -175,7 +185,8 @@
   margin: 0;
   padding: 12px;
   resize: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.4px;
 
   &-options {
     display: flex;
@@ -214,6 +225,9 @@
     &-username {
       margin-left: 12px;
       position: relative;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.5px;
+      font-weight: 500;
     }
   }
 
