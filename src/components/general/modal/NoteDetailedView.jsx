@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Modal from './Modal';
 import { connect } from 'react-redux';
-import { ColorPicker, Editor, Scroller, Button, DatePicker, ConfirmModal } from './../../';
+import { ColorPicker, Editor, Scroller, Button, DatePicker, ConfirmModal, 
+  MinimalisticButton, Tooltip, Flex, ListPopout, Modal as ModalComponent,
+  LabelCreationModal, 
+  CloseButton} from './../../';
 import { updateNote, saveNote, deleteNote, createModal } from './../../../modules';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
@@ -11,9 +14,33 @@ import './Modal.scss';
 function mapStateToProps (state, props) {
   return {
     note: state.notesByBoard[props.boardId][props.noteId],
+    boardId: state.selectedBoard,
+    board: state.boards[props.boardId]
+  };
+}
+
+function mapStateToPropsLabelButton (state, props) {
+  return {
     boardId: state.selectedBoard
   };
 }
+
+class AddLabelButton extends Component {
+  click () {
+    const { boardId } = this.props;
+    createModal(<LabelCreationModal boardID={boardId} />)
+  }
+
+  render () {
+    return (
+      <div className='note-label-new' onClick={() => this.click()}>
+        <div className='note-label-new-innerbtn'>+</div>
+        New label
+      </div>
+    )
+  }
+}
+const ConnectedAddLabelButton = connect(mapStateToPropsLabelButton, null)(AddLabelButton);
 
 class NoteDetailedView extends Modal {
   constructor ({ noteId, boardId }) {
@@ -83,16 +110,50 @@ class NoteDetailedView extends Modal {
 
   onDelete () {
     const { note, boardId } = this.props;
-    deleteNote(boardId, note.id);
-    this.close();
+    const modal = {
+      title: 'Delete Note',
+      content: 'Are you sure you want to delete this note? This cannot be undone.'
+    }
+    createModal(<ConfirmModal onConfirm={() => deleteNote(boardId, note.id)} title={modal.title} content={modal.content} />)
   }
 
-  important () {
+  async important (importance) {
+    const { note } = this.props;
+    const newNote = { ...note, importance };
 
+    this.setState({ saving: true });
+    if (note.importance !== newNote.importance) {
+      await saveNote(this.boardId, newNote);
+    }
+    this.setState({ saving: false });
+  }
+
+  optionSelectedAssignees () {
+
+  }
+
+  async optionSelectedLabels (label) {
+    const { note } = this.props;
+    note.labels.push(label.id)
+    const newNote = note;
+
+    this.setState({ saving: true });
+    await saveNote(this.boardId, newNote);
+    this.setState({ saving: false });
+  }
+
+  async removeLabelFromNote (label) {
+    const { note } = this.props;
+    note.labels = note.labels.filter(l => l !== label.id);
+    const newNote = note;
+
+    this.setState({ saving: true });
+    await saveNote(this.boardId, newNote);
+    this.setState({ saving: false });
   }
 
   render () {
-    const { note } = this.props;
+    const { note, board } = this.props;
     const { focused, color } = this.state;
 
     if (!note) return null;
@@ -141,7 +202,24 @@ class NoteDetailedView extends Modal {
             </div>
           </div>
           <div className='vertical-rule' style={{ height: '460px', borderColor: '#2e2e2e', margin: '16px' }} />
-          <div className='modal-note-settings'>
+          <Scroller className='modal-note-settings'>
+            <Flex className='modal-note-settings-options' direction='row' align='center' justify='space-between'>
+              <Tooltip content='Note Settings'>
+                <MinimalisticButton className='modal-note-settings-options-btn modal-note-settings-options-btn-settings' icon='settings' onClick={() => this.onDelete()} />
+              </Tooltip>
+              <Tooltip content='Notification Settings'>
+                <MinimalisticButton className='modal-note-settings-options-btn modal-note-settings-options-btn-notifications' icon='notifications' onClick={() => this.onDelete()} />
+              </Tooltip>
+              <Tooltip content={note.importance ? 'Mark as Unimportant' : 'Mark as Important'}>
+                <MinimalisticButton className='modal-note-settings-options-btn modal-note-settings-options-btn-important' 
+                icon={note.importance ? 'low_priority' : 'priority_high'}
+                onClick={() => this.important(note.importance ? 0 : 1)} />
+              </Tooltip>
+              <Tooltip content='Delete Note'>
+                <MinimalisticButton className='modal-note-settings-options-btn modal-note-settings-options-btn-delete' icon='delete_forever' onClick={() => this.onDelete()} />
+              </Tooltip>
+            </Flex>
+
             <div className='modal-note-settings-header'>Color</div>
             <ColorPicker
               color={color || note.options.color || '#546e7a'}
@@ -149,10 +227,22 @@ class NoteDetailedView extends Modal {
             />
 
             <div className='modal-note-settings-header'>Assignees</div>
-              N/A
+            <ListPopout title='Assign Memebrs to this Note' onOptionSelected={(e) => this.optionSelectedAssignees(e)}>
+              <div className='add-btn'>+</div>
+            </ListPopout>
 
             <div className='modal-note-settings-header'>Labels</div>
-              No labels
+            {note.labels.map((label, i) => {
+              label = board.labels.find(l => l.id === label);
+              return <Flex style={{ backgroundColor: label.color || '#757575' }} className='note-label' inline direction='row' justify='center' align='center' grow={0} key={i}>
+                <div className='note-label-name'>{label.name}</div>
+                <CloseButton className='rank-small-close' onClick={() => this.removeLabelFromNote(label)} />
+              </Flex>
+            })}
+            <ListPopout title='Labels' exclude={board.labels.filter(l => note.labels.includes(l.id))} 
+            elements={[ { custom: <ConnectedAddLabelButton /> }, ...board.labels ]} onOptionSelected={(e) => this.optionSelectedLabels(e)}>
+              <div className='add-btn'>+</div>
+            </ListPopout>
 
             <div className='modal-note-settings-header'>Modified</div>
             {new Date(note.modifiedAt).toLocaleDateString()} at {new Date(note.modifiedAt).toLocaleTimeString()}
@@ -164,9 +254,7 @@ class NoteDetailedView extends Modal {
             <DatePicker initial={note.dueDate ? new Date(note.dueDate) : null} onChange={(date) => this.saveDueDate(date)} />
             <br />
             <br />
-            <Button color='orange' onClick={() => this.important()}>Mark as Important</Button>
-            <Button color='red' onClick={() => this.onDelete()}>Delete Note</Button>
-          </div>
+          </Scroller>
         </div>
       </div>
     );
