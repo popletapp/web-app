@@ -23,6 +23,9 @@ export const UPDATE_RANK = 'UPDATE_RANK';
 export const ADD_MEMBER = 'ADD_MEMBER';
 export const REMOVE_MEMBER = 'REMOVE_MEMBER';
 export const UPDATE_MEMBER = 'UPDATE_MEMBER';
+export const ADD_LABEL = 'ADD_LABEL';
+export const REMOVE_LABEL = 'REMOVE_LABEL';
+export const UPDATE_LABEL = 'UPDATE_LABEL';
 
 // Note
 export const REQUEST_NOTES = 'REQUEST_NOTES';
