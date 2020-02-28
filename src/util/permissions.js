@@ -21,7 +21,8 @@ for (const permission in Permissions) {
 
 const DEVELOPER_IDS = [
   '222082558807022',
-  '2086124001'
+  '2086124001',
+  '2506731637'
 ]
 
 class PermissionsHandler {
