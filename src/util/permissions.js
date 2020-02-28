@@ -20,7 +20,8 @@ for (const permission in Permissions) {
 }
 
 const DEVELOPER_IDS = [
-  '222082558807022'
+  '222082558807022',
+  '2086124001'
 ]
 
 class PermissionsHandler {
@@ -29,7 +30,7 @@ class PermissionsHandler {
   }
 
   static isDeveloper (id) {
-    return DEVELOPER_IDS.includes(id || this.member.id);
+    return DEVELOPER_IDS.includes(id);
   }
 
   get () {
@@ -87,4 +88,4 @@ class PermissionsHandler {
 }
 
 export default new PermissionsHandler();
-export { Permissions };
+export { Permissions, PermissionsHandler };
