@@ -16,6 +16,8 @@ div.landing-body {
   justify-content: left;
 	align-items: left;
 	margin-left: 4em;
+	font-family: 'Inter', sans-serif;
+	letter-spacing: -0.5px;
 }
 
 .intro-description {
@@ -63,7 +65,10 @@ div.landing-body {
 }
 
 .landing-content-card-desc {
+	font-family: 'Inter', sans-serif;
+	letter-spacing: -0.25px;
 	color: white;
+	font-weight: 400;
 	background-color: $light-accent-color-3;
 	padding: 8px;
 	padding-left: 14px;
@@ -79,6 +84,7 @@ div.landing-body {
 	font-size: 92px;
 	color: $poplet-purple;
 	font-family: 'Rubik', sans-serif;
+	letter-spacing: -3.25px;
 	font-weight: 800;
 }
 

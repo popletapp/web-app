@@ -51,6 +51,8 @@
     .board-item-name {
       text-align: center;
       justify-content: center;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.35px;
     }
   }
 }
@@ -76,7 +78,7 @@
       }
 
       .board-item-name {
-        font-weight: 600;
+        font-weight: 400;
         font-size: 18px;
       }
     }
@@ -139,8 +141,9 @@
   width: 100%;
 
   &-title {
-    font-family: 'Heebo', sans-serif;
-    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -1.25px;
+    font-weight: 700;
     font-size: 38px;
     margin-bottom: 24px;
   }
@@ -181,8 +184,9 @@
   width: 100%;
 
   &-title {
-    font-family: 'Heebo', sans-serif;
-    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -1.25px;
+    font-weight: 700;
     font-size: 38px;
     margin-bottom: 24px;
   }
@@ -221,8 +225,9 @@
     padding-top: 0.25em;
     padding-left: 0.25em;
     font-size: 26px;
-    font-family: 'Heebo', sans-serif;
-    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.75px;
+    font-weight: 700;
     margin: 0;
     margin-bottom: 12px;
   }
