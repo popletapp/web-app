@@ -106,6 +106,10 @@ class Chatroom extends Component {
     const { id } = this.props;
     const { user } = this.props;
 
+    const chatroomBody = document.querySelector('.chatroom-body');
+    const scroller = chatroomBody.firstChild.firstChild;
+    scroller.scrollTo(0, scroller.scrollHeight)
+
     this.setState({ content: '' });
     if (!content) {
       return;

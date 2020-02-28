@@ -10,6 +10,7 @@ class Popout extends Component {
     this.state = {
       isShowing: false
     };
+    this.createdAt = Date.now();
     this.escListener = (e) => e.keyCode === 27 && this.actionMade('cancel', e);
     this.clickListener = (event) => {
       let el = event.target;
@@ -94,6 +95,12 @@ class Popout extends Component {
   }
 
   close () {
+    // Below minimum lifespan
+    // This is a measure to prevent the popout from immediately disappearing
+    console.log(this.createdAt)
+    if (Date.now() - this.createdAt < 100) {
+      return;
+    }
     const { onClose = () => void 0 } = this.props;
     if (typeof onClose === 'function') {
       onClose();

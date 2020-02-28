@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavBar, Flex, FlexChild } from './../../components';
+import { NavBar, Flex, FlexChild, Tooltip } from './../../components';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './Landing.scss';
@@ -82,8 +82,12 @@ class Landing extends Component {
               Poplet v.{app.version} beta
             </FlexChild>
 
-            <FlexChild align='right' justify='end'>
-              Yes, this landing page looks pretty barren at the moment - this is only temporary. :)
+            <FlexChild className='landing-links' align='right' justify='end'>
+              <Link to='/'>Landing</Link>
+              <Link to='/blog'>Blog</Link>
+              <Link to='/feedback'>Feedback</Link>
+              <Tooltip content="Doesn't exist yet!"><Link to='/404'>Privacy Policy</Link></Tooltip>
+              <Link to='/help'>Help</Link>
             </FlexChild>
           </Flex>
         </footer>

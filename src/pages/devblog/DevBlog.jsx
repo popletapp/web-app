@@ -12,7 +12,7 @@ class BlogPostPreview extends Component {
     return (
       <div className='blog-content-card'>
         <Link to={`/blog/post/${id}`} className='blog-content-card-title'>{title}</Link>
-        <Editor parseMarkdown={true} editing={false} className='blog-content-card-content'>{content}</Editor>
+        <Editor parseMarkdown={true} editing={false} className='blog-content-card-content'>{`${content.slice(0, 255)}...`}</Editor>
       </div>
     )
   }
