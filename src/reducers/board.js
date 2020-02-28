@@ -84,6 +84,57 @@ export const ranksByBoard = (state = {}, action) => {
   }
 };
 
+export const labels = (state = {}, action) => {
+  switch (action.type) {
+    case 'ADD_LABEL':
+    case 'UPDATE_LABEL': {
+      return { ...state, [action.label.id]: action.label };
+    }
+    case 'DELETE_LABEL': {
+      const old = { ...state };
+      delete old[action.labelID];
+      return old;
+    }
+    case 'RECEIVE_BOARDS': {
+      const labels = {};
+      for (const board of action.boards) {
+        for (const label of (board.labels || [])) {
+          labels[label.id] = label;
+        }
+      }
+      return Object.assign({}, state, labels);
+    }
+    default:
+      return state;
+  }
+};
+
+export const labelsByBoard = (state = {}, action) => {
+  switch (action.type) {
+    case 'UPDATE_LABEL':
+    case 'ADD_LABEL': {
+      return { ...state, [action.boardID]: { ...(state[action.boardID] || {}), [action.label.id]: action.label } };
+    }
+    case 'DELETE_LABEL': {
+      const old = { ...state };
+      delete old[action.board][action.labelID];
+      return old;
+    }
+    case 'RECEIVE_BOARDS': {
+      const final = {};
+      for (const board of action.boards) {
+        final[board.id] = {};
+        for (const label of (board.labels || [])) {
+          final[board.id][label.id] = label;
+        }
+      }
+      return Object.assign({}, state, final);
+    }
+    default:
+      return state;
+  }
+};
+
 export const groups = (state = {
   isFetching: false,
   items: []
