@@ -59,9 +59,11 @@
 
   &-header {
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     margin-top: 4px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.5px;
   }
 
   &-footer {
@@ -93,6 +95,29 @@
   }
 }
 
+.add-btn {
+  width: 26px;
+  height: 26px;
+  padding: 0.3em;
+  background-color: $dark-1;
+  font-size: 22px;
+  text-align: center;
+  justify-content: center;
+  align-content: center;
+  line-height: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $dark-accent-color-3;
+  }
+}
+
+.note-detailed-view {
+  max-height: 532px;
+  overflow: hidden;
+}
+
 .note-detailed-view > .modal-content {
   display: flex;
   flex-direction: row;
@@ -114,24 +139,61 @@
       margin-bottom: 12px;
     }
   }
+}
 
-  > .modal-note-settings {
-    flex-direction: column;
-    min-width: 25%;
+.modal-note-settings {
+  flex-direction: column;
+  min-width: 25%;
+  max-height: 500px;
+  overflow: auto;
+  padding-right: 8px;
 
-    > .modal-note-settings-editrevision {
-      color: $poplet-blue;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      text-transform: uppercase;
-      font-size: 12px;
-      line-height: 16px;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      margin-top: 6px;
-      margin-bottom: 6px;
-      cursor: pointer;
+  > .modal-note-settings-editrevision {
+    color: $poplet-blue;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+}
+
+.modal-note-settings-options {
+  background-color: $dark-accent-color-4;
+  border-radius: 2px;
+  padding: 0.5em;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+
+  > .modal-note-settings-options-btn {
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    margin: 0em 0.25em;
+    background-color: $dark-accent-color-2;
+    padding: 0.35em;
+    transition: all 0.1s;
+    background-color: $light-accent-color-2;
+
+    &-delete {
+      background-color: $poplet-red;
+    }
+
+    &-important {
+      background-color: #ce8554;
+    }
+
+    &:hover {
+      -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.07);
+      -webkit-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.07);
     }
   }
 }
@@ -188,7 +250,7 @@
     cursor: pointer;
 
     &-active {
-      background-color: $light-accent-color-5;
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
     &:hover {
