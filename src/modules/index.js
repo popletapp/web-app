@@ -13,6 +13,9 @@ export { default as endSelection } from './boards/endSelection.js';
 export { default as addRank } from './boards/addRank.js';
 export { default as updateRank } from './boards/updateRank.js';
 export { default as deleteRank } from './boards/deleteRank.js';
+export { default as addLabel } from './boards/addLabel.js';
+export { default as updateLabel } from './boards/updateLabel.js';
+export { default as deleteLabel } from './boards/deleteLabel.js';
 export { default as toggleMemberListVisibility } from './boards/toggleMemberListVisibility.js';
 export { default as updateMember } from './boards/updateMember.js';
 
@@ -63,3 +66,5 @@ export { default as connect } from './internal/connect';
 export { default as established } from './internal/established';
 
 export { default as getLastPosts } from './blog/getLastPosts';
+export { default as createPost } from './blog/createPost';
+export { default as getPost } from './blog/getPost';

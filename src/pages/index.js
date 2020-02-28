@@ -8,3 +8,5 @@ export { default as NotFound } from './notfound/NotFound';
 export { default as Feedback } from './feedback/Feedback';
 export { default as UserSettings } from './usersettings/UserSettings';
 export { default as DevBlog } from './devblog/DevBlog';
+export { default as Post } from './devblog/Post';
+export { default as PostCreator } from './devblog/PostCreator';

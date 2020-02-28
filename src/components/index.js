@@ -21,6 +21,7 @@ export { default as BoardInviteMembersModal } from './general/modal/BoardInviteM
 export { default as BoardJoinModal } from './general/modal/BoardJoinModal';
 export { default as BoardSettingsModal } from './general/modal/BoardSettingsModal';
 export { default as GroupSettingsModal } from './general/modal/GroupSettingsModal';
+export { default as LabelCreationModal } from './general/modal/LabelCreationModal';
 export { default as BetaModal } from './general/modal/BetaModal';
 export { default as ConfirmModal } from './general/modal/ConfirmModal';
 export { default as Input } from './general/input/Input';
@@ -45,6 +46,7 @@ export { default as Popout } from './general/popout/Popout';
 export { default as Popouts } from './general/popout/Popouts';
 export { default as MemberPopout } from './general/popout/MemberPopout';
 export { default as RankListPopout } from './general/popout/RankListPopout';
+export { default as ListPopout } from './general/popout/ListPopout';
 export { default as Indicator } from './general/indicator/Indicator';
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure';

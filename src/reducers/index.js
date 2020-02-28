@@ -9,7 +9,9 @@ import {
   groups,
   groupsByBoard,
   ranks,
-  ranksByBoard
+  ranksByBoard,
+  labels,
+  labelsByBoard
 } from './board';
 import { notesByBoard, notes, zoomLevel } from './notes';
 import { user, users } from './user';
@@ -39,6 +41,8 @@ const rootReducer = combineReducers({
   membersByBoard,
   ranks,
   ranksByBoard,
+  labels,
+  labelsByBoard,
   chatrooms,
   chatroomsByBoard,
   chatroomComments,
