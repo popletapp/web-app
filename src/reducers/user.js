@@ -12,14 +12,18 @@ export const user = (state = {}, action) => {
 export const users = (state = {
   isFetching: false,
   didInvalidate: false,
-  items: []
+  items: {}
 }, action) => {
   switch (action.type) {
+    case 'RECEIVE_USER':
     case 'UPDATE_USER': {
-      const old = state;
-      const index = old.items.findIndex(user => user.id === action.user.id);
-      old[index] = action.user;
-      return old;
+      if (action.user && action.user.id) {
+        return Object.assign({}, state, {
+          items: { ...state.items, [action.user.id]: action.user }
+        });
+      } else {
+        return state;
+      }
     }
 
     case 'REQUEST_USER': {
@@ -29,29 +33,24 @@ export const users = (state = {
         items: state.items
       });
     }
-    case 'RECEIVE_USER': {
-      if (action.user && action.user.id) {
-        return Object.assign({}, state, {
-          items: [...state.items, action.user]
-        });
-      } else {
-        return state;
-      }
-    }
 
-    case 'REQUEST_USERS': {
-      return Object.assign({}, state, {
-        isFetching: false,
-        didInvalidate: true,
-        items: action.users
-      });
-    }
     case 'RECEIVE_USERS': {
+      const users = {};
+      if (action.users) {
+        for (const user of action.users) {
+          users[user.id] = {
+            id: user.id,
+            username: user.username,
+            avatar: user.avatar,
+            createdAt: user.createdAt
+          };
+        }
+      }
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
         lastUpdated: action.receivedAt,
-        items: action.users
+        items: users
       });
     }
 
