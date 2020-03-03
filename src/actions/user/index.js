@@ -1,4 +1,4 @@
-import { INITIALIZE_USER, UPDATE_USER, RECEIVE_USERS, RECEIVE_USER, REQUEST_USER, REQUEST_USERS } from '../../constants/ActionTypes';
+import { INITIALIZE_USER, UPDATE_USER, RECEIVE_USERS, RECEIVE_USER, REQUEST_USER } from '../../constants/ActionTypes';
 import axios from 'axios';
 
 export const initializeUser = (user) => ({
@@ -22,11 +22,6 @@ export const requestUser = user => ({
   user
 });
 
-export const requestUsers = users => ({
-  type: REQUEST_USERS,
-  users
-});
-
 export const receiveUser = (user) => ({
   type: RECEIVE_USER,
   user,
@@ -38,13 +33,6 @@ export const fetchUser = userId => dispatch => {
   return axios.get(`/users/${userId}`)
     .then(res => dispatch(receiveUser(res.data)))
     .catch(() => dispatch(receiveUser(null)));
-};
-
-export const fetchUsers = array => dispatch => {
-  dispatch(requestUsers(array));
-  return axios.get(`/users/get`)
-    .then(res => dispatch(receiveUsers(res.data)))
-    .catch(() => dispatch(receiveUsers(null)));
 };
 
 function shouldFetchUser (state, userId) {
@@ -59,33 +47,12 @@ function shouldFetchUser (state, userId) {
   }
 }
 
-function shouldFetchUsers (state, userId) {
-  const users = state.users[userId];
-  if (!users) {
-    return true;
-  } else if (users.isFetching) {
-    return false;
-  } else {
-    return users.didInvalidate;
-  }
-}
-
 export function getUser (userId) {
   return (dispatch, getState) => {
     if (shouldFetchUser(getState(), userId)) {
       return dispatch(fetchUser(userId));
     } else {
       return Promise.resolve(getState().users[userId]);
-    }
-  };
-}
-
-export function getUsers (array) {
-  return (dispatch, getState) => {
-    if (shouldFetchUsers(getState(), array)) {
-      return dispatch(fetchUsers(array));
-    } else {
-      return Promise.resolve(getState().users);
     }
   };
 }

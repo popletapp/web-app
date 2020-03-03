@@ -4,9 +4,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import * as Sentry from '@sentry/browser';
-import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import TouchBackend from 'react-dnd-touch-backend';
 import mobile from 'is-mobile';
 
 import './index.scss';
@@ -54,22 +51,61 @@ return dropTargets.filter(t => {
 })
 }
 
+class EventListenerHandler {
+  constructor () {
+    // { type: String, function: Function }
+    this.functions = [];
+    this.listenerTriggered = this.listenerTriggered.bind(this)
+    this.listeners = [];
+    const EVENTS = [
+      'click',
+      'keydown',
+      'mousemove',
+      'mouseup'
+    ]
+    for (const type of EVENTS) {
+      const listener = document.addEventListener(type, (event) => this.listenerTriggered(type, event));
+      this.listeners.push(listener);
+    }
+  }
+
+  subscribe (type, func) {
+    this.functions.push({ type, function: func });
+  }
+
+  unsubscribe (type, func) {
+    for (let i = 0; i < this.functions.length; i++) {
+      let listener = this.functions[i];
+      if (listener && listener.type === type && listener.function === func) {
+        this.functions.splice(i, 1);
+      }
+    }
+  }
+
+  listenerTriggered (type, event) {
+    for (let i = 0; i < this.functions.length; i++) {
+      let listener = this.functions[i];
+      if (listener && listener.type === type) {
+        listener.function.call(null, event);
+      }
+    }
+  }
+}
+window.listeners = new EventListenerHandler();
+
 // use custom function only if elementsFromPoint is not supported
 const backendOptions = {
-getDropTargetElementsAtPoint: !hasNative && getDropTargetElementsAtPoint,
+  getDropTargetElementsAtPoint: !hasNative && getDropTargetElementsAtPoint,
 }
 
 async function render () {
-  store.subscribe(() => Poplet.log.prefix(Poplet.log.PREFIX_TYPES.STORE).debug('Current store state', store.getState()));
   ReactDOM.render(
     <Provider store={store}>
-      <DndProvider backend={mobile() ? TouchBackend : HTML5Backend} options={backendOptions}>
-        <BrowserRouter>
-          <Switch>
-            <Route path='/' component={Application} />
-          </Switch>
-        </BrowserRouter>
-      </DndProvider>
+      <BrowserRouter>
+        <Switch>
+          <Route path='/' component={Application} />
+        </Switch>
+      </BrowserRouter>
     </Provider>
     , document.getElementById('root'));
 }

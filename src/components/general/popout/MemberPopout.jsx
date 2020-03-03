@@ -41,7 +41,7 @@ class MemberPopout extends Popout {
     member = state.membersByBoard[boardID][member.id];
 
     return (
-      <Flex className='popout'>
+      <Flex className='member-popout popout'>
         <FlexChild className='popout-content'>
           <Flex direction='row' className='popout-header member-popout-header'>
             <Avatar url={member.avatar} alt={member.username} size='medium' />
@@ -77,7 +77,7 @@ class MemberPopout extends Popout {
                 rank = ranks.find(r => r.id === rank);
                 if (!rank) return null;
                 return (
-                  <Flex key={i} className='rank-small' direction='row' align='center'>
+                  <Flex key={i} className='rank-small' align='center' direction='row' align='center'>
                     <div className='rank-small-name'>{rank.name}</div>
                     <CloseButton className='rank-small-close' onClick={() => this.removeRankFromMember(rank)} />
                   </Flex>

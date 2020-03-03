@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Note, Editor, FlexChild, Flex, CloseButton, MinimalisticButton, GroupSettingsModal, ConfirmModal } from './../../';
 import ComponentTypes from './../../../constants/ComponentTypes';
-import { DragSource, DropTarget } from 'react-dnd';
 import './Group.scss';
-import { addNoteToGroup, isNoteInGroup, moveNote, updateGroup, deleteGroup, createModal } from '../../../modules';
+import { addNoteToGroup, moveGroup, updateGroup, deleteGroup, createModal } from '../../../modules';
 import { permissions } from './../../../util';
+import Draggable from 'react-draggable';
 
 function mapStateToProps (state, props) {
   return {
@@ -13,7 +13,8 @@ function mapStateToProps (state, props) {
       ? state.groupsByBoard[props.boardId][props.id].items.map(note => state.notesByBoard[props.boardId][note])
       : [],
     group: state.groupsByBoard[props.boardId][props.id],
-    listView: !!state.viewByBoard[props.boardId]
+    listView: !!state.viewByBoard[props.boardId],
+    board: state.boards[props.boardId]
   };
 }
 
@@ -22,10 +23,12 @@ class Group extends Component {
     super();
     this.boardId = boardId;
     this.group = group;
+    this.groupRef = React.createRef();
     this.wasDraggedByClient = false;
     this.state = {
       editingName: false,
-      style: {}
+      style: {},
+      position: null
     };
   }
 
@@ -40,16 +43,11 @@ class Group extends Component {
   }
 
   componentDidUpdate (oldProps) {
-    const { group, isDragging } = this.props;
+    const { group } = this.props;
     const { style } = this.state;
 
-    if (!isDragging && oldProps.isDragging) {
-      this.wasDraggedByClient = true;
-      setTimeout(() => { this.wasDraggedByClient = false; }, 500);
-    }
-
     if (group && group.position) {
-      if (style.top !== group.position.y || style.left !== group.position.x) {
+      if (style.transform !== `translate(${group.position.x}px, ${group.position.y}px)`) {
         this.setPosition(group);
       }
     }
@@ -68,11 +66,12 @@ class Group extends Component {
       group.position.y = 0;
     }
 
+    const transform = `translate(${group.position.x}px, ${group.position.y}px)`;
     this.setState({
       style: {
         ...this.state.style,
-        top: group.position ? group.position.y : 0,
-        left: group.position ? group.position.x : 0
+        transform,
+        WebkitTransform: transform
       }
     });
   }
@@ -111,27 +110,82 @@ class Group extends Component {
     createModal(<ConfirmModal onConfirm={() => deleteGroup(boardId, group.id)} title={modal.title} content={modal.content} />)
   }
 
+  onDragStart () {
+    const { group, board } = this.props;
+    this.wasDraggedByClient = true;
+    if (board.type === 1) {
+      const container = document.getElementsByClassName('note-container')[0];
+      container.style.backgroundSize = '32px 32px';
+      container.style.backgroundImage = 'radial-gradient(circle, #424242 1px, transparent 1px)';
+    }
+  }
+
+  onDrag (event, data) {
+    const { group } = this.props;
+    if (data) {
+      const newPosition = { x: data.x, y: data.y };
+      if (group.position !== newPosition) {
+        this.setState({ position: newPosition })
+        this.wasDraggedByClient = true;
+      }
+    }
+  }
+
+  async onDragStop () {
+    const { group, boardId } = this.props;
+    const { position } = this.state;
+    const container = document.getElementsByClassName('note-container')[0];
+    container.style.backgroundSize = '';
+    container.style.backgroundImage = '';
+    this.wasDraggedByClient = true;
+    setTimeout(() => { this.wasDraggedByClient = false; }, 100);
+    await moveGroup(boardId, group.id, position);
+  }
+
+  getBounds () {
+    const node = this.groupRef.current;
+    if (!node) {
+      return {
+        left: 0,
+        top: 0
+      }
+    }
+    const { ownerDocument } = node;
+    const ownerWindow = ownerDocument.defaultView;
+    const boundNode = node.parentNode;
+    const nodeStyle = ownerWindow.getComputedStyle(node);
+    const boundNodeStyle = ownerWindow.getComputedStyle(boundNode);
+    return {
+      left: -node.offsetLeft + parseInt(boundNodeStyle.paddingLeft) + parseInt(nodeStyle.marginLeft),
+      top: -node.offsetTop + parseInt(boundNodeStyle.paddingTop) + parseInt(nodeStyle.marginTop)
+    }
+  }
+
   render () {
-    let { group, notes, boardId, listView, connectDragSource, preview, connectDropTarget, isDragging, style: styleProps } = this.props;
+    let { group, notes, boardId, listView, preview, style: styleProps, board } = this.props;
     const { style, editingName } = this.state;
     if (!group || this.state.unmounted) {
       return null;
     }
-
-    if (!permissions.has('MOVE_NOTES')) {
-      connectDragSource = (value) => value;
-      connectDropTarget = (value) => value;
-    }
+    const bounds = this.getBounds();
 
     group.options = group.options || {};
-    return connectDragSource(connectDropTarget(
+    return <Draggable
+      onStart={(...args) => this.onDragStart(...args)}
+      onDrag={(...args) => this.onDrag(...args)}
+      onStop={(...args) => this.onDragStop(...args)}
+      disabled={!permissions.has('MOVE_NOTES')}
+      defaultPosition={group.position}
+      bounds={{ top: bounds.top, left: bounds.left }}
+      grid={board.type === 1 ? [ 32, 32 ] : void 0}>
       <div className='group-container'
+        ref={this.groupRef}
         style={{
           ...styleProps,
-          ...(this.wasDraggedByClient || isDragging ? { transition: 'none' } : {}),
           ...(!listView && !preview ? style : {}),
           backgroundColor: group.options.color || '',
-          opacity: isDragging ? 0 : 1
+          opacity: 1,
+          ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
         }}>
         <Flex direction='row' align='center' className='group-header'>
           <FlexChild direction='row' align='center'>
@@ -161,44 +215,8 @@ class Group extends Component {
           {notes && notes.filter(Boolean).map((note, i) => <Note key={i} id={note.id} boardId={boardId} />)}
         </div>
       </div>
-    ));
+    </Draggable>
   }
 }
 
-export default connect(mapStateToProps, null)(
-  DropTarget(
-    ComponentTypes.NOTE,
-    {
-      drop (props, monitor, component) {
-        const { item } = monitor.getItem();
-        const delta = monitor.getDifferenceFromInitialOffset();
-        const left = Math.round(item.position.x + delta.x);
-        const top = Math.round(item.position.y + delta.y);
-
-        if (isNoteInGroup(item.id)) {
-          moveNote(props.boardId, item.id, { x: left, y: top });
-        } else {
-          addNoteToGroup(props.boardId, props.id, item.id);
-        }
-      }
-    },
-    connect => ({
-      connectDropTarget: connect.dropTarget()
-    })
-  )(DragSource(
-    ComponentTypes.GROUP,
-    {
-      beginDrag (props) {
-        const { group, boardId } = props;
-        group.position = group.position || {};
-        return { item: group, boardId };
-      }
-    },
-    (connect, monitor) => ({
-      connectDragSource: connect.dragSource(),
-      connectDragPreview: connect.dragPreview(),
-      isDragging: monitor.isDragging(),
-      dragging: monitor.getItemType()
-    })
-  )(Group))
-);
+export default connect(mapStateToProps, null)(Group);

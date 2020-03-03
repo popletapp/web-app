@@ -3,13 +3,12 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild } from './../../';
+import { Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild, RichTextbox } from './../../';
 import './Note.scss';
-import { updateNote, createNote, saveNote, createModal } from './../../../modules';
+import { updateNote, createNote, saveNote, moveNote, createModal, removeNoteFromGroup, isNoteInGroup } from './../../../modules';
 import { permissions } from './../../../util';
 import ComponentTypes from './../../../constants/ComponentTypes';
-
-import { DragSource } from 'react-dnd';
+import Draggable from 'react-draggable';
 
 function mapStateToProps (state, props) {
   return {
@@ -27,15 +26,14 @@ class Note extends Component {
     this.noteRef = React.createRef();
     this.boardId = boardId;
     this.preview = preview;
-
     this.wasDraggedByClient = false;
 
-    // Whether or not this note is currently being created
     this.state = {
       selected: false,
       editing: false,
       exists: this.note ? !!this.note.id : false,
-      style: { }
+      style: { },
+      position: null
     };
     if (!this.preview) {
       this.listener = (event) => {
@@ -52,11 +50,15 @@ class Note extends Component {
           this.unselect();
         }
       };
-      document.addEventListener('click', this.listener);
+      window.listeners.subscribe('click', this.listener);
     }
   }
 
   view (event) {
+    console.log(this.wasDraggedByClient)
+    if (this.wasDraggedByClient) {
+      return false;
+    };
     event.preventDefault();
     if (!this.state.selected) {
       createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.boardId} />);
@@ -75,8 +77,9 @@ class Note extends Component {
   unselect () {
     if (!this.state.boxSelection) {
       this.setState({ selected: false, editing: false });
+    } else {
+      this.setState({ boxSelection: false, selected: false, editing: false });
     }
-    this.setState({ boxSelection: false, selected: false, editing: false });
   }
 
   onInput (event, type) {
@@ -113,10 +116,12 @@ class Note extends Component {
     if (note.position.y < 0) {
       note.position.y = 0;
     }
+
+    const transform = `translate(${note.position.x}px, ${note.position.y}px)`;
     this.setState({
       style: {
-        top: note.position ? note.position.y : 0,
-        left: note.position ? note.position.x : 0
+        transform,
+        WebkitTransform: transform
       }
     });
   }
@@ -142,7 +147,7 @@ class Note extends Component {
   }
 
   componentWillUnmount () {
-    document.removeEventListener('click', this.listener);
+    window.listeners.unsubscribe('click', this.listener);
   }
 
   highlight () {
@@ -152,6 +157,7 @@ class Note extends Component {
 
   async componentDidMount () {
     const { note } = this.props;
+
     if (note && note.position) {
       this.setPosition(note);
     }
@@ -162,13 +168,13 @@ class Note extends Component {
   }
 
   componentDidUpdate (oldProps) {
-    const { note, selectedArea, isDragging } = this.props;
+    const { note } = this.props;
 
     this.highlight();
     const { style } = this.state;
 
     if (note && note.position) {
-      if (style.top !== note.position.y || style.left !== note.position.x) {
+      if (style.transform !== `translate(${note.position.x}px, ${note.position.y}px)`) {
         this.setPosition(note);
       }
     }
@@ -180,6 +186,52 @@ class Note extends Component {
     }
   }
 
+  onDragStart () {
+    const { note, board } = this.props;
+    if (board.type === 1) {
+      const container = document.getElementsByClassName('note-container')[0];
+      container.style.backgroundSize = '32px 32px';
+      container.style.backgroundImage = 'radial-gradient(circle, #424242 1px, transparent 1px)';
+    }
+  }
+
+  onDrag (event, data) {
+    const { note } = this.props;
+    if (data) {
+      const newPosition = { x: data.x, y: data.y };
+      if (note.position !== newPosition) {
+        this.setState({ position: newPosition })
+        this.wasDraggedByClient = true;
+
+        const node = this.noteRef.current;
+        if (!node) {
+          return {
+            left: 0,
+            top: 0
+          };
+        }
+        const { ownerDocument } = node;
+      }
+    }
+  }
+
+  async onDragStop () {
+    const { note, boardId } = this.props;
+    const { position } = this.state;
+    const container = document.getElementsByClassName('note-container')[0];
+    container.style.backgroundSize = '';
+    container.style.backgroundImage = '';
+    setTimeout(() => { this.wasDraggedByClient = false; }, 100);
+
+    if (this.wasDraggedByClient) {
+      const group = isNoteInGroup(note.id);
+      if (group) {
+        await removeNoteFromGroup(boardId, group, note.id);
+      }
+      await moveNote(boardId, note.id, position);
+    }
+  }
+
   renderContent () {
     const { note,  board } = this.props;
     const { editing } = this.state;
@@ -188,107 +240,99 @@ class Note extends Component {
     return editing ? note.content : (note.content.length > MAX_LENGTH ? `${note.content.slice(0, MAX_LENGTH - 3)}...` : note.content)
   }
 
+  getBounds () {
+    const node = this.noteRef.current;
+    if (!node) {
+      return {
+        left: 0,
+        top: 0
+      };
+    }
+    const { ownerDocument } = node;
+    const ownerWindow = ownerDocument.defaultView;
+    const boundNode = node.parentNode;
+    const nodeStyle = ownerWindow.getComputedStyle(node);
+    const boundNodeStyle = ownerWindow.getComputedStyle(boundNode);
+    return {
+      left: -node.offsetLeft + parseInt(boundNodeStyle.paddingLeft) + parseInt(nodeStyle.marginLeft),
+      top: -node.offsetTop + parseInt(boundNodeStyle.paddingTop) + parseInt(nodeStyle.marginTop)
+    }
+  }
+
   render () {
-    let { note, listView, connectDragSource, preview, isDragging, style: styleProps = {}, board } = this.props;
+    let { note, listView, preview, style: styleProps = {}, board } = this.props;
     const { editing, selected, style } = this.state;
     const { compact = false } = board;
+    const bounds = this.getBounds();
 
     if (!note || this.state.unmounted) {
       return null;
     }
-
-    if (isDragging) {
-      this.wasDraggedByClient = true;
-      setTimeout(() => { this.wasDraggedByClient = false; }, 300);
-    }
-    note.title = note.title || '';
-    note.content = note.content || '';
     note.options = note.options || {};
 
-    if (!permissions.has('MOVE_NOTES')) {
-      connectDragSource = (value) => value; 
-    }
-
-    return connectDragSource(
-      <div ref={this.noteRef}
+    return <Draggable
+      onStart={(...args) => this.onDragStart(...args)}
+      onDrag={(...args) => this.onDrag(...args)}
+      onStop={(...args) => this.onDragStop(...args)}
+      disabled={!permissions.has('MOVE_NOTES')}
+      defaultPosition={note.position}
+      bounds={{ top: bounds.top, left: bounds.left }}
+      grid={board.type === 1 ? [ 32, 32 ] : void 0}>
+        <div ref={this.noteRef}
         data-id={note.id.toString()}
         onClick={(event) => note.id && this.view(event)}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}${compact ? ' note-compact' : ''}`}
         style={{ 
-          ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
-          ...(!listView && !preview ? style : {}),
-          width: 'fit-content',
+          ...(!listView ? style : {}),
           backgroundColor: note.options.color || '',
-          opacity: isDragging ? 0 : 1,
+          opacity: 1,
           ...styleProps,
+          ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
         }}>
-        {selected && !preview && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
-        <div className='note-content white-text'>
-          <Editor
-            type='title'
-            editing={selected}
-            onInput={(e) => this.onInput(e, 'title')}
-            onBlur={(e) => this.onBlur(e, 'title')}
-            style={{ display: note.title ? 'block' : 'none' }}
-            placeholder='Title'
-            className='note-header'>
-            {editing ? note.title : (note.title.length > 64 ? `${note.title.slice(0, 61)}...` : note.title)}
-          </Editor>
-          <Editor
-            type='content'
-            editing={selected}
-            onInput={(e) => this.onInput(e, 'content')}
-            onBlur={(e) => this.onBlur(e, 'content')}
-            parseMarkdown={!editing}
-            placeholder='Content'
-            className='note-body'>
-            {this.renderContent()}
-          </Editor>
-        </div>
-        <Flex direction='row' align='center' className='note-footer'>
-          <FlexChild align='left' direction='row'>
-            {permissions.has('MANAGE_NOTES') && !preview 
-            && <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className='note-btn-view'>Edit</MinimalisticButton>}
-          </FlexChild>
+          {selected && !preview && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
+          <div className='note-content white-text'>
+            <RichTextbox
+              type='title'
+              parseMarkdown={false}
+              editable={editing}
+              onInput={(e) => this.onInput(e, 'title')}
+              onBlur={(e) => this.onBlur(e, 'title')}
+              style={{ display: note.title ? 'block' : 'none' }}
+              placeholder='Title'
+              className='note-header'>
+              {editing ? note.title : (note.title.length > 64 ? `${note.title.slice(0, 61)}...` : note.title)}
+            </RichTextbox>
+            <RichTextbox
+              type='content'
+              editable={editing}
+              parseMarkdown={editing}
+              doDecorate={editing}
+              onInput={(e) => this.onInput(e, 'content')}
+              onBlur={(e) => this.onBlur(e, 'content')}
+              placeholder='Content'
+              className='note-body'>
+              {this.renderContent()}
+            </RichTextbox>
+          </div>
+          <Flex direction='row' align='center' className='note-footer'>
+            <FlexChild align='left' direction='row'>
+              {permissions.has('MANAGE_NOTES') && 
+              <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className={`note-btn-edit${preview ? ' note-btn-edit-disabled' : ''}`}>
+                Edit
+              </MinimalisticButton>}
+            </FlexChild>
 
-          <FlexChild align='right' direction='row' justify='end'>
-            {/* TODO: Implement comments */}
-            {true && <div className='note-footer-comments-container'>
-              <i className='material-icons' style={{ fontSize: '14px' }}>comment</i> 0
-            </div>}
-          </FlexChild>
-        </Flex>
-      </div>
-    );
+            <FlexChild align='right' direction='row' justify='end'>
+              {/* TODO: Implement comments */}
+              {true && <div className='note-footer-comments-container'>
+                <i className='material-icons' style={{ fontSize: '13px' }}>comment</i> 0
+              </div>}
+            </FlexChild>
+          </Flex>
+        </div>
+      </Draggable>
   }
 }
 
-export default connect(mapStateToProps, null)(
-  DragSource(
-    ComponentTypes.NOTE,
-    {
-      beginDrag (props) {
-        if (props.board.type === 1) {
-          const container = document.getElementsByClassName('note-container')[0];
-          container.style.backgroundSize = '32px 32px';
-          container.style.backgroundImage = 'radial-gradient(circle, #424242 1px, transparent 1px)';
-        }
-        
-        const { note, boardId } = props;
-        note.position = note.position || { x: 0, y: 0 };
-        return { item: note, boardId };
-      },
+export default connect(mapStateToProps, null)(Note);
 
-      endDrag () {
-        const container = document.getElementsByClassName('note-container')[0];
-        container.style.backgroundSize = '';
-        container.style.backgroundImage = '';
-      }
-    },
-    (connect, monitor) => ({
-      connectDragSource: connect.dragSource(),
-      connectDragPreview: connect.dragPreview(),
-      isDragging: monitor.isDragging()
-    })
-  )(Note)
-);

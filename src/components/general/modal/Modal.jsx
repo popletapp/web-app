@@ -8,7 +8,6 @@ class Modal extends Component {
     super(props);
     this.state = {};
     this.listener = (e) => e.keyCode === 27 && this.actionMade('cancel', e);
-    document.addEventListener('keydown', this.listener, false);
   }
 
   actionMade (type, event) {
@@ -31,8 +30,12 @@ class Modal extends Component {
     }
   }
 
+  componentDidMount () {
+    window.listeners.subscribe('keydown', this.listener, false);
+  }
+
   componentWillUnmount () {
-    document.removeEventListener('keydown', this.listener, false);
+    window.listeners.unsubscribe('keydown', this.listener, false);
   }
 
   render () {
@@ -43,10 +46,12 @@ class Modal extends Component {
       const container = document.getElementsByClassName('modal')[0];
       if (container) {
         const child = container.firstChild;
-        const size = child.getBoundingClientRect();
-        if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-          container.style.height = `${size.height + 24}px`;
-          container.style.minHeight = `${size.height + 42}px`;
+        if (child) {
+          const size = child.getBoundingClientRect();
+          if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+            container.style.height = `${size.height + 24}px`;
+            container.style.minHeight = `${size.height + 42}px`;
+          }
         }
       }
     }, 30);

@@ -27,6 +27,7 @@ export { default as ConfirmModal } from './general/modal/ConfirmModal';
 export { default as Input } from './general/input/Input';
 export { default as DefaultInput } from './general/input/DefaultInput';
 export { default as Editor } from './general/editor/Editor';
+export { default as RichTextbox } from './general/editor/RichTextbox';
 export { default as ColorPicker } from './general/colorpicker/ColorPicker';
 export { default as DatePicker } from './general/datepicker/DatePicker';
 export { default as ToggleSwitch } from './general/toggleswitch/ToggleSwitch';
@@ -47,7 +48,9 @@ export { default as Popouts } from './general/popout/Popouts';
 export { default as MemberPopout } from './general/popout/MemberPopout';
 export { default as RankListPopout } from './general/popout/RankListPopout';
 export { default as ListPopout } from './general/popout/ListPopout';
+export { default as DatePickerPopout } from './general/popout/DatePickerPopout';
 export { default as Indicator } from './general/indicator/Indicator';
+export { default as Mention } from './general/text/Mention';
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure';
 export { default as Loader } from './internal/load/Loader';

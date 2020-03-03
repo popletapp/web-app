@@ -1,3 +1,26 @@
+@import './../../../index.scss';
+
+.mention {
+  background-color: #8f5edd41;
+  padding: 2px 2px;
+  font-weight: 400;
+  color: $poplet-purple-lighten-4;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(179, 142, 240, 0.575);
+    cursor: pointer;
+  }
+
+  &-at {
+    font-size: 14.65px;
+  }
+
+  &-at, &-content {
+    color: #dacdf0;
+  }
+}
+
 .username-text {
   color: white;
   font-size: 14px;

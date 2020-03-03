@@ -52,22 +52,31 @@ export default async () => {
   let retries = 0;
   Poplet.ws.emit('heartbeat');
   let disconnected = false;
+  let reconnecting = false;
   let retryTime = RETRY_TIMES[0];
   const reconnect = () => {
+    reconnecting = true;
     retryTime = Math.min(RETRY_TIMES[retries] || Infinity, 1e4 * 80);
     setTimeout(() => {
-      // If the last heartbeat hasn't been returned in more than 50 seconds, render the reconnect view
-      if (Date.now() - LAST_HEARTBEAT_TIMESTAMP > MAX_KEEP_ALIVE_TIME) {
+      // If the last heartbeat hasn't been returned in more than x seconds, render the reconnect view
+      if ((Date.now() - LAST_HEARTBEAT_TIMESTAMP) > MAX_KEEP_ALIVE_TIME) {
         retries++;
         Poplet.log.prefix(Poplet.log.PREFIX_TYPES.GATEWAY).warn(`Heartbeat was not received from server. Retrying in ${retryTime}ms (${retries} attempts)`);
         ReactDOM.render(<Connecting />, document.querySelector('#root'));
         disconnected = true;
+
+        connectSocket();
+        Poplet.ws.emit('authorize', { userID: Poplet.user.id, authToken: token });
+        Poplet.ws.emit('heartbeat');
+        Poplet.ws.on('heartbeat', () => {
+          LAST_HEARTBEAT_TIMESTAMP = Date.now();
+        });
         reconnect();
       } else {
         if (disconnected) {
+          reconnecting = false;
           disconnected = false;
           Poplet.log.prefix(Poplet.log.PREFIX_TYPES.GATEWAY).info(`Reconnected to gateway after ${retries} retries`);
-          connectSocket();
           render();
         }
       }
@@ -80,17 +89,15 @@ export default async () => {
     amountPolled++;
     if (amountPolled * POLLING_TIME > HEARTBEAT_INTERVAL) {
       Poplet.ws.emit('heartbeat');
-      Poplet.log.prefix(Poplet.log.PREFIX_TYPES.GATEWAY).debug('Heartbeat sent');
       amountPolled = 0;
     }
-    if (Date.now() - LAST_HEARTBEAT_TIMESTAMP > MAX_KEEP_ALIVE_TIME) {
+    if (!reconnecting && ((Date.now() - LAST_HEARTBEAT_TIMESTAMP) > MAX_KEEP_ALIVE_TIME)) {
       reconnect();
     }
   }, POLLING_TIME);
 
   Poplet.ws.on('heartbeat', () => {
     LAST_HEARTBEAT_TIMESTAMP = Date.now();
-    Poplet.log.prefix(Poplet.log.PREFIX_TYPES.GATEWAY).debug('Heartbeat received');
   });
 
   const boards = await store.dispatch(getBoards(Poplet.user.id));

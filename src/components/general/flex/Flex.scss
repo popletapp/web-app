@@ -32,6 +32,12 @@
   align-items: flex-start;
 }
 
+.align-stretch {
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
 .justify-start {
   -webkit-box-pack: start;
   -ms-flex-pack: start;
@@ -60,6 +66,30 @@
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+.justify-space-between {
+  -webkit-box-pack: space-between;
+  -ms-flex-pack: space-between;
+  justify-content: space-between;
+}
+
+.justify-space-evenly {
+  -webkit-box-pack: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
+}
+
+.align-space-between {
+  -webkit-box-pack: space-between;
+  -ms-flex-pack: space-between;
+  align-content: space-between;
+}
+
+.align-space-evenly {
+  -webkit-box-pack: space-evenly;
+  -ms-flex-pack: space-evenly;
+  align-content: space-evenly;
 }
 
 .no-wrap {

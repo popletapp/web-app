@@ -3,6 +3,7 @@ import { Flex, FlexChild, Button } from './../../';
 import { Link } from 'react-router-dom';
 import messages from './error/messages.json';
 import './ErrorBoundary.scss';
+import Poplet from './../../../';
 import * as Sentry from '@sentry/browser';
 
 class ErrorBoundary extends Component {
@@ -16,6 +17,11 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch (e, errorInfo) {
+    const store = Poplet.store;
+    const state = store.getState();
+    Poplet.log.prefix(Poplet.log.PREFIX_TYPES.STORE).error(`Poplet has encountered an unrecoverable error and can't continue to render.
+    \nBelow is some information that will be sent to the developer; this is basic information that may be used to help fix issues more easily.`)
+    console.log(state);
     Sentry.withScope(scope => {
       scope.setExtras(errorInfo);
     });

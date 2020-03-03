@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, MinimalisticButton, Tooltip } from './../';
+import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, MinimalisticButton, Tooltip, RichTextbox } from './../';
 import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
@@ -19,13 +19,13 @@ class StackedComment extends Component {
   render () {
     const { author, comments } = this.props;
     return (
-      <Flex className='chatroom-comment-container'>
+      <Flex grow={0} className='chatroom-comment-container'>
         <FlexChild direction='row' align='center' justify='center' className='chatroom-comment-author'>
           <Avatar url={author.avatar} alt={author.username} />
           <p className='chatroom-comment-author-username'>{author.username}</p>
         </FlexChild>
-        <FlexChild className='chatroom-comment-content'>
-          {comments.map((comment, i) => <p key={i}>{comment.content}</p>)}
+        <FlexChild grow={0} className='chatroom-comment-content'>
+          {comments.map((comment, i) => <RichTextbox parseMarkdown={true} editing={false} key={i}>{comment.content}</RichTextbox>)}
         </FlexChild>
       </Flex>
     );
@@ -36,13 +36,13 @@ class Comment extends Component {
   render () {
     const { author, children } = this.props;
     return (
-      <Flex className='chatroom-comment-container'>
+      <Flex grow={0} className='chatroom-comment-container'>
         <FlexChild direction='row' align='center' justify='center' className='chatroom-comment-author'>
           <Avatar url={author.avatar} alt={author.username} />
           <p className='chatroom-comment-author-username'>{author.username}</p>
         </FlexChild>
-        <FlexChild className='chatroom-comment-content'>
-          <p>{children}</p>
+        <FlexChild grow={0} className='chatroom-comment-content'>
+          <RichTextbox parseMarkdown={true} editing={false}>{children}</RichTextbox>
         </FlexChild>
       </Flex>
     );
@@ -98,7 +98,9 @@ class Chatroom extends Component {
 
   input (event) {
     if (event.which === 13 && !event.shiftKey) {
+      event.preventDefault();
       this.createComment();
+      event.target.value = '';
     }
   }
 
@@ -108,7 +110,6 @@ class Chatroom extends Component {
 
     const chatroomBody = document.querySelector('.chatroom-body');
     const scroller = chatroomBody.firstChild.firstChild;
-    scroller.scrollTo(0, scroller.scrollHeight)
 
     this.setState({ content: '' });
     if (!content) {
@@ -118,6 +119,13 @@ class Chatroom extends Component {
       author: user,
       content
     });
+    scroller.scrollTo(0, scroller.scrollHeight + 1e4)
+  }
+
+  componentDidMount () {
+    const chatroomBody = document.querySelector('.chatroom-body');
+    const scroller = chatroomBody.firstChild.firstChild;
+    scroller.scrollTo(0, scroller.scrollHeight + 1e4)
   }
 
   textareaOptionsClicked (type) {
