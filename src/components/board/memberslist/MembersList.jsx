@@ -19,8 +19,8 @@ class MembersList extends Component {
     members = Object.values(members);
 
     return (
-      <Flex direction='column' align='left' className='members-list'>
-        <List style={{ height: '100%' }}>
+      <Flex direction='column' align='stretch' className='members-list' grow={1}>
+        <List className='align-stretch' style={{flexGrow: 1}}>
           <Scroller>
             <header>
               Members
