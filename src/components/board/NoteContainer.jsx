@@ -5,8 +5,6 @@ import { Note, Group } from './../';
 import ComponentTypes from './../../constants/ComponentTypes';
 import './Board.scss';
 
-import { DropTarget } from 'react-dnd';
-
 function mapStateToProps (state) {
   return {
     notes: state.notesByBoard[state.selectedBoard],
@@ -126,8 +124,7 @@ class NoteContainer extends Component {
     groups = groups ? Object.values(groups) : [];
     const style = zoomLevel === 1 ? {} : { transform: `scale(${zoomLevel})` };
 
-    return connectDropTarget(
-      <div
+    return <div
         onMouseDown={(e) => this.onMouseDown(e)}
         onTouchStart={(e) => this.onMouseDown(e, true)}
         onMouseMove={(e) => this.onMouseMove(e)}
@@ -137,7 +134,6 @@ class NoteContainer extends Component {
         className={`note-container${!listView ? ' drag-container droppable' : ' list-view'}`}>
         <div className='select-area' hidden></div>
         <div className='grid-formation'></div>
-
         {(() => {
           for (const group of groups) {
             notes = notes.filter(note => !group.items.includes(note.id));
@@ -146,66 +142,27 @@ class NoteContainer extends Component {
         })()}
         {!!groups.length && Object.values(groups).map(group => <Group style={style} key={group.id} id={group.id} boardId={board.id} />)}
       </div>
-    );
   }
 }
 
-function snapToGrid (x, y) {
-  const snappedX = Math.round(x / 32) * 32;
-  const snappedY = Math.round(y / 32) * 32;
-  return [snappedX, snappedY];
-}
+export default connect(mapStateToProps, null)(NoteContainer);
 
-export default connect(mapStateToProps, null)(DropTarget(
-  [ComponentTypes.NOTE, ComponentTypes.GROUP],
-  {
-    drop (props, monitor, component) {
-      if (!component) {
-        return;
-      }
-
-      const cursor = monitor.getSourceClientOffset();
-      const delta = monitor.getDifferenceFromInitialOffset();
-      const item = monitor.getItem();
-      const data = item.item;
-      const type = monitor.getItemType();
-      if (delta) {
-        data.position = data.position || {};
-        // TODO: current issue is that the position of a note in a group is 0, so x + negative x makes the note go off screen
-        // need to somehow get the client X, or get the relative position from the group
-        let left = Math.round(data.position.x + delta.x) || 0;
-        let top = Math.round(data.position.y + delta.y) || 0;
-
-        // Snap to grid functionality
-        if (props.object.type === 1) {
-          const [leftPos, topPos] = snapToGrid(left, top);
-          left = leftPos;
-          top = topPos;
-        }
-
-        switch (type) {
-          case ComponentTypes.NOTE:
-            const group = isNoteInGroup(data.id);
-            if (group) {
-              left = Math.round(cursor.x);
-              top = Math.round(cursor.y);
-              removeNoteFromGroup(props.id, group, data.id);
-              setTimeout(() => moveNote(props.id, data.id, { y: top, x: left }), 100);
-            } else {
-              moveNote(props.id, data.id, { y: top, x: left });
-            }
-            break;
-          case ComponentTypes.GROUP:
-            moveGroup(props.id, data.id, { y: top, x: left });
-            break;
-          default:
-            break;
-        }
-      }
-    }
-  },
-  connect => ({
-    connectDropTarget: connect.dropTarget()
-  })
-)(NoteContainer)
-);
+/*
+case ComponentTypes.NOTE:
+  const group = isNoteInGroup(data.id);
+  if (group) {
+    left = Math.round(cursor.x);
+    top = Math.round(cursor.y);
+    removeNoteFromGroup(props.id, group, data.id);
+    setTimeout(() => moveNote(props.id, data.id, { y: top, x: left }), 100);
+  } else {
+    const timeBeforeMove = performance.now()
+    moveNote(props.id, data.id, { y: top, x: left });
+    const timeAfterMove = performance.now();
+    console.log(`Call to moveNote took ${(timeAfterMove - timeBeforeMove)} milliseconds`);
+  }
+  break;
+case ComponentTypes.GROUP:
+  moveGroup(props.id, data.id, { y: top, x: left });
+  break;
+  */
