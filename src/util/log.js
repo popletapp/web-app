@@ -5,7 +5,8 @@ class Logger {
       GATEWAY: 'GATEWAY',
       STORE: 'STORE',
       CLIENT: 'CLIENT',
-      NETWORK: 'NETWORK'
+      NETWORK: 'NETWORK',
+      COMPONENT: 'COMPONENT'
     };
   }
 

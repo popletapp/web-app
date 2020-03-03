@@ -39,6 +39,11 @@ class NavBar extends Component {
     })
   }
 
+  logState () {
+    const store = Poplet.store;
+    store.subscribe(() => Poplet.log.prefix(Poplet.log.PREFIX_TYPES.STORE).debug('Current store state', store.getState()));
+  }
+
   render () {
     const { user, name, dev } = this.props;
     return (
@@ -57,6 +62,7 @@ class NavBar extends Component {
                     <ul id='devtools-selector' className='dropdown-content'>
                       <li className='board-selection' onClick={() => this.borderElements()}><p>Show Element Borders</p></li>
                       <li className='board-selection' onClick={() => this.logRequests()}><p>Log Incoming/Outgoing Requests</p></li>
+                      <li className='board-selection' onClick={() => this.logState()}><p>Log State Changes</p></li>
                     </ul>
                     <div className='dev-tools-btn-container dropdown-trigger' data-target='devtools-selector'>
                       <MinimalisticButton icon='developer_mode' color='red' className='dev-tools-btn' />

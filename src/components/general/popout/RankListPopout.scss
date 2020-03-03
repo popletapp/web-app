@@ -6,8 +6,6 @@
   border-radius: 4px;
   margin: 0.25em;
   margin-left: 0;
-  align-content: center;
-  justify-content: center;
 
   &-name {
     margin-right: 1em;
@@ -15,6 +13,9 @@
   }
   
   &-close {
+    margin: 0;
+    align-content: center;
+
     > i {
       display: flex;
       align-content: center;

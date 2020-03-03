@@ -162,6 +162,29 @@
     margin-bottom: 6px;
     cursor: pointer;
   }
+
+  > .modal-note-settings-duedate {
+    color: $text-accent-color-1;
+    white-space: normal;
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.4px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+
+  > .modal-note-settings-modified {
+    color: $text-accent-color-1;
+    white-space: normal;
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.4px;
+  }
 }
 
 .modal-note-settings-options {

@@ -10,6 +10,7 @@ class Popout extends Component {
     this.state = {
       isShowing: false
     };
+
     this.createdAt = Date.now();
     this.escListener = (e) => e.keyCode === 27 && this.actionMade('cancel', e);
     this.clickListener = (event) => {
@@ -25,8 +26,6 @@ class Popout extends Component {
         this.close();
       }
     };
-    document.addEventListener('keydown', this.escListener, false);
-    document.addEventListener('click', this.clickListener, false);
   }
 
   actionMade (type, event) {
@@ -51,7 +50,7 @@ class Popout extends Component {
   }
 
   click (event) {
-    const { placement = 'top', style } = this.props;
+    const { placement = 'right', style } = this.props;
     const content = this.content ? this.content() : this.props.content;
     if (!content) {
       return event.preventDefault();
@@ -59,6 +58,8 @@ class Popout extends Component {
     if (content.props && style) {
       content.props.style = { top: style.top, left: style.left }
     }
+    window.listeners.subscribe('keydown', this.escListener, false);
+    window.listeners.subscribe('click', this.clickListener, false);
     
     this.setState({ isShowing: true });
     const pseudoPopout = document.createElement('div');
@@ -97,22 +98,21 @@ class Popout extends Component {
   close () {
     // Below minimum lifespan
     // This is a measure to prevent the popout from immediately disappearing
-    console.log(this.createdAt)
-    if (Date.now() - this.createdAt < 100) {
+    if (Date.now() - this.createdAt < 100 || !this.state.isShowing) {
       return;
     }
     const { onClose = () => void 0 } = this.props;
     if (typeof onClose === 'function') {
       onClose();
     }
-    document.removeEventListener('keydown', this.escListener, false);
-    document.removeEventListener('click', this.clickListener, false);
+    window.listeners.unsubscribe('keydown', this.escListener, false);
+    window.listeners.unsubscribe('click', this.clickListener, false);
     removePopout();
   }
 
   componentWillUnmount () {
-    document.removeEventListener('keydown', this.escListener, false);
-    document.removeEventListener('click', this.clickListener, false);
+    window.listeners.unsubscribe('keydown', this.escListener, false);
+    window.listeners.unsubscribe('click', this.clickListener, false);
   }
 
   render () {

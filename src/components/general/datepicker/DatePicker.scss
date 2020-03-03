@@ -1,6 +1,6 @@
 @import './../../../index.scss';
 
-.datepicker {
+.calendar {
   font-size: 14px;
   min-width: 175px;
   width: auto;
@@ -11,9 +11,179 @@
   background-color: $dark-accent-color-3;
   border-radius: 4px;
   border: none;
-  padding: 8px;
-}
+  padding: 1em;
+  min-width: 200px;
+  width: 255px;
+  max-width: 300px;
 
-li.react-datepicker__time-list-item {
-  color: black;
+  &-nav-btn {
+    &-left {
+      align-self: flex-start;
+
+      &-btn {
+        > div {
+          flex-grow: 0 !important;
+        }
+      }
+    }
+
+    &-right {
+      align-self: flex-end;
+    }
+  }
+
+  &-days {
+    padding-left: 2px;
+    margin-right: -1em;
+
+    &::after {
+      content: '';
+      flex: 0 1 55%;
+    }
+  }
+
+  &-day {
+    font-size: 12px;
+    background-color: $dark-accent-color-5;
+    border-radius: 4px;
+    margin: 0.27em;
+    outline: none;
+    padding: 13px;
+    color: $text-accent-color-1;
+    min-width: 22.5px;
+    max-width: 22.5px;
+    height: 22.5px;
+    line-height: 0px;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-align: center;
+
+    &-disabled {
+      cursor: not-allowed;
+      background-color: $dark-accent-color-2;
+    }
+
+    &:nth-child(7n) {
+      flex-basis: 100%;
+    }
+
+    &:hover:not(.calendar-day-disabled) {
+      background-color: $dark-accent-color-1;
+    }
+
+    &-selected {
+      color: white;
+      background-color: $light-accent-color-4;
+    }
+
+    &-header {
+      &-text {
+        margin-left: 4px;
+        margin-right: 4px;
+        font-size: 12px;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: -0.75px;
+        text-align: center;
+
+        &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5) {
+          margin-left: 0px;
+        }
+      }
+    }
+  }
+
+  &-time {
+    background-color: $light-accent-color-2;
+    border-radius: 2px;
+    outline: none;
+    border: none;
+    padding: 0.15em;
+    width: 24px;
+    margin-right: 2px;
+    margin-left: 2px;
+    color: white;
+    width: 26px;
+    font-family: 'Inter', sans-serif;
+
+    &::-webkit-inner-spin-button, 
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+
+    &-adjust {
+      &-arrows {
+        > :last-child {
+          position: relative;
+          top: -2px;
+        }
+      }
+    }
+
+    &-container {
+      margin-top: 12px;
+    }
+
+    &-am-pm {
+      margin-left: 12px;
+    }
+
+    &-period {
+      color: $text-accent-color-4;
+      white-space: normal;
+      font-size: 13px;
+      line-height: 16px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.4px;
+      margin-left: 4px;
+      margin-right: 4px;
+      cursor: pointer;
+
+      &-selected {
+        color: white;
+      }
+    }
+  }
+
+  &-selected-date {
+    background-color: $dark-accent-color-4;
+    margin-top: 12px;
+    padding: 0.35em;
+    border-radius: 2px;
+    width: 100%;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.2px;
+  }
+
+  &-remove {
+    margin-top: 4px;
+    border-radius: 2px;
+    background-color: rgba(182, 58, 58, 0.3);
+    padding: 0.2em;
+    padding-left: 6px;
+    color: $text-accent-color-1;
+    cursor: pointer;
+
+    &-close {
+      margin-right: 8px;
+      background-color: rgba(0, 0, 0, 0.25);
+      padding: 2px;
+    }
+  }
+
+  &-month {
+    padding: 2em 1em;
+    margin-bottom: 4px;
+
+    &-header {
+      height: 24px;
+
+      &-text {
+        font-size: 18px;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: -0.75px;
+      }
+    }
+  }
 }

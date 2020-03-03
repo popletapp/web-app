@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
 import { connect } from 'react-redux';
-import { ColorPicker, Editor, Scroller, Button, DatePicker, ConfirmModal, 
+import { ColorPicker, Editor, Scroller, Button, ConfirmModal, 
   MinimalisticButton, Tooltip, Flex, ListPopout, Modal as ModalComponent,
-  LabelCreationModal, 
-  CloseButton} from './../../';
+  LabelCreationModal, DatePickerPopout, CloseButton, RichTextbox } from './../../';
 import { updateNote, saveNote, deleteNote, createModal } from './../../../modules';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 
 import './Modal.scss';
+import { permissions } from '../../../util';
 
 function mapStateToProps (state, props) {
   return {
@@ -74,6 +74,15 @@ class NoteDetailedView extends Modal {
     this.setState({ focused: true });
   }
 
+  onClick () {
+    console.log('clicked')
+    this.setState(oldState => {
+      if (!oldState.focused) return {
+        focused: true
+      };
+    });
+  }
+
   onInput (event, type) {
     const { note } = this.props;
     const content = event.target.innerText;
@@ -99,8 +108,10 @@ class NoteDetailedView extends Modal {
 
   async saveDueDate (date) {
     const { note } = this.props;
+    if (date) {
+      date = date.toISOString()
+    }
     const newNote = { ...note, dueDate: date };
-
     this.setState({ saving: true });
     if (note.dueDate !== newNote.dueDate) {
       await saveNote(this.boardId, newNote);
@@ -164,32 +175,36 @@ class NoteDetailedView extends Modal {
         <div className='modal-content'>
           <div className='modal-note-content-text'>
             <div className='modal-header'>
-              <Editor
+              <RichTextbox
                 type='title'
-                editing={true}
                 onFocus={(e) => this.onFocus(e, 'title')}
                 onInput={(e) => this.onInput(e, 'title')}
                 onBlur={(e) => this.onBlur(e, 'title')}
+                onClick={(e) => this.onClick(e, 'title')}
                 placeholder='Title'
+                editable={focused}
+                parseMarkdown={false}
                 style={{ fontSize: '28px' }}
                 className='note-header'>
                 {focused ? note.title : (note.title.length > 128 ? `${note.title.slice(0, 125)}...` : note.title)}
-              </Editor>
+              </RichTextbox>
             </div>
 
             <div className='modal-body'>
               <Scroller>
-                <Editor
+                <RichTextbox
                   type='content'
-                  editing={true}
                   onFocus={(e) => this.onFocus(e, 'content')}
                   onInput={(e) => this.onInput(e, 'content')}
                   onBlur={(e) => this.onBlur(e, 'content')}
-                  parseMarkdown={!focused}
+                  onClick={(e) => this.onClick(e, 'content')}
+                  editable={focused}
+                  doDecorate={focused}
+                  parseMarkdown
                   placeholder='Content'
                   className='note-body'>
                   {note.content}
-                </Editor>
+                </RichTextbox>
               </Scroller>
             </div>
 
@@ -210,14 +225,14 @@ class NoteDetailedView extends Modal {
               <Tooltip content='Notification Settings'>
                 <MinimalisticButton className='modal-note-settings-options-btn modal-note-settings-options-btn-notifications' icon='notifications' onClick={() => this.onDelete()} />
               </Tooltip>
-              <Tooltip content={note.importance ? 'Mark as Unimportant' : 'Mark as Important'}>
+              {permissions.has('MANAGE_NOTES') && <Tooltip content={note.importance ? 'Mark as Unimportant' : 'Mark as Important'}>
                 <MinimalisticButton className='modal-note-settings-options-btn modal-note-settings-options-btn-important' 
                 icon={note.importance ? 'low_priority' : 'priority_high'}
                 onClick={() => this.important(note.importance ? 0 : 1)} />
-              </Tooltip>
-              <Tooltip content='Delete Note'>
+              </Tooltip>}
+              {permissions.has('MANAGE_NOTES') && <Tooltip content='Delete Note'>
                 <MinimalisticButton className='modal-note-settings-options-btn modal-note-settings-options-btn-delete' icon='delete_forever' onClick={() => this.onDelete()} />
-              </Tooltip>
+              </Tooltip>}
             </Flex>
 
             <div className='modal-note-settings-header'>Color</div>
@@ -245,13 +260,22 @@ class NoteDetailedView extends Modal {
             </ListPopout>
 
             <div className='modal-note-settings-header'>Modified</div>
-            {new Date(note.modifiedAt).toLocaleDateString()} at {new Date(note.modifiedAt).toLocaleTimeString()}
-            <br />
-              by <strong>{note.modifiedBy.username}</strong>
-            <br />
+            <div className='modal-note-settings-modified'>
+              {new Date(note.modifiedAt).toLocaleDateString()} at {new Date(note.modifiedAt).toLocaleTimeString()}
+              <br />
+                by <strong>{note.modifiedBy.username}</strong>
+              <br />
+            </div>
+            
             <div className='modal-note-settings-editrevision'>View Edit Revisions</div>
             <div className='modal-note-settings-header'>Due Date</div>
-            <DatePicker initial={note.dueDate ? new Date(note.dueDate) : null} onChange={(date) => this.saveDueDate(date)} />
+            <DatePickerPopout initial={note.dueDate ? new Date(note.dueDate) : null} 
+              onOptionSelected={(date) => this.setState({ date })} 
+              onClose={() => this.saveDueDate(this.state.date)}>
+              {!note.dueDate 
+                ? <div className='add-btn'>+</div> 
+                : <div className='modal-note-settings-duedate'>{new Date(note.dueDate).toLocaleDateString()} at {new Date(note.dueDate).toLocaleTimeString()}</div>}
+            </DatePickerPopout>
             <br />
             <br />
           </Scroller>

@@ -4,6 +4,14 @@ import { Flex, Button } from '../..';
 import './Modal.scss';
 
 class ConfirmModal extends Modal {
+  confirm (e) {
+    const { onConfirm = () => void 0 } = this.props;
+    if (typeof onConfirm === 'function') {
+      onConfirm();
+    }
+    this.actionMade('confirm', e);
+  }
+
   render () {
     const { title, content } = this.props;
     return (
@@ -17,8 +25,8 @@ class ConfirmModal extends Modal {
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.actionMade('confirm', e)} className='btn modal-confirm'>{this.props.confirmText || 'Yes'}</Button>
-          <Button onClick={(e) => this.close('cancel', e)} className='modal-cancel btn'>{this.props.cancelText || 'No'}</Button>
+          <Button onClick={(e) => this.confirm(e)} className='btn modal-confirm'>{this.props.confirmText || 'Yes'}</Button>
+          {!this.props.cancelText && <Button onClick={(e) => this.close('cancel', e)} className='modal-cancel btn'>{this.props.cancelText || 'No'}</Button>}
         </Flex>
       </div>
     );
