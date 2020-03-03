@@ -28,6 +28,7 @@ import {
   REMOVE_LABEL
 } from '../../constants/ActionTypes';
 import axios from 'axios';
+import { receiveUsers } from './../user';
 
 export const requestBoards = () => ({
   type: REQUEST_BOARDS
@@ -181,6 +182,7 @@ export const fetchMembers = boardId => async dispatch => {
   dispatch(requestMembers(boardId));
   try {
     const res = await axios.get(`/boards/${boardId}/members`);
+    dispatch(receiveUsers(res.data))
     return dispatch(receiveMembers(boardId, res.data));
   } catch (e) {
     return dispatch(receiveMembers(boardId, []));
