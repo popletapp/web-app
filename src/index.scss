@@ -1,82 +1,46 @@
 @charset 'UTF-8';
 @import url('https://rsms.me/inter/inter.css');
+@import 'theme-light.scss';
+@import 'theme-dark.scss';
+@import 'App.scss';
 
-// * Dark Theme
-$primary-color: rgb(46, 45, 50);
-$primary-color-purple: #17131f;
+:root {
+  // * Top level constants - HSL should be 60% 45%
+  --poplet-error: #b82e2e;
+  --poplet-warning: #b8532e;
+  --poplet-success: #2eb840;
+  --poplet-info: #2ea8b8;
 
-$dark-accent-color-purple-1: #4c4068;
-$dark-accent-color-purple-2: #413758;
-$dark-accent-color-purple-3: #362e49;
-$dark-accent-color-purple-4: #282236;
-$dark-accent-color-purple-5: #1e1a29;
+  // * Application-based constants
+  // Should be prefixed by the component it is referencing
+  --note-default-color: #7452ab;
+  --board-join-color: #65a376;
+  --board-create-color: #658fa3;
 
-$dark-accent-color-1: rgb(37, 36, 41);
-$dark-accent-color-2: rgb(34, 33, 38);
-$dark-accent-color-3: rgb(31, 29, 35);
-$dark-accent-color-4: rgb(28, 26, 32);
-$dark-accent-color-5: rgb(25, 23, 29);
-// Anything below dark-accent-color-5 should just be black
+  // * Colors
+  // HSL should be 45% 45%
+  --poplet-green: #3fa650;
+  --poplet-red: #a63f3f;
+  --poplet-lightred: #ef5350;
+  --poplet-blue: #6fa2bf;
 
-$dark-1: #1a1a1a;
-
-$light-accent-color-purple-1: #9A6993;
-$light-accent-color-purple-2: #ad78a5;
-$light-accent-color-purple-3: #c788bd;
-$light-accent-color-purple-4: #d893ce;
-$light-accent-color-purple-5: #f0a9e5;
-
-$light-accent-color-1: rgb(37, 36, 41);
-$light-accent-color-2: rgb(40, 39, 44);
-$light-accent-color-3: rgb(43, 42, 47);
-$light-accent-color-4: rgb(46, 45, 50);
-$light-accent-color-5: rgb(49, 48, 53);
-
-// Used for headers, titles and other prominent content
-$text-color: #ededed;
-// Descriptions or general text that should go underneath a header
-$text-accent-color-1: #c9c9c9;
-$text-accent-color-2: #b9b9b9;
-$text-accent-color-3: #a0a0a0;
-$text-accent-color-4: #747474;
-$text-accent-color-5: #5e5e5e;
-// Used for giving a short description of a component
-$text-subheading-color: #8f8f8f;
-
-// * Top level constants - HSL should be 60% 45%
-$poplet-error: #b82e2e;
-$poplet-warning: #b8532e;
-$poplet-success: #2eb840;
-$poplet-info: #2ea8b8;
-
-// * Application-based constants
-// Should be prefixed by the component it is referencing
-$note-default-color: #7452ab;
-$board-join-color: #65a376;
-$board-create-color: #658fa3;
-
-// * Colors
-// HSL should be 45% 45%
-$poplet-green: #3fa650;
-$poplet-red: #a63f3f;
-$poplet-lightred: #ef5350;
-$poplet-blue: #6fa2bf;
-
-$poplet-default: #8d5dd9;
-$poplet-pink: #d95db4;
-$poplet-pinkple: #b649e0;
-$poplet-purple: #8e5edd;
-$poplet-purple-lighten-1: #a779f0;
-$poplet-purple-lighten-2: #ba97ee;
-$poplet-purple-lighten-3: #ceb5f3;
-$poplet-purple-lighten-4: #d6c6ec;
-$poplet-purple-lighten-4: #dbd2e9;
+  --poplet-default: #8d5dd9;
+  --poplet-pink: #d95db4;
+  --poplet-pinkple: #b649e0;
+  --poplet-purple: #8e5edd;
+  --poplet-purple-lighten-1: #a779f0;
+  --poplet-purple-lighten-2: #ba97ee;
+  --poplet-purple-lighten-3: #ceb5f3;
+  --poplet-purple-lighten-4: #d6c6ec;
+  --poplet-purple-lighten-4: #dbd2e9;
+}
 
 // Make the application take up the entire screen
 html, body, #root, .app, .poplet-root {
   height: 100%; 
   width: 100%;
   margin: 0;
+  background-color: var(--dark-accent-color-4);
 }
 
 body, #root {
@@ -125,12 +89,12 @@ input:focus, textarea:focus {
 
 // Input
 .text-input, select, textarea {
-  background-color: $dark-1;
+  background-color: var(--dark-1);
   color: #dddddd;
   padding: 4px;
   margin: 4px;
   font-size: 16px;
-  border: 1px solid $dark-accent-color-4;
+  border: 1px solid var(--dark-accent-color-4);
   border-radius: 4px;
 }
 
@@ -144,11 +108,11 @@ input:focus, textarea:focus {
 
 // Firefox fix
 .scroller, .note-container {
-  scrollbar-color: #1d1d1d $light-accent-color-4;
+  scrollbar-color: #1d1d1d var(--light-accent-color-4);
 }
 
 .dropdown-content {
-  background-color: $dark-accent-color-2 !important;
+  background-color: var(--dark-accent-color-2) !important;
   width: 200px !important;
   overflow-x: hidden;
   max-height: 400px;
@@ -169,7 +133,7 @@ input:focus, textarea:focus {
   }
 
   .divider {
-    background-color: $light-accent-color-3 !important;
+    background-color: var(--light-accent-color-3) !important;
     margin-top: 1em;
     padding: 0;
     margin-bottom: 0.5em;
@@ -184,12 +148,12 @@ input:focus, textarea:focus {
       border-width: 3px;
       border-style: solid;
       border-radius: 7px;
-      border-color: $light-accent-color-4;
+      border-color: var(--light-accent-color-4);
     }
 
     &-track-piece {
       background-color: #1d1d1d;
-      border: 3px solid $light-accent-color-4;
+      border: 3px solid var(--light-accent-color-4);
       border-radius: 7px;
     }
   }
@@ -207,7 +171,7 @@ input:focus, textarea:focus {
 
   .avatar, i {
     float: left;
-    color: white;
+    color: var(--theme-pure-color);
     margin-right: 12px;
     position: relative;
   }
@@ -217,7 +181,7 @@ input:focus, textarea:focus {
   }
 
   p {
-    color: white;
+    color: var(--theme-pure-color);
     font-size: 16px;
     display: block;
     line-height: 30px;
