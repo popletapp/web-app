@@ -1,14 +1,12 @@
-@import './../../../index.scss';
-
 .toggle-switch {
   width: 64px;
   height: 32px;
   border-radius: 32px;
   transition: all 0.35s;
-  background-color: $light-accent-color-4;
+  background-color: var(--light-accent-color-4);
 
   &.switch-on {
-    background-color: $poplet-green;
+    background-color: var(--poplet-green);
 
     > .toggle-switch-knob {
       transition: all 0.35s;
@@ -17,7 +15,7 @@
   }
 
   &.switch-off {
-    background-color: $poplet-red;
+    background-color: var(--poplet-red);
 
     > .toggle-switch-knob {
       transition: all 0.35s;
@@ -29,7 +27,7 @@
     width: 32px;
     height: 32px;
     border-radius: 100%;
-    background-color: white;
+    background-color: var(--theme-pure-color);
     box-shadow: 1px 1px 1px black;
     transform: translateX(0px);
   }
@@ -44,7 +42,7 @@
     }
 
     &.switch-on {
-      background-color: $poplet-green;
+      background-color: var(--poplet-green);
   
       > .toggle-switch-knob {
         transition: all 0.35s;

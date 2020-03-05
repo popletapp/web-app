@@ -1,5 +1,3 @@
-@import './../../index.scss';
-
 .user-profile {
   display: flex;
   flex-direction: column;
@@ -11,7 +9,7 @@
 
   &-information {
     margin-left: 5.5em;
-    color: $text-accent-color-3;
+    color: var(--text-accent-color-3);
   }
 
   &-container {
@@ -22,12 +20,12 @@
       padding-left: 4em;
       padding-right: 4em;
       margin-top: -1.25em;
-      background-color: $dark-accent-color-2;
+      background-color: var(--dark-accent-color-2);
     }
   }
 
   &-send-fr-btn {
-    background-color: $poplet-green !important;
+    background-color: var(--poplet-green) !important;
 
     &:hover {
       -moz-box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
@@ -46,7 +44,7 @@
 
   &-more-actions-btn {
     margin-left: 2em;
-    background-color: $light-accent-color-2;
+    background-color: var(--light-accent-color-2);
     padding: 0.5em;
     border-radius: 8px;
     

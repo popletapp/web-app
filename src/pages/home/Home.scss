@@ -1,18 +1,19 @@
-@import './../../index.scss';
-
 .home {
   display: flex;
   flex-direction: column;
-  background-color: $primary-color;
+  background-color: var(--primary-color);
   height: 100%;
   width: 100%;
 
   .navbar {
-    background-color: $dark-accent-color-purple-3;
+    background-color: var(--dark-accent-color-purple-3);
 
     &-user-container {
+      background-color: var(--dark-accent-color-purple-2);
+      transition: all 0.15s;
+
       &:hover {
-        background-color: $dark-accent-color-purple-1;
+        background-color: var(--dark-accent-color-purple-1);
       }
     }
   }
@@ -35,6 +36,7 @@
   padding: 0.5em;
 
   header {
+    color: #b8b8b8;
     position: relative;
     width: auto;
     overflow: visible;
@@ -134,7 +136,7 @@
   flex-direction: column;
   justify-items: left;
   text-align: left;
-  background-color: $dark-accent-color-purple-4;
+  background-color: var(--dark-accent-color-purple-4);
   padding: 2em;
   min-height: 300px;
   min-width: 500px;
@@ -154,7 +156,7 @@
     font-size: 13px;
     text-transform: uppercase;
     margin-bottom: 12px;
-    color: $text-accent-color-3;
+    color: var(--text-accent-color-3);
   }
 
   &-content {
@@ -176,7 +178,7 @@
   flex-direction: column;
   justify-items: left;
   text-align: left;
-  background-color: $dark-accent-color-purple-4;
+  background-color: var(--dark-accent-color-purple-4);
   padding: 2em;
   min-height: 100px;
   height: auto;
@@ -197,7 +199,7 @@
     font-size: 13px;
     text-transform: uppercase;
     margin-bottom: 12px;
-    color: $text-accent-color-3;
+    color: var(--text-accent-color-3);
   }
 
   &-content {
@@ -215,7 +217,7 @@
 }
 
 .board-selector {
-  background-color: $dark-accent-color-purple-5;
+  background-color: var(--dark-accent-color-purple-5);
   padding: 1em;
   max-width: 340px;
   width: 100%;
@@ -261,10 +263,10 @@
   }
 
   &-join {
-    background-color: $board-join-color;
+    background-color: var(--board-join-color);
   }
 
   &-create {
-    background-color: $board-create-color;
+    background-color: var(--board-create-color);
   }
 }

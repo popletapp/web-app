@@ -1,5 +1,3 @@
-@import './../../index.scss';
-
 .user-settings {
   display: flex;
   flex-direction: column;
@@ -29,7 +27,7 @@
   hr {
     text-align: left;
     width: 100%;
-    background-color: $light-accent-color-3;
+    background-color: var(--light-accent-color-3);
     height: 1px;
     border: 0;
   }
@@ -41,11 +39,11 @@
 
   &-nav {
     width: auto;
-    background-color: $dark-accent-color-4;
+    background-color: var(--dark-accent-color-4);
     padding: 0.75em;
 
     &-vert {
-      background-color: $dark-accent-color-4;
+      background-color: var(--dark-accent-color-4);
       padding: 1em;
       padding-right: 0;
       padding-top: 0;
@@ -60,13 +58,13 @@
         > li {
           font-size: 18px;
           font-weight: 400;
-          color: $text-accent-color-4;
+          color: var(--text-accent-color-4);
           margin-top: 8px;
           margin-bottom: 8px;
           cursor: pointer;
 
           &[active] {
-            color: white;
+            color: var(--theme-pure-color);
             font-weight: 800;
           }
         }
@@ -82,20 +80,20 @@
   &-nav-text > div {
     > a {
       font-size: 18px;
-      color: $poplet-purple-lighten-1;
+      color: var(--poplet-purple-lighten-1);
       font-weight: 500;
       font-family: 'Roboto', sans-serif;
     }
 
     :last-child {
       font-weight: 900;
-      color: $poplet-purple;
+      color: var(--poplet-purple);
     }
   }
 
   &-information {
     margin-left: 5.5em;
-    color: $text-accent-color-3;
+    color: var(--text-accent-color-3);
   }
 
   &-container {
@@ -103,7 +101,7 @@
       width: 100%;
       height: 250px;
       margin-top: -1.25em;
-      background-color: $dark-accent-color-2;
+      background-color: var(--dark-accent-color-2);
     }
   }
 
@@ -113,7 +111,7 @@
 
   &-more-actions-btn {
     margin-left: 2em;
-    background-color: $light-accent-color-2;
+    background-color: var(--light-accent-color-2);
     padding: 0.5em;
     border-radius: 8px;
     

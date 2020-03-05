@@ -1,7 +1,5 @@
-@import './../../../index.scss';
-
 .rule-creating {
-  border: 2px $light-accent-color-4 dashed;
+  border: 2px var(--light-accent-color-4 dashed);
   padding: 1em;
   margin-bottom: 1em;
   margin-right: 0.45em;
@@ -10,13 +8,13 @@
 
 .rule-creation-header {
   font-size: 20px;
-  color: white;
+  color: var(--theme-pure-color);
   font-weight: 800;
 }
 
 .performable {
   &-creation-text-add {
-    color: $text-accent-color-2;
+    color: var(--text-accent-color-2);
     padding-left: 4px;
     margin-right: 12px;
     margin-top: 1px;

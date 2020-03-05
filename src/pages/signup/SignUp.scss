@@ -1,5 +1,4 @@
 @import './../login/Login.scss';
-@import './../../index.scss';
 
 .authentication-container {
   top: 8em;
@@ -40,7 +39,7 @@
 
 .security-measurer-text {
   margin-left: 12px;
-  color: $text-accent-color-1;
+  color: var(--text-accent-color-1);
 }
 
 @media only screen and (max-height: 768px) {

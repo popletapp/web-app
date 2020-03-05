@@ -1,23 +1,20 @@
-@import './../../index.scss';
-
 .feedback {
-
   &-subtext {
     margin: 0;
-    color: $text-accent-color-1;
+    color: var(--text-accent-color-1);
   }
 
   &-error {
-    color: $poplet-error;
+    color: var(--poplet-error);
   }
 }
 
 .feedback-divider {
-  background-color: $dark-accent-color-5 !important;
+  background-color: var(--dark-accent-color-5) !important;
   min-height: 0 !important;
 
   &.feedback-subheader-dropdown {
-    color: $text-subheading-color;
+    color: var(--text-subheading-color);
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -31,7 +28,7 @@
 }
 
 .dropdown-content {
-  background-color: $dark-accent-color-2 !important;
+  background-color: var(--dark-accent-color-2) !important;
   width: 200px !important;
   overflow-x: hidden;
   max-height: 500px;
@@ -42,7 +39,7 @@
   }
 
   li {
-    color: white;
+    color: var(--theme-pure-color);
     padding: 1em;
   }
 
@@ -82,7 +79,7 @@
 
   .avatar, i {
     float: left;
-    color: white;
+    color: var(--theme-pure-color);
     margin-right: 12px;
     position: relative;
   }
@@ -92,7 +89,7 @@
   }
 
   p {
-    color: white;
+    color: var(--theme-pure-color);
     font-size: 16px;
     display: block;
     line-height: 30px;

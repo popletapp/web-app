@@ -1,5 +1,3 @@
-@import './../../../index.scss';
-
 .members-list {
   z-index: 0;
 
@@ -20,13 +18,13 @@
         font-weight: 700;
         padding: 0em 1em;
         width: 100%;
-        background-color: $dark-accent-color-2;
+        background-color: var(--dark-accent-color-2);
       }
     }
   }
 
   &-amount {
-    color: $text-accent-color-3;
+    color: var(--text-accent-color-3);
     font-size: 14px;
     position: relative;
     top: -1px;

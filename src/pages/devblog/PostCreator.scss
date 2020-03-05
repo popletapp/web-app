@@ -1,14 +1,12 @@
-@import './../../index.scss';
-
 .blog-post-editor {
-  background-color: $dark-accent-color-5;
+  background-color: var(--dark-accent-color-5);
   width: 70%;
   min-height: 400px;
   height: 400px;
   padding: 8px;
 
   &-title {
-    background-color: $dark-accent-color-5;
+    background-color: var(--dark-accent-color-5);
     width: 70%;
     min-height: 32px;
     height: 32px;

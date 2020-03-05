@@ -1,5 +1,3 @@
-@import './../../../index.scss';
-
 .calendar {
   font-size: 14px;
   min-width: 175px;
@@ -7,8 +5,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: $text-accent-color-1;
-  background-color: $dark-accent-color-3;
+  color: var(--text-accent-color-1);
+  background-color: var(--dark-accent-color-3);
   border-radius: 4px;
   border: none;
   padding: 1em;
@@ -44,12 +42,12 @@
 
   &-day {
     font-size: 12px;
-    background-color: $dark-accent-color-5;
+    background-color: var(--dark-accent-color-5);
     border-radius: 4px;
     margin: 0.27em;
     outline: none;
     padding: 13px;
-    color: $text-accent-color-1;
+    color: var(--text-accent-color-1);
     min-width: 22.5px;
     max-width: 22.5px;
     height: 22.5px;
@@ -60,7 +58,7 @@
 
     &-disabled {
       cursor: not-allowed;
-      background-color: $dark-accent-color-2;
+      background-color: var(--dark-accent-color-2);
     }
 
     &:nth-child(7n) {
@@ -68,12 +66,12 @@
     }
 
     &:hover:not(.calendar-day-disabled) {
-      background-color: $dark-accent-color-1;
+      background-color: var(--dark-accent-color-1);
     }
 
     &-selected {
-      color: white;
-      background-color: $light-accent-color-4;
+      color: var(--theme-pure-color);
+      background-color: var(--light-accent-color-4);
     }
 
     &-header {
@@ -93,7 +91,7 @@
   }
 
   &-time {
-    background-color: $light-accent-color-2;
+    background-color: var(--light-accent-color-2);
     border-radius: 2px;
     outline: none;
     border: none;
@@ -101,7 +99,7 @@
     width: 24px;
     margin-right: 2px;
     margin-left: 2px;
-    color: white;
+    color: var(--theme-pure-color);
     width: 26px;
     font-family: 'Inter', sans-serif;
 
@@ -128,7 +126,7 @@
     }
 
     &-period {
-      color: $text-accent-color-4;
+      color: var(--text-accent-color-4);
       white-space: normal;
       font-size: 13px;
       line-height: 16px;
@@ -140,13 +138,13 @@
       cursor: pointer;
 
       &-selected {
-        color: white;
+        color: var(--theme-pure-color);
       }
     }
   }
 
   &-selected-date {
-    background-color: $dark-accent-color-4;
+    background-color: var(--dark-accent-color-4);
     margin-top: 12px;
     padding: 0.35em;
     border-radius: 2px;
@@ -162,7 +160,7 @@
     background-color: rgba(182, 58, 58, 0.3);
     padding: 0.2em;
     padding-left: 6px;
-    color: $text-accent-color-1;
+    color: var(--text-accent-color-1);
     cursor: pointer;
 
     &-close {

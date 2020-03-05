@@ -1,5 +1,3 @@
-@import './../../index.scss';
-
 .notfound {
   height: 100vh;
   background-color: #8EC5FC;
@@ -12,7 +10,7 @@
     > h3 {
       margin-bottom: 4em;
       font-size: 14px;
-      color: $poplet-lightred;
+      color: var(--poplet-lightred);
       padding: 1em;
       background-color: #212121b9;
       width: auto;

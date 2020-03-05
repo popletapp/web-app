@@ -1,7 +1,5 @@
-@import './../../../index.scss';
-
 .popout-list-option {
-  background-color: $dark-accent-color-4;
+  background-color: var(--dark-accent-color-4);
   padding: 0.25em;
   border-radius: 4px;
   margin: 0.25em;
@@ -37,7 +35,7 @@
   width: 26px;
   height: 26px;
   padding: 0.3em;
-  background-color: $dark-1;
+  background-color: var(--dark-1);
   font-size: 22px;
   text-align: center;
   justify-content: center;
@@ -47,6 +45,6 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $dark-accent-color-3;
+    background-color: var(--dark-accent-color-3);
   }
 }

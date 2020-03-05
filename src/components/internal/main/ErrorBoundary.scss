@@ -1,5 +1,3 @@
-@import './../../../index.scss';
-
 .error {
   &-boundary {
     padding: 10em 30% 10em 30%;
@@ -9,12 +7,12 @@
   &-title {
     font-size: 48px;
     font-weight: 800;
-    color: $poplet-red;
+    color: var(--poplet-red);
   }
 
   &-description {
     margin-top: 6px;
-    color: $text-accent-color-2;
+    color: var(--text-accent-color-2);
   }
 
   &-instructions {

@@ -1,5 +1,3 @@
-@import './../../../index.scss';
-
 .backdrop {
   opacity: 0;
   background-color: rgba(0, 0, 0, 0.7);
@@ -41,7 +39,7 @@
   min-height: 100px;
   height: fit-content;
   text-align: center;
-  background-color: $light-accent-color-1;
+  background-color: var(--light-accent-color-1);
   overflow-y: auto;
   animation: 0.27s modalEnter 0s forwards;
   box-shadow: 1px 1px 3px black;
@@ -68,17 +66,18 @@
 
   &-footer {
     text-align: right;
-    background-color: $dark-accent-color-3;
+    background-color: var(--dark-accent-color-3);
     padding: 4px;
     height: 42px;
     
     button {
       &.modal-cancel {
-        background-color: $light-accent-color-5;
+        background-color: var(--light-accent-color-5);
+        color: var(--theme-pure-color);
       }
 
       &.modal-confirm {
-        background-color: $poplet-green;
+        background-color: var(--poplet-green);
       }
 
       margin-left: 6px;
@@ -99,7 +98,7 @@
   width: 26px;
   height: 26px;
   padding: 0.3em;
-  background-color: $dark-1;
+  background-color: var(--dark-1);
   font-size: 22px;
   text-align: center;
   justify-content: center;
@@ -109,7 +108,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $dark-accent-color-3;
+    background-color: var(--dark-accent-color-3);
   }
 }
 
@@ -149,7 +148,7 @@
   padding-right: 8px;
 
   > .modal-note-settings-editrevision {
-    color: $poplet-blue;
+    color: var(--poplet-blue);
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -164,7 +163,7 @@
   }
 
   > .modal-note-settings-duedate {
-    color: $text-accent-color-1;
+    color: var(--text-accent-color-1);
     white-space: normal;
     font-size: 15px;
     line-height: 15px;
@@ -177,7 +176,7 @@
   }
 
   > .modal-note-settings-modified {
-    color: $text-accent-color-1;
+    color: var(--text-accent-color-1);
     white-space: normal;
     font-size: 15px;
     line-height: 16px;
@@ -188,7 +187,7 @@
 }
 
 .modal-note-settings-options {
-  background-color: $dark-accent-color-4;
+  background-color: var(--dark-accent-color-4);
   border-radius: 2px;
   padding: 0.5em;
   margin-top: 16px;
@@ -200,13 +199,13 @@
     align-content: center;
     justify-items: center;
     margin: 0em 0.25em;
-    background-color: $dark-accent-color-2;
+    background-color: var(--dark-accent-color-2);
     padding: 0.35em;
     transition: all 0.1s;
-    background-color: $light-accent-color-2;
+    background-color: var(--light-accent-color-2);
 
     &-delete {
-      background-color: $poplet-red;
+      background-color: var(--poplet-red);
     }
 
     &-important {
@@ -229,7 +228,7 @@
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
     font-size: 14px;
-    background-color: $dark-accent-color-3;
+    background-color: var(--dark-accent-color-3);
     border-radius: 4px;
     text-align: center;
     padding: 0.5em;
@@ -245,7 +244,7 @@
 }
 
 .modal-note-settings-header, .board-creation-header, header {
-  color: #bdbdbd;
+  color: var(--text-subheading-color);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -267,8 +266,8 @@
     text-align: center;
     padding: 12px;
     margin: 12px;
-    background-color: $light-accent-color-3;
-    border: 2.5px $dark-accent-color-1 solid;
+    background-color: var(--light-accent-color-3);
+    border: 2.5px var(--dark-accent-color-1 solid);
     border-radius: 4px;
     cursor: pointer;
 
@@ -289,7 +288,7 @@
     }
 
     &-desc {
-      color: $text-accent-color-1;
+      color: var(--text-accent-color-1);
     }
   }
 }
