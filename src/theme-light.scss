@@ -1,0 +1,55 @@
+// * Light Theme
+.theme-light {
+  --theme-pure-color: black;
+  --theme-pure-color-opposite: white;
+  --primary-color: rgb(253, 253, 253);
+  --primary-color-purple: rgb(117, 92, 168);
+
+  --dark-accent-color-purple-1: rgb(100, 67, 179);
+  --dark-accent-color-purple-2: rgb(83, 56, 146);
+  --dark-accent-color-purple-3: rgb(75, 53, 121);
+  --dark-accent-color-purple-4: rgb(59, 45, 92);
+  --dark-accent-color-purple-5: rgb(52, 41, 77);
+
+  --dark-accent-color-1: rgb(229, 227, 232);
+  --dark-accent-color-2: rgb(232, 230, 235);
+  --dark-accent-color-3: rgb(235, 233, 238);
+  --dark-accent-color-4: rgb(238, 236, 241);
+  --dark-accent-color-5: rgb(241, 239, 244);
+  // Anything below dark-accent-color-5 should just be black
+
+  --dark-1: #ebebeb;
+
+  --light-accent-color-purple-1: #9A6993;
+  --light-accent-color-purple-2: #ad78a5;
+  --light-accent-color-purple-3: #c788bd;
+  --light-accent-color-purple-4: #d893ce;
+  --light-accent-color-purple-5: #f0a9e5;
+
+  --light-accent-color-1: rgb(229, 227, 232);
+  --light-accent-color-2: rgb(226, 224, 229);
+  --light-accent-color-3: rgb(223, 221, 226);
+  --light-accent-color-4: rgb(220, 218, 223);
+  --light-accent-color-5: rgb(217, 215, 220);
+
+  // Used for headers, titles and other prominent content
+  --text-color: #0c0c0c;
+  // Descriptions or general text that should go underneath a header
+  --text-accent-color-1: #0e0e0e;
+  --text-accent-color-2: #141414;
+  --text-accent-color-3: #1a1a1a;
+  --text-accent-color-4: #272727;
+  --text-accent-color-5: #363636;
+  // Used for giving a short description of a component
+  --text-subheading-color: #242424;
+}
+
+.home {
+  div {
+    .navbar {
+      > a.navbar-text {
+        color: white;
+      }
+    }
+  }
+}

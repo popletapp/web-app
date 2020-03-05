@@ -1,0 +1,45 @@
+// * Dark Theme
+.theme-dark {
+  --theme-pure-color: white;
+  --theme-pure-color-opposite: black;
+  --primary-color: #2e2d32;
+  --primary-color-purple: #17131f;
+  
+  --dark-accent-color-purple-1: #4c4068;
+  --dark-accent-color-purple-2: #413758;
+  --dark-accent-color-purple-3: #362e49;
+  --dark-accent-color-purple-4: #282236;
+  --dark-accent-color-purple-5: #1e1a29;
+  
+  --dark-accent-color-1: rgb(37, 36, 41);
+  --dark-accent-color-2: rgb(34, 33, 38);
+  --dark-accent-color-3: rgb(31, 29, 35);
+  --dark-accent-color-4: rgb(28, 26, 32);
+  --dark-accent-color-5: rgb(25, 23, 29);
+
+  // Anything below dark-accent-color-5 should just be black
+  --dark-1: #1a1a1a;
+  
+  --light-accent-color-purple-1: #9A6993;
+  --light-accent-color-purple-2: #ad78a5;
+  --light-accent-color-purple-3: #c788bd;
+  --light-accent-color-purple-4: #d893ce;
+  --light-accent-color-purple-5: #f0a9e5;
+  
+  --light-accent-color-1: rgb(37, 36, 41);
+  --light-accent-color-2: rgb(40, 39, 44);
+  --light-accent-color-3: rgb(43, 42, 47);
+  --light-accent-color-4: rgb(46, 45, 50);
+  --light-accent-color-5: rgb(49, 48, 53);
+  
+  // Used for headers, titles and other prominent content
+  --text-color: #ededed;
+  // Descriptions or general text that should go underneath a header
+  --text-accent-color-1: #c9c9c9;
+  --text-accent-color-2: #b9b9b9;
+  --text-accent-color-3: #a0a0a0;
+  --text-accent-color-4: #747474;
+  --text-accent-color-5: #5e5e5e;
+  // Used for giving a short description of a component
+  --text-subheading-color: #8f8f8f;
+}
