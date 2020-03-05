@@ -20,10 +20,6 @@ function mapStateToProps (state) {
 // eslint-disable-next-line
 ;Prism.languages.markdown=Prism.languages.extend("markup",{}),Prism.languages.insertBefore("markdown","prolog",{blockquote:{pattern:/^>(?:[\t ]*>)*/m,alias:"punctuation"},code:[{pattern:/^(?: {4}|\t).+/m,alias:"keyword"},{pattern:/``.+?``|`[^`\n]+`/,alias:"keyword"}],title:[{pattern:/\w+.*(?:\r?\n|\r)(?:==+|--+)/,alias:"important",inside:{punctuation:/==+$|--+$/}},{pattern:/(^\s*)#+.+/m,lookbehind:!0,alias:"important",inside:{punctuation:/^#+|#+$/}}],hr:{pattern:/(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,lookbehind:!0,alias:"punctuation"},list:{pattern:/(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,lookbehind:!0,alias:"punctuation"},"url-reference":{pattern:/!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,inside:{variable:{pattern:/^(!?\[)[^\]]+/,lookbehind:!0},string:/(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,punctuation:/^[\[\]!:]|[<>]/},alias:"url"},bold:{pattern:/(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^\*\*|^__|\*\*$|__$/}},italic:{pattern:/(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^[*_]|[*_]$/}},url:{pattern:/!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,inside:{variable:{pattern:/(!?\[)[^\]]+(?=\]$)/,lookbehind:!0},string:{pattern:/"(?:\\.|[^"\\])*"(?=\)$)/}}}}),Prism.languages.markdown.bold.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.italic.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.bold.inside.italic=Prism.util.clone(Prism.languages.markdown.italic),Prism.languages.markdown.italic.inside.bold=Prism.util.clone(Prism.languages.markdown.bold); // prettier-ignore
 
-const NEEDS_TOKENS_REMOVED = {
-  'bold': true
-}
-
 const withMentions = editor => {
   const { isInline, isVoid } = editor
 
@@ -51,7 +47,6 @@ const deserialize = string => {
     }
   })
 }
-
 
 const Leaf = ({ attributes, children, leaf }) => {
   return (
@@ -135,10 +130,7 @@ const Editor = (props) => {
   const { parseMarkdown = true, doDecorate, children: content, onClick, className, readOnly = false, 
     onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder } = props;
 
-  if (!props.readOnly) console.log("Content is ", content);
-
   let parseMd = (text) => {
-    if (!props.readOnly) console.log(text);
     if (!text) return null;
 
     let parseChildNodes = tokenList => {
@@ -167,48 +159,9 @@ const Editor = (props) => {
       children: parseChildNodes(Prism.tokenize(text, Prism.languages.markdown))
     };
   }
-  
-  /*
-    INPUT:
-    const Token = {
-      type: "bold",
-      content: ["test"],
-      length: 4
-    }
-    [
-      ["This"], // a new array indicates a newline
-      ["is a ", Token],
-      ["note"]
-    ]
-
-
-    EXPECTED TREE:
-    [
-      {
-        children: [ { text: "This" } ]
-      },
-      {
-        children: [ 
-          { text: "is a " },
-          { type: "bold", children: [ { text: "test" } ] }
-        ]
-      },
-      {
-        children: [ { text: "note" } ]
-      }
-    ]
-  */
 
   const ref = React.createRef();
-  console.log("doDecorate", doDecorate)
-  // const [value, setValue] = useState(doDecorate ? deserialize(content || '') : content.split('\n').map(n => parseMd(n, true)).filter(Boolean) || '');
-
   let value = content.split('\n').map(n => parseMd(n, true)).filter(Boolean) || '';
-  // const [value, setValue] = useState(temp);
-  // if (!props.readOnly) {
-    // console.log("temp", temp);
-    // console.log("value", value);
-  // }
   const [target, setTarget] = useState()
   const [index, setIndex] = useState(0)
   const [search, setSearch] = useState('')
