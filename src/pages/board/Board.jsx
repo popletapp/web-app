@@ -62,6 +62,13 @@ class BoardComponent extends PopletBase {
           <NavBar />
           <div className='board-loading center-on-page'>
             <h1>Loading board...</h1>
+            <br></br>
+            <br></br>
+            <h3>
+              Do you want faster loading times among other great features?
+              <br />
+              Support the development of Poplet with <Link to='/premium'>Poplet Premium</Link>
+            </h3>
           </div>
         </div>
       );
