@@ -3,7 +3,7 @@ import Modal from './Modal';
 import { connect } from 'react-redux';
 import { ColorPicker, Editor, Scroller, Button, ConfirmModal, 
   MinimalisticButton, Tooltip, Flex, ListPopout, Modal as ModalComponent,
-  LabelCreationModal, DatePickerPopout, CloseButton, RichTextbox } from './../../';
+  LabelCreationModal, DatePickerPopout, CloseButton, RichTextbox, EditRevisionsModal } from './../../';
 import { updateNote, saveNote, deleteNote, createModal } from './../../../modules';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
@@ -109,7 +109,7 @@ class NoteDetailedView extends Modal {
   async saveDueDate (date) {
     const { note } = this.props;
     if (date) {
-      date = date.toISOString()
+      date = date.valueOf()
     }
     const newNote = { ...note, dueDate: date };
     this.setState({ saving: true });
@@ -164,7 +164,7 @@ class NoteDetailedView extends Modal {
   }
 
   render () {
-    const { note, board } = this.props;
+    const { note, board, boardId } = this.props;
     const { focused, color } = this.state;
 
     if (!note) return null;
@@ -267,7 +267,8 @@ class NoteDetailedView extends Modal {
               <br />
             </div>
             
-            <div className='modal-note-settings-editrevision'>View Edit Revisions</div>
+            <div onClick={() => createModal(<EditRevisionsModal noteId={note.id} boardID={boardId} />)}
+            className='modal-note-settings-editrevision'>View Edit Revisions</div>
             <div className='modal-note-settings-header'>Due Date</div>
             <DatePickerPopout initial={note.dueDate ? new Date(note.dueDate) : null} 
               onOptionSelected={(date) => this.setState({ date })} 

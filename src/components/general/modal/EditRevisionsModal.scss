@@ -1,0 +1,49 @@
+.edit-revision {
+  background-color: var(--dark-accent-color-2);
+  border-radius: 4px;
+  padding: 12px;
+  margin: 12px;
+  overflow: auto;
+  border: 1px solid var(--dark-accent-color-5);
+
+  &-container {
+    background-color: var(--dark-accent-color-3);
+    padding: 0.4em;
+    padding-left: 0;
+    border-radius: 2px;
+    margin-top: 12px;
+    max-height: 350px;
+    overflow: auto;
+  }
+
+  &-executor {
+    margin-bottom: 8px;
+
+    &-username {
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+  }
+
+  &-timestamp {
+    font-size: 12px;
+    color: var(--text-accent-color-3);
+  }
+
+  &-content {
+    background-color: var(--dark-1);
+    padding: 12px;
+
+    &-added {
+      color: var(--poplet-green);
+    }
+
+    &-removed {
+      color: var(--poplet-red);
+    }
+
+    &-normal {
+      color: var(--text-accent-color-1);
+    }
+  }
+}
