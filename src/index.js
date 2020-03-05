@@ -4,10 +4,9 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store.js';
 import * as Sentry from '@sentry/browser';
-import mobile from 'is-mobile';
+import mobile, { isMobile } from 'is-mobile';
 
 import './index.scss';
-import './App.scss';
 import Application from './components/internal/main/App';
 import { log as Logger } from './util';
 import * as serviceWorker from './serviceWorker';
@@ -25,7 +24,8 @@ const Poplet = {
     WS_BASE_URL: 'wss://popletapp.com:7777'
   },
   store,
-  log: new Logger()
+  log: new Logger(),
+  mobile: isMobile()
 };
 
 Poplet.log.prefix('START').debug('Poplet initializing...');
@@ -35,21 +35,6 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 export default Poplet;
-
-const hasNative =
-document && (document.elementsFromPoint || document.msElementsFromPoint)
-
-function getDropTargetElementsAtPoint(x, y, dropTargets) {
-return dropTargets.filter(t => {
-  const rect = t.getBoundingClientRect()
-  return (
-    x >= rect.left &&
-    x <= rect.right &&
-    y <= rect.bottom &&
-    y >= rect.top
-  )
-})
-}
 
 class EventListenerHandler {
   constructor () {
@@ -61,7 +46,9 @@ class EventListenerHandler {
       'click',
       'keydown',
       'mousemove',
-      'mouseup'
+      'mouseup',
+      'mousedown',
+      'oncontextmenu'
     ]
     for (const type of EVENTS) {
       const listener = document.addEventListener(type, (event) => this.listenerTriggered(type, event));
@@ -70,7 +57,13 @@ class EventListenerHandler {
   }
 
   subscribe (type, func) {
-    this.functions.push({ type, function: func });
+    if (!Array.isArray(type)) {
+      this.functions.push({ type, function: func });
+    } else {
+      for (const t of type) {
+        this.functions.push({ type: t, function: func });
+      }
+    }
   }
 
   unsubscribe (type, func) {
@@ -92,11 +85,6 @@ class EventListenerHandler {
   }
 }
 window.listeners = new EventListenerHandler();
-
-// use custom function only if elementsFromPoint is not supported
-const backendOptions = {
-  getDropTargetElementsAtPoint: !hasNative && getDropTargetElementsAtPoint,
-}
 
 async function render () {
   ReactDOM.render(
