@@ -20,6 +20,17 @@ export const popouts = (state = [], action) => {
   }
 };
 
+export const contextmenus = (state = [], action) => {
+  switch (action.type) {
+    case 'CONTEXT_MENU_REMOVE':
+      return state.slice(0, -1);
+    case 'CONTEXT_MENU_ADD':
+      return [...state, action];
+    default:
+      return state;
+  }
+};
+
 export const tooltips = (state = [], action) => {
   switch (action.type) {
     case 'CLEAR_TOOLTIPS':
