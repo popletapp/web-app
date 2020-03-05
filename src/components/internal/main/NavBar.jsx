@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Avatar, BetaModal } from '../../';
+import { Avatar, BetaModal, PopletBase } from '../../';
 import { logout, createModal } from './../../../modules';
 import './NavBar.scss';
 
@@ -11,10 +11,14 @@ function mapStateToProps (state) {
   };
 }
 
-class NavBar extends Component {
+class NavBar extends PopletBase {
   constructor ({ name }) {
     super();
     this.name = name;
+  }
+
+  componentDidMount () {
+    this.init(false);
   }
 
   render () {
@@ -31,6 +35,7 @@ class NavBar extends Component {
           </Link>
 
           <ul id='user-selector' className='dropdown-content'>
+            <Link className='dropdown-link' to='/home'><li><i className='material-icons'>home</i>Home</li></Link>
             <Link className='dropdown-link' to={`/users/${user.id}`}><li><i className='material-icons'>person</i>Profile</li></Link>
             <Link className='dropdown-link' to={`/settings`}><li><i className='material-icons'>settings</i>Settings</li></Link>
             <li onClick={() => logout()} className='sign-out'><i className='material-icons'>subdirectory_arrow_right</i><p>Sign Out</p></li>

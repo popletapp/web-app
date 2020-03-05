@@ -2,7 +2,7 @@ import Poplet from '../..';
 import { selectBoard, getMembers, getGroups } from '../../actions/board';
 import { getChatrooms, getChatroomComments } from '../../actions/chatroom';
 import { getNotes } from '../../actions/note';
-import getBoard from './getBoard.js';
+import { getBoard } from './../';
 
 export default async (id) => {
   const store = Poplet.store;

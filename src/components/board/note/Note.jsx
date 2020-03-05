@@ -283,14 +283,14 @@ class Note extends Component {
         onClick={(event) => note.id && this.view(event)}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}${compact ? ' note-compact' : ''}`}
         style={{ 
-          ...(!listView ? style : {}),
+          ...(!listView && !preview ? style : {}),
           backgroundColor: note.options.color || '',
           opacity: 1,
           ...styleProps,
           ...(this.wasDraggedByClient ? { transition: 'none' } : {}),
         }}>
           {selected && !preview && <div className='selected-checkmark'><i className='material-icons'>checkmark</i></div>}
-          <div className='note-content white-text'>
+          <div className='note-content'>
             <RichTextbox
               type='title'
               parseMarkdown={false}
@@ -315,11 +315,12 @@ class Note extends Component {
             </RichTextbox>
           </div>
           <Flex direction='row' align='center' className='note-footer'>
-            <FlexChild align='left' direction='row'>
+            <FlexChild align='center' direction='row'>
               {permissions.has('MANAGE_NOTES') && 
               <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className={`note-btn-edit${preview ? ' note-btn-edit-disabled' : ''}`}>
                 Edit
               </MinimalisticButton>}
+              {editing && <div className='note-footer-hint'>press ENTER to save</div>}
             </FlexChild>
 
             <FlexChild align='right' direction='row' justify='end'>

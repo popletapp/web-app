@@ -1,13 +1,6 @@
-@import './index.scss';
-
 .App {
     margin: 1rem;
     font-family: Arial, Helvetica, sans-serif;
-
-}
-
-body {
-    background-color: $primary-color;
 }
 
 div {
@@ -149,7 +142,7 @@ p {
 
 @keyframes openWindow {
     from {
-        background-color: white;
+        background-color: var(--theme-pure-color);
     }
     to {
         border: 3px solid white;
@@ -160,7 +153,7 @@ p {
 
 @-webkit-keyframes openWindow {
     from {
-        background-color: white;
+        background-color: var(--theme-pure-color);
     }
     to {
         border: 3px solid white;
@@ -196,7 +189,7 @@ p {
 
 .poplet-title {
     font-size: 24px;
-    color: white;
+    color: var(--theme-pure-color);
 }
 
 div[class^="poplet-icon-bg"] {
@@ -210,11 +203,11 @@ div[class^="poplet-icon-bg"] {
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     z-index: 9;
-    color: white;
+    color: var(--theme-pure-color);
 
     .poplet-loading-icon {
         > div, > div > div {
-            background-color: white;
+            background-color: var(--theme-pure-color);
             z-index: 10;
         }
     }
@@ -235,5 +228,5 @@ div[class^="poplet-icon-bg"] {
 }
 
 .materialize-textarea, .materialize-input {
-    color: white !important;
+    color: var(--theme-pure-color) !important;
 }

@@ -156,7 +156,7 @@ class Chatroom extends Component {
     let stacked = [];
     for (const comment of comments) {
       if (!comment.timestamp) {
-        comment.timestamp = new Date().toISOString();
+        comment.timestamp = Date.now();
       }
     }
     const sortedComments = comments ? comments.sort((a, b) => new Date(b.timestamp || Date.now()) - new Date(a.timestamp || Date.now())).reverse() : [];

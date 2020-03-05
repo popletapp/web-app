@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
-import { Home, Board, DevBlog, Landing, Login, SignUp, NotFound, User, Feedback, UserSettings, Post, PostCreator } from './../../../pages';
+import { Home, Board, DevBlog, Landing, Login, SignUp, NotFound, User, Feedback, UserSettings, Post, PostCreator, Premium } from './../../../pages';
 import {
   Modals,
   BoardJoinModal,
   BoardCreationModal,
   Tooltips,
   Popouts,
+  ContextMenus,
   ErrorBoundary
 } from './../../../components';
 import { createModal } from './../../../modules';
@@ -58,7 +59,7 @@ class App extends Component {
     );
 
     return (
-      <div className='app'>
+      <div className='app theme-dark'>
         <div id='loader' />
         <ErrorBoundary>
           <Switch location={isModal ? this.previousLocation : location}>
@@ -67,6 +68,7 @@ class App extends Component {
             <Route exact path='/signup' component={SignUp} />
             <Route exact path='/feedback' component={Feedback} />
             <Route exact path='/settings' component={UserSettings} />
+            <Route exact path='/premium' component={Premium} />
             <Route exact path='/blog' component={DevBlog} />
             <Route exact path='/blog/create' component={PostCreator} />
             <Route exact path='/' component={Landing} />
@@ -92,6 +94,7 @@ class App extends Component {
             <Modals />
             <Tooltips />
             <Popouts />
+            <ContextMenus />
           </div>
         </ErrorBoundary>
       </div>

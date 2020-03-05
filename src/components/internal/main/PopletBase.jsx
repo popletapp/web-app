@@ -13,7 +13,7 @@ class PopletBase extends Component {
     };
   }
 
-  async init () {
+  async init (showLoader = true) {
     const store = Poplet.store;
     const state = store.getState();
     const { user = {}, connected } = state;
@@ -26,7 +26,7 @@ class PopletBase extends Component {
     if (!connected && !connecting && (user && !user.id)) {
       this.setState({ connecting: true });
       const loader = document.querySelector('#loader');
-      ReactDOM.render(<Loader />, loader);
+      if (showLoader) ReactDOM.render(<Loader />, loader);
       await popletConnect()
         .then(() => {
           this.setState({ connecting: false });

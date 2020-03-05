@@ -10,3 +10,4 @@ export { default as UserSettings } from './usersettings/UserSettings';
 export { default as DevBlog } from './devblog/DevBlog';
 export { default as Post } from './devblog/Post';
 export { default as PostCreator } from './devblog/PostCreator';
+export { default as Premium } from './premium/Premium';

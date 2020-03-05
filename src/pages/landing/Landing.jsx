@@ -41,8 +41,6 @@ class Landing extends Component {
                   <Link to='/about'>or learn more</Link>
                 </Flex>
               </div>
-              <div className='lower-half animated animatedFadeInUp fadeInUp'>
-              </div>
             </div>
           </section>
         </div>

@@ -6,7 +6,7 @@ import './User.scss';
 
 function mapStateToProps (state, props) {
   return {
-    user: state.users.items.find(user => user.id === props.match ? props.match.params.id : state.user.id),
+    user: state.users.items[props.match ? props.match.params.id : state.user.id],
     currentUser: state.user
   };
 }

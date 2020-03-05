@@ -50,6 +50,8 @@ export const MODAL_PUSH = 'MODAL_PUSH';
 export const MODAL_POP = 'MODAL_POP';
 export const POPOUT_ADD = 'POPOUT_ADD';
 export const POPOUT_REMOVE = 'POPOUT_REMOVE';
+export const CONTEXT_MENU_ADD = 'CONTEXT_MENU_ADD';
+export const CONTEXT_MENU_REMOVE = 'CONTEXT_MENU_REMOVE';
 export const TOOLTIP_PUSH = 'TOOLTIP_PUSH';
 export const CLEAR_TOOLTIPS = 'CLEAR_TOOLTIPS';
 

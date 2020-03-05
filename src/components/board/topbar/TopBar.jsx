@@ -72,9 +72,9 @@ class TopBar extends Component {
                 <Avatar url={board.avatar} alt={board.name} size={32} />
                 <div className='board-info-text'>
                   <Flex direction='row' className='board-info-title dropdown-trigger' data-target='board-dropdown'>
-                    <FlexChild className='board-info-title-text' align='left'>
+                    <div className='board-info-title-text'>
                       {board.name}
-                    </FlexChild>
+                    </div>
                     <FlexChild align='right'>
                       <MinimalisticButton icon='keyboard_arrow_down' className='board-dropdown-arrow' />
                     </FlexChild>
