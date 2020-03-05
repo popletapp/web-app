@@ -18,6 +18,7 @@ export { default as updateLabel } from './boards/updateLabel.js';
 export { default as deleteLabel } from './boards/deleteLabel.js';
 export { default as toggleMemberListVisibility } from './boards/toggleMemberListVisibility.js';
 export { default as updateMember } from './boards/updateMember.js';
+export { default as getActionLog } from './boards/getActionLog.js';
 
 // Groups
 export { default as createGroup } from './groups/createGroup.js';
@@ -61,6 +62,8 @@ export { default as popModal } from './internal/popModal';
 export { default as createTooltip } from './internal/createTooltip';
 export { default as createPopout } from './internal/createPopout';
 export { default as removePopout } from './internal/removePopout';
+export { default as createContextMenu } from './internal/createContextMenu';
+export { default as removeContextMenu } from './internal/removeContextMenu';
 export { default as clearTooltips } from './internal/clearTooltips';
 export { default as connect } from './internal/connect';
 export { default as established } from './internal/established';
