@@ -4,6 +4,7 @@ import { PopletBase, Avatar, Note, NavBar, BetaModal, Scroller, Flex } from './.
 import { createModal } from './../../modules';
 import { Link } from 'react-router-dom';
 import './Home.scss';
+import { Messages } from '../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -45,7 +46,7 @@ class Home extends PopletBase {
 
         <div className='home-container'>
           <div className='board-selector'>
-            <h2>Boards</h2>
+            <h2>{Messages.HOME_BOARDS_HEADER}</h2>
             {Object.values(boards).map((board, i) => {
               return (
                 <Link key={i} className='board-item' to={`/boards/${board.id}`}>
@@ -63,18 +64,18 @@ class Home extends PopletBase {
                 state: { modal: true }
               }}>
                 <div className='board-item-name'>
-                  Join a Board
+                {Messages.JOIN_A_BOARD}
                 </div>
               </Link>
 
-              <header>or</header>
+              <header>{Messages.NAVBAR_REGISTER_OR}</header>
 
               <Link className='board-item board-item-create' to={{
                 pathname: '/boards/create',
                 state: { modal: true }
               }}>
                 <div className='board-item-name'>
-                  Create a new Board
+                  {Messages.CREATE_NEW_BOARD}
                 </div>
               </Link>
             </Flex>
@@ -83,11 +84,11 @@ class Home extends PopletBase {
 
           <div className='home-content-container'>
             <Scroller className='recently-viewed'>
-              <div className='recently-viewed-title'>Recently Viewed</div>
+              <div className='recently-viewed-title'>{Messages.HOME_RECENTLY_VIEWED_HEADER}</div>
               <div className='recently-viewed-content'>
                 {(() => {
                   if (!notes.length) {
-                    return <div>You haven't recently viewed anything.</div>;
+                    return <div>{Messages.HOME_RECENTLY_VIEWED_NONE}</div>;
                   } else {
                     return (
                     <>
@@ -101,12 +102,12 @@ class Home extends PopletBase {
             </Scroller>
 
             <Scroller className='activity-feed'>
-              <div className='activity-feed-title'>Activity Feed</div>
-              <div className='activity-feed-subtitle'>Recently Modified</div>
+              <div className='activity-feed-title'>{Messages.HOME_ACTIVITY_FEED_HEADER}</div>
+              <div className='activity-feed-subtitle'>{Messages.HOME_ACTIVITY_FEED_SUBHEADER_RECENTLY_MODIFIED}</div>
               <div className='activity-feed-content'>
                 {(() => {
                   if (!notes.length) {
-                    return <div>Nothing new on your feed. Check back later!</div>;
+                    return <div>{Messages.HOME_ACTIVITY_FEED_NO_ACTIVITY}</div>;
                   } else {
                     return (
                     <>

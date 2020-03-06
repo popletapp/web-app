@@ -6,6 +6,7 @@ import { getUser } from '../../modules';
 import './UserSettings.scss';
 import { USER_SETTINGS_CATEGORIES } from './../../constants/Categories';
 import { UserSettingsGeneral } from './index';
+import { Messages } from '../../i18n';
 
 function mapStateToProps (state, props) {
   return {
@@ -47,12 +48,12 @@ class UserSettings extends PopletBase {
     if (!Category) {
       Category = () => 
       <Flex direction='column' className='user-settings-content'>
-        <h1>Coming Soon</h1>
+        <h1>{Messages.COMING_SOON}</h1>
         <hr></hr>
 
         <FlexChild direction='row' grow={0} className='user-settings-setting'>
           <header className='user-settings-header'>
-            There's nothing here yet!
+            {Messages.USER_SETTINGS_NOT_READY}
           </header>
         </FlexChild>
       </Flex>
@@ -72,7 +73,7 @@ class UserSettings extends PopletBase {
                       <FlexChild grow={0} shrink={1} direction='row' align='center'>
                         <Link to={`/users/${user.id}`}>{user.username}</Link> 
                         <span className='user-settings-arrow'> → </span> 
-                        <Link to='/settings'>Settings</Link>
+                        <Link to='/settings'>{Messages.SETTINGS}</Link>
                         <span className='user-settings-arrow'> → </span> 
                         <Link to='/settings'>{normalTabName}</Link>
                       </FlexChild>
@@ -82,11 +83,11 @@ class UserSettings extends PopletBase {
                   <Flex direction='row'>
                     <FlexChild className='user-settings-nav-vert' grow={1} shrink={0}>
                       <ul onClick={(e) => this.navChange(e)}>
-                        <li active='true'>General</li>
-                        <li>Appearance</li>
-                        <li>Notifications</li>
-                        <li>Privacy</li>
-                        <li>Security</li>
+                        <li active='true'>{Messages.USER_SETTINGS_CATEGORY_GENERAL}</li>
+                        <li>{Messages.USER_SETTINGS_CATEGORY_APPERANCE}</li>
+                        <li>{Messages.USER_SETTINGS_CATEGORY_NOTIFICATIONS}</li>
+                        <li>{Messages.USER_SETTINGS_CATEGORY_PRIVACY}</li>
+                        <li>{Messages.USER_SETTINGS_CATEGORY_SECURITY}</li>
                       </ul>
                     </FlexChild>
 
@@ -99,7 +100,7 @@ class UserSettings extends PopletBase {
             if (user === null) {
               return null;
             } else {
-              return <div>You need to be signed in to access settings</div>
+              return <div>{Messages.USER_SETTINGS_INACCESSIBLE}</div>
             }
           }
         })()}

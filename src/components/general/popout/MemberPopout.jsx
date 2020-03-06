@@ -6,6 +6,7 @@ import Poplet from './../../../';
 import { updateMember } from './../../../modules';
 import { connect } from 'react-redux';
 import { permissions } from './../../../util';
+import { Messages } from '../../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -54,14 +55,14 @@ class MemberPopout extends Popout {
           <Flex direction='row' className='popout-body member-popout-body'>
             <FlexChild className='member-popout-body-item'>
               <div className='member-popout-subheading'>
-                Created
+                {Messages.POPOUT_MEMBER_ACCOUNT_CREATED_HEADER}
               </div>
               {new Date(member.createdAt).toLocaleDateString()}
             </FlexChild>
 
             <FlexChild className='member-popout-body-item'>
               <div className='member-popout-subheading'>
-                Joined Board
+                {Messages.POPOUT_MEMBER_JOINED_BOARD_HEADER}
               </div>
               {new Date(member.joinedAt).toLocaleDateString()}
             </FlexChild>
@@ -69,7 +70,7 @@ class MemberPopout extends Popout {
 
           <Flex>
             <div style={{ marginTop: '18px' }} className='member-popout-subheading'>
-              Ranks — {Math.max(0, member.ranks.length - 1) /* -1 here because everyone has the default role */}
+              {Messages.RANKS} — {Math.max(0, member.ranks.length - 1) /* -1 here because everyone has the default role */}
             </div>
 
             <Flex className='rank-popout-container' direction='row' align='center'>
@@ -91,11 +92,11 @@ class MemberPopout extends Popout {
           </Flex>
           
           <br />
-          <Button>View Profile</Button>
+          <Button>{Messages.POPOUT_MEMBER_VIEW_PROFILE}</Button>
         </FlexChild>
 
         <Flex className='popout-footer member-popout-footer' direction='row' justify='end' align='right'>
-          More actions coming soon. Thanks for using Poplet!
+          {Messages.POPOUT_MEMBER_MORE_ACTIONS_SOON}
         </Flex>
       </Flex>
     );

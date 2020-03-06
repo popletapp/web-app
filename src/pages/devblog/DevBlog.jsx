@@ -4,6 +4,7 @@ import { getLastPosts } from '../../modules';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './DevBlog.scss';
+import { Messages } from '../../i18n';
 
 class BlogPostPreview extends Component {
   render () {
@@ -41,8 +42,8 @@ class DevBlog extends Component {
             <NavBar icon='poplet_black_no_bg' />
             <div className='inner'>
               <div className='intro-title'>
-                <h1 className='blog-main-title'>Poplet Blog</h1>
-                <h3 className='blog-description-title'>Developer Blog + Change Logs</h3>
+                <h1 className='blog-main-title'>{Messages.BLOG_TITLE}</h1>
+                <h3 className='blog-description-title'>{Messages.BLOG_DESCRIPTION}</h3>
               </div>
               <div className='lower-half animated animatedFadeInUp fadeInUp'>
               </div>

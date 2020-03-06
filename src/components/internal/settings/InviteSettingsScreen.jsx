@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SelectableItem, ToggleSwitch, List, Scroller, Flex, FlexChild, User } from './../../';
 import { connect } from 'react-redux';
+import { Messages } from '../../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -17,14 +18,14 @@ class InviteSettingsScreen extends Component {
     return (
       <Flex direction='column' align='left' className='board-settings-content-container'>
         <div className='board-settings-header'>
-          Invites
+          {Messages.BOARD_SETTINGS_CATEGORY_INVITES}
         </div>
         <div className='board-settings-text'>
-          You can control who can create invites in the <code>Ranks</code> tab.
+          {Messages.BOARD_SETTINGS_CATEGORY_INVITES_DESCRIPTION}
         </div>
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>
-          Whitelist
+          {Messages.BOARD_SETTINGS_INVITES_WHITELIST_HEADER}
           <ToggleSwitch small={true} style={{ marginLeft: '24px' }} />
         </Flex>
 
@@ -42,7 +43,7 @@ class InviteSettingsScreen extends Component {
         </List>
 
         <div className='board-settings-subheader'>
-          Active Invites
+          {Messages.BOARD_SETTINGS_INVITES_ACTIVE_INVITES_HEADER}
         </div>
 
         <List style={{ height: '300px', maxHeight: '300px', backgroundColor: 'transparent' }}>
@@ -56,7 +57,7 @@ class InviteSettingsScreen extends Component {
                         <h1>{invites.code}</h1>
                       </FlexChild>
                       <FlexChild key='invite-info' align='right' basis='auto' grow={1} shrink={1} wrap={false}>
-                        <h5>created by {invites.createdBy}</h5>
+                        <h5>{Messages.BOARD_SETTINGS_INVITES_ACTIVE_INVITES_CREATED_BY} {invites.createdBy}</h5>
                       </FlexChild>
                     </Flex>
                   </div>

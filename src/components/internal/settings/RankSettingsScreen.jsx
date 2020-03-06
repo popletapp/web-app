@@ -4,6 +4,7 @@ import { addRank, deleteRank, updateRank, updateMember } from '../../../modules'
 import { Permissions }  from './../../../util/permissions';
 import { permissions as PermissionHandler }  from './../../../util';
 import { connect } from 'react-redux';
+import { Messages } from '../../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -15,58 +16,58 @@ function mapStateToProps (state) {
 const PermissionsFriendly = {
   'MANAGE_NOTES': {
     id: 'MANAGE_NOTES',
-    name: 'Manage and Edit Notes/Groups',
-    description: 'When this permission is granted, members can create, modify and delete notes and groups'
+    name: Messages.BOARD_SETTINGS_RANKS_MANAGE_NOTES_TITLE,
+    description: Messages.BOARD_SETTINGS_RANKS_MANAGE_NOTES_DESCRIPTION
   },
   'MANAGE_MEMBERS': {
     id: 'MANAGE_MEMBERS',
-    name: 'Manage Members',
-    description: 'Members with this permission can modify the nickname and permissions of other members'
+    name: Messages.BOARD_SETTINGS_RANKS_MANAGE_MEMBERS_TITLE,
+    description: Messages.BOARD_SETTINGS_RANKS_MANAGE_MEMBERS_DESCRIPTION
   },
   'MOVE_NOTES': {
     id: 'MOVE_NOTES',
-    name: 'Move Notes/Groups'
+    name: Messages.BOARD_SETTINGS_RANKS_MOVE_NOTES_TITLE
   },
   'MODERATOR': {
     id: 'MODERATOR',
-    name: 'Moderator',
-    description: 'Moderators have the ability to invite members to the board as well as kicking members from the board'
+    name: Messages.BOARD_SETTINGS_RANKS_MODERATOR_TITLE,
+    description: Messages.BOARD_SETTINGS_RANKS_MODERATOR_DESCRIPTION
   },
   'ADMINISTRATOR': {
     id: 'ADMINISTRATOR',
-    name: 'Administrator',
-    description: 'Members with this permission have full access to the board and can modify everything'
+    name: Messages.BOARD_SETTINGS_RANKS_ADMINISTRATOR_TITLE,
+    description: Messages.BOARD_SETTINGS_RANKS_ADMINISTRATOR_DESCRIPTION
   },
   'VIEW_CHATROOMS': {
     id: 'VIEW_CHATROOMS',
-    name: 'View Chatrooms',
-    description: 'Allows members to access chatrooms in the board'
+    name: Messages.BOARD_SETTINGS_RANKS_VIEW_CHATROOMS_TITLE,
+    description: Messages.BOARD_SETTINGS_RANKS_VIEW_CHATROOMS_DESCRIPTION
   },
   'ADD_COMMENTS': {
     id: 'ADD_COMMENTS',
-    name: 'Add Comments to Notes'
+    name: Messages.BOARD_SETTINGS_RANKS_ADD_COMMENTS_TITLE
   },
   'SEND_CHATROOM_MESSAGES': {
     id: 'SEND_CHATROOM_MESSAGES',
-    name: 'Send Chatroom Messages',
-    description: 'This permission allows members to send messages in chatrooms'
+    name: Messages.BOARD_SETTINGS_RANKS_SEND_CHATROOM_MESSAGES_TITLE,
+    description: Messages.BOARD_SETTINGS_RANKS_SEND_CHATROOM_MESSAGES_DESCRIPTION
   },
   'INVITE_MEMBERS': {
     id: 'INVITE_MEMBERS',
-    name: 'Invite New Members'
+    name: Messages.BOARD_SETTINGS_RANKS_INVITE_MEMBERS_TITLE
   },
   'KICK_MEMBERS': {
     id: 'KICK_MEMBERS',
-    name: 'Kick Members'
+    name: Messages.BOARD_SETTINGS_RANKS_KICK_MEMBERS_TITLE
   },
   'BAN_MEMBERS': {
     id: 'BAN_MEMBERS',
-    name: 'Ban Members'
+    name: Messages.BOARD_SETTINGS_RANKS_BAN_MEMBERS_TITLE
   },
   'MANAGE_BOARD': {
     id: 'MANAGE_BOARD',
-    name: 'Manage Board',
-    description: 'Members with this permission can edit certain settings in the board such as ranks'
+    name: Messages.BOARD_SETTINGS_RANKS_MANAGE_BOARD_TITLE,
+    description: Messages.BOARD_SETTINGS_RANKS_MANAGE_BOARD_DESCRIPTION
   }
 };
 
@@ -147,21 +148,21 @@ class RankSettingsScreen extends Component {
     return (
       <Flex direction='column' align='left' className='board-settings-content-container'>
         <div className='board-settings-header'>
-          Ranks
+          {Messages.BOARD_SETTINGS_CATEGORY_RANKS}
         </div>
         <div className='board-settings-text'>
-          Ranks allow you to assign permissions to members in your board.
+          {Messages.BOARD_SETTINGS_CATEGORY_RANKS_DESCRIPTION}
         </div>
 
         <Button onClick={() => this.createRank()}>
-          Create Rank
+          {Messages.BOARD_SETTINGS_RANKS_CREATE_RANK}
         </Button>
 
         <Flex align='left' direction='row' className='board-settings-ranks'>
           <FlexChild>
             <List style={{ height: '600px', width: '140px', minWidth: '125px' }}>
               <Scroller>
-                {!Object.values(ranks).length && <div className='board-settings-subheader'>No ranks</div>}
+                {!Object.values(ranks).length && <div className='board-settings-subheader'>{Messages.BOARD_SETTINGS_RANKS_NO_RANKS}</div>}
                 {!!Object.values(ranks).length && Object.values(ranks).map((rank, i) => rank && 
                   <SelectableItem className='board-settings-rank-item' onClick={() => this.selectRank(rank.id)} id={rank.id} key={i.toString()} selected={selectedRank.id === rank.id}>
                     <Flex align='left' basis='auto' grow={1} shrink={1}>
@@ -179,14 +180,14 @@ class RankSettingsScreen extends Component {
           </FlexChild>
 
           <Flex align='left' direction='row'>
-            {!Object.values(ranks).length && <div>Click "Create Rank" to create a new rank!</div>}
+            {!Object.values(ranks).length && <div>{Messages.BOARD_SETTINGS_RANKS_CREATE_RANK_SUGGESTION}}</div>}
             {!!Object.values(ranks).length &&
               <Scroller style={{ maxHeight: '600px' }}>
                 <Flex className='board-settings-ranks-content'>
                   <FlexChild align='left' direction='row'>
                     <Flex align='left' direction='row'>
                       <FlexChild align='left'>
-                        <div className='board-settings-subheader'>Name</div>
+                        <div className='board-settings-subheader'>{Messages.NAME}</div>
                         <DefaultInput
                           onBlur={(e) => this.updateRankName(e)}
                           value={selectedRank.name}
@@ -195,14 +196,14 @@ class RankSettingsScreen extends Component {
                       </FlexChild>
                       <FlexChild align='right' style={{ marginLeft: '24px' }}>
                         <Button onClick={() => this.selectRank()} color='red'>
-                          Delete
+                          {Messages.DELETE}
                         </Button>
                       </FlexChild>
                     </Flex>
                   </FlexChild>
 
                   <FlexChild>
-                    <div className='board-settings-subheader'>Color</div>
+                    <div className='board-settings-subheader'>{Messages.COLOR}</div>
                     <ColorPicker
                       color={this.state.color}
                       onChangeComplete={(color) => this.handleColorChange(color)}
@@ -211,7 +212,7 @@ class RankSettingsScreen extends Component {
 
                   <FlexChild align='left' className='board-settings-ranks-permissions'>
                     <div className='board-settings-subheader'>
-                    Permissions
+                      {Messages.BOARD_SETTINGS_RANKS_PERMISSIONS}
                     </div>
                     {Object.values(PermissionsFriendly)
                       .map((permission, i) =>

@@ -3,6 +3,7 @@ import Popout from './Popout';
 import { Flex, FlexChild } from '../..';
 import './Popout.scss';
 import './ListPopout.scss';
+import { Messages } from '../../../i18n';
 
 class ListPopout extends Popout {
   constructor () {
@@ -38,7 +39,7 @@ class ListPopout extends Popout {
                 <div className='popout-list-option-name'>{elm.name}</div>
               </Flex>
             ))}
-            {!elements.length && <div>{noElementsText || 'Nothing here!'}</div>}
+            {!elements.length && <div>{noElementsText || Messages.POPOUT_LIST_NO_ITEMS}</div>}
           </Flex>
         </FlexChild>
       </Flex>

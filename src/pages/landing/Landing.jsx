@@ -3,6 +3,7 @@ import { NavBar, Flex, FlexChild, Tooltip } from './../../components';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './Landing.scss';
+import { Messages } from '../../i18n';
 
 class Landing extends Component {
   constructor () {
@@ -33,12 +34,12 @@ class Landing extends Component {
             <NavBar icon='poplet_black_no_bg' />
             <div className='inner'>
               <div className='intro-title'>
-                <h1 className='main-title'>Thinking rethought</h1>
-                <h3 className='intro-description-title'>A note-taking application with rich features</h3>
-                <p className='intro-description'>Some ideas are more complex than others — Poplet strives to let you take notes the way you want.</p>
+                <h1 className='main-title'>{Messages.LANDING_MAIN_TITLE}</h1>
+                <h3 className='intro-description-title'>{Messages.LANDING_INTRO_DESCRIPTION}</h3>
+                <p className='intro-description'>{Messages.LANDING_INTRO_SUBTEXT}</p>
                 <Flex direction='row' align='center' className='intro-details'>
-                  <Link to='/login' className='btn intro-getstarted-btn'>Get started</Link>
-                  <Link to='/about'>or learn more</Link>
+                  <Link to='/login' className='btn intro-getstarted-btn'>{Messages.LANDING_GET_STARTED}</Link>
+                  <Link to='/about'>{Messages.LANDING_LEARN_MORE}</Link>
                 </Flex>
               </div>
             </div>
@@ -48,28 +49,28 @@ class Landing extends Component {
         <div className='landing-content'>
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              Everything you want and more
+              {Messages.LANDING_CARD_1_TITLE}
             </h2>
             <h2 className='landing-content-card-desc'>
-              Including features that you're used to like assigning members to notes, due dates, importance sorting and more.
+              {Messages.LANDING_CARD_1_DESCRIPTION}
             </h2>
           </div>
 
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              Customization to the extreme
+              {Messages.LANDING_CARD_2_TITLE}
             </h2>
             <h2 className='landing-content-card-desc'>
-              The ability to fine-tune the nitty gritty details, such as the positioning and style of your notes.
+              {Messages.LANDING_CARD_2_DESCRIPTION}
             </h2>
           </div>
 
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              Simple collaboration with advanced features
+              {Messages.LANDING_CARD_3_TITLE}
             </h2>
             <h2 className='landing-content-card-desc'>
-              Getting work done with your mates couldn't be easier.
+              {Messages.LANDING_CARD_3_DESCRIPTION}
             </h2>
           </div>
         </div>

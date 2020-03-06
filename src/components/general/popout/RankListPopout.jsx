@@ -5,6 +5,7 @@ import { updateMember } from './../../../modules';
 import './Popout.scss';
 import './RankListPopout.scss';
 import { connect } from 'react-redux';
+import { Messages } from '../../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -28,7 +29,7 @@ class RankListPopout extends Popout {
       <Flex className='popout'>
         <FlexChild className='popout-content'>
           <div className='rank-list-header'>
-            Add Ranks for {member.username}
+            {Messages.POPOUT_RANK_LIST_TITLE.replace('{0}', member.username)}
           </div>
 
           <Flex className='rank-option-list' direction='column' align='center'>
@@ -37,7 +38,7 @@ class RankListPopout extends Popout {
                 <div className='rank-option-name'>{rank.name}</div>
               </Flex>
             ))}
-            {!memberRanks.length && <div>No ranks to add</div>}
+            {!memberRanks.length && <div>{Messages.POPOUT_RANK_LIST_NO_RANKS}</div>}
           </Flex>
         </FlexChild>
       </Flex>

@@ -10,6 +10,7 @@ import 'highlight.js/styles/tomorrow-night.css';
 
 import './Modal.scss';
 import { permissions } from '../../../util';
+import { Messages } from '../../../i18n';
 
 function mapStateToProps (state, props) {
   return {
@@ -35,7 +36,7 @@ class AddLabelButton extends Component {
     return (
       <div className='note-label-new' onClick={() => this.click()}>
         <div className='note-label-new-innerbtn'>+</div>
-        New label
+        {Messages.LABEL_NEW_LABEL}
       </div>
     )
   }
@@ -75,7 +76,6 @@ class NoteDetailedView extends Modal {
   }
 
   onClick () {
-    console.log('clicked')
     this.setState(oldState => {
       if (!oldState.focused) return {
         focused: true
@@ -122,8 +122,8 @@ class NoteDetailedView extends Modal {
   onDelete () {
     const { note, boardId } = this.props;
     const modal = {
-      title: 'Delete Note',
-      content: 'Are you sure you want to delete this note? This cannot be undone.'
+      title: Messages.MODAL_DELETE_NOTE_TITLE,
+      content: Messages.MODAL_DELETE_NOTE_BODY_LINE_1
     }
     createModal(<ConfirmModal onConfirm={() => deleteNote(boardId, note.id)} title={modal.title} content={modal.content} />)
   }
@@ -212,7 +212,7 @@ class NoteDetailedView extends Modal {
               <div onClick={() => 
                 createModal(<ConfirmModal title={'Hey!'} confirmText={'Understandable'} cancelText={'😡'} content={'Sorry, but comments aren\'t available yet.'} />)} 
                 className='modal-note-comments-view'>
-                View Comments
+                {Messages.NOTE_DETAILED_VIEW_VIEW_COMMENTS}
               </div>
             </div>
           </div>
@@ -235,18 +235,18 @@ class NoteDetailedView extends Modal {
               </Tooltip>}
             </Flex>
 
-            <div className='modal-note-settings-header'>Color</div>
+            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_COLOR_HEADER}</div>
             <ColorPicker
               color={color || note.options.color || '#546e7a'}
               onChangeComplete={(color) => this.handleColorChange(color)}
             />
 
-            <div className='modal-note-settings-header'>Assignees</div>
+            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_ASSIGNEES_HEADER}</div>
             <ListPopout title='Assign Memebrs to this Note' onOptionSelected={(e) => this.optionSelectedAssignees(e)}>
               <div className='add-btn'>+</div>
             </ListPopout>
 
-            <div className='modal-note-settings-header'>Labels</div>
+            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_LABELS_HEADER}</div>
             {note.labels.map((label, i) => {
               label = board.labels.find(l => l.id === label);
               return <Flex style={{ backgroundColor: label.color || '#757575' }} className='note-label' inline direction='row' justify='center' align='center' grow={0} key={i}>
@@ -259,7 +259,7 @@ class NoteDetailedView extends Modal {
               <div className='add-btn'>+</div>
             </ListPopout>
 
-            <div className='modal-note-settings-header'>Modified</div>
+            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_MODIFIED_HEADER}</div>
             <div className='modal-note-settings-modified'>
               {new Date(note.modifiedAt).toLocaleDateString()} at {new Date(note.modifiedAt).toLocaleTimeString()}
               <br />
@@ -268,8 +268,8 @@ class NoteDetailedView extends Modal {
             </div>
             
             <div onClick={() => createModal(<EditRevisionsModal noteId={note.id} boardID={boardId} />)}
-            className='modal-note-settings-editrevision'>View Edit Revisions</div>
-            <div className='modal-note-settings-header'>Due Date</div>
+            className='modal-note-settings-editrevision'>{Messages.NOTE_DETAILED_VIEW_VIEW_EDIT_REVISIONS}</div>
+            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_DUE_DATE_HEADER}</div>
             <DatePickerPopout initial={note.dueDate ? new Date(note.dueDate) : null} 
               onOptionSelected={(date) => this.setState({ date })} 
               onClose={() => this.saveDueDate(this.state.date)}>

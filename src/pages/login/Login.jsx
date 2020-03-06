@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.scss';
+import { Messages } from '../../i18n';
 
 class Login extends Component {
   constructor () {
@@ -21,7 +22,7 @@ class Login extends Component {
     const { email, password } = this.state;
     if (!email || !password) {
       this.setState({
-        error: 'You need to enter an e-mail and password.'
+        error: Messages.LOGIN_EMAIL_PASSWORD_MISSING
       });
       return;
     }
@@ -37,7 +38,7 @@ class Login extends Component {
       });
     } else if (response.status === 500) {
       this.setState({
-        error: 'Our servers seem to be experiencing some problems at the moment, try again later'
+        error: Messages.LOGIN_ERROR
       });
     } else {
       // Authenticated, remove login page
@@ -53,28 +54,28 @@ class Login extends Component {
         <div className='authentication-container animated fadeIn'>
           <div className='authentication'>
             <div className='authentication-header'>
-              <h1>Log in to Poplet</h1>
+              <h1>{Messages.LOGIN_LOG_IN_TO_POPLET}</h1>
               <h4 className='authentication-header-error'>{this.state.error}</h4>
             </div>
             <form onSubmit={(e) => this.loginButtonClicked(e)} id='login' className='login-form'>
               <div className='username-container'>
-                <label htmlFor='email'>E-mail</label>
+                <label htmlFor='email'>{Messages.EMAIL}</label>
                 <input onInput={(e) => this.setState({ email: e.target.value })}
                   id='email' type='text' className={`text-input ${this.state.error && this.state.errorOccured === 'email' ? 'invalid-text-input' : ''}`} />
               </div>
 
               <div className='password-container'>
-                <label htmlFor='password'>Password</label>
+                <label htmlFor='password'>{Messages.PASSWORD}</label>
                 <div className='password-component'>
                   <input onInput={(e) => this.setState({ password: e.target.value || '' })}
                     id='username' type='password' className='text-input'></input>
                 </div>
               </div>
-              <button className='btn login-button' type='submit'>Submit</button>
+              <button className='btn login-button' type='submit'>{Messages.SUBMIT}</button>
             </form>
 
             <div className='no-account'>
-              Don't have an account? <Link className='no-account-link' to='/signup'>Sign up</Link> today for free!
+              {Messages.LOGIN_NO_ACCOUNT_BODY_1} <Link className='no-account-link' to='/signup'>{Messages.SIGN_UP}</Link> {Messages.LOGIN_NO_ACCOUNT_BODY_2}
             </div>
           </div>
         </div>

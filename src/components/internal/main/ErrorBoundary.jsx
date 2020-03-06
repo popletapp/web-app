@@ -5,6 +5,7 @@ import messages from './error/messages.json';
 import './ErrorBoundary.scss';
 import Poplet from './../../../';
 import * as Sentry from '@sentry/browser';
+import { Messages } from '../../../i18n';
 
 class ErrorBoundary extends Component {
   constructor (props) {
@@ -35,7 +36,7 @@ class ErrorBoundary extends Component {
       <div className='error-boundary center-on-page animated fadeIn'>
         <Flex align='center' grow={0} className='error-occurred'>
           <FlexChild grow={0} className='error-title'>
-            An error occurred
+            {Messages.FATAL_ERROR_TITLE}
           </FlexChild>
           <FlexChild grow={0} className='error-description'>
             {messages[Math.floor(Math.random() * messages.length)]}
@@ -44,13 +45,13 @@ class ErrorBoundary extends Component {
 
         <Flex align='center' grow={0} className='error-instructions'>
           <p>
-            We've logged this error, and we'll look into it as quick as we can.<br/>
-            If the error keeps happening, consider filing a bug report on our <Link to='/feedback'>Feedback</Link> page.
+            {Messages.FATAL_ERROR_BODY_LINE_1}<br/>
+            {Messages.FATAL_ERROR_BODY_LINE_2} <Link to='/feedback'>{Messages.FATAL_ERROR_BODY_LINE_3}</Link>
           </p>
         </Flex>
 
         <Button onClick={() => window.location.reload()} grow={0} className='error-reload-button'>
-          Reload
+          {Messages.FATAL_ERROR_RELOAD}
         </Button>
       </div>
     ) : children;

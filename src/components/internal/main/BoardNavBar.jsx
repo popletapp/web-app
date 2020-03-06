@@ -6,6 +6,7 @@ import { logout } from './../../../modules';
 import Poplet from './../../../index';
 import './NavBar.scss';
 import axios from 'axios';
+import { Messages } from '../../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -66,19 +67,19 @@ class NavBar extends Component {
                     </ul>
                     <div className='dev-tools-btn-container dropdown-trigger' data-target='devtools-selector'>
                       <MinimalisticButton icon='developer_mode' color='red' className='dev-tools-btn' />
-                      <p>Dev Tools</p>
+                      <p>{Messages.BOARD_NAVBAR_DEV_TOOLS}</p>
                     </div>
                   </div>}
 
                   <div className='board-selector-btn-container dropdown-trigger' data-target='board-selector'>
                     <MinimalisticButton icon='dashboard' color='red' className='board-selector-btn' />
-                    <p>Boards</p>
+                    <p>{Messages.BOARD_NAVBAR_BOARDS}</p>
                   </div>
 
                   <ul id='user-selector' className='dropdown-content'>
-                    <Link className='dropdown-link' to={`/users/${user.id}`}><li><i className='material-icons'>person</i>Profile</li></Link>
-                    <Link className='dropdown-link' to={`/settings`}><li><i className='material-icons'>settings</i>Settings</li></Link>
-                    <li onClick={() => logout()} className='sign-out'><i className='material-icons'>subdirectory_arrow_right</i><p>Sign Out</p></li>
+                    <Link className='dropdown-link' to={`/users/${user.id}`}><li><i className='material-icons'>person</i>{Messages.DROPDOWN_ITEM_PROFILE}</li></Link>
+                    <Link className='dropdown-link' to={`/settings`}><li><i className='material-icons'>settings</i>{Messages.DROPDOWN_ITEM_SETTINGS}</li></Link>
+                    <li onClick={() => logout()} className='sign-out'><i className='material-icons'>subdirectory_arrow_right</i><p>{Messages.DROPDOWN_ITEM_LOGOUT}</p></li>
                   </ul>
 
                   <div className='board-navbar-user-container dropdown-trigger' data-target='user-selector'>
@@ -90,7 +91,7 @@ class NavBar extends Component {
             } else {
               return (
                 <div className='board-navbar-user-container'>
-                  <Link className='board-navbar-user-container-username' to='/login'>Sign in</Link>
+                  <Link className='board-navbar-user-container-username' to='/login'>{Messages.BOARD_NAVBAR_SIGN_IN}</Link>
                 </div>
               );
             }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PopletBase, NavBar, Avatar, Flex, FlexChild, MinimalisticButton } from '../../components';
 import { getUser } from '../../modules';
 import './User.scss';
+import { Messages } from '../../i18n';
 
 function mapStateToProps (state, props) {
   return {
@@ -41,7 +42,7 @@ class UserComponent extends PopletBase {
 
                       <FlexChild className='user-profile-send-fr-btn-container' grow={0} shrink={1} direction='row' align='center'>
                         {!isSelf && <div className='user-profile-send-fr-btn btn'>
-                          Send Friend Request
+                          {Messages.SEND_FREIND_REQUEST}
                         </div>}
                         <MinimalisticButton icon='more_vert' color='red' className='user-profile-more-actions-btn' />
                       </FlexChild>
@@ -49,7 +50,7 @@ class UserComponent extends PopletBase {
                   </FlexChild>
 
                   <FlexChild className='user-profile-information' grow={0} direction='row' align='center'>
-                    <p>created {new Date(user.createdAt).toLocaleDateString()}</p>
+                    <p>{Messages.USER_CREATED} {new Date(user.createdAt).toLocaleDateString()}</p>
                   </FlexChild>
                 </section>
               </Flex>
@@ -58,7 +59,7 @@ class UserComponent extends PopletBase {
             if (user === null) {
               return null;
             } else {
-              return <div>That user does not exist</div>
+              return <div>{Messages.USER_NOT_FOUND}</div>
             }
           }
         })()}

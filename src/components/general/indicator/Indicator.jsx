@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Flex } from './../../';
 import { joinClasses } from './../../../util';
 import './Indicator.scss';
+import { Messages } from './../../../i18n';
 
 const MODE_TO_FRIENDLY = {
-  online: 'Online',
-  idle: 'Idle',
-  dnd: 'Do Not Disturb',
-  offline: 'Offline'
+  online: Messages.INDICATOR_STATUS_ONLINE,
+  idle: Messages.INDICATOR_STATUS_IDLE,
+  dnd: Messages.INDICATOR_STATUS_DND,
+  offline: Messages.INDICATOR_STATUS_OFFLINE
 };
 
 class Indicator extends Component {

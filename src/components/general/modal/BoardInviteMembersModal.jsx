@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from './Modal';
 import Input from '../input/DefaultInput.jsx';
 import { createInvite } from '../../../modules';
+import { Messages } from './../../../i18n';
 import './Modal.scss';
 
 class BoardCreationModal extends Modal {
@@ -28,16 +29,16 @@ class BoardCreationModal extends Modal {
       <div>
         <div className='modal-content'>
           <div className='modal-header'>
-            Invite people to your board!
+            {Messages.MODAL_INVITE_MEMBERS_TITLE}
           </div>
           <div className='modal-body'>
-            <p>Share the code below with people you want to join your board.</p>
+            <p>{Messages.MODAL_INVITE_MEMBERS_BODY_LINE_1}</p>
             <Input value={this.state.invite}></Input>
-            <p>They can enter this code into the "Join a Board" screen.</p>
+            <p>{Messages.MODAL_INVITE_MEMBERS_BODY_LINE_2}</p>
           </div>
         </div>
         <div className='modal-footer'>
-          <button onClick={(e) => this.close()} className='modal-close btn modal-cancel'>{this.props.cancelText || 'Close'}</button>
+          <button onClick={(e) => this.close()} className='modal-close btn modal-cancel'>{this.props.cancelText || Messages.MODAL_GENERIC_CANCEL_CLOSE}</button>
         </div>
       </div>
     );

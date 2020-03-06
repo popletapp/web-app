@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Flex, FlexChild, ToggleSwitch } from '../../components';
+import { Messages } from '../../i18n';
 
 function mapStateToProps (state, props) {
   return {
@@ -16,16 +17,16 @@ class UserSettingsGeneral extends Component {
   render () {
     return (
       <FlexChild direction='column' className='user-settings-content'>
-        <h1>Settings</h1>
+        <h1>{Messages.SETTINGS}</h1>
         <hr></hr>
 
         <Flex direction='row' grow={0} className='user-settings-setting'>
           <FlexChild direction='column'>
             <header className='user-settings-header'>
-              Compact Mode
+              {Messages.USER_SETTINGS_GENERAL_COMPACT_MODE}
             </header>
             <h5 className='user-settings-setting-desc'>
-              Makes notes and other components take up less space on the screen; a simplified view.
+              {Messages.USER_SETTINGS_GENERAL_COMPACT_MODE_DESCRIPTION}
             </h5>
           </FlexChild>
           

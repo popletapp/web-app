@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import './Board.scss';
 
 import { Board, Chatroom, PopletBase, NavBar } from './../../components';
+import { Messages } from '../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -61,13 +62,13 @@ class BoardComponent extends PopletBase {
         <div>
           <NavBar />
           <div className='board-loading center-on-page'>
-            <h1>Loading board...</h1>
+            <h1>{Messages.BOARD_LOADING}</h1>
             <br></br>
             <br></br>
             <h3>
-              Do you want faster loading times among other great features?
+              {Messages.BOARD_LOADING_PROMOTIONAL_CONTENT_LINE_1}
               <br />
-              Support the development of Poplet with <Link to='/premium'>Poplet Premium</Link>
+              {Messages.BOARD_LOADING_PROMOTIONAL_CONTENT_LINE_2} <Link to='/premium'>Poplet Premium</Link>
             </h3>
           </div>
         </div>
@@ -79,9 +80,9 @@ class BoardComponent extends PopletBase {
         <div>
           <NavBar />
           <div className='board-invalid'>
-            <h1>Board not found</h1>
-            <h4>This board either doesn't exist, or you don't have access to see it.</h4>
-            <Link to='/home'>Go back home</Link>
+            <h1>{Messages.BOARD_NOT_FOUND}</h1>
+            <h4>{Messages.BOARD_NOT_FOUND_BODY_LINE_1}</h4>
+            <Link to='/home'>{Messages.BOARD_NOT_FOUND_GO_HOME}</Link>
           </div>
         </div>
       );

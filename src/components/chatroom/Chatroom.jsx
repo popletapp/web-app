@@ -4,6 +4,7 @@ import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, MinimalisticButt
 import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
+import { Messages } from '../../i18n';
 
 function mapStateToProps (state, props) {
   return {
@@ -247,7 +248,7 @@ class Chatroom extends Component {
                 onChange={(e) => this.handleChange(e)}
                 onKeyDown={(e) => this.input(e)}
                 value={content}
-                placeholder='Send a message to this chatroom'
+                placeholder={Messages.CHATROOM_TEXTAREA_PLACEHOLDER}
                 className='chatroom-textarea'></textarea>
             </form>
           </div>

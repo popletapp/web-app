@@ -3,7 +3,7 @@ import Modal from './Modal';
 import { Input, Flex } from './../..';
 import { switchBoard, createBoard } from './../../../modules';
 import './Modal.scss';
-import * as errors from './../../../constants/ErrorMessages.js';
+import { Messages } from './../../../i18n';
 
 class BoardCreationModal extends Modal {
   constructor () {
@@ -17,11 +17,11 @@ class BoardCreationModal extends Modal {
 
   check ({ name }) {
     if (!name) {
-      throw new Error(errors.BOARD_CREATE_NAME_REQUIRED);
+      throw new Error(Messages.BOARD_CREATION_NAME_REQUIRED);
     } else if (name.length < 2) {
-      throw new Error(errors.BOARD_CREATE_NAME_TOO_SHORT);
+      throw new Error(Messages.BOARD_CREATION_NAME_TOO_SHORT);
     } else if (name.length > 64) {
-      throw new Error(errors.BOARD_CREATE_NAME_TOO_LONG);
+      throw new Error(Messages.BOARD_CREATION_NAME_TOO_LONG);
     } else {
       return null;
     }
@@ -75,36 +75,36 @@ class BoardCreationModal extends Modal {
       <div>
         <div className='modal-content'>
           <div className='modal-header'>
-            Create New Board
+            {Messages.MODAL_BOARD_CREATION_TITLE}
           </div>
           <div className='modal-body'>
-            <div className='board-creation-header'>Board Name</div>
+            <div className='board-creation-header'>{Messages.MODAL_BOARD_CREATION_BOARD_NAME_HEADER}</div>
             <p className='modal-error'>{error}</p>
             <Input onInput={(e) => this.handleEvent(e, 'input')} placeholder='Board Name' />
             <br />
-            <div className='board-creation-header'>Board Type</div>
+            <div className='board-creation-header'>{Messages.MODAL_BOARD_CREATION_BOARD_TYPE_HEADER}</div>
             <Flex direction='row' className='board-creation-type'>
               <Flex onClick={() => this.setState({ type: 0 })} className={`board-creation-type-option${type === 0 ? ' board-creation-type-option-active' : ''}`} align='center' direction='column'>
                 <Flex className='board-creation-type-option-display' align='center'>
-                  <h2 className='board-creation-type-option-header'>Freeplace</h2>
+                  <h2 className='board-creation-type-option-header'>{Messages.FREEPLACE}</h2>
                   <img alt='Freeplace' src='./../../../assets/icons/freeplace.svg' width='128' height='128'></img>
                 </Flex>
-                <div className='board-creation-type-option-desc'>Freeplace allows you to place notes without restrictions in any position</div>
+                <div className='board-creation-type-option-desc'>{Messages.FREEPLACE_DESCRIPTION}</div>
               </Flex>
 
               <Flex onClick={() => this.setState({ type: 1 })} className={`board-creation-type-option${type === 1 ? ' board-creation-type-option-active' : ''}`}  align='center' direction='column'>
                 <Flex className='board-creation-type-option-display' align='center'>
-                  <h2 className='board-creation-type-option-header'>Grid</h2>
+                  <h2 className='board-creation-type-option-header'>{Messages.GRID}</h2>
                   <img alt='Grid' src='./../../../assets/icons/snaptogrid.svg' width='128' height='128'></img>
                 </Flex>
-                <div className='board-creation-type-option-desc'>Snap to Grid means all notes/groups can only be placed on grid lines</div>
+                <div className='board-creation-type-option-desc'>{Messages.GRID_DESCRIPTION}</div>
               </Flex>
             </Flex>
           </div>
         </div>
         <div className='modal-footer'>
-          <button onClick={(e) => this.handleEvent(e, 'cancel')} className='modal-close btn modal-cancel'>{this.props.cancelText || 'Cancel'}</button>
-          <button onClick={(e) => this.handleEvent(e, 'confirm')} className='modal-close btn modal-confirm'>{this.props.confirmText || 'OK'}</button>
+          <button onClick={(e) => this.handleEvent(e, 'cancel')} className='modal-close btn modal-cancel'>{this.props.cancelText || Messages.MODAL_GENERIC_CANCEL}</button>
+          <button onClick={(e) => this.handleEvent(e, 'confirm')} className='modal-close btn modal-confirm'>{this.props.confirmText || Messages.MODAL_GENERIC_CONFIRM}</button>
         </div>
       </div>
     );

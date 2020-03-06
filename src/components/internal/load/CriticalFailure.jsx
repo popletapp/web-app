@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './CriticalFailure.scss';
+import { Messages } from '../../../i18n';
 
 class CriticalFailure extends Component {
   constructor () {
@@ -10,10 +11,10 @@ class CriticalFailure extends Component {
   render () {
     return (
       <div className='center-on-page critical-failure animated fadeIn'>
-        <h1>Damn.</h1>
-        <h2>An error occured whilst trying to load Poplet</h2>
-        <h4>Sorry about that. Looks like we're experiencing some technical difficulties at the moment, and we're unable to connect you to Poplet.</h4>
-        <h5>This is just a temporary issue, and Poplet will up and running in no time. Thanks for your patience.</h5>
+        <h1>{Messages.CRITICAL_FAILURE_TITLE}</h1>
+        <h2>{Messages.CONNECTING_BODY_LINE_1}</h2>
+        <h4>{Messages.CONNECTING_BODY_LINE_2}</h4>
+        <h5>{Messages.CONNECTING_BODY_LINE_3}</h5>
       </div>
     );
   }

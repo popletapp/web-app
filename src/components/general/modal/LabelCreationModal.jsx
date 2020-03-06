@@ -2,8 +2,8 @@ import React from 'react';
 import Modal from './Modal';
 import { Flex, Button, DefaultInput, ColorPicker } from '../..';
 import { addLabel } from './../../../modules';
-import * as errors from '../../../constants/ErrorMessages.js';
 import './Modal.scss';
+import { Messages } from '../../../i18n';
 
 class LabelCreationModal extends Modal {
   constructor () {
@@ -18,10 +18,10 @@ class LabelCreationModal extends Modal {
     const { name } = this.state;
     this.setState({ error: null })
     if (name < 1) {
-      return errors.LABEL_NAME_REQUIRED;
+      return Messages.LABEL_NAME_REQUIRED;
     }
     if (name > 32) {
-      return errors.LABEL_NAME_TOO_LONG;
+      return Messages.LABEL_NAME_TOO_LONG;
     }
     return null;
   }
@@ -57,15 +57,15 @@ class LabelCreationModal extends Modal {
       <div>
         <div className='modal-content'>
           <div className='modal-header'>
-            New Label
+            {Messages.MODAL_LABEL_CREATION_TITLE}
           </div>
           
           <div className='modal-body'>
             <p className='modal-error'>{this.state.error}</p>
-            <header>Name</header>
+            <header>{Messages.MODAL_LABEL_CREATION_LABEL_NAME_HEADER}</header>
             <DefaultInput onChange={(e) => this.handleNameChange(e)} />
 
-            <header>Color</header>
+            <header>{Messages.MODAL_LABEL_CREATION_LABEL_COLOR_HEADER}</header>
             <ColorPicker
               color={this.state.color || '#ffffff'}
               onChangeComplete={(color) => this.handleColorChange(color)}
@@ -73,8 +73,8 @@ class LabelCreationModal extends Modal {
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.createLabel()} className='btn modal-confirm'>Done</Button>
-          <Button onClick={(e) => this.close('cancel', e)} className='modal-cancel btn'>Cancel</Button>
+          <Button onClick={(e) => this.createLabel()} className='btn modal-confirm'>{Messages.MODAL_GENERIC_CONFIRM_DONE}</Button>
+          <Button onClick={(e) => this.close('cancel', e)} className='modal-cancel btn'>{Messages.MODAL_GENERIC_CANCEL}</Button>
         </Flex>
       </div>
     );

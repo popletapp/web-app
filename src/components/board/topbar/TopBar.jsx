@@ -7,6 +7,7 @@ import { toggleChatroomVisibility, toggleMemberListVisibility, createGroup, crea
 import { Link } from 'react-router-dom';
 import MinimalisticButton from '../../general/button/MinimalisticButton';
 import { permissions } from './../../../util';
+import { Messages } from './../../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -44,11 +45,11 @@ class TopBar extends Component {
                 <div className='board-selection selection-option'>
                   <li className='board-selection-join' onClick={() => createModal(<BoardJoinModal />)}>
                     <i className='material-icons'>people</i>
-                    <p>Join a Board</p>
+                    <p>{Messages.JOIN_A_BOARD}</p>
                   </li>
                   <li className='board-selection-create' onClick={() => createModal(<BoardCreationModal />)}>
                     <i className='material-icons'>add_circle</i>
-                    <p>Create a new Board</p>
+                    <p>{Messages.CREATE_NEW_BOARD}</p>
                   </li>
                 </div>
                 <li className="divider" tabIndex="-1"></li>
@@ -81,7 +82,9 @@ class TopBar extends Component {
                   </Flex>
                   <Flex direction='row' align='center' className='board-info-member-count'>
                     <FlexChild align='left'>
-                      {board.members ? board.members.length : 0} member{board.members && board.members.length === 1 ? '' : 's'}
+                      {board.members && (board.members.length === 1 
+                      ? Messages.BOARD_MEMBER_COUNT_MEMBER 
+                      : Messages.BOARD_MEMBER_COUNT_MEMBER_PLURAL).replace('{{0}}', board.members ? board.members.length : 0)}
                     </FlexChild>       
                     <FlexChild className='member-list-btn' align='right'>
                       <Tooltip content='Member List'>
@@ -104,26 +107,27 @@ class TopBar extends Component {
               <li className="divider" tabIndex="-1"></li>
               <div className='board-selection selection-option'>
                 {permissions.has(['MODERATOR', 'INVITE_MEMBERS']) && <li className='large-invite-members-btn' onClick={() => createModal(<BoardInviteMembersModal boardID={board.id} />)}>
-                  <i className='material-icons' style={{ width: '24px' }}>add_friend</i><p>Invite Members</p>
+                  <i className='material-icons' style={{ width: '24px' }}>add_friend</i><p>{Messages.BOARD_INVITE_MEMBERS}</p>
                 </li>}
-                {permissions.has('MANAGE_BOARD') && <li onClick={() => createModal(<BoardSettingsModal />)}><i className='material-icons'>settings</i><p>Settings</p></li>}
-                <li><i className='material-icons'>notifications_active</i><p>Notification Settings</p></li>
+                {permissions.has('MANAGE_BOARD') && <li onClick={() => createModal(<BoardSettingsModal />)}><i className='material-icons'>settings</i><p>{Messages.BOARD_SETTINGS}</p></li>}
+                <li><i className='material-icons'>notifications_active</i><p>{Messages.BOARD_NOTIFICATION_SETTINGS}</p></li>
                 
-                <li onClick={() => leaveBoard(board.id)} className='leave-board'><i className='material-icons'>subdirectory_arrow_right</i><p>Leave Board</p></li>
+                <li onClick={() => leaveBoard(board.id)} className='leave-board'><i className='material-icons'>subdirectory_arrow_right</i><p>{Messages.BOARD_LEAVE_BOARD}</p></li>
               </div>
             </ul>
           </div>
 
           <div className='options-top-section-left'>
             <Flex wrap={true} className='toolbar-container'>
-              <FlexChild onClick={() => createNote(board.id, { title: 'Title', content: 'Content' })} className='toolbar-option' direction='row' align='center'>
+              <FlexChild onClick={() => createNote(board.id, { title: Messages.NOTE_DEFAULT_TITLE, 
+                content: Messages.NOTE_DEFAULT_TITLE })} className='toolbar-option' direction='row' align='center'>
                 <Button disabled={!permissions.has('MANAGE_NOTES')} color='purple lighten-2' icon='note_add' className='toolbar-btn' />
-                <p>New Note</p>
+                <p>{Messages.BOARD_TOPBAR_NEW_NOTE}</p>
               </FlexChild>
 
-              <FlexChild onClick={() => createGroup(board.id, { name: 'Group' })} className='toolbar-option' direction='row' align='center'>
+              <FlexChild onClick={() => createGroup(board.id, { name: Messages.GROUP_DEFAULT_TITLE })} className='toolbar-option' direction='row' align='center'>
                 <Button disabled={!permissions.has('MANAGE_NOTES')} color='purple lighten-1' icon='library_add' className='toolbar-btn' />
-                <p>New Group</p>
+                <p>{Messages.BOARD_TOPBAR_NEW_GROUP}</p>
               </FlexChild>
 
               <FlexChild onClick={() => this.props.updateView(board.id, listView ? 0 : 1)} className='toolbar-option' direction='row' align='center'>
@@ -131,22 +135,22 @@ class TopBar extends Component {
                   icon={!listView ? 'format_list_bulleted' : 'dashboard'}
                   color='pink lighten-2'
                   className='toolbar-btn' />
-                <p>{listView ? 'Note View' : 'List View'}</p>
+                <p>{listView ? Messages.BOARD_TOPBAR_NOTE_VIEW : Messages.BOARD_TOPBAR_LIST_VIEW}</p>
               </FlexChild>
 
               <FlexChild onClick={() => toggleChatroomVisibility()} className='toolbar-option' direction='row' align='center'>
                 <Button icon='chat_bubble' color='pink lighten-1' className='toolbar-btn' />
-                <p>Chatroom</p>
+                <p>{Messages.BOARD_TOPBAR_CHATROOM}</p>
               </FlexChild>
 
               <FlexChild className='zoom-container'>
-                <header>Zoom Options</header>
+                <header>{Messages.BOARD_TOPBAR_ZOOM_OPTIONS}</header>
                 <div className='zoom-options'>
                   {/* Zoom starts at 1 and increases by 0.5 each time and decreases by 0.25 */}
-                  <Tooltip content='Zoom In'>
+                  <Tooltip content={Messages.BOARD_TOPBAR_ZOOM_IN}>
                     <div onClick={() => this.props.setZoomLevel(board.id, 0.25)} className='zoom-options-plus'>+</div>
                   </Tooltip>
-                  <Tooltip content='Zoom Out'>
+                  <Tooltip content={Messages.BOARD_TOPBAR_ZOOM_OUT}>
                     <div onClick={() => this.props.setZoomLevel(board.id, -0.25)} className='zoom-options-minus'>-</div>
                   </Tooltip>
                 </div>

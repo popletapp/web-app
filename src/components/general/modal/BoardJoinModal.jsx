@@ -4,7 +4,7 @@ import { DefaultInput, Flex, Button } from '../../';
 import Poplet from './../../../';
 import { switchBoard, joinBoard, checkInvite } from '../../../modules';
 import './Modal.scss';
-import * as errors from '../../../constants/ErrorMessages.js';
+import { Messages } from './../../../i18n';
 
 class BoardJoinModal extends Modal {
   constructor ({ location }) {
@@ -19,9 +19,9 @@ class BoardJoinModal extends Modal {
   async check ({ code }) {
     const invite = await checkInvite(code);
     if (!invite) {
-      throw new Error(errors.BOARD_JOIN_INVITE_LINK_INVALID);
+      throw new Error(Messages.BOARD_JOIN_INVITE_LINK_INVALID);
     } else if (code.length < 2) {
-      throw new Error(errors.BOARD_JOIN_INVITE_LINK_UNAUTHORIZED);
+      throw new Error(Messages.BOARD_JOIN_INVITE_LINK_UNAUTHORIZED);
     } else {
       return null;
     }
@@ -73,17 +73,17 @@ class BoardJoinModal extends Modal {
       <div>
         <div className='modal-content'>
           <div className='modal-header'>
-            Join a Board
+            {Messages.JOIN_A_BOARD}
           </div>
           <div className='modal-body'>
-            <p>Enter an invite code below:</p>
+            <p>{Messages.MODAL_JOIN_BOARD_BODY_LINE_1}</p>
             <p className='modal-error'>{this.state.error}</p>
             <DefaultInput onChange={(e) => this.handleEvent(e, 'input')} placeholder='Code' />
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.handleEvent(e, 'cancel')} className='modal-close btn modal-cancel'>{this.props.cancelText || 'Cancel'}</Button>
-          <Button onClick={(e) => this.handleEvent(e, 'confirm')} className='modal-close btn modal-confirm'>{this.props.confirmText || 'Join'}</Button>
+          <Button onClick={(e) => this.handleEvent(e, 'cancel')} className='modal-close btn modal-cancel'>{this.props.cancelText || Messages.MODAL_GENERIC_CANCEL}</Button>
+          <Button onClick={(e) => this.handleEvent(e, 'confirm')} className='modal-close btn modal-confirm'>{this.props.confirmText || Messages.MODAL_JOIN_BOARD_JOIN}</Button>
         </Flex>
       </div>
     );

@@ -5,6 +5,7 @@ import { getActionLog } from '../../../modules';
 import './EditRevisionsModal.scss';
 import { connect } from 'react-redux';
 import { diffText, parseTime } from './../../../util';
+import { Messages } from '../../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -63,14 +64,14 @@ class EditRevisionsModal extends Modal {
       <div>
         <div className='modal-content edit-revision-modal-content'>
           <div className='modal-header'>
-            Edit revisions for this note
+            {Messages.MODAL_EDIT_REVISIONS_TITLE}
           </div>
           
           <div className='modal-body'>
             <p className='modal-error'>{this.state.error}</p>
             <Flex className='edit-revision-container'>
               <Scroller style={{ maxHeight: '500px' }}>
-                {!actionLog && <div>Loading...</div>}
+                {!actionLog && <div>{Messages.LOADING}</div>}
                 {actionLog && actionLog.filter(m => m && m.before && m.before.id === noteId).map((log) => {
                   const user = users[log.executor || { username: 'Unknown User' }];
                   return <Revision executor={user} beforeContent={log.before.content} afterContent={log.after.content} timestamp={log.timestamp} />
@@ -80,7 +81,7 @@ class EditRevisionsModal extends Modal {
           </div>
         </div>
         <Flex className='modal-footer edit-revision-modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.actionMade('cancel', e)} className='modal-cancel btn'>Done</Button>
+          <Button onClick={(e) => this.actionMade('cancel', e)} className='modal-cancel btn'>{Messages.MODAL_GENERIC_CANCEL_CLOSE}</Button>
         </Flex>
       </div>
     );

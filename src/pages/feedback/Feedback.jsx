@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { PopletBase, Avatar, NavBar, Button, MinimalisticButton, Flex, FlexChild } from '../../components';
 import './Feedback.scss';
 import Poplet from './../../';
+import { Messages } from '../../i18n';
 
 function mapStateToProps (state) {
   return {
@@ -38,10 +39,10 @@ class Feedback extends PopletBase {
     const { user } = this.props;
     const { area, text, what } = this.state;
     if (!area.id && !what) {
-      return this.setState({ error: 'You need to include where this incident happened.' });
+      return this.setState({ error: Messages.FEEDBACK_LOCATION_MISSING });
     }
     if (!text) {
-      return this.setState({ error: 'You need to include something to submit.' });
+      return this.setState({ error: Messages.FEEDBACK_TYPE_MISSING });
     }
 
     this.setState({
@@ -72,20 +73,20 @@ class Feedback extends PopletBase {
                 if (submitted) {
                   return (
                     <FlexChild>
-                      <h2>Big thanks for your {what ? 'feedback' : 'bug report'}!</h2>
-                      <h4>Every little contribution and report makes Poplet better for everybody, so thanks for taking the time out of your day to be awesome!</h4>
-                      <Link to='/home'>Go back home</Link>
+                      <h2>{Messages.FEEDBACK_THANKS.replace('{0}', (what ? Messages.FEEDBACK : Messages.BUG_REPORT).toLowerCase())}</h2>
+                      <h4>{Messages.FEEDBACK_THANKS_DESCRIPTION}</h4>
+                      <Link to='/home'>{Messages.FEEDBACK_GO_HOME}</Link>
                     </FlexChild>
                   );
                 } else {
                   return (
                     <Flex>
                       <FlexChild className='feedback-choice'>
-                        <h2>What are you reporting on this fine day?</h2>
+                        <h2>{Messages.FEEDBACK_REPORTING}</h2>
                         <div className='dropdown-trigger' data-target='what-choice-dropdown'>
                           <Flex align='center' direction='row'>
                             <MinimalisticButton icon='keyboard_arrow_down' color='red' className='board-selector-btn' />
-                            <p>{what ? 'Feedback' : 'Bug Report'}</p>
+                            <p>{what ? Messages.FEEDBACK : Messages.BUG_REPORT}</p>
                           </Flex>
                         </div>
                       </FlexChild>
@@ -93,29 +94,29 @@ class Feedback extends PopletBase {
                       {!what &&
                       <Flex className='feedback-bug-where'>
                         <FlexChild>
-                          <h2>Where did this happen?</h2>
+                          <h2>{Messages.FEEDBACK_HAPPENED_WHERE}</h2>
                           <div className='dropdown-trigger' data-target='component-dropdown'>
                             <Flex align='center' direction='row'>
                               <MinimalisticButton icon='keyboard_arrow_down' color='red' className='board-selector-btn' />
-                              <p>{area.friendly || 'Click here to select'}</p>
+                              <p>{area.friendly || Messages.FEEDBACK_CLICK_TO_SELECT}</p>
                             </Flex>
                           </div>
                         </FlexChild>
 
                         <FlexChild>
-                          <h2>So, {user.username || 'user'}, can you explain what happened exactly?</h2>
-                          <h5 className='feedback-subtext'>I've even given you this nice little textbox so you can tell us what happened.</h5>
+                          <h2>{Messages.FEEDBACK_HAPPENED_WHAT.replace('{0}', user.username || 'user')}</h2>
+                          <h5 className='feedback-subtext'>{Messages.FEEDBACK_TEXTAREA_SUBTEXT}</h5>
                           <textarea onBlur={(e) => this.onBlur(e)} style={{ maxWidth: '100%', width: '100%', height: '150px', resize: 'none' }}></textarea>
                         </FlexChild>
                       </Flex>}
 
                       {!!what && <FlexChild className='feedback-general-what'>
-                        <h2>What feedback did you want to leave for the developers?</h2>
+                        <h2>{Messages.FEEDBACK_COMMENT_SUBTEXT}</h2>
                         <textarea onBlur={(e) => this.onBlur(e)} style={{ maxWidth: '100%', width: '100%', height: '150px', resize: 'none' }}></textarea>
                       </FlexChild>}
                       <div className='feedback-error'>{error}</div>
                       <Button onClick={() => this.onSubmit()} color='green' style={{ marginTop: '24px' }}>
-                      Submit
+                        {Messages.SUBMIT}
                       </Button>
                     </Flex>
                   );
@@ -126,14 +127,14 @@ class Feedback extends PopletBase {
         </Flex>
 
         <ul id='what-choice-dropdown' className='dropdown-content'>
-          <li onClick={() => this.setState({ what: 0 })}>Bug Report (issue)</li>
-          <li onClick={() => this.setState({ what: 1 })}>General Feedback (changes/etc)</li>
+          <li onClick={() => this.setState({ what: 0 })}>{Messages.FEEDBACK_BUG_REPORT}</li>
+          <li onClick={() => this.setState({ what: 1 })}>{Messages.FEEDBACK_GENERAL_FEEDBACK}</li>
         </ul>
 
         <ul id='component-dropdown' className='dropdown-content'>
           <li className="feedback-divider feedback-subheader-dropdown" tabIndex="-1">Pages</li>
-          <li onClick={(e) => this.setState({ area: { friendly: e.target.innerText, id: 'landing' } })} className='board-item'>Landing Page</li>
-          <li onClick={(e) => this.setState({ area: { friendly: e.target.innerText, id: 'home' } })} className='board-item'>Home Screen</li>
+          <li onClick={(e) => this.setState({ area: { friendly: e.target.innerText, id: 'landing' } })} className='board-item'>{Messages.FEEDBACK_LOCATION_LANDING_PAGE}</li>
+          <li onClick={(e) => this.setState({ area: { friendly: e.target.innerText, id: 'home' } })} className='board-item'>{Messages.FEEDBACK_LOCATION_HOME_SCREEN}</li>
 
           <li className="feedback-divider feedback-subheader-dropdown" tabIndex="-1">Specific Board</li>
           {Object.values(boards).map(board => {

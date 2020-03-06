@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { updateBoard } from './../../../modules';
 import './NoteSettingsScreen.scss';
 import RULESETS from '../../../constants/Rulesets';
+import { Messages } from '../../../i18n';
 
 const BASE_RULE = {
   id: 0,
@@ -55,15 +56,15 @@ function Performable () {
     <Flex direction='column' key={key} grow={1} align='left'>
       <Flex direction='row' grow={1} align='center'>
         <select value={value} onChange={(e) => selectionHandler(e)}>
-          <option value='assign-members'>assign these members</option>
-          <option value='set-title'>set the title to</option>
-          <option value='add-content-title'>add content to the notes title</option>
-          <option value='add-content-desc'>add content to the note</option>
-          <option value='replace-content'>replace the content of the note</option>
-          <option value='add-due-date'>add a due date</option>
-          <option value='set-importance'>mark as important</option>
-          <option value='announce-content'>announce content</option>
-          <option value='send-notif'>send a notification</option>
+          <option value='assign-members'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ASSIGN_MEMBERS}</option>
+          <option value='set-title'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_SET_TITLE}</option>
+          <option value='add-content-title'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_TITLE}</option>
+          <option value='add-content-desc'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_DESCRIPTION}</option>
+          <option value='replace-content'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_REPLACE_CONTENT}</option>
+          <option value='add-due-date'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_DUE_DATE}</option>
+          <option value='set-importance'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_SET_IMPORTANCE}</option>
+          <option value='announce-content'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ANNOUNCE_CONTENT}</option>
+          <option value='send-notif'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_SEND_NOTIFICATION}</option>
         </select>
         <CloseButton onClick={() => isRemoved(true)} />
       </Flex>
@@ -152,7 +153,7 @@ class PerformableGroup extends Component {
         {performables}
       </FlexChild>
       <FlexChild className='performable-creation-section' direction='row'>
-        <span className='performable-creation-text-add'>and...</span>
+        <span className='performable-creation-text-add'>{Messages.BOARD_SETTINGS_NOTES_AND}</span>
         <NewPerformableButton />
       </FlexChild>
     </Flex> : <NewPerformableButton />
@@ -221,25 +222,25 @@ class Rule extends Component {
     return (<div>
       <div className='rule-creating'>
         <Flex align='center' direction='row'>
-          <span className='rule-creation-header' style={{ marginRight: '12px' }}>Rule</span> <DefaultInput placeholder={rule.name || index.toString()}></DefaultInput>
+          <span className='rule-creation-header' style={{ marginRight: '12px' }}>{Messages.BOARD_SETTINGS_NOTES_RULE}</span> <DefaultInput placeholder={rule.name || index.toString()}></DefaultInput>
         </Flex>
         <div className='board-note-settings-midheader'>
-          When <b>
+          {Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_WHEN} <b>
             <select onChange={(e) => this.handleActionTypeSelect(e)}>
-              <option value='new-note'>a new</option>
-              <option value='existing-note'>an existing</option>
+              <option value='new-note'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NEW}</option>
+              <option value='existing-note'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_EXISTING}</option>
             </select>
-          </b> note is...
+          </b> {Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_TARGET_NOTE}
           <select onChange={(e) => this.handleActionTypeSelect(e)}>
-            {!existingSelected ? <option value={rule.NOTE_CREATED} value='created'>created</option> : null}
-            {existingSelected ? <option value={rule.NOTE_EDITED} value='edited'>edited</option> : null}
-            {existingSelected ? <option value={rule.NOTE_DELETED} value='deleted'>deleted</option> : null}
+            {!existingSelected ? <option value={rule.NOTE_CREATED} value='created'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NOTE_CREATED}</option> : null}
+            {existingSelected ? <option value={rule.NOTE_EDITED} value='edited'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NOTE_EDITED}</option> : null}
+            {existingSelected ? <option value={rule.NOTE_DELETED} value='deleted'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NOTE_DELETED}</option> : null}
           </select>
         </div>
         
         <Flex direction='column'>
           <Flex direction='row' grow={0} className='board-settings-subheader'>
-            Performables
+            {Messages.BOARD_SETTINGS_NOTES_PERFORMABLES}
           </Flex>
           {performableMenu}
         </Flex>
@@ -289,29 +290,29 @@ class NoteSettingsScreen extends Component {
     return (
       <Flex direction='column' align='left' className='board-settings-content-container'>
         <div className='board-settings-header'>
-          Notes
+          {Messages.BOARD_SETTINGS_CATEGORY_NOTES_TITLE}
         </div>
         <div className='board-settings-text'>
-          Adjust how notes look and perform actions on certain events
+          {Messages.BOARD_SETTINGS_CATEGORY_NOTES_DESCRIPTION}
         </div>
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>
-          Compact Mode
+          {Messages.BOARD_SETTINGS_CATEGORY_NOTES_COMPACT_MODE}
           <ToggleSwitch onChange={(compact) => this.updateBoardCompact(compact)} initialState={compact} small={true} style={{ marginLeft: '24px' }} />
         </Flex>
-        Makes notes take up less space on the screen and displays less information
+        {Messages.BOARD_SETTINGS_CATEGORY_NOTES_COMPACT_MODE_DESCRIPTION}
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>
-          Action Types
+          {Messages.BOARD_SETTINGS_NOTES_ACTION_TYPES}
         </Flex>
 
         <List style={{ height: 'auto', maxHeight: '50%', paddingRight: '12px' }}>
           <Scroller>
-            {!rules.length && <div>No note rules</div>}
+            {!rules.length && <div>{Messages.BOARD_SETTINGS_NOTES_NO_NOTE_RULES}</div>}
             {rules.length && rules.map((rule, i) => <Rule index={i} key={i} rule={rule} />)}
           </Scroller>
         </List>
-        <div style={{ marginTop: '12px' }} className='btn' onClick={() => this.createRule()}>New Rule</div>
+        <div style={{ marginTop: '12px' }} className='btn' onClick={() => this.createRule()}>{Messages.BOARD_SETTINGS_NOTES_NEW_RULE}</div>
       </Flex>
     );
   }
