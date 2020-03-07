@@ -81,3 +81,90 @@ button.btn-circle {
   line-height: 32px;
   padding: 0;
 }
+
+.checkbox {
+  input {
+    position: absolute;
+    opacity: 0;
+  
+    & + label:before {
+      content: '';
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: text-top;
+      width: 28px;
+      height: 28px;
+      background: var(--light-accent-color-5);
+    }
+
+    &:checked + label:after {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 13px;
+      background: white;
+      width: 3px;
+      height: 3px;
+      box-shadow: 
+        3px 0 0 white,
+        4px 0 0 white,
+        4px -2px 0 white,
+        4px -4px 0 white,
+        4px -6px 0 white,
+        4px -8px 0 white;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.radiobutton {
+  input {
+    position: absolute;
+    opacity: 0;
+
+    & + label:before {
+      content: '';
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: text-top;
+      width: 28px;
+      height: 28px;
+      background: var(--light-accent-color-5);
+      border-radius: 50%;
+    }
+  }
+}
+
+.radiobutton, .checkbox {
+  input {
+    & + label {
+      display: flex;
+      position: relative;
+      cursor: pointer;
+      padding: 0;
+      align-items: center;
+    }
+
+    // Box focus
+    &:focus + label:before {
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+    }
+  
+    // Box checked
+    &:checked + label:before {
+      background: var(--poplet-purple);
+    }
+    
+    // Disabled state label.
+    &:disabled + label {
+      color: var(--text-accent-color-2);
+      cursor: auto;
+    }
+  
+    // Disabled box.
+    &:disabled + label:before {
+      box-shadow: none;
+      background: var(--text-accent-color-1);
+    }
+  }
+}

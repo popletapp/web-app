@@ -47,6 +47,7 @@ export { default as getUser } from './user/getUser.js';
 export { default as getUserBoards } from './user/getUserBoards.js';
 export { default as logout } from './user/logout.js';
 export { default as addAvatar } from './user/addAvatar.js';
+export { default as updateUser } from './user/updateUser.js';
 
 // Chatroom
 export { default as getChatroom } from './chatroom/getChatroom.js';
