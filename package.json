@@ -1,6 +1,6 @@
 {
   "name": "poplet",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
     "@sentry/browser": "^5.5.0",
@@ -9,6 +9,8 @@
     "diff": "^4.0.2",
     "emotion": "^10.0.27",
     "highlight.js": "^9.15.8",
+    "i18next": "^19.3.2",
+    "i18next-xhr-backend": "^3.2.2",
     "is-mobile": "^2.1.0",
     "materialize-css": "^1.0.0",
     "prismjs": "^1.19.0",
@@ -23,6 +25,7 @@
     "react-dom": "^16.12.0",
     "react-draggable": "^4.2.0",
     "react-dragula": "^1.1.17",
+    "react-i18next": "^11.3.3",
     "react-markdown": "^4.1.0",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
