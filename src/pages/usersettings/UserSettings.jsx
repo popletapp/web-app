@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import { getUser } from '../../modules';
 import './UserSettings.scss';
 import { USER_SETTINGS_CATEGORIES } from './../../constants/Categories';
-import { UserSettingsGeneral } from './index';
-import { Messages } from '../../i18n';
+import { UserSettingsGeneral, UserSettingsAppearance, UserSettingsLanguage } from './index';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
@@ -15,7 +15,9 @@ function mapStateToProps (state, props) {
 }
 
 const TABS = {
-  GENERAL: UserSettingsGeneral
+  GENERAL: UserSettingsGeneral,
+  APPEARANCE: UserSettingsAppearance,
+  LANGUAGE: UserSettingsLanguage
 }
 
 class UserSettings extends PopletBase {
@@ -37,23 +39,23 @@ class UserSettings extends PopletBase {
       link.removeAttribute('active')
     }
     event.target.setAttribute('active', true)
-    this.setState({ selectedTab: event.target.innerText.toUpperCase() });
+    this.setState({ selectedTab: event.target.dataset.tab.toUpperCase() });
   }
 
   render () {
-    const { user = null } = this.props;
+    const { user = null, t } = this.props;
     const { selectedTab } = this.state;
-    const normalTabName = selectedTab.charAt(0).toUpperCase() + selectedTab.substring(1).toLowerCase();
+    const normalTabName = t(`USER_SETTINGS_CATEGORY_${selectedTab}`);
     let Category = TABS[selectedTab];
     if (!Category) {
       Category = () => 
       <Flex direction='column' className='user-settings-content'>
-        <h1>{Messages.COMING_SOON}</h1>
+        <h1>{t("COMING_SOON")}</h1>
         <hr></hr>
 
         <FlexChild direction='row' grow={0} className='user-settings-setting'>
           <header className='user-settings-header'>
-            {Messages.USER_SETTINGS_NOT_READY}
+            {t("USER_SETTINGS_NOT_READY")}
           </header>
         </FlexChild>
       </Flex>
@@ -68,12 +70,12 @@ class UserSettings extends PopletBase {
               <Flex className='user-settings-container' grow={0} shrink={1} align='left' direction='row'>
                 <section>
                   <FlexChild className='user-settings-nav' grow={0} shrink={1} direction='row' align='center'>
-                    <Avatar className='user-settings-avatar' url={user.avatar} alt={user.username} size='small' />
+                    <Avatar id={user.id} className='user-settings-avatar' url={user.avatar} alt={user.username} size='small' />
                     <Flex grow={1} direction='row' align='center' className='user-settings-nav-text' style={{ marginLeft: '24px' }}>
                       <FlexChild grow={0} shrink={1} direction='row' align='center'>
                         <Link to={`/users/${user.id}`}>{user.username}</Link> 
                         <span className='user-settings-arrow'> → </span> 
-                        <Link to='/settings'>{Messages.SETTINGS}</Link>
+                        <Link to='/settings'>{t("SETTINGS")}</Link>
                         <span className='user-settings-arrow'> → </span> 
                         <Link to='/settings'>{normalTabName}</Link>
                       </FlexChild>
@@ -83,11 +85,12 @@ class UserSettings extends PopletBase {
                   <Flex direction='row'>
                     <FlexChild className='user-settings-nav-vert' grow={1} shrink={0}>
                       <ul onClick={(e) => this.navChange(e)}>
-                        <li active='true'>{Messages.USER_SETTINGS_CATEGORY_GENERAL}</li>
-                        <li>{Messages.USER_SETTINGS_CATEGORY_APPERANCE}</li>
-                        <li>{Messages.USER_SETTINGS_CATEGORY_NOTIFICATIONS}</li>
-                        <li>{Messages.USER_SETTINGS_CATEGORY_PRIVACY}</li>
-                        <li>{Messages.USER_SETTINGS_CATEGORY_SECURITY}</li>
+                        <li data-tab='General' active='true'>{t("USER_SETTINGS_CATEGORY_GENERAL")}</li>
+                        <li data-tab='Appearance'>{t("USER_SETTINGS_CATEGORY_APPEARANCE")}</li>
+                        <li data-tab='Notifications'>{t("USER_SETTINGS_CATEGORY_NOTIFICATIONS")}</li>
+                        <li data-tab='Privacy'>{t("USER_SETTINGS_CATEGORY_PRIVACY")}</li>
+                        <li data-tab='Security'>{t("USER_SETTINGS_CATEGORY_SECURITY")}</li>
+                        <li data-tab='Language'>{t("USER_SETTINGS_CATEGORY_LANGUAGE")}</li>
                       </ul>
                     </FlexChild>
 
@@ -100,7 +103,7 @@ class UserSettings extends PopletBase {
             if (user === null) {
               return null;
             } else {
-              return <div>{Messages.USER_SETTINGS_INACCESSIBLE}</div>
+              return <div>{t("USER_SETTINGS_INACCESSIBLE")}</div>
             }
           }
         })()}
@@ -110,4 +113,4 @@ class UserSettings extends PopletBase {
   }
 }
 
-export default connect(mapStateToProps, null)(UserSettings);
+export default withTranslation()(connect(mapStateToProps, null)(UserSettings));
