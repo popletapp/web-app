@@ -2,12 +2,42 @@ import React, { Component } from 'react';
 import './ContextMenu.scss';
 import { Flex } from '../../';
 import { removeContextMenu } from './../../../modules';
+import { findAncestor } from './../../../util'
 
 class ContextMenuItem extends Component {
+  onClick (event) {
+    const { onClick } = this.props;
+    if (typeof onClick === 'function') {
+      onClick();
+    }
+    this.actionMade('item', event);
+  }
+
+  actionMade (type, event) {
+    const { onCancel, onConfirm = () => {} } = this.props;
+    this.close();
+    if (type) {
+      if (type === 'cancel' && onCancel) {
+        return onCancel();
+      } else {
+        return onConfirm(this.state);
+      }
+    }
+    this.forceUpdate();
+  }
+
+  close () {
+    const { onClose = () => void 0 } = this.props;
+    if (typeof onClose === 'function') {
+      onClose();
+    }
+    removeContextMenu();
+  }
+
   render () {
     const { name, type, icon, onClick } = this.props;
     return (
-      <Flex className='contextmenu-item' direction='row' onClick={onClick}>
+      <Flex className='contextmenu-item' direction='row' onClick={(e) => this.onClick(e)}>
         {(() => {
           if (type === 'submenu') {
             
@@ -33,30 +63,11 @@ class ContextMenu extends Component {
     this.escListener = (e) => e.keyCode === 27 && this.actionMade('cancel', e);
     this.clickListener = (event) => {
       let el = event.target;
-      do {
-        if (el.matches('.contextmenu')) return el;
-        el = el.parentElement || el.parentNode;
-      } while (el !== null && el.nodeType === 1);
-
-      if (el && el.classList && el.classList.contains('contextmenu') && this.onClick && typeof this.onClick === 'function') {
-        this.actionMade('cancel', event);
-      } else {
+      el = findAncestor(el, 'contextmenu');
+      if (!el) {
         this.close();
       }
     };
-  }
-
-  actionMade (type, event) {
-    const { onCancel, onConfirm = () => {} } = this.props;
-    this.close();
-    if (type) {
-      if (type === 'cancel' && onCancel) {
-        return onCancel();
-      } else {
-        return onConfirm(this.state);
-      }
-    }
-    this.forceUpdate();
   }
 
   close () {
@@ -70,7 +81,7 @@ class ContextMenu extends Component {
 
   componentDidMount () {
     window.listeners.subscribe('keydown', this.escListener, false);
-    window.listeners.subscribe(['click', 'mousedown'], this.clickListener, false);
+    window.listeners.subscribe('mouseup', this.clickListener, false);
   }
 
   componentWillUnmount () {
@@ -79,8 +90,7 @@ class ContextMenu extends Component {
 
   unsubscribe () {
     window.listeners.unsubscribe('keydown', this.escListener, false);
-    window.listeners.unsubscribe('click', this.clickListener, false);
-    window.listeners.unsubscribe('mousedown', this.clickListener, false);
+    window.listeners.unsubscribe('mouseup', this.clickListener, false);
   }
 
   render () {

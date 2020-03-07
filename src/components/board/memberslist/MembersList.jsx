@@ -5,6 +5,7 @@ import { createContextMenu } from './../../../modules';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 import './MembersList.scss';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state) {
   return {
@@ -19,7 +20,7 @@ class MembersList extends Component {
   }
 
   render () {
-    let { members } = this.props;
+    let { members, t } = this.props;
     const { showContextMenu } = this.state;
     if (!members) {
       return null;
@@ -31,7 +32,7 @@ class MembersList extends Component {
         <List className='align-stretch' style={{flexGrow: 1}}>
           <Scroller>
             <header>
-              Members
+              {t("MEMBERS_LIST_MEMBERS_HEADER")}
             </header>
             {members.map((user, i) =>
               <MemberPopout key={i+4} member={user}>
@@ -54,7 +55,7 @@ class MembersList extends Component {
                   selected={false}>
                   <Flex align='left' basis='auto' grow={1} shrink={1}>
                     <FlexChild align='left' direction='row' basis='auto' grow={1} shrink={1}>
-                      <User avatar={user.avatar} username={user.username} />
+                      <User id={user.id} avatar={user.avatar} username={user.username} />
                     </FlexChild>
                   </Flex>
                 </SelectableItem>
@@ -66,4 +67,4 @@ class MembersList extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(MembersList);
+export default withTranslation()(connect(mapStateToProps, null)(MembersList));

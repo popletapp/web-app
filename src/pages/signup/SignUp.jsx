@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Flex } from './../../components';
 import { Link } from 'react-router-dom';
 import './SignUp.scss';
-import { Messages } from '../../i18n';
+import { withTranslation } from 'react-i18next';
 
 class SignUp extends Component {
   constructor () {
@@ -126,31 +126,32 @@ class SignUp extends Component {
   }
 
   render () {
+    const { t } = this.props;
     return (
       <div className='authentication-page-container'>
         <section className='cinematic-authentication'></section>
         <div className='authentication-container animated fadeIn'>
           <div className='authentication'>
             <div className='authentication-header'>
-              <h1>{Messages.SIGNUP_SIGN_UP_FOR_POPLET}</h1>
-              <h4 className='description'>{Messages.SIGNUP_WELCOME}</h4>
+              <h1>{t("SIGNUP_SIGN_UP_FOR_POPLET")}</h1>
+              <h4 className='description'>{t("SIGNUP_WELCOME")}</h4>
               <h4 className='authentication-header-error'>{this.state.error}</h4>
             </div>
             <form onSubmit={(e) => this.signupButtonClicked(e)} className='signup-form'>
               <div className='username-container'>
-                <label htmlFor='username'>{Messages.USERNAME}</label>
+                <label htmlFor='username'>{t("USERNAME")}</label>
                 <input onInput={(e) => this.setState({ username: e.target.value }, () => this.checkUsername())}
                   id='username' type='text' className={`text-input ${this.state.error && this.state.errorOccured === 'username' ? 'invalid-text-input' : ''}`} />
               </div>
 
               <div className='email-container'>
-                <label htmlFor='username'>{Messages.EMAIL}</label>
+                <label htmlFor='username'>{t("EMAIL")}</label>
                 <input onInput={(e) => this.setState({ email: e.target.value }, () => this.checkEmail())}
                   id='email' type='email' className={`text-input ${this.state.error && this.state.errorOccured === 'email' ? 'invalid-text-input' : ''}`} />
               </div>
 
               <div className='password-container'>
-                <label htmlFor='password'>{Messages.PASSWORD}</label>
+                <label htmlFor='password'>{t("PASSWORD")}</label>
                 <div className='password-component'>
                   <input onInput={(e) => this.setState({ password: e.target.value || '' }, () => this.checkSecurity())}
                     id='password' type='password' className='text-input'></input>
@@ -162,15 +163,15 @@ class SignUp extends Component {
               </div>
 
               <div className='password-container'>
-                <label htmlFor='password'>{Messages.SIGNUP_RE_ENTER_PASSWORD}</label>
+                <label htmlFor='password'>{t("SIGNUP_RE_ENTER_PASSWORD")}</label>
                 <input onInput={(e) => this.setState({ passwordReentry: e.target.value || '' }, () => this.checkIfSame(this.state.passwordReentry))}
                   id='pass-reenter' type='password' className={`text-input ${this.state.passwordsDontMatch === null ? '' : (this.state.passwordsDontMatch ? 'invalid-text-input' : 'valid-text-input')}`}></input>
               </div>
-              <button className='btn login-button' type='submit'>{Messages.SUBMIT}</button>
+              <button className='btn login-button' type='submit'>{t("SUBMIT")}</button>
             </form>
 
             <div className='account-exists'>
-              {Messages.SIGNUP_ACCOUNT_EXISTS_BODY_1} <Link className='account-exists-link' to='/login'>{Messages.SIGNUP_ACCOUNT_EXISTS_BODY_2}</Link>
+              {t("SIGNUP_ACCOUNT_EXISTS_BODY_1")} <Link className='account-exists-link' to='/login'>{t("SIGNUP_ACCOUNT_EXISTS_BODY_2")}</Link>
             </div>
           </div>
         </div>
@@ -179,4 +180,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+export default withTranslation()(SignUp);

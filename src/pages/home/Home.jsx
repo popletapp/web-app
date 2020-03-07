@@ -4,7 +4,7 @@ import { PopletBase, Avatar, Note, NavBar, BetaModal, Scroller, Flex } from './.
 import { createModal } from './../../modules';
 import { Link } from 'react-router-dom';
 import './Home.scss';
-import { Messages } from '../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state) {
   return {
@@ -20,7 +20,7 @@ class Home extends PopletBase {
   }
 
   render () {
-    let { boards, notes } = this.props;
+    let { boards, notes, t } = this.props;
     notes = notes.items || [];
     const activityFeedNotes = notes
       .sort((a, b) => b.modifiedAt - a.modifiedAt)
@@ -46,11 +46,11 @@ class Home extends PopletBase {
 
         <div className='home-container'>
           <div className='board-selector'>
-            <h2>{Messages.HOME_BOARDS_HEADER}</h2>
+            <h2>{t("HOME_BOARDS_HEADER")}</h2>
             {Object.values(boards).map((board, i) => {
               return (
                 <Link key={i} className='board-item' to={`/boards/${board.id}`}>
-                  <Avatar url={board.avatar} alt={board.name} size={32} />
+                  <Avatar id={board.id} url={board.avatar} alt={board.name} size={32} />
                   <div className='board-item-name'>
                     {board.name}
                   </div>
@@ -64,18 +64,18 @@ class Home extends PopletBase {
                 state: { modal: true }
               }}>
                 <div className='board-item-name'>
-                {Messages.JOIN_A_BOARD}
+                {t("JOIN_A_BOARD")}
                 </div>
               </Link>
 
-              <header>{Messages.NAVBAR_REGISTER_OR}</header>
+              <header>{t("NAVBAR_REGISTER_OR")}</header>
 
               <Link className='board-item board-item-create' to={{
                 pathname: '/boards/create',
                 state: { modal: true }
               }}>
                 <div className='board-item-name'>
-                  {Messages.CREATE_NEW_BOARD}
+                  {t("CREATE_NEW_BOARD")}
                 </div>
               </Link>
             </Flex>
@@ -84,11 +84,11 @@ class Home extends PopletBase {
 
           <div className='home-content-container'>
             <Scroller className='recently-viewed'>
-              <div className='recently-viewed-title'>{Messages.HOME_RECENTLY_VIEWED_HEADER}</div>
+              <div className='recently-viewed-title'>{t("HOME_RECENTLY_VIEWED_HEADER")}</div>
               <div className='recently-viewed-content'>
                 {(() => {
                   if (!notes.length) {
-                    return <div>{Messages.HOME_RECENTLY_VIEWED_NONE}</div>;
+                    return <div>{t("HOME_RECENTLY_VIEWED_NONE")}</div>;
                   } else {
                     return (
                     <>
@@ -102,12 +102,12 @@ class Home extends PopletBase {
             </Scroller>
 
             <Scroller className='activity-feed'>
-              <div className='activity-feed-title'>{Messages.HOME_ACTIVITY_FEED_HEADER}</div>
-              <div className='activity-feed-subtitle'>{Messages.HOME_ACTIVITY_FEED_SUBHEADER_RECENTLY_MODIFIED}</div>
+              <div className='activity-feed-title'>{t("HOME_ACTIVITY_FEED_HEADER")}</div>
+              <div className='activity-feed-subtitle'>{t("HOME_ACTIVITY_FEED_SUBHEADER_RECENTLY_MODIFIED")}</div>
               <div className='activity-feed-content'>
                 {(() => {
                   if (!notes.length) {
-                    return <div>{Messages.HOME_ACTIVITY_FEED_NO_ACTIVITY}</div>;
+                    return <div>{t("HOME_ACTIVITY_FEED_NO_ACTIVITY")}</div>;
                   } else {
                     return (
                     <>
@@ -126,4 +126,4 @@ class Home extends PopletBase {
   }
 }
 
-export default connect(mapStateToProps, null)(Home);
+export default withTranslation()(connect(mapStateToProps, null)(Home));

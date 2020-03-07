@@ -5,7 +5,7 @@ import { updateMember } from './../../../modules';
 import './Popout.scss';
 import './RankListPopout.scss';
 import { connect } from 'react-redux';
-import { Messages } from '../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state) {
   return {
@@ -23,13 +23,15 @@ class RankListPopout extends Popout {
   }
 
   content () {
-    const { member, ranks } = this.props;
+    const { member, ranks, t } = this.props;
     const memberRanks = ranks.filter(rank => !member.ranks.includes(rank.id));
     return (
       <Flex className='popout'>
         <FlexChild className='popout-content'>
           <div className='rank-list-header'>
-            {Messages.POPOUT_RANK_LIST_TITLE.replace('{0}', member.username)}
+            {t("POPOUT_RANK_LIST_TITLE", {
+              user: member.username
+            })}
           </div>
 
           <Flex className='rank-option-list' direction='column' align='center'>
@@ -38,7 +40,7 @@ class RankListPopout extends Popout {
                 <div className='rank-option-name'>{rank.name}</div>
               </Flex>
             ))}
-            {!memberRanks.length && <div>{Messages.POPOUT_RANK_LIST_NO_RANKS}</div>}
+            {!memberRanks.length && <div>{t("POPOUT_RANK_LIST_NO_RANKS")}</div>}
           </Flex>
         </FlexChild>
       </Flex>
@@ -46,4 +48,4 @@ class RankListPopout extends Popout {
   }
 }
 
-export default connect(mapStateToProps, null)(RankListPopout);
+export default withTranslation()(connect(mapStateToProps, null)(RankListPopout));

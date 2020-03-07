@@ -10,7 +10,7 @@ import 'highlight.js/styles/tomorrow-night.css';
 
 import './Modal.scss';
 import { permissions } from '../../../util';
-import { Messages } from '../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
@@ -33,15 +33,16 @@ class AddLabelButton extends Component {
   }
 
   render () {
+    const { t } = this.props;
     return (
       <div className='note-label-new' onClick={() => this.click()}>
         <div className='note-label-new-innerbtn'>+</div>
-        {Messages.LABEL_NEW_LABEL}
+        {t("LABEL_NEW_LABEL")}
       </div>
     )
   }
 }
-const ConnectedAddLabelButton = connect(mapStateToPropsLabelButton, null)(AddLabelButton);
+const ConnectedAddLabelButton = withTranslation()(connect(mapStateToPropsLabelButton, null)(AddLabelButton));
 
 class NoteDetailedView extends Modal {
   constructor ({ noteId, boardId }) {
@@ -120,10 +121,11 @@ class NoteDetailedView extends Modal {
   }
 
   onDelete () {
+    const { t } = this.props;
     const { note, boardId } = this.props;
     const modal = {
-      title: Messages.MODAL_DELETE_NOTE_TITLE,
-      content: Messages.MODAL_DELETE_NOTE_BODY_LINE_1
+      title: t("MODAL_DELETE_NOTE_TITLE"),
+      content: t("MODAL_DELETE_NOTE_BODY_LINE_1")
     }
     createModal(<ConfirmModal onConfirm={() => deleteNote(boardId, note.id)} title={modal.title} content={modal.content} />)
   }
@@ -164,7 +166,7 @@ class NoteDetailedView extends Modal {
   }
 
   render () {
-    const { note, board, boardId } = this.props;
+    const { note, board, boardId, t } = this.props;
     const { focused, color } = this.state;
 
     if (!note) return null;
@@ -212,7 +214,7 @@ class NoteDetailedView extends Modal {
               <div onClick={() => 
                 createModal(<ConfirmModal title={'Hey!'} confirmText={'Understandable'} cancelText={'😡'} content={'Sorry, but comments aren\'t available yet.'} />)} 
                 className='modal-note-comments-view'>
-                {Messages.NOTE_DETAILED_VIEW_VIEW_COMMENTS}
+                {t("NOTE_DETAILED_VIEW_VIEW_COMMENTS")}
               </div>
             </div>
           </div>
@@ -235,18 +237,18 @@ class NoteDetailedView extends Modal {
               </Tooltip>}
             </Flex>
 
-            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_COLOR_HEADER}</div>
+            <div className='modal-note-settings-header'>{t("NOTE_DETAILED_VIEW_COLOR_HEADER")}</div>
             <ColorPicker
               color={color || note.options.color || '#546e7a'}
               onChangeComplete={(color) => this.handleColorChange(color)}
             />
 
-            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_ASSIGNEES_HEADER}</div>
+            <div className='modal-note-settings-header'>{t("NOTE_DETAILED_VIEW_ASSIGNEES_HEADER")}</div>
             <ListPopout title='Assign Memebrs to this Note' onOptionSelected={(e) => this.optionSelectedAssignees(e)}>
               <div className='add-btn'>+</div>
             </ListPopout>
 
-            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_LABELS_HEADER}</div>
+            <div className='modal-note-settings-header'>{t("NOTE_DETAILED_VIEW_LABELS_HEADER")}</div>
             {note.labels.map((label, i) => {
               label = board.labels.find(l => l.id === label);
               return <Flex style={{ backgroundColor: label.color || '#757575' }} className='note-label' inline direction='row' justify='center' align='center' grow={0} key={i}>
@@ -259,7 +261,7 @@ class NoteDetailedView extends Modal {
               <div className='add-btn'>+</div>
             </ListPopout>
 
-            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_MODIFIED_HEADER}</div>
+            <div className='modal-note-settings-header'>{t("NOTE_DETAILED_VIEW_MODIFIED_HEADER")}</div>
             <div className='modal-note-settings-modified'>
               {new Date(note.modifiedAt).toLocaleDateString()} at {new Date(note.modifiedAt).toLocaleTimeString()}
               <br />
@@ -268,8 +270,8 @@ class NoteDetailedView extends Modal {
             </div>
             
             <div onClick={() => createModal(<EditRevisionsModal noteId={note.id} boardID={boardId} />)}
-            className='modal-note-settings-editrevision'>{Messages.NOTE_DETAILED_VIEW_VIEW_EDIT_REVISIONS}</div>
-            <div className='modal-note-settings-header'>{Messages.NOTE_DETAILED_VIEW_DUE_DATE_HEADER}</div>
+            className='modal-note-settings-editrevision'>{t("NOTE_DETAILED_VIEW_VIEW_EDIT_REVISIONS")}</div>
+            <div className='modal-note-settings-header'>{t("NOTE_DETAILED_VIEW_DUE_DATE_HEADER")}</div>
             <DatePickerPopout initial={note.dueDate ? new Date(note.dueDate) : null} 
               onOptionSelected={(date) => this.setState({ date })} 
               onClose={() => this.saveDueDate(this.state.date)}>
@@ -286,4 +288,4 @@ class NoteDetailedView extends Modal {
   }
 }
 
-export default connect(mapStateToProps, null)(NoteDetailedView);
+export default withTranslation()(connect(mapStateToProps, null)(NoteDetailedView));

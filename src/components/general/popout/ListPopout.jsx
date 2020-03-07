@@ -3,7 +3,7 @@ import Popout from './Popout';
 import { Flex, FlexChild } from '../..';
 import './Popout.scss';
 import './ListPopout.scss';
-import { Messages } from '../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 class ListPopout extends Popout {
   constructor () {
@@ -21,11 +21,11 @@ class ListPopout extends Popout {
   }
 
   content () {
-    let { title, elements, exclude, noElementsText } = this.props;
+    let { title, elements, exclude, noElementsText, t } = this.props;
     if (this.exclude) {
       exclude = exclude.concat(this.exclude);
     }
-    console.log(elements, exclude)
+
     return (
       <Flex className='popout'>
         <FlexChild className='popout-content'>
@@ -39,7 +39,7 @@ class ListPopout extends Popout {
                 <div className='popout-list-option-name'>{elm.name}</div>
               </Flex>
             ))}
-            {!elements.length && <div>{noElementsText || Messages.POPOUT_LIST_NO_ITEMS}</div>}
+            {!elements.length && <div>{noElementsText || t("POPOUT_LIST_NO_ITEMS")}</div>}
           </Flex>
         </FlexChild>
       </Flex>
@@ -47,4 +47,4 @@ class ListPopout extends Popout {
   }
 }
 
-export default ListPopout;
+export default withTranslation()(ListPopout);

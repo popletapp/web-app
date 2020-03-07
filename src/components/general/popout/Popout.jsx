@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { createPopout, removePopout } from './../../../modules';
-import { joinClasses } from './../../../util';
+import { findAncestor } from './../../../util';
 import './Popout.scss';
 
 class Popout extends Component {
@@ -15,13 +15,10 @@ class Popout extends Component {
     this.escListener = (e) => e.keyCode === 27 && this.actionMade('cancel', e);
     this.clickListener = (event) => {
       let el = event.target;
-      do {
-        if (el.matches('.popout')) return el;
-        el = el.parentElement || el.parentNode;
-      } while (el !== null && el.nodeType === 1);
+      el = findAncestor(el, 'popout')
 
-      if (el && el.classList && el.classList.contains('popout') && this.onClick && typeof this.onClick === 'function') {
-        this.actionMade('cancel', event);
+      if (el) {
+        return;
       } else {
         this.close();
       }

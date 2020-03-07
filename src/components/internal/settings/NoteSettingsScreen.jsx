@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { updateBoard } from './../../../modules';
 import './NoteSettingsScreen.scss';
 import RULESETS from '../../../constants/Rulesets';
-import { Messages } from '../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 const BASE_RULE = {
   id: 0,
@@ -29,7 +29,7 @@ function UserPanel (props) {
           <SelectableItem key={i} className='user-item' id={user.id} selected={false}>
             <Flex align='left' basis='auto' grow={1} shrink={1}>
               <FlexChild align='left' direction='row' basis='auto' grow={1} shrink={1}>
-                <User avatar={user.avatar} username={user.username} />
+                <User id={user.id} avatar={user.avatar} username={user.username} />
               </FlexChild>
             </Flex>
           </SelectableItem>)}
@@ -44,7 +44,8 @@ const ConnectedUserPanel = connect(mapStateToProps, null)(UserPanel);
 
 // A maximum of 5 performables per rule
 // Maximum of 5 rules
-function Performable () {
+function Performable (props) {
+  const { t } = props;
   const [value, setValue] = React.useState('assign-members');
   const [removed, isRemoved] = React.useState(false);
   const [options, setOptions] = React.useState({});
@@ -56,15 +57,15 @@ function Performable () {
     <Flex direction='column' key={key} grow={1} align='left'>
       <Flex direction='row' grow={1} align='center'>
         <select value={value} onChange={(e) => selectionHandler(e)}>
-          <option value='assign-members'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ASSIGN_MEMBERS}</option>
-          <option value='set-title'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_SET_TITLE}</option>
-          <option value='add-content-title'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_TITLE}</option>
-          <option value='add-content-desc'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_DESCRIPTION}</option>
-          <option value='replace-content'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_REPLACE_CONTENT}</option>
-          <option value='add-due-date'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_DUE_DATE}</option>
-          <option value='set-importance'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_SET_IMPORTANCE}</option>
-          <option value='announce-content'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_ANNOUNCE_CONTENT}</option>
-          <option value='send-notif'>{Messages.BOARD_SETTINGS_NOTES_PERFORMABLES_SEND_NOTIFICATION}</option>
+          <option value='assign-members'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_ASSIGN_MEMBERS")}</option>
+          <option value='set-title'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_SET_TITLE")}</option>
+          <option value='add-content-title'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_TITLE")}</option>
+          <option value='add-content-desc'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_DESCRIPTION")}</option>
+          <option value='replace-content'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_REPLACE_CONTENT")}</option>
+          <option value='add-due-date'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_DUE_DATE")}</option>
+          <option value='set-importance'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_SET_IMPORTANCE")}</option>
+          <option value='announce-content'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_ANNOUNCE_CONTENT")}</option>
+          <option value='send-notif'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_SEND_NOTIFICATION")}</option>
         </select>
         <CloseButton onClick={() => isRemoved(true)} />
       </Flex>
@@ -144,6 +145,7 @@ class PerformableGroup extends Component {
   }
 
   render () {
+    const { t } = this.props;
     const NewPerformableButton = () => <div key={Math.random() * 100} onClick={(e) => this.addPerformable()} className='performable-create-btn'>+</div>;
     this.state.performables = this.state.performables.filter(Boolean);
     const { performables } = this.state;
@@ -153,13 +155,13 @@ class PerformableGroup extends Component {
         {performables}
       </FlexChild>
       <FlexChild className='performable-creation-section' direction='row'>
-        <span className='performable-creation-text-add'>{Messages.BOARD_SETTINGS_NOTES_AND}</span>
+        <span className='performable-creation-text-add'>{t("BOARD_SETTINGS_NOTES_AND")}</span>
         <NewPerformableButton />
       </FlexChild>
     </Flex> : <NewPerformableButton />
   }
 }
-const ConnectedPerformableGroup = connect(mapStateToProps, null)(PerformableGroup);
+const ConnectedPerformableGroup = withTranslation()(connect(mapStateToProps, null)(PerformableGroup));
 
 class Rule extends Component {
   constructor (props) {
@@ -214,7 +216,7 @@ class Rule extends Component {
   }
 
   render () {
-    const { index = 0 } = this.props;
+    const { t, index = 0 } = this.props;
     const { existingSelected } = this.state;
     const rule = this.initialize();
     const performableMenu = React.createElement(ConnectedPerformableGroup, { onChange: () => this.forceUpdate() })
@@ -222,25 +224,25 @@ class Rule extends Component {
     return (<div>
       <div className='rule-creating'>
         <Flex align='center' direction='row'>
-          <span className='rule-creation-header' style={{ marginRight: '12px' }}>{Messages.BOARD_SETTINGS_NOTES_RULE}</span> <DefaultInput placeholder={rule.name || index.toString()}></DefaultInput>
+          <span className='rule-creation-header' style={{ marginRight: '12px' }}>{t("BOARD_SETTINGS_NOTES_RULE")}</span> <DefaultInput placeholder={rule.name || index.toString()}></DefaultInput>
         </Flex>
         <div className='board-note-settings-midheader'>
-          {Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_WHEN} <b>
+          {t("BOARD_SETTINGS_NOTES_PERFORMABLES_WHEN")} <b>
             <select onChange={(e) => this.handleActionTypeSelect(e)}>
-              <option value='new-note'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NEW}</option>
-              <option value='existing-note'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_EXISTING}</option>
+              <option value='new-note'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_NEW")}</option>
+              <option value='existing-note'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_EXISTING")}</option>
             </select>
-          </b> {Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_TARGET_NOTE}
+          </b> {t("BOARD_SETTINGS_NOTES_PERFORMABLES_TARGET_NOTE")}
           <select onChange={(e) => this.handleActionTypeSelect(e)}>
-            {!existingSelected ? <option value={rule.NOTE_CREATED} value='created'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NOTE_CREATED}</option> : null}
-            {existingSelected ? <option value={rule.NOTE_EDITED} value='edited'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NOTE_EDITED}</option> : null}
-            {existingSelected ? <option value={rule.NOTE_DELETED} value='deleted'>{Messages.BOARD_SETTINGS_NOTE_PERFORMABLES_NOTE_DELETED}</option> : null}
+            {!existingSelected ? <option value={rule.NOTE_CREATED} value='created'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_NOTE_CREATED")}</option> : null}
+            {existingSelected ? <option value={rule.NOTE_EDITED} value='edited'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_NOTE_EDITED")}</option> : null}
+            {existingSelected ? <option value={rule.NOTE_DELETED} value='deleted'>{t("BOARD_SETTINGS_NOTES_PERFORMABLES_NOTE_DELETED")}</option> : null}
           </select>
         </div>
         
         <Flex direction='column'>
           <Flex direction='row' grow={0} className='board-settings-subheader'>
-            {Messages.BOARD_SETTINGS_NOTES_PERFORMABLES}
+            {t("BOARD_SETTINGS_NOTES_PERFORMABLES")}
           </Flex>
           {performableMenu}
         </Flex>
@@ -248,6 +250,7 @@ class Rule extends Component {
     </div>);
   }
 }
+const TranslatedRule = withTranslation()(Rule);
 
 class NoteSettingsScreen extends Component {
   constructor (props) {
@@ -283,39 +286,39 @@ class NoteSettingsScreen extends Component {
   }
 
   render () {
-    let { board } = this.props;
+    let { board, t } = this.props;
     let { rules } = this.state;
     const { compact = false } = board;
 
     return (
       <Flex direction='column' align='left' className='board-settings-content-container'>
         <div className='board-settings-header'>
-          {Messages.BOARD_SETTINGS_CATEGORY_NOTES_TITLE}
+          {t("BOARD_SETTINGS_CATEGORY_NOTES")}
         </div>
         <div className='board-settings-text'>
-          {Messages.BOARD_SETTINGS_CATEGORY_NOTES_DESCRIPTION}
+          {t("BOARD_SETTINGS_CATEGORY_NOTES_DESCRIPTION")}
         </div>
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>
-          {Messages.BOARD_SETTINGS_CATEGORY_NOTES_COMPACT_MODE}
+          {t("BOARD_SETTINGS_NOTES_COMPACT_MODE")}
           <ToggleSwitch onChange={(compact) => this.updateBoardCompact(compact)} initialState={compact} small={true} style={{ marginLeft: '24px' }} />
         </Flex>
-        {Messages.BOARD_SETTINGS_CATEGORY_NOTES_COMPACT_MODE_DESCRIPTION}
+        {t("BOARD_SETTINGS_NOTES_COMPACT_MODE_DESCRIPTION")}
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>
-          {Messages.BOARD_SETTINGS_NOTES_ACTION_TYPES}
+          {t("BOARD_SETTINGS_NOTES_ACTION_TYPES")}
         </Flex>
 
         <List style={{ height: 'auto', maxHeight: '50%', paddingRight: '12px' }}>
           <Scroller>
-            {!rules.length && <div>{Messages.BOARD_SETTINGS_NOTES_NO_NOTE_RULES}</div>}
-            {rules.length && rules.map((rule, i) => <Rule index={i} key={i} rule={rule} />)}
+            {!rules.length && <div>{t("BOARD_SETTINGS_NOTES_NO_NOTE_RULES")}</div>}
+            {rules.length && rules.map((rule, i) => <TranslatedRule index={i} key={i} rule={rule} />)}
           </Scroller>
         </List>
-        <div style={{ marginTop: '12px' }} className='btn' onClick={() => this.createRule()}>{Messages.BOARD_SETTINGS_NOTES_NEW_RULE}</div>
+        <div style={{ marginTop: '12px' }} className='btn' onClick={() => this.createRule()}>{t("BOARD_SETTINGS_NOTES_NEW_RULE")}</div>
       </Flex>
     );
   }
 }
 
-export default connect(mapStateToProps, null)(NoteSettingsScreen);
+export default withTranslation()(connect(mapStateToProps, null)(NoteSettingsScreen));

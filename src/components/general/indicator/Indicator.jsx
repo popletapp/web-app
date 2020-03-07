@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import { Flex } from './../../';
 import { joinClasses } from './../../../util';
 import './Indicator.scss';
-import { Messages } from './../../../i18n';
-
-const MODE_TO_FRIENDLY = {
-  online: Messages.INDICATOR_STATUS_ONLINE,
-  idle: Messages.INDICATOR_STATUS_IDLE,
-  dnd: Messages.INDICATOR_STATUS_DND,
-  offline: Messages.INDICATOR_STATUS_OFFLINE
-};
+import { withTranslation } from 'react-i18next';
 
 class Indicator extends Component {
   constructor (props) {
@@ -24,7 +17,13 @@ class Indicator extends Component {
   }
 
   render () {
-    const { style, className, mode, text } = this.props;
+    const { style, className, mode, text, t } = this.props;
+    const MODE_TO_FRIENDLY = {
+      online: t("INDICATOR_STATUS_ONLINE"),
+      idle: t("INDICATOR_STATUS_IDLE"),
+      dnd: t("INDICATOR_STATUS_DND"),
+      offline: t("INDICATOR_STATUS_OFFLINE")
+    };
 
     return (
       <Flex
@@ -40,4 +39,4 @@ class Indicator extends Component {
   }
 }
 
-export default Indicator;
+export default withTranslation()(Indicator);

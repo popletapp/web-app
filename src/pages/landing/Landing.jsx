@@ -3,7 +3,7 @@ import { NavBar, Flex, FlexChild, Tooltip } from './../../components';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './Landing.scss';
-import { Messages } from '../../i18n';
+import { withTranslation } from 'react-i18next';
 
 class Landing extends Component {
   constructor () {
@@ -26,6 +26,7 @@ class Landing extends Component {
   }
 
   render () {
+    const { t } = this.props;
     return (
       <div className='landing-body'>
         <div className='landing-background'></div>
@@ -34,12 +35,12 @@ class Landing extends Component {
             <NavBar icon='poplet_black_no_bg' />
             <div className='inner'>
               <div className='intro-title'>
-                <h1 className='main-title'>{Messages.LANDING_MAIN_TITLE}</h1>
-                <h3 className='intro-description-title'>{Messages.LANDING_INTRO_DESCRIPTION}</h3>
-                <p className='intro-description'>{Messages.LANDING_INTRO_SUBTEXT}</p>
+                <h1 className='main-title'>{t("LANDING_MAIN_TITLE")}</h1>
+                <h3 className='intro-description-title'>{t("LANDING_INTRO_DESCRIPTION")}</h3>
+                <p className='intro-description'>{t("LANDING_INTRO_SUBTEXT")}</p>
                 <Flex direction='row' align='center' className='intro-details'>
-                  <Link to='/login' className='btn intro-getstarted-btn'>{Messages.LANDING_GET_STARTED}</Link>
-                  <Link to='/about'>{Messages.LANDING_LEARN_MORE}</Link>
+                  <Link to='/login' className='btn intro-getstarted-btn'>{t("LANDING_GET_STARTED")}</Link>
+                  <Link to='/about'>{t("LANDING_LEARN_MORE")}</Link>
                 </Flex>
               </div>
             </div>
@@ -49,28 +50,28 @@ class Landing extends Component {
         <div className='landing-content'>
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              {Messages.LANDING_CARD_1_TITLE}
+              {t("LANDING_CARD_1_TITLE")}
             </h2>
             <h2 className='landing-content-card-desc'>
-              {Messages.LANDING_CARD_1_DESCRIPTION}
+              {t("LANDING_CARD_1_DESCRIPTION")}
             </h2>
           </div>
 
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              {Messages.LANDING_CARD_2_TITLE}
+              {t("LANDING_CARD_2_TITLE")}
             </h2>
             <h2 className='landing-content-card-desc'>
-              {Messages.LANDING_CARD_2_DESCRIPTION}
+              {t("LANDING_CARD_2_DESCRIPTION")}
             </h2>
           </div>
 
           <div className='landing-content-card'>
             <h2 className='landing-content-card-title'>
-              {Messages.LANDING_CARD_3_TITLE}
+              {t("LANDING_CARD_3_TITLE")}
             </h2>
             <h2 className='landing-content-card-desc'>
-              {Messages.LANDING_CARD_3_DESCRIPTION}
+              {t("LANDING_CARD_3_DESCRIPTION")}
             </h2>
           </div>
         </div>
@@ -95,4 +96,4 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+export default withTranslation()(Landing);

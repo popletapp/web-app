@@ -5,7 +5,7 @@ import { getActionLog } from '../../../modules';
 import './EditRevisionsModal.scss';
 import { connect } from 'react-redux';
 import { diffText, parseTime } from './../../../util';
-import { Messages } from '../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state) {
   return {
@@ -21,7 +21,7 @@ class Revision extends Component {
       <FlexChild className='edit-revision-executor'>
         <Flex direction='row' align='center' className='user-container'>
           <FlexChild>
-            <Avatar url={executor.avatar} alt={executor.username} />
+            <Avatar id={executor.id} url={executor.avatar} alt={executor.username} />
           </FlexChild>
           <FlexChild style={{ marginLeft: '12px' }}>
             <UsernameText className='edit-revision-executor-username'>{executor.username}</UsernameText>
@@ -57,21 +57,21 @@ class EditRevisionsModal extends Modal {
   }
 
   render () {
-    const { users, noteId } = this.props;
+    const { users, noteId, t } = this.props;
     const { actionLog } = this.state;
 
     return (
       <div>
         <div className='modal-content edit-revision-modal-content'>
           <div className='modal-header'>
-            {Messages.MODAL_EDIT_REVISIONS_TITLE}
+            {t("MODAL_EDIT_REVISIONS_TITLE")}
           </div>
           
           <div className='modal-body'>
             <p className='modal-error'>{this.state.error}</p>
             <Flex className='edit-revision-container'>
               <Scroller style={{ maxHeight: '500px' }}>
-                {!actionLog && <div>{Messages.LOADING}</div>}
+                {!actionLog && <div>{t("LOADING")}</div>}
                 {actionLog && actionLog.filter(m => m && m.before && m.before.id === noteId).map((log) => {
                   const user = users[log.executor || { username: 'Unknown User' }];
                   return <Revision executor={user} beforeContent={log.before.content} afterContent={log.after.content} timestamp={log.timestamp} />
@@ -81,11 +81,11 @@ class EditRevisionsModal extends Modal {
           </div>
         </div>
         <Flex className='modal-footer edit-revision-modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.actionMade('cancel', e)} className='modal-cancel btn'>{Messages.MODAL_GENERIC_CANCEL_CLOSE}</Button>
+          <Button onClick={(e) => this.actionMade('cancel', e)} className='modal-cancel btn'>{t("MODAL_GENERIC_CANCEL_CLOSE")}</Button>
         </Flex>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, null)(EditRevisionsModal);
+export default withTranslation()(connect(mapStateToProps, null)(EditRevisionsModal));

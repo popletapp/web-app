@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { DefaultInput, ToggleSwitch, Flex } from '../..';
+import { DefaultInput, Avatar, ToggleSwitch, Flex } from '../..';
 import { connect } from 'react-redux';
-import { updateBoard } from '../../../modules';
-import { Messages } from '../../../i18n';
+import { updateBoard, addAvatar } from '../../../modules';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
@@ -30,46 +30,67 @@ class GeneralSettingsScreen extends Component {
     await updateBoard(board.id, board);
   }
 
-  render () {
+  onAvatarClick () {
+    const upload = document.querySelector('.file-upload');
+    upload.click();
+  }
+
+  onAvatarSelectedFile (e) {
     const { board } = this.props;
+    const file = e.target.files.length ? e.target.files[0] : null;
+    if (file) {
+      console.log(file)
+      addAvatar(board.id, file, 'boards');
+    }
+  }
+
+  render () {
+    const { board, t } = this.props;
     const { type } = board;
     return (
       <Flex direction='column' align='left' className='board-settings-content-container'>
         <div className='board-settings-header'>
-          {Messages.BOARD_SETTINGS_CATEGORY_GENERAL}
+          {t("BOARD_SETTINGS_CATEGORY_GENERAL")}
         </div>
         <div className='board-settings-text'>
-          {Messages.BOARD_SETTINGS_CATEGORY_GENERAL_DESCRIPTION}
+          {t("BOARD_SETTINGS_CATEGORY_GENERAL_DESCRIPTION")}
         </div>
 
-        <div className='board-settings-subheader'>{Messages.BOARD_SETTINGS_GENERAL_NAME_HEADER}</div>
+        <form id="file" encType="multipart/form-data"><input onChange={(e) => this.onAvatarSelectedFile(e)} type='file' className='file-upload'></input></form>
+        <Flex direction='row' grow={0} className='board-settings-board'>
+          <div onClick={() => this.onAvatarClick()} className={`board-settings-board-avatar-container ${board.avatar && 'avatar-contains-img'}`}>
+            <Avatar id={board.id} className='board-settings-board-avatar' url={board.avatar} size='large' alt={board.name}></Avatar>
+          </div>
+        </Flex>
+
+        <div className='board-settings-subheader'>{t("BOARD_SETTINGS_GENERAL_NAME_HEADER")}</div>
         <DefaultInput
           onBlur={(e) => this.updateBoardName(e)}
           value={board.name}
           style={{ height: '32px' }}>
         </DefaultInput>
 
-        <div className='board-settings-subheader'>{Messages.BOARD_SETTINGS_GENERAL_TYPE_HEADER}</div>
+        <div className='board-settings-subheader'>{t("BOARD_SETTINGS_GENERAL_TYPE_HEADER")}</div>
         <Flex direction='row' grow={0} className='board-creation-type'>
           <Flex onClick={() => this.updateBoardType(0)} className={`board-creation-type-option${type === 0 ? ' board-creation-type-option-active' : ''}`} align='center' direction='column'>
             <Flex className='board-creation-type-option-display' align='center'>
-              <h2 className='board-creation-type-option-header'>{Messages.FREEPLACE}</h2>
+              <h2 className='board-creation-type-option-header'>{t("FREEPLACE")}</h2>
               <img alt='Freeplace' src='./../../../assets/icons/freeplace.svg' width='128' height='128'></img>
             </Flex>
-            <div className='board-creation-type-option-desc'>{Messages.FREEPLACE_DESCRIPTION}</div>
+            <div className='board-creation-type-option-desc'>{t("FREEPLACE_DESCRIPTION")}</div>
           </Flex>
 
           <Flex onClick={() => this.updateBoardType(1)} className={`board-creation-type-option${type === 1 ? ' board-creation-type-option-active' : ''}`}  align='center' direction='column'>
             <Flex className='board-creation-type-option-display' align='center'>
-              <h2 className='board-creation-type-option-header'>{Messages.GRID}</h2>
+              <h2 className='board-creation-type-option-header'>{t("GRID")}</h2>
               <img alt='Grid' src='./../../../assets/icons/snaptogrid.svg' width='128' height='128'></img>
             </Flex>
-            <div className='board-creation-type-option-desc'>{Messages.GRID_DESCRIPTION}</div>
+            <div className='board-creation-type-option-desc'>{t("GRID_DESCRIPTION")}</div>
           </Flex>
         </Flex>
 
         <Flex direction='row' grow={0} className='board-settings-subheader'>
-          {Messages.BOARD_SETTINGS_GENERAL_AUTO_RESIZE}
+          {t("BOARD_SETTINGS_GENERAL_AUTO_RESIZE")}
           <ToggleSwitch onChange={(resize) => this.updateBoardResize(resize)} small={true} style={{ marginLeft: '24px' }} />
         </Flex>
       </Flex>
@@ -77,4 +98,4 @@ class GeneralSettingsScreen extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(GeneralSettingsScreen);
+export default withTranslation()(connect(mapStateToProps, null)(GeneralSettingsScreen));

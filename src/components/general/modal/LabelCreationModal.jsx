@@ -3,7 +3,7 @@ import Modal from './Modal';
 import { Flex, Button, DefaultInput, ColorPicker } from '../..';
 import { addLabel } from './../../../modules';
 import './Modal.scss';
-import { Messages } from '../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 class LabelCreationModal extends Modal {
   constructor () {
@@ -15,13 +15,14 @@ class LabelCreationModal extends Modal {
   }
 
   check () {
+    const { t } = this.props;
     const { name } = this.state;
     this.setState({ error: null })
     if (name < 1) {
-      return Messages.LABEL_NAME_REQUIRED;
+      return t("LABEL_NAME_REQUIRED");
     }
     if (name > 32) {
-      return Messages.LABEL_NAME_TOO_LONG;
+      return t("LABEL_NAME_TOO_LONG");
     }
     return null;
   }
@@ -53,19 +54,20 @@ class LabelCreationModal extends Modal {
   }
 
   render () {
+    const { t } = this.props;
     return (
       <div>
         <div className='modal-content'>
           <div className='modal-header'>
-            {Messages.MODAL_LABEL_CREATION_TITLE}
+            {t("MODAL_LABEL_CREATION_TITLE")}
           </div>
           
           <div className='modal-body'>
             <p className='modal-error'>{this.state.error}</p>
-            <header>{Messages.MODAL_LABEL_CREATION_LABEL_NAME_HEADER}</header>
+            <header>{t("MODAL_LABEL_CREATION_LABEL_NAME_HEADER")}</header>
             <DefaultInput onChange={(e) => this.handleNameChange(e)} />
 
-            <header>{Messages.MODAL_LABEL_CREATION_LABEL_COLOR_HEADER}</header>
+            <header>{t("MODAL_LABEL_CREATION_LABEL_COLOR_HEADER")}</header>
             <ColorPicker
               color={this.state.color || '#ffffff'}
               onChangeComplete={(color) => this.handleColorChange(color)}
@@ -73,12 +75,12 @@ class LabelCreationModal extends Modal {
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.createLabel()} className='btn modal-confirm'>{Messages.MODAL_GENERIC_CONFIRM_DONE}</Button>
-          <Button onClick={(e) => this.close('cancel', e)} className='modal-cancel btn'>{Messages.MODAL_GENERIC_CANCEL}</Button>
+          <Button onClick={(e) => this.createLabel()} className='btn modal-confirm'>{t("MODAL_GENERIC_CONFIRM_DONE")}</Button>
+          <Button onClick={(e) => this.close('cancel', e)} className='modal-cancel btn'>{t("MODAL_GENERIC_CANCEL")}</Button>
         </Flex>
       </div>
     );
   }
 }
 
-export default LabelCreationModal;
+export default withTranslation()(LabelCreationModal);

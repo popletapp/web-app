@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PopletBase, NavBar, Avatar, Flex, FlexChild, MinimalisticButton } from '../../components';
 import { getUser } from '../../modules';
 import './User.scss';
-import { Messages } from '../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
@@ -22,7 +22,7 @@ class UserComponent extends PopletBase {
   }
 
   render () {
-    const { user = null, currentUser = {} } = this.props;
+    const { user = null, currentUser = {}, t } = this.props;
     if (currentUser === null || user === null) return null;
     const isSelf = user.id === currentUser.id;
     return (
@@ -34,7 +34,7 @@ class UserComponent extends PopletBase {
               <Flex className='user-profile-container' align='left' direction='row'>
                 <section>
                   <FlexChild grow={0} shrink={0} direction='row' align='center'>
-                    <Avatar className='user-profile-avatar' url={user.avatar} alt={user.username} size='large' />
+                    <Avatar className='user-profile-avatar' id={user.id} url={user.avatar} alt={user.username} size='large' />
                     <Flex grow={1} direction='row' align='center' className='user-profile-username' style={{ marginLeft: '24px' }}>
                       <FlexChild grow={0} shrink={1} direction='row' align='center'>
                         {user.username}
@@ -42,7 +42,7 @@ class UserComponent extends PopletBase {
 
                       <FlexChild className='user-profile-send-fr-btn-container' grow={0} shrink={1} direction='row' align='center'>
                         {!isSelf && <div className='user-profile-send-fr-btn btn'>
-                          {Messages.SEND_FREIND_REQUEST}
+                          {t("SEND_FREIND_REQUEST")}
                         </div>}
                         <MinimalisticButton icon='more_vert' color='red' className='user-profile-more-actions-btn' />
                       </FlexChild>
@@ -50,7 +50,7 @@ class UserComponent extends PopletBase {
                   </FlexChild>
 
                   <FlexChild className='user-profile-information' grow={0} direction='row' align='center'>
-                    <p>{Messages.USER_CREATED} {new Date(user.createdAt).toLocaleDateString()}</p>
+                    <p>{t("USER_CREATED")} {new Date(user.createdAt).toLocaleDateString()}</p>
                   </FlexChild>
                 </section>
               </Flex>
@@ -59,7 +59,7 @@ class UserComponent extends PopletBase {
             if (user === null) {
               return null;
             } else {
-              return <div>{Messages.USER_NOT_FOUND}</div>
+              return <div>{t("USER_NOT_FOUND")}</div>
             }
           }
         })()}
@@ -69,4 +69,4 @@ class UserComponent extends PopletBase {
   }
 }
 
-export default connect(mapStateToProps, null)(UserComponent);
+export default withTranslation()(connect(mapStateToProps, null)(UserComponent));

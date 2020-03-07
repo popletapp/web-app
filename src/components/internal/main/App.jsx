@@ -11,6 +11,30 @@ import {
   ErrorBoundary
 } from './../../../components';
 import { createModal } from './../../../modules';
+import { joinClasses } from './../../../util';
+import { connect } from 'react-redux';
+import i18next from 'i18next';
+import XHR from 'i18next-xhr-backend';
+import { initReactI18next, Translation } from 'react-i18next';
+
+i18next.use(XHR)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: ['en', 'vi', false],
+    ns: ['translation'],
+    backend: {
+      loadPath: '/translations/{{lng}}/{{ns}}.json'
+    },
+    react: {
+      useSuspense: false
+    }
+  });
+
+function mapStateToProps (state) {
+  return {
+    user: state.user
+  };
+}
 
 class App extends Component {
   renderModal (path) {
@@ -39,6 +63,10 @@ class App extends Component {
   }
 
   componentWillUpdate (nextProps) {
+    if (!this.props.user.lang && nextProps.user.lang) {
+      i18next.changeLanguage(nextProps.user.lang);
+    }
+
     const { location } = this.props;
 
     // set previousLocation if props.location is not modal
@@ -51,7 +79,7 @@ class App extends Component {
   }
 
   render () {
-    const { location } = this.props;
+    const { location, user } = this.props;
     const isModal = !!(
       location.state &&
       location.state.modal &&
@@ -59,7 +87,7 @@ class App extends Component {
     );
 
     return (
-      <div className='app theme-dark'>
+      <div className={joinClasses('app', user.theme ? 'theme-light' : 'theme-dark')}>
         <div id='loader' />
         <ErrorBoundary>
           <Switch location={isModal ? this.previousLocation : location}>
@@ -102,4 +130,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, null)(App);

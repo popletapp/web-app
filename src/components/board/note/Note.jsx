@@ -3,12 +3,12 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { Editor, NoteDetailedView, MinimalisticButton, Flex, FlexChild, RichTextbox } from './../../';
+import { NoteDetailedView, MinimalisticButton, Flex, FlexChild, RichTextbox } from './../../';
 import './Note.scss';
 import { updateNote, createNote, saveNote, moveNote, createModal, removeNoteFromGroup, isNoteInGroup } from './../../../modules';
-import { permissions } from './../../../util';
-import ComponentTypes from './../../../constants/ComponentTypes';
+import { permissions, findAncestor, hasClass } from './../../../util';
 import Draggable from 'react-draggable';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
@@ -37,25 +37,30 @@ class Note extends Component {
     };
     if (!this.preview) {
       this.listener = (event) => {
-        let el = event.target;
-        if (el.matches('.btn')) return note;
-        do {
-          if (el.matches('.note')) return el;
-          el = el.parentElement || el.parentNode;
-        } while (el !== null && el.nodeType === 1);
+        let element = event.target;
+        let invalid = false;
+        let unselect = false;
 
-        if (el && el.classList && el.classList.contains('note')) {
-          this.onClick();
+        do {
+          if (hasClass(element, 'note-footer')) invalid = true;
+          if (hasClass(element, 'note-container')) unselect = true;
+          if (hasClass(element, 'note')) break;
+          element = element.parentElement || element.parentNode;
+        } while (element !== null && element.nodeType === 1);
+        if (invalid) return;
+        if (element && element.dataset && element.dataset.id === note.id) {
+          if (!this.state.editing) {
+            this.onClick(event);
+          }
         } else {
-          this.unselect();
+          if (unselect) this.unselect();
         }
       };
-      window.listeners.subscribe('click', this.listener);
+      window.listeners.subscribe('mouseup', this.listener);
     }
   }
 
   view (event) {
-    console.log(this.wasDraggedByClient)
     if (this.wasDraggedByClient) {
       return false;
     };
@@ -63,6 +68,10 @@ class Note extends Component {
     if (!this.state.selected) {
       createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.boardId} />);
     }
+  }
+
+  onClick (event) {
+    this.view(event);
   }
 
   select (e) {
@@ -87,6 +96,9 @@ class Note extends Component {
     const content = event.target.innerText.replace(/<br\s*[\\/]?>/gi, '\n');
     const newNote = { ...note, [type]: content };
     updateNote(this.boardId, newNote);
+    if (event.which === 13 && !event.shiftKey) { // ENTER pressed
+      this.onBlur(event, type);
+    }
   }
 
   async onBlur (event, type) {
@@ -99,7 +111,6 @@ class Note extends Component {
       const newNote = { ...note, [type]: content };
 
       this.setState({
-        editing: false,
         saving: true
       });
       if (note[type] !== newNote[type]) {
@@ -147,7 +158,7 @@ class Note extends Component {
   }
 
   componentWillUnmount () {
-    window.listeners.unsubscribe('click', this.listener);
+    window.listeners.unsubscribe('mouseup', this.listener);
   }
 
   highlight () {
@@ -233,10 +244,10 @@ class Note extends Component {
   }
 
   renderContent () {
-    const { note,  board } = this.props;
+    const { note, board } = this.props;
     const { editing } = this.state;
     const { compact = false } = board;
-    let MAX_LENGTH = compact ? 127 : 255;
+    const MAX_LENGTH = compact ? 127 : 255;
     return editing ? note.content : (note.content.length > MAX_LENGTH ? `${note.content.slice(0, MAX_LENGTH - 3)}...` : note.content)
   }
 
@@ -260,7 +271,7 @@ class Note extends Component {
   }
 
   render () {
-    let { note, listView, preview, style: styleProps = {}, board } = this.props;
+    let { note, listView, preview, style: styleProps = {}, board = {}, t } = this.props;
     const { editing, selected, style } = this.state;
     const { compact = false } = board;
     const bounds = this.getBounds();
@@ -274,13 +285,12 @@ class Note extends Component {
       onStart={(...args) => this.onDragStart(...args)}
       onDrag={(...args) => this.onDrag(...args)}
       onStop={(...args) => this.onDragStop(...args)}
-      disabled={!permissions.has('MOVE_NOTES')}
-      defaultPosition={note.position}
+      disabled={listView || preview || !permissions.has('MOVE_NOTES')}
+      defaultPosition={preview ? void 0 : note.position}
       bounds={{ top: bounds.top, left: bounds.left }}
       grid={board.type === 1 ? [ 32, 32 ] : void 0}>
         <div ref={this.noteRef}
         data-id={note.id.toString()}
-        onClick={(event) => note.id && this.view(event)}
         className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}${compact ? ' note-compact' : ''}`}
         style={{ 
           ...(!listView && !preview ? style : {}),
@@ -315,10 +325,10 @@ class Note extends Component {
             </RichTextbox>
           </div>
           <Flex direction='row' align='center' className='note-footer'>
-            <FlexChild align='center' direction='row'>
+            <FlexChild align='left' direction='column'>
               {permissions.has('MANAGE_NOTES') && 
               <MinimalisticButton size='15px' icon='edit' onClick={(e) => this.select(e)} className={`note-btn-edit${preview ? ' note-btn-edit-disabled' : ''}`}>
-                Edit
+                {t("EDIT")}
               </MinimalisticButton>}
               {editing && <div className='note-footer-hint'>press ENTER to save</div>}
             </FlexChild>
@@ -335,5 +345,5 @@ class Note extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(Note);
+export default withTranslation()(connect(mapStateToProps, null)(Note));
 

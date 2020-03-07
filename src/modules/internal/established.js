@@ -24,12 +24,12 @@ const connectSocket = () => {
 };
 
 export default async () => {
-  const getCurrentUser = () => axios.get(`/users/me`).then(res => res.data);
   const token = localStorage.getItem('token');
   if (!token) {
     document.location.replace('/login');
   } else {
     axios.defaults.headers.common['Authorization'] = token;
+    const getCurrentUser = () => axios.get(`/users/me`).then(res => res.data);
     const user = await getCurrentUser();
     if (DEV_IDS.includes(user.id)) {
       store.dispatch({ type: 'ENABLE_DEV_TOOLS' });

@@ -4,11 +4,11 @@ import { Avatar, UsernameText, Flex, FlexChild } from './../../';
 
 class User extends Component {
   render () {
-    const { className, avatar, avatarSize = 32, username } = this.props;
+    const { className, avatar, avatarSize = 32, username, id } = this.props;
     return (
       <Flex direction='row' align='center' className={joinClasses('user-container', className)}>
         <FlexChild>
-          <Avatar size={avatarSize} url={avatar} alt={username} />
+          <Avatar id={id} size={avatarSize} url={avatar} alt={username} />
         </FlexChild>
         <FlexChild style={{ marginLeft: '12px' }}>
           <UsernameText>{username}</UsernameText>

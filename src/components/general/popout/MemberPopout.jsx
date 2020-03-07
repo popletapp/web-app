@@ -6,7 +6,7 @@ import Poplet from './../../../';
 import { updateMember } from './../../../modules';
 import { connect } from 'react-redux';
 import { permissions } from './../../../util';
-import { Messages } from '../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state) {
   return {
@@ -36,7 +36,7 @@ class MemberPopout extends Popout {
   }
 
   content () {
-    let { member, ranks, boardID, board } = this.props;
+    let { member, ranks, boardID, board, t } = this.props;
     const store = Poplet.store;
     const state = store.getState();
     member = state.membersByBoard[boardID][member.id];
@@ -45,7 +45,7 @@ class MemberPopout extends Popout {
       <Flex className='member-popout popout'>
         <FlexChild className='popout-content'>
           <Flex direction='row' className='popout-header member-popout-header'>
-            <Avatar url={member.avatar} alt={member.username} size='medium' />
+            <Avatar id={member.id} url={member.avatar} alt={member.username} size='medium' />
             <FlexChild className='member-popout-title'>
               <div className='member-popout-username'>{member.username}</div>
               <Indicator mode='online' text={true} />
@@ -55,14 +55,14 @@ class MemberPopout extends Popout {
           <Flex direction='row' className='popout-body member-popout-body'>
             <FlexChild className='member-popout-body-item'>
               <div className='member-popout-subheading'>
-                {Messages.POPOUT_MEMBER_ACCOUNT_CREATED_HEADER}
+                {t("POPOUT_MEMBER_ACCOUNT_CREATED_HEADER")}
               </div>
               {new Date(member.createdAt).toLocaleDateString()}
             </FlexChild>
 
             <FlexChild className='member-popout-body-item'>
               <div className='member-popout-subheading'>
-                {Messages.POPOUT_MEMBER_JOINED_BOARD_HEADER}
+                {t("POPOUT_MEMBER_JOINED_BOARD_HEADER")}
               </div>
               {new Date(member.joinedAt).toLocaleDateString()}
             </FlexChild>
@@ -70,7 +70,7 @@ class MemberPopout extends Popout {
 
           <Flex>
             <div style={{ marginTop: '18px' }} className='member-popout-subheading'>
-              {Messages.RANKS} — {Math.max(0, member.ranks.length - 1) /* -1 here because everyone has the default role */}
+              {t("RANKS")} — {Math.max(0, member.ranks.length - 1) /* -1 here because everyone has the default role */}
             </div>
 
             <Flex className='rank-popout-container' direction='row' align='center'>
@@ -92,15 +92,15 @@ class MemberPopout extends Popout {
           </Flex>
           
           <br />
-          <Button>{Messages.POPOUT_MEMBER_VIEW_PROFILE}</Button>
+          <Button>{t("POPOUT_MEMBER_VIEW_PROFILE")}</Button>
         </FlexChild>
 
         <Flex className='popout-footer member-popout-footer' direction='row' justify='end' align='right'>
-          {Messages.POPOUT_MEMBER_MORE_ACTIONS_SOON}
+          {t("POPOUT_MEMBER_MORE_ACTIONS_SOON")}
         </Flex>
       </Flex>
     );
   }
 }
 
-export default connect(mapStateToProps, null)(MemberPopout);
+export default withTranslation()(connect(mapStateToProps, null)(MemberPopout));

@@ -4,7 +4,7 @@ import { DefaultInput, Flex, Button } from '../../';
 import Poplet from './../../../';
 import { switchBoard, joinBoard, checkInvite } from '../../../modules';
 import './Modal.scss';
-import { Messages } from './../../../i18n';
+import { withTranslation } from 'react-i18next';
 
 class BoardJoinModal extends Modal {
   constructor ({ location }) {
@@ -17,11 +17,12 @@ class BoardJoinModal extends Modal {
   }
 
   async check ({ code }) {
+    const { t } = this.props;
     const invite = await checkInvite(code);
     if (!invite) {
-      throw new Error(Messages.BOARD_JOIN_INVITE_LINK_INVALID);
+      throw new Error(t("BOARD_JOIN_INVITE_LINK_INVALID"));
     } else if (code.length < 2) {
-      throw new Error(Messages.BOARD_JOIN_INVITE_LINK_UNAUTHORIZED);
+      throw new Error(t("BOARD_JOIN_INVITE_LINK_UNAUTHORIZED"));
     } else {
       return null;
     }
@@ -69,25 +70,26 @@ class BoardJoinModal extends Modal {
   }
 
   render () {
+    const { t } = this.props;
     return (
       <div>
         <div className='modal-content'>
           <div className='modal-header'>
-            {Messages.JOIN_A_BOARD}
+            {t("JOIN_A_BOARD")}
           </div>
           <div className='modal-body'>
-            <p>{Messages.MODAL_JOIN_BOARD_BODY_LINE_1}</p>
+            <p>{t("MODAL_JOIN_BOARD_BODY_LINE_1")}</p>
             <p className='modal-error'>{this.state.error}</p>
             <DefaultInput onChange={(e) => this.handleEvent(e, 'input')} placeholder='Code' />
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.handleEvent(e, 'cancel')} className='modal-close btn modal-cancel'>{this.props.cancelText || Messages.MODAL_GENERIC_CANCEL}</Button>
-          <Button onClick={(e) => this.handleEvent(e, 'confirm')} className='modal-close btn modal-confirm'>{this.props.confirmText || Messages.MODAL_JOIN_BOARD_JOIN}</Button>
+          <Button onClick={(e) => this.handleEvent(e, 'cancel')} className='modal-close btn modal-cancel'>{this.props.cancelText || t("MODAL_GENERIC_CANCEL")}</Button>
+          <Button onClick={(e) => this.handleEvent(e, 'confirm')} className='modal-close btn modal-confirm'>{this.props.confirmText || t("MODAL_JOIN_BOARD_JOIN")}</Button>
         </Flex>
       </div>
     );
   }
 }
 
-export default BoardJoinModal;
+export default withTranslation()(BoardJoinModal);

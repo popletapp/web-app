@@ -5,7 +5,7 @@ import messages from './error/messages.json';
 import './ErrorBoundary.scss';
 import Poplet from './../../../';
 import * as Sentry from '@sentry/browser';
-import { Messages } from '../../../i18n';
+import { withTranslation }  from 'react-i18next';
 
 class ErrorBoundary extends Component {
   constructor (props) {
@@ -30,32 +30,33 @@ class ErrorBoundary extends Component {
 
   render () {
     const { errored } = this.state;
-    const { children } = this.props;
+    const { children, t } = this.props;
 
     return errored ? (
       <div className='error-boundary center-on-page animated fadeIn'>
         <Flex align='center' grow={0} className='error-occurred'>
           <FlexChild grow={0} className='error-title'>
-            {Messages.FATAL_ERROR_TITLE}
+            {t("FATAL_ERROR_TITLE")}
           </FlexChild>
           <FlexChild grow={0} className='error-description'>
+            {/* TODO: translations for this stuff ;) */}
             {messages[Math.floor(Math.random() * messages.length)]}
           </FlexChild>
         </Flex>
 
         <Flex align='center' grow={0} className='error-instructions'>
           <p>
-            {Messages.FATAL_ERROR_BODY_LINE_1}<br/>
-            {Messages.FATAL_ERROR_BODY_LINE_2} <Link to='/feedback'>{Messages.FATAL_ERROR_BODY_LINE_3}</Link>
+            {t("FATAL_ERROR_BODY_LINE_1")}<br/>
+            {t("FATAL_ERROR_BODY_LINE_2")} <Link to='/feedback'>{t("FATAL_ERROR_BODY_LINE_3")}</Link>
           </p>
         </Flex>
 
         <Button onClick={() => window.location.reload()} grow={0} className='error-reload-button'>
-          {Messages.FATAL_ERROR_RELOAD}
+          {t("FATAL_ERROR_RELOAD")}
         </Button>
       </div>
     ) : children;
   }
 }
 
-export default ErrorBoundary;
+export default withTranslation()(ErrorBoundary);

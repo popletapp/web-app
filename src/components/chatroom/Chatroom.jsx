@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, MinimalisticButton, Tooltip, RichTextbox } from './../';
+import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, 
+  MinimalisticButton, Tooltip, RichTextbox, MemberPopout } from './../';
 import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
-import { Messages } from '../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
@@ -16,15 +17,26 @@ function mapStateToProps (state, props) {
   };
 }
 
+class UserDisplay extends Component {
+  render () {
+    const { author } = this.props;
+    return (
+      <FlexChild direction='row' align='center' justify='center' className='chatroom-comment-author'>
+        <MemberPopout placement='left' member={author}>
+          <Avatar className='chatroom-comment-author-avatar' id={author.id} url={author.avatar} alt={author.username} />
+        </MemberPopout>
+        <MemberPopout placement='left' member={author}><p className='chatroom-comment-author-username'>{author.username}</p></MemberPopout>
+      </FlexChild>
+    );
+  }
+}
+
 class StackedComment extends Component {
   render () {
     const { author, comments } = this.props;
     return (
       <Flex grow={0} className='chatroom-comment-container'>
-        <FlexChild direction='row' align='center' justify='center' className='chatroom-comment-author'>
-          <Avatar url={author.avatar} alt={author.username} />
-          <p className='chatroom-comment-author-username'>{author.username}</p>
-        </FlexChild>
+        <UserDisplay author={author} />
         <FlexChild grow={0} className='chatroom-comment-content'>
           {comments.map((comment, i) => <RichTextbox parseMarkdown={true} editing={false} key={i}>{comment.content}</RichTextbox>)}
         </FlexChild>
@@ -38,10 +50,7 @@ class Comment extends Component {
     const { author, children } = this.props;
     return (
       <Flex grow={0} className='chatroom-comment-container'>
-        <FlexChild direction='row' align='center' justify='center' className='chatroom-comment-author'>
-          <Avatar url={author.avatar} alt={author.username} />
-          <p className='chatroom-comment-author-username'>{author.username}</p>
-        </FlexChild>
+        <UserDisplay author={author} />
         <FlexChild grow={0} className='chatroom-comment-content'>
           <RichTextbox parseMarkdown={true} editing={false}>{children}</RichTextbox>
         </FlexChild>
@@ -145,7 +154,7 @@ class Chatroom extends Component {
   }
 
   render () {
-    let { chatroom, chatrooms, boardID, comments } = this.props;
+    let { chatroom, chatrooms, boardID, comments, t } = this.props;
     const { content } = this.state;
     chatrooms = chatrooms ? Object.values(chatrooms) : null;
     comments = comments ? Object.values(comments) : [];
@@ -213,6 +222,7 @@ class Chatroom extends Component {
                     && (new Date(comment.timestamp || Date.now()) - new Date(previous.timestamp || Date.now())) < 6e5)
                 }
                 const willNextCommentStack = sortedComments[i + 1] ? doesStack(sortedComments[i + 1], comment) : false;
+                const doesPreviousStack = sortedComments[i - 1] ? doesStack(sortedComments[i - 1], comment) : false;
                 let final = [];
 
                 if (willNextCommentStack) {
@@ -248,7 +258,7 @@ class Chatroom extends Component {
                 onChange={(e) => this.handleChange(e)}
                 onKeyDown={(e) => this.input(e)}
                 value={content}
-                placeholder={Messages.CHATROOM_TEXTAREA_PLACEHOLDER}
+                placeholder={t("CHATROOM_TEXTAREA_PLACEHOLDER")}
                 className='chatroom-textarea'></textarea>
             </form>
           </div>
@@ -258,4 +268,4 @@ class Chatroom extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(Chatroom);
+export default withTranslation()(connect(mapStateToProps, null)(Chatroom));

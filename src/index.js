@@ -12,12 +12,16 @@ import { log as Logger } from './util';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 
+const API_DOMAIN = process.env.NODE_ENV === 'development' ? 'http://localhost:7777' : 'https://popletapp.com';
 const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:7777/api/v1' : 'https://popletapp.com/api/v1';
+const HOME_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://popletapp.com';
 
 axios.defaults.baseURL = BASE_URL;
 
 const Poplet = {
+  HOME_URL,
   API: {
+    API_DOMAIN,
     BASE_URL
   },
   constants: {

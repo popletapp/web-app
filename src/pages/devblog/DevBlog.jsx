@@ -4,7 +4,7 @@ import { getLastPosts } from '../../modules';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
 import './DevBlog.scss';
-import { Messages } from '../../i18n';
+import { withTranslation } from 'react-i18next';
 
 class BlogPostPreview extends Component {
   render () {
@@ -34,6 +34,7 @@ class DevBlog extends Component {
   }
 
   render () {
+    const { t } = this.props;
     const { posts } = this.state;
     return (
       <div className='blog-body'>
@@ -42,10 +43,8 @@ class DevBlog extends Component {
             <NavBar icon='poplet_black_no_bg' />
             <div className='inner'>
               <div className='intro-title'>
-                <h1 className='blog-main-title'>{Messages.BLOG_TITLE}</h1>
-                <h3 className='blog-description-title'>{Messages.BLOG_DESCRIPTION}</h3>
-              </div>
-              <div className='lower-half animated animatedFadeInUp fadeInUp'>
+                <h1 className='blog-main-title'>{t("BLOG_TITLE")}</h1>
+                <h3 className='blog-description-title'>{t("BLOG_DESCRIPTION")}</h3>
               </div>
             </div>
           </section>
@@ -59,4 +58,4 @@ class DevBlog extends Component {
   }
 }
 
-export default DevBlog;
+export default withTranslation()(DevBlog);

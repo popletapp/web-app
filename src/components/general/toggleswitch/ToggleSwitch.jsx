@@ -3,11 +3,10 @@ import { joinClasses } from './../../../util';
 import './ToggleSwitch.scss';
 
 class ToggleSwitch extends Component {
-  constructor ({ initialState }) {
-    super();
-    this.initialState = initialState;
+  constructor (props) {
+    super(props);
     this.state = {
-      toggled: initialState || false
+      toggled: null
     };
   }
 
@@ -21,11 +20,14 @@ class ToggleSwitch extends Component {
   }
 
   render () {
-    const { toggled } = this.state;
-    const { small, style } = this.props;
+    let { toggled } = this.state;
+    const { small, style, initialState } = this.props;
+    if (toggled === null) {
+      toggled = initialState;
+    }
     return (
       <div style={style} className='toggle-switch-container' onClick={(e) => this.toggle(e)}>
-        <div className={joinClasses(`toggle-switch switch-${toggled ? 'on' : 'off'}`, small ? 'switch-small' : null)}>
+        <div className={joinClasses('toggle-switch', `switch-${toggled ? 'on' : 'off'}`, small ? 'switch-small' : null)}>
           <div className='toggle-switch-knob'></div>
         </div>
       </div>

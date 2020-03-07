@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { moveNote, beginSelection, endSelection, moveGroup, isNoteInGroup, removeNoteFromGroup } from './../../modules';
+import { beginSelection, endSelection } from './../../modules';
 import { Note, Group } from './../';
-import ComponentTypes from './../../constants/ComponentTypes';
+import { findAncestor } from './../../util';
 import './Board.scss';
 
 function mapStateToProps (state) {
@@ -77,11 +77,7 @@ class NoteContainer extends Component {
   }
 
   onMouseDown (e) {
-    let el = e.target;
-    do {
-      if (el.matches('.note')) return;
-      el = el.parentElement || el.parentNode;
-    } while (el !== null && el.nodeType === 1);
+    if (findAncestor(e.target, 'note')) return;
     this.setState({ mouseDown: true, selecting: false, beganSelectionAt: { x: e.clientX, y: e.clientY } });
   }
 
@@ -119,7 +115,7 @@ class NoteContainer extends Component {
   }
 
   render () {
-    let { object: board, listView, connectDropTarget, groups, notes, zoomLevel } = this.props;
+    let { object: board, listView, groups, notes, zoomLevel } = this.props;
     notes = notes ? Object.values(notes) : [];
     groups = groups ? Object.values(groups) : [];
     const style = zoomLevel === 1 ? {} : { transform: `scale(${zoomLevel})` };
@@ -127,7 +123,6 @@ class NoteContainer extends Component {
     return <div
         onMouseDown={(e) => this.onMouseDown(e)}
         onTouchStart={(e) => this.onMouseDown(e, true)}
-        onMouseMove={(e) => this.onMouseMove(e)}
         onTouchMove={(e) => this.onMouseMove(e, true)}
         onMouseUp={(e) => this.onMouseUp(e)}
         onTouchEnd={(e) => this.onMouseUp(e)}
@@ -146,23 +141,3 @@ class NoteContainer extends Component {
 }
 
 export default connect(mapStateToProps, null)(NoteContainer);
-
-/*
-case ComponentTypes.NOTE:
-  const group = isNoteInGroup(data.id);
-  if (group) {
-    left = Math.round(cursor.x);
-    top = Math.round(cursor.y);
-    removeNoteFromGroup(props.id, group, data.id);
-    setTimeout(() => moveNote(props.id, data.id, { y: top, x: left }), 100);
-  } else {
-    const timeBeforeMove = performance.now()
-    moveNote(props.id, data.id, { y: top, x: left });
-    const timeAfterMove = performance.now();
-    console.log(`Call to moveNote took ${(timeAfterMove - timeBeforeMove)} milliseconds`);
-  }
-  break;
-case ComponentTypes.GROUP:
-  moveGroup(props.id, data.id, { y: top, x: left });
-  break;
-  */

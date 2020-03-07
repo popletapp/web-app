@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import './Board.scss';
 
 import { Board, Chatroom, PopletBase, NavBar } from './../../components';
-import { Messages } from '../../i18n';
+import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state) {
   return {
@@ -56,19 +56,20 @@ class BoardComponent extends PopletBase {
   }
 
   render () {
-    const board = this.props.board;
+    const { board, t } = this.props;
+
     if (!this.state.loaded) {
       return (
         <div>
           <NavBar />
           <div className='board-loading center-on-page'>
-            <h1>{Messages.BOARD_LOADING}</h1>
+            <h1>{t("BOARD_LOADING")}</h1>
             <br></br>
             <br></br>
             <h3>
-              {Messages.BOARD_LOADING_PROMOTIONAL_CONTENT_LINE_1}
+              {t("BOARD_LOADING_PROMOTIONAL_CONTENT_LINE_1")}
               <br />
-              {Messages.BOARD_LOADING_PROMOTIONAL_CONTENT_LINE_2} <Link to='/premium'>Poplet Premium</Link>
+              {t("BOARD_LOADING_PROMOTIONAL_CONTENT_LINE_2")} <Link to='/premium'>Poplet Premium</Link>
             </h3>
           </div>
         </div>
@@ -80,9 +81,9 @@ class BoardComponent extends PopletBase {
         <div>
           <NavBar />
           <div className='board-invalid'>
-            <h1>{Messages.BOARD_NOT_FOUND}</h1>
-            <h4>{Messages.BOARD_NOT_FOUND_BODY_LINE_1}</h4>
-            <Link to='/home'>{Messages.BOARD_NOT_FOUND_GO_HOME}</Link>
+            <h1>{t("BOARD_NOT_FOUND")}</h1>
+            <h4>{t("BOARD_NOT_FOUND_BODY_LINE_1")}</h4>
+            <Link to='/home'>{t("BOARD_NOT_FOUND_GO_HOME")}</Link>
           </div>
         </div>
       );
@@ -97,4 +98,4 @@ class BoardComponent extends PopletBase {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BoardComponent);
+export default withTranslation()(connect(mapStateToProps, mapDispatchToProps)(BoardComponent));
