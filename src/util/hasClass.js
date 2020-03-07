@@ -1,0 +1,1 @@
+export default (element, className) => element && (` ${element.className} `).indexOf(` ${className} `) !== -1
