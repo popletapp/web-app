@@ -3,6 +3,8 @@
   height: 12px;
 
   &-text {
+    max-width: 55px;
+    width: auto;
     color: var(--text-accent-color-1);
     margin-left: 16px;
   }

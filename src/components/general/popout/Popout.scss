@@ -43,6 +43,7 @@
   max-width: 250px !important;
 
   &-title {
+    max-width: 120px;
     margin-left: 12px;
 
     > .indicator {
@@ -53,6 +54,8 @@
   &-username {
     font-size: 18px;
     font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.5px;
   }
 
   &-subheading {

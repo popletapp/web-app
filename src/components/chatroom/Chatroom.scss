@@ -232,6 +232,15 @@
       font-family: 'Inter', sans-serif;
       letter-spacing: -0.5px;
       font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &-avatar {
+      cursor: pointer;
     }
   }
 

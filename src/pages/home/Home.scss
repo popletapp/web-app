@@ -166,7 +166,7 @@
     > div.note[style] {
       margin: 1em;
       position: relative;
-      width: 100%;
+      width: fit-content;
       top: 0;
       left: 0;
     }
@@ -209,8 +209,8 @@
     > div.note[style] {
       margin: 1em;
       position: relative;
-      width: 100%;
       top: 0;
+      width: fit-content;
       left: 0;
     }
   }

@@ -51,6 +51,10 @@ body, #root {
   display: flex;
 }
 
+.file-upload {
+  display: none;
+}
+
 html, body {
   -webkit-touch-callout: none;
   -webkit-user-select: none;

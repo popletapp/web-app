@@ -30,6 +30,80 @@
   &-content-container {
     width: 70%;
   }
+
+  &-board {
+    &-avatar {
+      width: 92px !important;
+      height: 92px !important;
+      transition: all 0.15s;
+  
+      &-container {
+        position: relative;
+  
+        &:hover {
+          transition: all 0.15s;
+          cursor: pointer;
+  
+          .avatar {
+            transition: all 0.15s;
+            opacity: 0.4;
+          }
+  
+          &.avatar-contains-img::after {
+            z-index: 0;
+            opacity: 1;
+            content: 'Change Avatar';
+            position: absolute;
+            top: 6px;
+            left: 0;
+            color: white;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-transform: uppercase;
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.5px;
+            margin-top: 24px;
+            margin-bottom: 6px;
+          }
+        }
+      }
+  
+      > p {
+        position: relative;
+        font-size: 48px !important;
+        top: 16px !important;
+      }
+  
+      &:hover {
+        > p {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        &::after {
+          z-index: 0;
+          opacity: 1;
+          content: 'Change Avatar';
+          position: absolute;
+          top: 52px;
+          left: 0;
+          color: white;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          text-transform: uppercase;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 600;
+          font-family: 'Inter', sans-serif;
+          letter-spacing: -0.5px;
+          margin-top: 24px;
+          margin-bottom: 6px;
+        }
+      }
+    }
+  }
   
   &-header {
     font-size: 32px;

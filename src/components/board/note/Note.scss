@@ -13,6 +13,8 @@
   min-width: 175px;
   transition: all 0.5s, opacity 0ms;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  width: fit-content;
 
   &.note-compact {
     margin-bottom: -1em;
@@ -112,7 +114,6 @@
       > div.note[style] {
         margin: 1em;
         position: relative;
-        width: 100%;
         top: 0;
         left: 0;
       }
@@ -177,6 +178,7 @@
   }
 
   &-footer {
+    cursor: default;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -192,6 +194,7 @@
       color: var(--text-accent-color-3);
       font-size: 12px;
       margin-left: 8px;
+      margin-right: 8px;
     }
 
     > div > button, a {
@@ -206,6 +209,7 @@
       border-radius: 4px;
 
       &.note-btn-edit {
+        max-width: 125px;
         &-disabled > div {
           color: var(--text-accent-color-3);
         }
