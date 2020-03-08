@@ -1,1 +1,12 @@
-{}
+{
+    "BOARD_LEAVE_BOARD": "Покинуть стенд",
+    "BOARD_SETTINGS": "Настройки",
+    "BOARD_NOTIFICATION_SETTINGS": "Настройки уведомлений",
+    "BOARD_INVITE_MEMBERS": "Пригласить участников",
+    "BOARD_MEMBER_COUNT_MEMBER_0": "{{count}} участник",
+    "BOARD_MEMBER_COUNT_MEMBER_1": "{{count}} участника",
+    "BOARD_MEMBER_COUNT_MEMBER_2": "{{count}} участников",
+    "MEMBERS_LIST_MEMBERS_HEADER": "Члены",
+    "CREATE_NEW_BOARD": "Создать новый стенд",
+    "JOIN_A_BOARD": "Присоединиться к стенду"
+}
