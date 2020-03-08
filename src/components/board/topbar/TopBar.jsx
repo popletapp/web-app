@@ -120,7 +120,7 @@ class TopBar extends Component {
           <div className='options-top-section-left'>
             <Flex wrap={true} className='toolbar-container'>
               <FlexChild onClick={() => createNote(board.id, { title: t("NOTE_DEFAULT_TITLE"), 
-                content: t("NOTE_DEFAULT_TITLE") })} className='toolbar-option' direction='row' align='center'>
+                content: t("NOTE_DEFAULT_CONTENT") })} className='toolbar-option' direction='row' align='center'>
                 <Button disabled={!permissions.has('MANAGE_NOTES')} color='purple lighten-2' icon='note_add' className='toolbar-btn' />
                 <p>{t("BOARD_TOPBAR_NEW_NOTE")}</p>
               </FlexChild>
