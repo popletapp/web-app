@@ -21,7 +21,7 @@ i18next.use(XHR)
   .use(initReactI18next)
   .init({
     lng: 'en',
-    fallbackLng: ['en', 'vi', 'pt_BR', 'ru'],
+    fallbackLng: ['en', 'vi', 'pt-BR', 'ru'],
     ns: ['translation'],
     backend: {
       loadPath: '/translations/{{lng}}/{{ns}}.json'

@@ -14,7 +14,7 @@ function mapStateToProps (state, props) {
 const LANGUAGES = [
   { name: 'English', friendly: 'English', code: 'en' },
   { name: 'Vietnamese', friendly: 'Tiếng Việt', code: 'vi' },
-  { name: 'Portuguese (Brazilian)', friendly: 'Português (Brasil)', code: 'pt_BR' },
+  { name: 'Portuguese (Brazilian)', friendly: 'Português (Brasil)', code: 'pt-BR' },
   { name: 'Russian', friendly: 'Русский', code: 'ru' }
 ]
 
