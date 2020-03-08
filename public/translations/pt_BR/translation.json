@@ -74,5 +74,10 @@
     "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_DUE_DATE": "adicionar prazo",
     "BOARD_SETTINGS_NOTES_PERFORMABLES_REPLACE_CONTENT": "trocar o conteúdo da nota",
     "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_DESCRIPTION": "adicionar conteúdo à nota",
-    "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_TITLE": "adicionar conteúdo ao título da nota"
+    "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_TITLE": "adicionar conteúdo ao título da nota",
+    "BOARD_CREATION_NAME_TOO_LONG": "O nome desse quadro precisa ser mais curto que 64 caracteres",
+    "BOARD_CREATION_NAME_TOO_SHORT": "O nome desse quadro precisa ser mais longo que dois caracteres",
+    "BOARD_CREATION_NAME_REQUIRED": "Você precisa de um nome para esse quadro!",
+    "BOARD_SETTINGS_RANKS_MANAGE_BOARD_DESCRIPTION": "Membros com essa permissão podem editar certas configurações no quadro como classes",
+    "BOARD_SETTINGS_RANKS_MANAGE_BOARD_TITLE": "Gerir Quadro"
 }
