@@ -20,7 +20,8 @@ import { initReactI18next, Translation } from 'react-i18next';
 i18next.use(XHR)
   .use(initReactI18next)
   .init({
-    fallbackLng: ['en', 'vi', false],
+    lng: 'en',
+    fallbackLng: ['en', 'vi', 'pt_BR', 'ru'],
     ns: ['translation'],
     backend: {
       loadPath: '/translations/{{lng}}/{{ns}}.json'

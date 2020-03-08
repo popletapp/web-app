@@ -13,7 +13,9 @@ function mapStateToProps (state, props) {
 
 const LANGUAGES = [
   { name: 'English', friendly: 'English', code: 'en' },
-  { name: 'Vietnamese', friendly: 'Tiếng Việt', code: 'vi' }
+  { name: 'Vietnamese', friendly: 'Tiếng Việt', code: 'vi' },
+  { name: 'Portuguese (Brazilian)', friendly: 'Português (Brasil)', code: 'pt_BR' },
+  { name: 'Russian', friendly: 'Русский', code: 'ru' }
 ]
 
 class UserSettingsLanguage extends Component {
@@ -49,20 +51,24 @@ class UserSettingsLanguage extends Component {
           
           <FlexChild className='user-settings-language-container'>
             {LANGUAGES.map((language, i) => {
-              const percentage = Math.floor(Object.keys(languageStrings[language.code].translation || {}).length / TOTAL_STRING_COUNT * 100);
-              return (
-                <Flex key={i} direction='row' align='center' className='user-settings-language-option'>
-                  <FlexChild direction='row'>
-                    <Checkbox initialState={user.lang === language.code} checked={user.lang === language.code} 
-                    radio onClick={() => this.changeLanguage(language.code)} label={language.friendly} />
-                  </FlexChild>
-                  <FlexChild align='center'>
-                    <div className='user-settings-language-option-translationpercentage'>
-                      {t('USER_SETTINGS_LANGUAGE_TRANSLATION_PERCENTAGE', { percentage })}  
-                    </div>
-                  </FlexChild>
-                </Flex>
-              )
+              if (languageStrings[language.code]) {
+                const percentage = Math.floor(Object.keys(languageStrings[language.code].translation || {}).length / TOTAL_STRING_COUNT * 100);
+                return (
+                  <Flex key={i} direction='row' align='center' className='user-settings-language-option'>
+                    <FlexChild direction='row'>
+                      <Checkbox initialState={user.lang === language.code} checked={user.lang === language.code} 
+                      radio onClick={() => this.changeLanguage(language.code)} label={language.friendly} />
+                    </FlexChild>
+                    <FlexChild align='center'>
+                      <div className='user-settings-language-option-translationpercentage'>
+                        {t('USER_SETTINGS_LANGUAGE_TRANSLATION_PERCENTAGE', { percentage })}  
+                      </div>
+                    </FlexChild>
+                  </Flex>
+                )
+              } else {
+                return null;
+              }
             })}
           </FlexChild>
         </Flex>
