@@ -101,5 +101,9 @@
     "BOARD_SETTINGS_RANKS_MANAGE_BOARD_TITLE": "Управлять стендом",
     "BOARD_SETTINGS_RANKS_BAN_MEMBERS_TITLE": "Заблокировать участников",
     "BOARD_SETTINGS_RANKS_KICK_MEMBERS_TITLE": "Выгнать участников",
-    "BOARD_SETTINGS_RANKS_INVITE_MEMBERS_TITLE": "Пригласить новых участников"
+    "BOARD_SETTINGS_RANKS_INVITE_MEMBERS_TITLE": "Пригласить новых участников",
+    "FEEDBACK_GENERAL_FEEDBACK": "Общая обратная связь (изменения и т.д.)",
+    "FEEDBACK_BUG_REPORT": "Отчёт об ошибке (проблема)",
+    "FEEDBACK_COMMENT_SUBTEXT": "Какие отзывы вы хотите оставить разработчикам?",
+    "FEEDBACK_TEXTAREA_SUBTEXT": "Я даже дал вам это славное текстовое поле, чтобы вы могли нам рассказать, что произошло."
 }
