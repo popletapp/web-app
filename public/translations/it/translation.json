@@ -157,5 +157,19 @@
     "BOARD_INVITE_MEMBERS": "Invita membri",
     "BOARD_MEMBER_COUNT_MEMBER": "{{count}} membro",
     "BOARD_MEMBER_COUNT_MEMBER_plural": "{{count}} membri",
-    "MEMBERS_LIST_MEMBERS_HEADER": "Membri"
+    "MEMBERS_LIST_MEMBERS_HEADER": "Membri",
+    "BOARD_SETTINGS_RANKS_VIEW_CHATROOMS_DESCRIPTION": "Permette ai membri di accedere alle chat nella tabella",
+    "BOARD_SETTINGS_RANKS_MANAGE_NOTES_DESCRIPTION": "Gestire e modificare note/gruppi",
+    "BOARD_SETTINGS_RANKS_MANAGE_NOTES_TITLE": "Gestire e modificare note/gruppi",
+    "BOARD_SETTINGS_RANKS_CREATE_RANK_SUGGESTION": "Cliccate su \"Crea Rango\" per creare un nuovo rango!",
+    "BOARD_SETTINGS_NOTES_PERFORMABLES": "Azioni",
+    "BOARD_SETTINGS_NOTES_PERFORMABLES_ASSIGN_MEMBERS": "assegnare questi membri",
+    "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_TITLE": "aggiungere contenuto al titolo delle note",
+    "BOARD_SETTINGS_NOTES_PERFORMABLES_SET_TITLE": "impostare il titolo della nota su",
+    "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_DUE_DATE": "aggiungere una scadenza",
+    "BOARD_SETTINGS_NOTES_PERFORMABLES_REPLACE_CONTENT": "sostituire il contenuto della nota",
+    "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_DESCRIPTION": "aggiungere contenuto alla nota",
+    "BOARD_SETTINGS_NOTES_COMPACT_MODE": "Modalità compatta",
+    "BOARD_SETTINGS_INVITES_ACTIVE_INVITES_HEADER": "Inviti attivi",
+    "BOARD_SETTINGS_GENERAL_AUTO_RESIZE": "Ridimensionamento automatico"
 }
