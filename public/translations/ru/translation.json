@@ -105,5 +105,14 @@
     "FEEDBACK_GENERAL_FEEDBACK": "Общая обратная связь (изменения и т.д.)",
     "FEEDBACK_BUG_REPORT": "Отчёт об ошибке (проблема)",
     "FEEDBACK_COMMENT_SUBTEXT": "Какие отзывы вы хотите оставить разработчикам?",
-    "FEEDBACK_TEXTAREA_SUBTEXT": "Я даже дал вам это славное текстовое поле, чтобы вы могли нам рассказать, что произошло."
+    "FEEDBACK_TEXTAREA_SUBTEXT": "Я даже дал вам это славное текстовое поле, чтобы вы могли нам рассказать, что произошло.",
+    "HOME_ACTIVITY_FEED_NO_ACTIVITY": "Ничего нового. Приходите попозже!",
+    "HOME_ACTIVITY_FEED_SUBHEADER_RECENTLY_MODIFIED": "Недавно изменённое",
+    "HOME_ACTIVITY_FEED_HEADER": "Недавняя активность",
+    "HOME_RECENTLY_VIEWED_NONE": "Вы ничего недавно не просматривали. Если же просмотрите, то здесь это отобразится.",
+    "HOME_RECENTLY_VIEWED_HEADER": "Недавно просмотренные",
+    "HOME_BOARDS_HEADER": "Стенды",
+    "FEEDBACK_TYPE_MISSING": "Не хватает данных для отправки отчёта.",
+    "FEEDBACK_LOCATION_MISSING": "Пожалуйста, укажите место, где произошла ошибка.",
+    "FEEDBACK_LOCATION_HOME_SCREEN": "Домашний экран"
 }
