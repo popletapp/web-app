@@ -144,7 +144,7 @@
     "USER_SETTINGS_APPEARANCE_THEME_DARK": "Scuro",
     "BOARD_SETTINGS_INVITES_ACTIVE_INVITES_CREATED_BY": "creato da",
     "BOARD_SETTINGS_INVITES_WHITELIST_HEADER": "Lista bianca",
-    "BOARD_SETTINGS_CATEGORY_RANKS": "Rango",
+    "BOARD_SETTINGS_CATEGORY_RANKS": "Ranghi",
     "BOARD_SETTINGS_CATEGORY_NOTES": "Nota",
     "BOARD_SETTINGS_CATEGORY_INVITES": "Invita",
     "BOARD_SETTINGS_CATEGORY_GENERAL": "Generale",
@@ -171,5 +171,18 @@
     "BOARD_SETTINGS_NOTES_PERFORMABLES_ADD_CONTENT_DESCRIPTION": "aggiungere contenuto alla nota",
     "BOARD_SETTINGS_NOTES_COMPACT_MODE": "Modalità compatta",
     "BOARD_SETTINGS_INVITES_ACTIVE_INVITES_HEADER": "Inviti attivi",
-    "BOARD_SETTINGS_GENERAL_AUTO_RESIZE": "Ridimensionamento automatico"
+    "BOARD_SETTINGS_GENERAL_AUTO_RESIZE": "Ridimensionamento automatico",
+    "RANKS": "Ranghi",
+    "POPOUT_RANK_LIST_NO_RANKS": "Nessun ranghi da aggiungere",
+    "NOTE_DETAILED_VIEW_VIEW_EDIT_REVISIONS": "Visualizza cronologia delle modifiche",
+    "EDIT": "Modificare",
+    "FATAL_ERROR_RELOAD": "Ricaricare",
+    "FATAL_ERROR_BODY_LINE_3": "Pagina di feedback.",
+    "FATAL_ERROR_TITLE": "C'è stato un errore",
+    "DROPDOWN_ITEM_LOGOUT": "Esci",
+    "DROPDOWN_ITEM_SETTINGS": "Impostazioni",
+    "DROPDOWN_ITEM_PROFILE": "Profilo",
+    "DROPDOWN_ITEM_HOME": "Home",
+    "LABEL_NAME_REQUIRED": "È necessario inserire un nome per questa etichetta!",
+    "LABEL_NEW_LABEL": "Nuova etichetta"
 }
