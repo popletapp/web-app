@@ -242,5 +242,10 @@
     "LANDING_INTRO_SUBTEXT": "Некоторые идеи посложнее других — мы стараемся, чтобы вы могли делать любые заметки без каких-либо ограничений.",
     "LANDING_INTRO_DESCRIPTION": "Приложение с заметками, имеющее много функций",
     "LANDING_MAIN_TITLE": "Мышление переосмыслено",
-    "FEEDBACK_LOCATION_LANDING_PAGE": "Назад"
+    "FEEDBACK_LOCATION_LANDING_PAGE": "Назад",
+    "POPOUT_NOTIFICATIONS_NO_NOTIFICATIONS": "Нет уведомлений",
+    "POPOUT_NOTIFICATIONS_TITLE": "Уведомления",
+    "NOTE_DETAILED_VIEW_COMMENT_TEXTAREA_PLACEHOLDER": "Написать комментарий...",
+    "NOTE_DETAILED_VIEW_HIDE_COMMENTS": "Скрыть комментарии",
+    "HOME_PENDING_FRIENDSHIPS_HEADER": "Неотвеченные заявки в друзья"
 }
