@@ -1,13 +1,14 @@
 import Poplet from '../..';
 import { getUser } from '../../actions/user';
 
-export default (userID) => {
+export default async (userID) => {
   const store = Poplet.store;
-  const state = store.getState();
+  let state = store.getState();
   if (state.users.items[userID]) {
     return state.users.items[userID];
   } else {
-    store.dispatch(getUser(userID));
+    await store.dispatch(await getUser(userID));
+    state = store.getState();
     return state.users.items[userID] || null;
   }
 };
