@@ -3,19 +3,21 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import { NoteDetailedView, MinimalisticButton, Flex, FlexChild, RichTextbox } from './../../';
+import { NoteDetailedView, MinimalisticButton, Flex, FlexChild, Editor, RichTextbox } from './../../';
 import './Note.scss';
-import { updateNote, createNote, saveNote, moveNote, createModal, removeNoteFromGroup, isNoteInGroup } from './../../../modules';
-import { permissions, findAncestor, hasClass } from './../../../util';
+import { updateNote, createNote, saveNote, moveNote, createModal, removeNoteFromGroup, 
+  isNoteInGroup, addNoteToGroup, createContextMenu } from './../../../modules';
+import { permissions, findAncestor, hasClass, joinClasses, isMouseWithinBounds } from './../../../util';
 import Draggable from 'react-draggable';
 import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
     note: props.id ? (state.notesByBoard[props.boardId] || {})[props.id] : props.note,
+    groups: state.groupsByBoard[props.boardId],
     selectedArea: state.selectionArea,
     listView: !!state.viewByBoard[state.selectedBoard],
-    board: state.boards[props.boardId]
+    board: state.boards[props.boardId] || {}
   };
 }
 
@@ -27,6 +29,7 @@ class Note extends Component {
     this.boardId = boardId;
     this.preview = preview;
     this.wasDraggedByClient = false;
+    this.currentMousePosition = {};
 
     this.state = {
       selected: false,
@@ -35,7 +38,7 @@ class Note extends Component {
       style: { },
       position: null
     };
-    if (!this.preview) {
+    if (true || !this.preview) {
       this.listener = (event) => {
         let element = event.target;
         let invalid = false;
@@ -49,14 +52,12 @@ class Note extends Component {
         } while (element !== null && element.nodeType === 1);
         if (invalid) return;
         if (element && element.dataset && element.dataset.id === note.id) {
-          if (!this.state.editing) {
-            this.onClick(event);
-          }
+          this.onClick(event);
         } else {
           if (unselect) this.unselect();
         }
       };
-      window.listeners.subscribe('mouseup', this.listener);
+      window.listeners.subscribe('click', this.listener);
     }
   }
 
@@ -64,9 +65,12 @@ class Note extends Component {
     if (this.wasDraggedByClient) {
       return false;
     };
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     if (!this.state.selected) {
-      createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.boardId} />);
+      createModal(<NoteDetailedView noteId={this.props.note.id} boardId={this.props.boardId} note={this.props.note || undefined} />);
     }
   }
 
@@ -91,22 +95,22 @@ class Note extends Component {
     }
   }
 
-  onInput (event, type) {
+  onChange (value, type) {
     const { note } = this.props;
-    const content = event.target.innerText.replace(/<br\s*[\\/]?>/gi, '\n');
+    const content = value;
     const newNote = { ...note, [type]: content };
     updateNote(this.boardId, newNote);
-    if (event.which === 13 && !event.shiftKey) { // ENTER pressed
+    /*if (event.which === 13 && !event.shiftKey) { // ENTER pressed
       this.onBlur(event, type);
-    }
+    }*/
   }
 
-  async onBlur (event, type) {
+  async onBlur (value, type) {
     let { note } = this.props;
     const { selected, editing } = this.state;
 
     if (selected && editing) {
-      const content = event.target.innerText.replace(/<br\s*[\\/]?>/gi, '\n');
+      const content = value;
       note = this.didSizeChange() || note;
       const newNote = { ...note, [type]: content };
 
@@ -158,7 +162,7 @@ class Note extends Component {
   }
 
   componentWillUnmount () {
-    window.listeners.unsubscribe('mouseup', this.listener);
+    window.listeners.unsubscribe('click', this.listener);
   }
 
   highlight () {
@@ -207,39 +211,46 @@ class Note extends Component {
   }
 
   onDrag (event, data) {
-    const { note } = this.props;
+    const { note, board, boardId, groups } = this.props;
+    
     if (data) {
+      // TODO: use pos data to detect if note is over group to add it to group
+      this.currentMousePosition = event;
       const newPosition = { x: data.x, y: data.y };
       if (note.position !== newPosition) {
         this.setState({ position: newPosition })
         this.wasDraggedByClient = true;
-
-        const node = this.noteRef.current;
-        if (!node) {
-          return {
-            left: 0,
-            top: 0
-          };
-        }
-        const { ownerDocument } = node;
       }
     }
   }
 
   async onDragStop () {
-    const { note, boardId } = this.props;
+    const { note, boardId, groups } = this.props;
     const { position } = this.state;
     const container = document.getElementsByClassName('note-container')[0];
     container.style.backgroundSize = '';
     container.style.backgroundImage = '';
-    setTimeout(() => { this.wasDraggedByClient = false; }, 100);
+    setTimeout(() => { this.wasDraggedByClient = false; }, 200);
 
     if (this.wasDraggedByClient) {
-      const group = isNoteInGroup(note.id);
-      if (group) {
-        await removeNoteFromGroup(boardId, group, note.id);
+      for (const id in groups) {
+        const group = groups[id];
+        const boundaries = isMouseWithinBounds(this.currentMousePosition, group);
+        const existingGroup = isNoteInGroup(note.id);
+        if (boundaries.overlapping) {
+          if (existingGroup) {
+            await moveNote(boardId, note.id, position);
+          } else {
+            addNoteToGroup(boardId, group.id, note.id);
+          }
+        } else {
+          if (existingGroup) {
+            await removeNoteFromGroup(boardId, group, note.id);
+          } else {
+            await moveNote(boardId, note.id, position);
+          }
+        }
       }
-      await moveNote(boardId, note.id, position);
     }
   }
 
@@ -271,10 +282,10 @@ class Note extends Component {
   }
 
   render () {
-    let { note, listView, preview, style: styleProps = {}, board = {}, t } = this.props;
+    let { note, listView, preview, style: styleProps = {}, board = {}, t, className } = this.props;
     const { editing, selected, style } = this.state;
     const { compact = false } = board;
-    const bounds = this.getBounds();
+    const insideGroup = isNoteInGroup(note.id);
 
     if (!note || this.state.unmounted) {
       return null;
@@ -285,13 +296,27 @@ class Note extends Component {
       onStart={(...args) => this.onDragStart(...args)}
       onDrag={(...args) => this.onDrag(...args)}
       onStop={(...args) => this.onDragStop(...args)}
-      disabled={listView || preview || !permissions.has('MOVE_NOTES')}
+      disabled={selected || listView || preview || !permissions.has('MOVE_NOTES')}
       defaultPosition={preview ? void 0 : note.position}
-      bounds={{ top: bounds.top, left: bounds.left }}
+      bounds='parent'
       grid={board.type === 1 ? [ 32, 32 ] : void 0}>
         <div ref={this.noteRef}
         data-id={note.id.toString()}
-        className={`note ${!note.options.color ? 'blue-grey ' : ''}darken-1${selected && !preview ? ' selected' : ''}${compact ? ' note-compact' : ''}`}
+        className={joinClasses('note', !note.options.color ? 'blue-grey' : '', 'darken-1', 
+        selected && !preview ? 'selected' : '', compact ? ' note-compact' : '', className)}
+        onContextMenu={(event) => {
+          event.preventDefault();
+          createContextMenu('contextmenu', [
+            {
+              name: 'View Note',
+              onClick: () => this.view()
+            },
+            insideGroup ? {
+              name: 'Remove Note from Group',
+              onClick: () => removeNoteFromGroup(board.id, insideGroup, note.id)
+            } : undefined,
+          ], { x: event.clientX, y: event.clientY })
+        }}
         style={{ 
           ...(!listView && !preview ? style : {}),
           backgroundColor: note.options.color || '',
@@ -305,7 +330,7 @@ class Note extends Component {
               type='title'
               parseMarkdown={false}
               editable={editing}
-              onInput={(e) => this.onInput(e, 'title')}
+              onChange={(e) => this.onChange(e, 'title')}
               onBlur={(e) => this.onBlur(e, 'title')}
               style={{ display: note.title ? 'block' : 'none' }}
               placeholder='Title'
@@ -315,9 +340,9 @@ class Note extends Component {
             <RichTextbox
               type='content'
               editable={editing}
-              parseMarkdown={editing}
+              parseMarkdown={!editing}
               doDecorate={editing}
-              onInput={(e) => this.onInput(e, 'content')}
+              onChange={(e) => this.onChange(e, 'content')}
               onBlur={(e) => this.onBlur(e, 'content')}
               placeholder='Content'
               className='note-body'>
