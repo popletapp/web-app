@@ -175,6 +175,7 @@ class Group extends Component {
       onDrag={(...args) => this.onDrag(...args)}
       onStop={(...args) => this.onDragStop(...args)}
       disabled={!permissions.has('MOVE_NOTES')}
+      handle='.group-header'
       defaultPosition={group.position}
       bounds={{ top: bounds.top, left: bounds.left }}
       grid={board.type === 1 ? [ 32, 32 ] : void 0}>
