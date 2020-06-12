@@ -24,9 +24,11 @@ const connectSocket = () => {
 };
 
 export default async () => {
+  const UNAFFECTED_PATHNAMES = [ '/', '/about' ]
   const token = localStorage.getItem('token');
   if (!token) {
-    document.location.replace('/login');
+    if (!UNAFFECTED_PATHNAMES.includes(document.location.pathname)) document.location.replace('/login');
+    return;
   } else {
     axios.defaults.headers.common['Authorization'] = token;
     const getCurrentUser = () => axios.get(`/users/me`).then(res => res.data);
