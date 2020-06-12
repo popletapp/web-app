@@ -27,20 +27,34 @@
   width: 100%;
 }
 
+.board-interaction-btn {
+  transition: all 0.15s;
+  width: 100%;
+  text-align: center;
+  padding: 1em;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .board-add-items {
   background-color: rgba(0, 0, 0, 0.4);
   margin-left: -1em;
   margin-right: -1em;
   margin-bottom: -1.2em;
-  margin-top: 0.5em;
-  padding: 0.5em;
+  margin-top: 1em;
+  padding: 1em;
 
   header {
-    color: #b8b8b8;
+    background: var(--dark-accent-color-purple-2);
+    width: 100%;
+    color: var(--text-accent-color-3);
     position: relative;
-    width: auto;
+    text-align: center;
     overflow: visible;
-    top: -8px;
+    margin: 0;
     padding: 0.5em;
   }
 
@@ -50,11 +64,16 @@
     margin-left: 4px;
     margin-right: 4px;
 
-    .board-item-name {
+    &-name {
       text-align: center;
       justify-content: center;
       font-family: 'Inter', sans-serif;
       letter-spacing: -0.35px;
+
+      i {
+        font-size: 20px;
+        margin-right: 4px;
+      }
     }
   }
 }
@@ -97,7 +116,7 @@
   }
 
   .board-selector {
-    min-height: 350px;
+    max-height: 350px;
     max-width: 100% !important;
     height: auto;
     overflow-y: auto;
@@ -124,30 +143,157 @@
 }
 
 .home-content-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
+  background: var(--dark-accent-color-purple-4);
+  
+  &-background {
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: url('/assets/svg/poplet-background-accent.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: .2;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.pending-friend {
+  padding: 0.5em;
+  margin-right: 12px;
+  margin-bottom: 24px;
+  background: rgba(0, 0, 0, 0.4);
+  max-width: 250px;
+  margin: 12px;
+  margin-top: 0;
+
+  &-info {
+
+  }
+
+  &-avatar {
+    border-radius: 8px;
+  }
+
+  div > &-username {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 6px;
+    margin-top: 4px;
+  }
+
+  div > &-btns {
+    color: white;
+
+    .btn-small {
+      color: white;
+      margin-left: 6px;
+      margin-right: 6px;
+    }
+  }
+
+  div > &-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-color);
+    background: rgba(0, 0, 0, 0.45);
+    padding: 0.35em;
+    margin: 12px;
+    margin-bottom: 4px;
+  }
 }
 
 .activity-feed {
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-items: left;
   text-align: left;
-  background-color: var(--dark-accent-color-purple-4);
   padding: 2em;
   min-height: 300px;
   min-width: 500px;
   width: 100%;
+
+  &-item {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.35em;
+    margin: 12px;
+    border-radius: 4px;
+    padding-left: 8px;
+
+    &-timestamp {
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-accent-color-4);
+    }
+
+    &-header {
+      margin-top: 4px;
+      padding: 8px;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    &-board-header {
+      margin: 0;
+      color: var(--poplet-blue) !important;
+
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+
+    &-content {
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.5px;
+      font-weight: 400;
+      margin: 0.3em;
+    }
+
+    &-note {
+      margin: 0.5em;
+      margin-left: 0;
+      position: relative !important;
+      * {
+        cursor: default;
+      }
+
+      &-preview {
+        margin: 0 !important;
+        margin-left: auto;
+        transform: scale(0.575) !important;
+      }
+    }
+
+    &-icon {
+      margin-right: 12px;
+      align-self: flex-start;
+    }
+  }
 
   &-title {
     font-family: 'Inter', sans-serif;
     letter-spacing: -1.25px;
     font-weight: 700;
     font-size: 38px;
-    margin-bottom: 24px;
+    border-radius: 4px;
+    padding: 0.5em;
+    margin-bottom: 16px;
+    background-color: rgba(0, 0, 0, 0.4);
   }
 
   &-subtitle {
@@ -162,6 +308,14 @@
   &-content {
     display: flex;
     flex-direction: column;
+    width: 80%;
+    padding: 0.5em;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-family: 'Inter', sans-serif;
+
+    * {
+      color: var(--text-accent-color-1);
+    }
 
     > div.note[style] {
       margin: 1em;
@@ -178,7 +332,6 @@
   flex-direction: column;
   justify-items: left;
   text-align: left;
-  background-color: var(--dark-accent-color-purple-4);
   padding: 2em;
   min-height: 100px;
   height: auto;

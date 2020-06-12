@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { PopletBase, Avatar, Note, NavBar, BetaModal, Scroller, Flex } from './../../components';
-import { createModal } from './../../modules';
+import { PopletBase, Avatar, Note, NavBar, BetaModal, 
+  Scroller, Flex, FlexChild, Button, UsernameText } from './../../components';
+import { createModal, getHomeContent, getPendingFriends, acceptFriendRequest, deleteFriend, getUser } from './../../modules';
+import HomeContentTypes from './../../constants/HomeContentTypes';
+import { parseTime } from './../../util';
 import { Link } from 'react-router-dom';
 import './Home.scss';
 import { withTranslation } from 'react-i18next';
@@ -14,27 +17,172 @@ function mapStateToProps (state) {
   };
 }
 
+const ACKNOWLEDGED_FRIEND_IDS = [];
+
+class FriendRequestItem extends Component {
+  render () {
+    const { friend } = this.props;
+    return (
+      <Flex align='center' grow={0} className='pending-friend'>
+        <FlexChild align='center' className='pending-friend-info'>
+          <Avatar className='pending-friend-avatar' id={friend.id} url={friend.avatar} alt={friend.username} size='medium' />
+          <UsernameText className='pending-friend-username'>{friend.username}</UsernameText>
+        </FlexChild>
+
+        <FlexChild direction='row' className='pending-friend-btns'>
+          <Button onClick={() => {
+            ACKNOWLEDGED_FRIEND_IDS.push(friend.id);
+            acceptFriendRequest(friend.id);
+          }} color='green'>Accept</Button>
+          <Button onClick={() => {
+            ACKNOWLEDGED_FRIEND_IDS.push(friend.id);
+            deleteFriend(friend.id);
+          }} color='red'>Decline</Button>
+        </FlexChild>
+      </Flex>
+    )
+  }
+}
+
+class ActivityFeedItem extends Component {
+  constructor () {
+    super();
+    this.state = {};
+  }
+
+  getBoardFromNote (id) {
+    const { boards } = this.props;
+    for (const board of Object.values(boards)) {
+      if (board.notes.indexOf(id)) return board;
+    }
+    return null;
+  }
+
+  async componentDidMount () {
+    const { item } = this.props;
+    if (item.value.user) {
+      this.setState({ user: await getUser(item.value.user) })
+    }
+  }
+
+  render () {
+    const { item } = this.props;
+    switch (item.type) {
+      // Due date upcoming
+      case HomeContentTypes.DUE_DATE_UPCOMING: {
+        const note = item.value.note;
+        const board = this.getBoardFromNote(note.id) || { name: 'unknown board' };
+        if (new Date(note.dueDate).valueOf() < Date.now()) return null;
+        return (
+          <Flex className='activity-feed-item'>
+            <FlexChild align='center' className='activity-feed-item-content' direction='row'>
+              <i className='material-icons activity-feed-item-icon'>info_outline</i>
+              <Flex>
+                {board.id 
+                 ? <Link to={`/boards/${board.id}`}><header className='activity-feed-item-board-header'>{board.name}</header></Link>
+                 : <header className='activity-feed-item-board-header'>{board.name}</header>}
+                <span>"<strong>{note.title}</strong>" is due in {parseTime.timeUntil(note.dueDate)}</span>
+                <Note
+                  key={note.id}
+                  boardId={board.id}
+                  noteId={note.id}
+                  className='activity-feed-item-note'
+                  note={note}
+                  preview />
+              </Flex>
+            </FlexChild>
+          </Flex>
+        )
+      }
+
+      case HomeContentTypes.FRIEND_REQUEST_ACCEPTED: {
+        const user = this.state.user || item.value.user || { username: 'Unknown User' };
+        return (
+          <Flex direction='row' align='center' className='activity-feed-item'>
+            <FlexChild align='center' className='activity-feed-item-content' direction='row'>
+              <i className='material-icons activity-feed-item-icon'>person_add</i>
+              <Flex>
+                {!user.id 
+                 ? <span>{user.username} accepted your friend request</span>
+                 : <span><Link to={`/users/${user.id}`}>{user.username}</Link> accepted your friend request</span>}
+              </Flex>
+            </FlexChild>
+            <FlexChild align='right' className='activity-feed-item-timestamp'>
+              {parseTime.timeAgo(item.timestamp, true, true, 1)}
+            </FlexChild>
+          </Flex>
+        )
+      }
+
+      case HomeContentTypes.FRIENDSHIP_CREATED: {
+        const user = this.state.user || item.value.user || { username: 'Unknown User' };
+        return (
+          <Flex direction='row' align='center' className='activity-feed-item'>
+            <FlexChild align='center' className='activity-feed-item-content' direction='row'>
+              <i className='material-icons activity-feed-item-icon'>person_add</i>
+              <Flex>
+                {!user.id 
+                 ? <span>You are now friends with {user.username}!</span>
+                 : <span>You are now friends with <Link to={`/users/${user.id}`}>{user.username}</Link>!</span>}
+              </Flex>
+            </FlexChild>
+            <FlexChild align='right' className='activity-feed-item-timestamp'>
+              {parseTime.timeAgo(item.timestamp, true, true, 1)}
+            </FlexChild>
+          </Flex>
+        )
+      }
+      
+      case HomeContentTypes.ASSIGNED_TO_NOTE: {
+        const note = item.value.note;
+        const board = this.getBoardFromNote(note.id) || { name: 'unknown board' };
+        return (
+          <Flex className='activity-feed-item'>
+            <FlexChild align='center' className='activity-feed-item-content' direction='row'>
+              <i className='material-icons activity-feed-item-icon'>info_outline</i>
+              <Flex>
+                {board.id 
+                 ? <Link to={`/boards/${board.id}`}><header className='activity-feed-item-board-header'>{board.name}</header></Link>
+                 : <header className='activity-feed-item-board-header'>{board.name}</header>}
+                <span>You were assigned to "<strong>{note.title}</strong>"</span>
+                <Note
+                  key={note.id}
+                  className='activity-feed-item-note'
+                  note={note}
+                  preview />
+              </Flex>
+            </FlexChild>
+          </Flex>
+        )
+      }
+    }
+  }
+}
+const ConnectedActivityFeedItem = connect(mapStateToProps, null)(ActivityFeedItem);
+
 class Home extends PopletBase {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: []
+    }
+  }
+
   async componentDidMount () {
     await this.init();
+    const content = await getHomeContent();
+    const pendingFriendships = await getPendingFriends();
+    this.setState({
+      content,
+      pendingFriendships
+    });
   }
 
   render () {
     let { boards, notes, t } = this.props;
+    let { content, pendingFriendships = [] } = this.state;
+    pendingFriendships = pendingFriendships.filter(f => !ACKNOWLEDGED_FRIEND_IDS.includes(f.id));
     notes = notes.items || [];
-    const activityFeedNotes = notes
-      .sort((a, b) => b.modifiedAt - a.modifiedAt)
-      .slice(0, 10)
-      .map(note =>
-        <Note
-          key={note.id}
-          id={note.id}
-          preview
-          boardId={
-            (Object.values(boards)
-              .find(board => board.notes
-                .includes(note.id)) || {}).id
-          } />);
     return (
       <div className='poplet-root center-on-page home'>
         <NavBar />
@@ -58,24 +206,24 @@ class Home extends PopletBase {
               );
             })}
 
-            <Flex className='board-add-items' direction='row' align='center' justify='center'>
-              <Link className='board-item board-item-join' to={{
+            <Flex className='board-add-items' direction='column' align='center' justify='center'>
+              <Link className='board-interaction-btn board-item-join' to={{
                 pathname: '/boards/join',
                 state: { modal: true }
               }}>
                 <div className='board-item-name'>
-                {t("JOIN_A_BOARD")}
+                  <i className='material-icons'>people</i> {t("JOIN_A_BOARD")}
                 </div>
               </Link>
 
               <header>{t("NAVBAR_REGISTER_OR")}</header>
 
-              <Link className='board-item board-item-create' to={{
+              <Link className='board-interaction-btn board-item-create' to={{
                 pathname: '/boards/create',
                 state: { modal: true }
               }}>
                 <div className='board-item-name'>
-                  {t("CREATE_NEW_BOARD")}
+                  <i className='material-icons'>add_circle</i> {t("CREATE_NEW_BOARD")}
                 </div>
               </Link>
             </Flex>
@@ -83,38 +231,24 @@ class Home extends PopletBase {
           </div>
 
           <div className='home-content-container'>
-            <Scroller className='recently-viewed'>
-              <div className='recently-viewed-title'>{t("HOME_RECENTLY_VIEWED_HEADER")}</div>
-              <div className='recently-viewed-content'>
-                {(() => {
-                  if (!notes.length) {
-                    return <div>{t("HOME_RECENTLY_VIEWED_NONE")}</div>;
-                  } else {
-                    return (
-                    <>
-                      {activityFeedNotes}
-                      {notes.length > 10 && <p>... and {notes.slice(0, 10).length} more notes</p>}
-                    </>
-                    );
-                  }
-                })()}
-              </div>
-            </Scroller>
-
+            <div className='home-content-container-background' />
             <Scroller className='activity-feed'>
               <div className='activity-feed-title'>{t("HOME_ACTIVITY_FEED_HEADER")}</div>
-              <div className='activity-feed-subtitle'>{t("HOME_ACTIVITY_FEED_SUBHEADER_RECENTLY_MODIFIED")}</div>
               <div className='activity-feed-content'>
                 {(() => {
-                  if (!notes.length) {
+                  if (!content.length && !pendingFriendships.length) {
                     return <div>{t("HOME_ACTIVITY_FEED_NO_ACTIVITY")}</div>;
                   } else {
-                    return (
-                    <>
-                      {activityFeedNotes}
-                      {notes.length > 10 && <p>... and {notes.slice(0, 10).length} more notes</p>}
-                    </>
-                    );
+                    const stuff = [
+                      ...content.map((value) => <ConnectedActivityFeedItem item={value} />)
+                    ];
+                    if (pendingFriendships.length) {
+                      for (const friend of pendingFriendships) {
+                        stuff.unshift(<FriendRequestItem friend={friend} />)
+                      }
+                      stuff.unshift(<div className='pending-friend-title'>{t("HOME_PENDING_FRIENDSHIPS_HEADER")}</div>)
+                    }
+                    return stuff;
                   }
                 })()}
               </div>
