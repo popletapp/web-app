@@ -19,8 +19,8 @@ export default async (boardId, noteId, position) => {
   }
 
   let { x, y } = position;
-  x = Number(x);
-  y = Number(y);
+  x = parseInt(x);
+  y = parseInt(y);
   if (!Number.isInteger(x) || !Number.isInteger(y)) {
     throw new Error('One or more position values are not valid integers');
   }
