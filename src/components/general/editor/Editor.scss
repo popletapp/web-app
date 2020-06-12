@@ -4,9 +4,67 @@
   display: inline-block;
 }
 
+.content {
+  white-space: break-spaces;
+  word-wrap: break-word;
+}
+
 .editor {
   outline: none;
   white-space: pre-wrap; 
   overflow-wrap: break-word;
   overflow: hidden;
+
+  &-read-only {
+    user-select: text;
+  }
+}
+
+.editor-element {
+  &-bold {
+    font-weight: bold;
+  }
+
+  &-italic {
+    font-style: italic;
+  }
+
+  &-title {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 20px 0 10px 0;
+  }
+
+  &-underlined {
+    text-decoration: underline;
+  }
+
+  &-list {
+    padding-left: 10px;
+    font-size: 20px;
+    line-height: 10px;
+  }
+
+  &-hr {
+    display: block;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+  }
+
+  &-blockquote {
+    display: inline-block;
+    border-left: 2px solid #ddd;
+    padding-left: 10px;
+    color: #aaa;
+    font-style: italic;
+  }
+
+  &-code {
+    * {
+      font-family: 'Courier New', Courier, monospace;
+    }
+    background-color: rgb(8, 8, 8);
+    padding: 3px;
+  }
 }

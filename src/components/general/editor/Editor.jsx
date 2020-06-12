@@ -4,7 +4,7 @@ import { joinClasses } from '../../../util';
 import Prism from 'prismjs';
 import './Editor.scss';
 import { connect } from 'react-redux';
-import { Editor as SlateEditor, Text, createEditor, Transforms, Range } from 'slate';
+import { Editor as SlateEditor, Text, createEditor, Transforms, Range, Node } from 'slate';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { css } from 'emotion';
@@ -18,19 +18,100 @@ function mapStateToProps (state) {
 }
 
 // eslint-disable-next-line
-;Prism.languages.markdown=Prism.languages.extend("markup",{}),Prism.languages.insertBefore("markdown","prolog",{blockquote:{pattern:/^>(?:[\t ]*>)*/m,alias:"punctuation"},code:[{pattern:/^(?: {4}|\t).+/m,alias:"keyword"},{pattern:/``.+?``|`[^`\n]+`/,alias:"keyword"}],title:[{pattern:/\w+.*(?:\r?\n|\r)(?:==+|--+)/,alias:"important",inside:{punctuation:/==+$|--+$/}},{pattern:/(^\s*)#+.+/m,lookbehind:!0,alias:"important",inside:{punctuation:/^#+|#+$/}}],hr:{pattern:/(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,lookbehind:!0,alias:"punctuation"},list:{pattern:/(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,lookbehind:!0,alias:"punctuation"},"url-reference":{pattern:/!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,inside:{variable:{pattern:/^(!?\[)[^\]]+/,lookbehind:!0},string:/(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,punctuation:/^[\[\]!:]|[<>]/},alias:"url"},bold:{pattern:/(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^\*\*|^__|\*\*$|__$/}},italic:{pattern:/(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,lookbehind:!0,inside:{punctuation:/^[*_]|[*_]$/}},url:{pattern:/!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,inside:{variable:{pattern:/(!?\[)[^\]]+(?=\]$)/,lookbehind:!0},string:{pattern:/"(?:\\.|[^"\\])*"(?=\)$)/}}}}),Prism.languages.markdown.bold.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.italic.inside.url=Prism.util.clone(Prism.languages.markdown.url),Prism.languages.markdown.bold.inside.italic=Prism.util.clone(Prism.languages.markdown.italic),Prism.languages.markdown.italic.inside.bold=Prism.util.clone(Prism.languages.markdown.bold); // prettier-ignore
-
+Prism.languages.markdown = Prism.languages.extend("markup", {}),
+Prism.languages.insertBefore("markdown", "prolog", {
+    blockquote: {
+      pattern: /^>(?:[\t ]*>)*/m,
+      alias: "punctuation"
+    },
+    code: [{
+      pattern: /^(?: {4}|\t).+/m,
+      alias: "keyword"
+    }, {
+      pattern: /``.+?``|`[^`\n]+`/,
+      alias: "keyword"
+    }],
+    title: [{
+      pattern: /\w+.*(?:\r?\n|\r)(?:==+|--+)/,
+      alias: "important",
+      inside: {
+        punctuation: /==+$|--+$/
+      }
+    }, {
+      pattern: /(^\s*)#+.+/m,
+      lookbehind: !0,
+      alias: "important",
+      inside: {
+        punctuation: /^#+|#+$/
+      }
+    }],
+    hr: {
+      pattern: /(^\s*)([*-])([\t ]*\2){2,}(?=\s*$)/m,
+      lookbehind: !0,
+      alias: "punctuation"
+    },
+    list: {
+      pattern: /(^\s*)(?:[*+-]|\d+\.)(?=[\t ].)/m,
+      lookbehind: !0,
+      alias: "punctuation"
+    },
+    "url-reference": {
+      pattern: /!?\[[^\]]+\]:[\t ]+(?:\S+|<(?:\\.|[^>\\])+>)(?:[\t ]+(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\)))?/,
+      inside: {
+        variable: {
+          pattern: /^(!?\[)[^\]]+/,
+          lookbehind: !0
+        },
+        string: /(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\((?:\\.|[^)\\])*\))$/,
+        punctuation: /^[\[\]!:]|[<>]/
+      },
+      alias: "url"
+    },
+    bold: {
+      pattern: /(^|[^\\])(\*\*|__)(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,
+      lookbehind: !0,
+      inside: {
+        punctuation: /^\*\*|^__|\*\*$|__$/
+      }
+    },
+    italic: {
+      pattern: /(^|[^\\])([*_])(?:(?:\r?\n|\r)(?!\r?\n|\r)|.)+?\2/,
+      lookbehind: !0,
+      inside: {
+        punctuation: /^[*_]|[*_]$/
+      }
+    },
+    url: {
+      pattern: /!?\[[^\]]+\](?:\([^\s)]+(?:[\t ]+"(?:\\.|[^"\\])*")?\)| ?\[[^\]\n]*\])/,
+      inside: {
+        variable: {
+          pattern: /(!?\[)[^\]]+(?=\]$)/,
+          lookbehind: !0
+        },
+        string: {
+          pattern: /"(?:\\.|[^"\\])*"(?=\)$)/
+        }
+      }
+    },
+    mention: {
+      pattern: /(\[@-(\d+)])/,
+      lookbehind: !0,
+      inside: {
+        variable: {
+          pattern: /(\d+)/,
+          lookbehind: !0
+        },
+        string: {
+          pattern: /(\[@-(\d+)])/
+        }
+      },
+      alias: 'punctuation'
+    }
+}), Prism.languages.markdown.bold.inside.url = Prism.util.clone(Prism.languages.markdown.url), Prism.languages.markdown.italic.inside.url = Prism.util.clone(Prism.languages.markdown.url), Prism.languages.markdown.bold.inside.italic = Prism.util.clone(Prism.languages.markdown.italic), Prism.languages.markdown.italic.inside.bold = Prism.util.clone(Prism.languages.markdown.bold); // prettier-ignore
 const withMentions = editor => {
   const { isInline, isVoid } = editor
-
-  editor.isInline = element => {
-    return element.type === 'mention' ? true : isInline(element)
-  }
-
-  editor.isVoid = element => {
-    return element.type === 'mention' ? true : isVoid(element)
-  }
-
+  editor.isInline = element => element.type === 'mention' ? true : isInline(element)
+  editor.isVoid = element => element.type === 'mention' ? true : isVoid(element)
   return editor
 }
 
@@ -52,44 +133,17 @@ const Leaf = ({ attributes, children, leaf }) => {
   return (
     <span
       {...attributes}
-      className={css`
-        font-weight: ${leaf.bold && 'bold'};
-        font-style: ${leaf.italic && 'italic'};
-        text-decoration: ${leaf.underlined && 'underline'};
-        ${leaf.title &&
-          css`
-            display: inline-block;
-            font-weight: bold;
-            font-size: 20px;
-            margin: 20px 0 10px 0;
-          `}
-        ${leaf.list &&
-          css`
-            padding-left: 10px;
-            font-size: 20px;
-            line-height: 10px;
-          `}
-        ${leaf.hr &&
-          css`
-            display: block;
-            text-align: center;
-            border-bottom: 2px solid #ddd;
-          `}
-        ${leaf.blockquote &&
-          css`
-            display: inline-block;
-            border-left: 2px solid #ddd;
-            padding-left: 10px;
-            color: #aaa;
-            font-style: italic;
-          `}
-        ${leaf.code &&
-          css`
-            font-family: monospace;
-            background-color: #eee;
-            padding: 3px;
-          `}
-      `}
+      className={joinClasses(
+        'editor-element',
+        leaf.bold && 'editor-element-bold',
+        leaf.italic && 'editor-element-italic',
+        leaf.title && 'editor-element-title',
+        leaf.underlined && 'editor-element-underlined',
+        leaf.list && 'editor-element-list',
+        leaf.hr && 'editor-element-hr',
+        leaf.blockquote && 'editor-element-blockquote',
+        leaf.code && 'editor-element-code',
+      )}
     >
       {children}
     </span>
@@ -98,13 +152,14 @@ const Leaf = ({ attributes, children, leaf }) => {
 
 const Element = props => {
   const { attributes, children, element } = props
+  console.log(children)
   switch (element.type) {
     case 'bold':
       return <strong {...attributes}>{children}</strong>
     case 'italic':
       return <i {...attributes}>{children}</i>
     case 'mention':
-      return <Mention {...attributes}>{element.user.username}</Mention>
+      return <Mention {...attributes}>{element.user ? element.user.username : 'invalid-user'}</Mention>
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>
     case 'bulleted-list':
@@ -126,25 +181,41 @@ const Portal = ({ children }) => {
   return ReactDOM.createPortal(children, document.body)
 }
 
+// Define a serializing function that takes a value and returns a string.
+const serialize = value => {
+  return (
+    value
+      // Return the string content of each paragraph in the value's children.
+      .map(n => Node.string(n))
+      // Join them all with line breaks denoting paragraphs.
+      .join('\n')
+  )
+}
+
 const Editor = (props) => {
-  const { parseMarkdown = true, doDecorate, children: content, onClick, className, readOnly = false, 
-    onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder } = props;
+  let { parseMarkdown, doDecorate, children: content, onClick, className, readOnly, renderOnPropsUpdate,
+    onInput, onBlur, onFocus, onMouseEnter, onMouseLeave, style, placeholder, onChange: onChangeFunction } = props;
+  // This function parses a string into an array of Node objects
+  // which is what SlateJS uses to render text
 
-  let parseMd = (text) => {
-    if (!text) return null;
+  // Define a deserializing function that takes a string and returns a value.
+  /*const deserialize = string => {
+    // Return a value array of children derived by splitting the string.
+    return string.split('\n').map(line => {
+      return {
+        children: [{ text: line }],
+      }
+    })
+  }*/
 
+  const deserialize = (text) => {
     let parseChildNodes = tokenList => {
-      if (typeof tokenList === 'string') return [{
-        text: tokenList
-      }];
-
+      if (typeof tokenList === 'string') return [{ text: tokenList }];
       let children = [];
       for (let token of tokenList) {
+        console.log(`%cParsing ${typeof token === 'string' ? 'text' : token.type}`, 'color: pink;font-size:14px;', token)
         if (typeof token === 'string') {
-          children.push({text: token});
-        } else if (token.type === 'punctuation') {
-          if (!props.doDecorate) continue;
-          children.push({text: token.content});
+          children.push({ text: token });
         } else {
           children.push({
             type: token.type,
@@ -160,15 +231,20 @@ const Editor = (props) => {
     };
   }
 
-  const ref = React.createRef();
-  let value = content.split('\n').map(n => parseMd(n, true)).filter(Boolean) || '';
+  const ref = useRef(null);
+  const returnNodes = (val) => val.split('\n').map(n => deserialize(n)).filter(Boolean) || '';
+  const [value, setValue] = useState(returnNodes(content))
+
   const [target, setTarget] = useState()
   const [index, setIndex] = useState(0)
   const [search, setSearch] = useState('')
 
-  const renderElement = useCallback(props => <Element {...props} />, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+  const renderElement = useCallback(props => <Element {...props} />, [])
   const editor = useMemo(() => withMentions(withReact(withHistory(createEditor()))), [])
+
+  // This is the decorator function - it takes nodes which
+  // get given a set of anchor points to apply the styling to
   const decorate = useCallback(([node, path]) => {
     const ranges = []
 
@@ -192,6 +268,7 @@ const Editor = (props) => {
     for (const token of tokens) {
       const length = getLength(token)
       const end = start + length
+
       if (typeof token !== 'string') {
         ranges.push({
           [token.type]: true,
@@ -199,11 +276,12 @@ const Editor = (props) => {
           focus: { path, offset: end },
         })
       }
+
       start = end
     }
 
     return ranges
-  }, []);
+  }, [])
 
   const users = Object.values(props.users).filter(c =>
     c.username.toLowerCase().startsWith(search.toLowerCase())
@@ -211,6 +289,7 @@ const Editor = (props) => {
 
   const onKeyDown = useCallback(
     event => {
+      if (onInput && typeof onInput === 'function') onInput(event, serialize(value));
       if (target) {
         switch (event.key) {
           case 'ArrowDown':
@@ -240,6 +319,14 @@ const Editor = (props) => {
     [index, search, target]
   )
 
+  useEffect(() => {
+    console.log('%cContent changed', 'color: pink;font-size:14px;')
+    if (readOnly) {
+      console.log('%cRe-render', 'color: red;font-size:32px;')
+      setValue(returnNodes(content));
+    }
+  }, [content])
+
   // Mention list appearing above current char
   useEffect(() => {
     if (target && users.length > 0) {
@@ -253,9 +340,14 @@ const Editor = (props) => {
     }
   }, [users.length, editor, index, search, target])
 
-  const onChange = (value) => {
-    const { selection } = editor
+  const onValueChanged = (newValue) => {
+    const serialized = serialize(newValue);
+    setValue(newValue);
+    if (onChangeFunction && typeof onChangeFunction === 'function') {
+      onChangeFunction(serialized);
+    }
 
+    const { selection } = editor
     if (selection && Range.isCollapsed(selection)) {
       const [start] = Range.edges(selection)
       const wordBefore = SlateEditor.before(editor, start, { unit: 'word' })
@@ -280,44 +372,41 @@ const Editor = (props) => {
   }
 
   return (
-    <div 
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      onKeyDown={onKeyDown}
-      onClick={onClick}>
-      <Slate
-        aria-multiline='true'
+    <Slate
+      editor={editor}
+      value={value}
+      onChange={v => onValueChanged(v)}
+    >
+      <Editable 
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseUp={onClick}
+        onBlur={() => onBlur && typeof onBlur === 'function' && onBlur(serialize(value))}
+        onFocus={() => {
+          if (onFocus && typeof onFocus === 'function') onFocus(serialize(value))
+        }}
+        onKeyDown={onKeyDown}
         role='textbox'
+
+        className={joinClasses('editor', className, readOnly ? 'editor-read-only' : '')}
+        decorate={parseMarkdown ? decorate : void 0}
+        placeholder={placeholder}
         spellCheck={false}
-        className='editor-container'
-        style={style}
-        editor={editor}
-        value={value}
-        onChange={value => onChange(value)}
-      >
-        <Editable 
-          onBlur={onBlur}
-          onFocus={onFocus}
-          className={joinClasses('editor', className, readOnly ? '' : 'editor-cursor')}
-          decorate={parseMarkdown ? decorate : void 0}
-          placeholder={placeholder}
-          renderElement={renderElement}
-          spellCheck={false}
-          renderLeaf={parseMarkdown ? renderLeaf : void 0}
-          readOnly={readOnly} />
-        {target && users.length > 0 && (
-          <Portal>
-            <div className='popout'>
-              {users.map((user, i) => (
-                <Flex className='popout-list-option' key={i} direction='row' align='center'>
-                    <div className='popout-list-option-name'>{user.username}</div>
-                </Flex>
-              ))}
-            </div>
-          </Portal>
-        )}
-      </Slate>
-    </div>
+        renderElement={renderElement}
+        renderLeaf={parseMarkdown ? renderLeaf : void 0}
+        readOnly={readOnly} />
+      {target && users.length > 0 && (
+        <Portal>
+          <div ref={ref} className='popout'>
+            {users.map((user, i) => (
+              <Flex className='popout-list-option' key={i} direction='row' align='center'>
+                <div className='popout-list-option-name'>{user.username}</div>
+              </Flex>
+            ))}
+          </div>
+        </Portal>
+      )}
+    </Slate>
   )
 }
 
