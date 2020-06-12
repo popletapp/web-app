@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
 import { connect } from 'react-redux';
-import { ColorPicker, Editor, Scroller, Button, ConfirmModal, 
-  MinimalisticButton, Tooltip, Flex, ListPopout, Modal as ModalComponent,
-  LabelCreationModal, DatePickerPopout, CloseButton, RichTextbox, EditRevisionsModal } from './../../';
-import { updateNote, saveNote, deleteNote, createModal } from './../../../modules';
+import { ColorPicker, Scroller, Button, ConfirmModal, Avatar,
+  MinimalisticButton, Tooltip, Flex, FlexChild, ListPopout, Modal as ModalComponent,
+  LabelCreationModal, DatePickerPopout, CloseButton, Editor, EditRevisionsModal } from './../../';
+import { updateNote, saveNote, deleteNote, createModal, getComments, createComment } from './../../../modules';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/tomorrow-night.css';
 
 import './Modal.scss';
-import { permissions } from '../../../util';
+import { permissions, joinClasses } from '../../../util';
 import { withTranslation } from 'react-i18next';
 
 function mapStateToProps (state, props) {
   return {
-    note: state.notesByBoard[props.boardId][props.noteId],
+    note: props.note || state.notesByBoard[props.boardId][props.noteId],
     boardId: state.selectedBoard,
-    board: state.boards[props.boardId]
+    board: state.boards[props.boardId],
+    user: state.user
   };
 }
 
@@ -24,6 +25,22 @@ function mapStateToPropsLabelButton (state, props) {
   return {
     boardId: state.selectedBoard
   };
+}
+
+class NoteComment extends Component {
+  render () {
+    const { comment } = this.props;
+    const user = comment.author;
+    return (
+      <Flex className='modal-note-comments-comment' direction='row'>
+        <Avatar className='modal-note-comments-comment-avatar' id={user.id} url={user.avatar} alt={user.username}></Avatar>
+        <FlexChild>
+          <div className='modal-note-comments-comment-author'>{user.username}</div>
+          <div className='modal-note-comments-comment-content'>{comment.content}</div>
+        </FlexChild>
+      </Flex>
+    );
+  }
 }
 
 class AddLabelButton extends Component {
@@ -51,7 +68,10 @@ class NoteDetailedView extends Modal {
     this.boardId = boardId;
     this.state = {
       focused: false,
-      color: null
+      color: null,
+      showingComments: false,
+      commentTextValue: '',
+      comments: []
     };
   }
 
@@ -66,6 +86,13 @@ class NoteDetailedView extends Modal {
   highlight () {
     const block = document.querySelector('pre:not(.hljs)');
     block && hljs.highlightBlock(block);
+  }
+
+  async componentDidMount () {
+    const { boardId, note } = this.props;
+    this.setState({
+      comments: await getComments(boardId, note.id)
+    })
   }
 
   componentDidUpdate () {
@@ -84,26 +111,24 @@ class NoteDetailedView extends Modal {
     });
   }
 
-  onInput (event, type) {
+  onValueChanged (value, type) {
     const { note } = this.props;
-    const content = event.target.innerText;
+    const content = value;
     const newNote = { ...note, [type]: content };
     updateNote(this.boardId, newNote);
   }
 
-  async onBlur (event, type) {
+  async onBlur (value, type) {
     const { note } = this.props;
 
-    const content = event.target.innerText;
+    const content = value;
     const newNote = { ...note, [type]: content };
 
     this.setState({
       focused: false,
       saving: true
     });
-    if (note[type] !== newNote[type]) {
-      await saveNote(this.boardId, newNote);
-    }
+    await saveNote(this.boardId, newNote);
     this.setState({ saving: false });
   }
 
@@ -165,9 +190,37 @@ class NoteDetailedView extends Modal {
     this.setState({ saving: false });
   }
 
+  handleCommentTextareaChange (event) {
+    event.stopPropagation();
+    this.setState({ commentTextValue: event.target.value });
+  }
+
+  handleCommentTextareaInput (event) {
+    if (event.which === 13 && !event.shiftKey) {
+      event.preventDefault();
+      this.createComment();
+      event.target.value = '';
+    }
+  }
+
+  textareaOptionsClicked (option) {
+    const { note, boardId, user } = this.props;
+    const { commentTextValue } = this.state;
+
+    switch (option) {
+      case 'send': {
+        this.createNoteComment(boardId, note, { author: user, content: commentTextValue, timestamp: Date.now() })
+      }
+    }
+  }
+
+  async createNoteComment (boardID, note, comment) {
+    return await createComment(boardID, note, comment);
+  }
+
   render () {
     const { note, board, boardId, t } = this.props;
-    const { focused, color } = this.state;
+    const { focused, color, showingComments, commentTextValue, comments } = this.state;
 
     if (!note) return null;
     note.title = note.title || '';
@@ -175,47 +228,72 @@ class NoteDetailedView extends Modal {
     return (
       <div className='note-detailed-view' style={{ display: 'block' }}>
         <div className='modal-content'>
-          <div className='modal-note-content-text'>
+          <div className={joinClasses('modal-note-content-text', showingComments ? 'modal-note-content-text-with-comments' : null)}>
             <div className='modal-header'>
-              <RichTextbox
+              <Editor
                 type='title'
                 onFocus={(e) => this.onFocus(e, 'title')}
-                onInput={(e) => this.onInput(e, 'title')}
+                onChange={(e) => this.onValueChanged(e, 'title')}
                 onBlur={(e) => this.onBlur(e, 'title')}
                 onClick={(e) => this.onClick(e, 'title')}
                 placeholder='Title'
-                editable={focused}
                 parseMarkdown={false}
+                readOnly={!permissions.has('MANAGE_NOTES')}
                 style={{ fontSize: '28px' }}
                 className='note-header'>
                 {focused ? note.title : (note.title.length > 128 ? `${note.title.slice(0, 125)}...` : note.title)}
-              </RichTextbox>
+              </Editor>
             </div>
 
-            <div className='modal-body'>
+            <div className='modal-body' style={{ maxHeight: showingComments ? '140px' : undefined }}>
               <Scroller>
-                <RichTextbox
+                <Editor
                   type='content'
                   onFocus={(e) => this.onFocus(e, 'content')}
-                  onInput={(e) => this.onInput(e, 'content')}
+                  onChange={(e) => this.onValueChanged(e, 'content')}
                   onBlur={(e) => this.onBlur(e, 'content')}
                   onClick={(e) => this.onClick(e, 'content')}
-                  editable={focused}
                   doDecorate={focused}
                   parseMarkdown
+                  readOnly={!permissions.has('MANAGE_NOTES')}
                   placeholder='Content'
                   className='note-body'>
                   {note.content}
-                </RichTextbox>
+                </Editor>
               </Scroller>
             </div>
 
             <div className='modal-note-comments'>
-              <div onClick={() => 
-                createModal(<ConfirmModal title={'Hey!'} confirmText={'Understandable'} cancelText={'😡'} content={'Sorry, but comments aren\'t available yet.'} />)} 
-                className='modal-note-comments-view'>
+              {!showingComments && <div onClick={() => this.setState({ showingComments: true })} className='modal-note-comments-view'>
                 {t("NOTE_DETAILED_VIEW_VIEW_COMMENTS")}
-              </div>
+              </div>}
+              {showingComments && (
+                <Flex className='modal-note-comments'>
+                  <div onClick={() => this.setState({ showingComments: false })} className={`modal-note-comments-view ${showingComments ? 'modal-note-comments-view-expanded' : ''}`}>
+                    {t("NOTE_DETAILED_VIEW_HIDE_COMMENTS")}
+                  </div>
+                  <Scroller className='modal-note-comments-container'>
+                    <FlexChild className='modal-note-comments-addcomment'>
+                    <form>
+                      <textarea
+                        type='text'
+                        onChange={(e) => this.handleCommentTextareaChange(e)}
+                        onKeyDown={(e) => this.handleCommentTextareaInput(e)}
+                        value={commentTextValue}
+                        placeholder={t("NOTE_DETAILED_VIEW_COMMENT_TEXTAREA_PLACEHOLDER")}
+                        className='modal-note-comments-textarea'></textarea>
+                    </form>
+                    <div className='modal-note-comments-textarea-options'>
+                      <Tooltip placement='left' content='Not working yet!'><div><MinimalisticButton onClick={() => this.textareaOptionsClicked('emoji')} icon='insert_emoticon' /></div></Tooltip>
+                      <MinimalisticButton onClick={() => this.textareaOptionsClicked('image')} icon='insert_photo' />
+                      <MinimalisticButton onClick={() => this.textareaOptionsClicked('upvote')} icon='thumb_up' />
+                      <MinimalisticButton onClick={() => this.textareaOptionsClicked('send')} icon='send' />
+                    </div>
+                    </FlexChild>
+                    {comments.length > 0 && comments.map(c => <NoteComment comment={c} />)}
+                  </Scroller>
+                </Flex>
+              )}
             </div>
           </div>
           <div className='vertical-rule' style={{ height: '460px', borderColor: '#2e2e2e', margin: '16px' }} />
@@ -273,6 +351,7 @@ class NoteDetailedView extends Modal {
             className='modal-note-settings-editrevision'>{t("NOTE_DETAILED_VIEW_VIEW_EDIT_REVISIONS")}</div>
             <div className='modal-note-settings-header'>{t("NOTE_DETAILED_VIEW_DUE_DATE_HEADER")}</div>
             <DatePickerPopout initial={note.dueDate ? new Date(note.dueDate) : null} 
+              placement='top'
               onOptionSelected={(date) => this.setState({ date })} 
               onClose={() => this.saveDueDate(this.state.date)}>
               {!note.dueDate 
@@ -281,6 +360,9 @@ class NoteDetailedView extends Modal {
             </DatePickerPopout>
             <br />
             <br />
+
+            <div className='modal-note-settings-header'>Technical Details</div>
+            ID: {note.id}
           </Scroller>
         </div>
       </div>
