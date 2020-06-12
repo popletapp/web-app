@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
-import { Home, Board, DevBlog, Landing, Login, SignUp, NotFound, User, Feedback, UserSettings, Post, PostCreator, Premium } from './../../../pages';
+import { Home, Board, DevBlog, Landing, Login, SignUp, NotFound, User, Feedback, 
+  UserSettings, Post, PostCreator, Premium, Test } from './../../../pages';
 import {
   Modals,
   BoardJoinModal,
@@ -20,8 +21,10 @@ import { initReactI18next, Translation } from 'react-i18next';
 i18next.use(XHR)
   .use(initReactI18next)
   .init({
+    getAsync: false,
     lng: 'en',
-    fallbackLng: ['en', 'vi', 'pt-BR', 'ru'],
+    fallbackLng: ['en', 'vi', 'pt-BR', 'ru', 'ja'],
+    preload: ['en'],
     ns: ['translation'],
     backend: {
       loadPath: '/translations/{{lng}}/{{ns}}.json'
@@ -100,6 +103,7 @@ class App extends Component {
             <Route exact path='/premium' component={Premium} />
             <Route exact path='/blog' component={DevBlog} />
             <Route exact path='/blog/create' component={PostCreator} />
+            <Route exact path='/test' component={Test} />
             <Route exact path='/' component={Landing} />
 
             <Route exact path='/blog/post/:id' component={Post} />

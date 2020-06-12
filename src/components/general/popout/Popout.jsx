@@ -92,11 +92,13 @@ class Popout extends Component {
     createPopout('popout', content, { position });
   }
 
-  close () {
+  close (bypassMinCheck) {
     // Below minimum lifespan
     // This is a measure to prevent the popout from immediately disappearing
     if (Date.now() - this.createdAt < 100 || !this.state.isShowing) {
-      return;
+      if (!bypassMinCheck) {
+        return;
+      }
     }
     const { onClose = () => void 0 } = this.props;
     if (typeof onClose === 'function') {
@@ -108,8 +110,7 @@ class Popout extends Component {
   }
 
   componentWillUnmount () {
-    window.listeners.unsubscribe('keydown', this.escListener, false);
-    window.listeners.unsubscribe('click', this.clickListener, false);
+    this.close(true);
   }
 
   render () {

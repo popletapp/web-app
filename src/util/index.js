@@ -6,3 +6,4 @@ export { default as checkForPropertyChanges } from './checkForPropertyChanges';
 export { default as diffText } from './diffText';
 export { default as findAncestor } from './findAncestor';
 export { default as hasClass } from './hasClass';
+export { default as isMouseWithinBounds } from './isMouseWithinBounds';

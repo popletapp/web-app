@@ -97,7 +97,7 @@ class ContextMenu extends Component {
     const { items, style } = this.props;
     return (
       <Flex style={style} className='contextmenu'>
-        {items.map((item) => (
+        {items.filter(Boolean).map((item) => (
           <ContextMenuItem name={item.name} icon={item.icon} onClick={item.onClick} />
         ))}
       </Flex>

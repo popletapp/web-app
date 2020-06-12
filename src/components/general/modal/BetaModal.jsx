@@ -11,7 +11,7 @@ class BetaModal extends Modal {
       <div>
         <div className='modal-content'>
           <div className='modal-header'>
-            {t("MODAL_BETA_TITLE")}
+            {t("MODAL_BETA_BODY_TITLE")}
           </div>
           <div className='modal-body'>
             <p>{t("MODAL_BETA_BODY_LINE_1")}<br />{t("MODAL_BETA_BODY_LINE_2")}</p>

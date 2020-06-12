@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Avatar, MinimalisticButton } from '../..';
+import { Avatar, MinimalisticButton, NotificationListPopout } from '../..';
 import { logout } from './../../../modules';
 import Poplet from './../../../index';
 import './NavBar.scss';
@@ -76,6 +76,7 @@ class NavBar extends Component {
                     <p>{t("BOARD_NAVBAR_BOARDS")}</p>
                   </div>
 
+
                   <ul id='user-selector' className='dropdown-content'>
                     <Link className='dropdown-link' to={`/users/${user.id}`}><li><i className='material-icons'>person</i>{t("DROPDOWN_ITEM_PROFILE")}</li></Link>
                     <Link className='dropdown-link' to={`/settings`}><li><i className='material-icons'>settings</i>{t("DROPDOWN_ITEM_SETTINGS")}</li></Link>
@@ -85,6 +86,12 @@ class NavBar extends Component {
                   <div className='board-navbar-user-container dropdown-trigger' data-target='user-selector'>
                     <Avatar id={user.id} url={user.avatar} alt={user.username} size={32} />
                     <div className='board-navbar-user-container-username'>{user.username}</div>
+                  </div>
+
+                  <div className='board-selector-btn-container'>
+                    <NotificationListPopout placement='left'>
+                      <MinimalisticButton icon='notifications' className='board-selector-btn' />
+                    </NotificationListPopout>
                   </div>
                 </div>
               );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Avatar, Scroller, HorizontalScroller, Flex, FlexChild, 
-  MinimalisticButton, Tooltip, RichTextbox, MemberPopout } from './../';
+  MinimalisticButton, Tooltip, Editor, MemberPopout } from './../';
 import { createChatroom, deleteChatroom, createChatroomComment } from './../../modules';
 import TimeParser from './../../util/parseTime';
 import './Chatroom.scss';
@@ -38,7 +38,7 @@ class StackedComment extends Component {
       <Flex grow={0} className='chatroom-comment-container'>
         <UserDisplay author={author} />
         <FlexChild grow={0} className='chatroom-comment-content'>
-          {comments.map((comment, i) => <RichTextbox parseMarkdown={true} editing={false} key={i}>{comment.content}</RichTextbox>)}
+          {comments.map((comment, i) => <Editor parseMarkdown={true} readOnly={true} key={i}>{comment.content}</Editor>)}
         </FlexChild>
       </Flex>
     );
@@ -52,7 +52,7 @@ class Comment extends Component {
       <Flex grow={0} className='chatroom-comment-container'>
         <UserDisplay author={author} />
         <FlexChild grow={0} className='chatroom-comment-content'>
-          <RichTextbox parseMarkdown={true} editing={false}>{children}</RichTextbox>
+          <Editor parseMarkdown={true} readOnly={true}>{children}</Editor>
         </FlexChild>
       </Flex>
     );
@@ -170,7 +170,6 @@ class Chatroom extends Component {
       }
     }
     const sortedComments = comments ? comments.sort((a, b) => new Date(b.timestamp || Date.now()) - new Date(a.timestamp || Date.now())).reverse() : [];
-    console.log(sortedComments)
 
     return (
       <Flex className='chatroom-container'>
@@ -198,11 +197,12 @@ class Chatroom extends Component {
 
           <Flex grow={0} className='chatroom-header' align='left' direction='column'>
             <FlexChild className='chatroom-header-information'>
+              <header className='chatroom-title-header'>Chatroom</header>
               <div className='chatroom-title'>
                 {chatroom.name}
               </div>
               <div className='chatroom-last-active-label'>
-                {sortedComments.length ? `Last active ${TimeParser.timeAgo(sortedComments[0].timestamp)}` : 'Not active'}
+                {sortedComments.length ? `Last active ${TimeParser.timeAgo(sortedComments[0].timestamp)} ago` : 'Not active'}
               </div>
             </FlexChild>
             <FlexChild className='chatroom-header-btns' grow={0} align='center' justify='right' direction='column'>

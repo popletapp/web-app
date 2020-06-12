@@ -128,7 +128,6 @@ class RankSettingsScreen extends Component {
     } else {
       selectedRank.permissions ^= permissionValue;
     }
-    console.log(selectedRank.permissions)
 
     await updateRank(boardId, selectedRank);
     this.setState({ selectedRank });
@@ -137,7 +136,6 @@ class RankSettingsScreen extends Component {
   render () {
     const { ranks, t } = this.props;
     let { selectedRank } = this.state;
-    console.log(selectedRank.name, selectedRank)
     if (!selectedRank) {
       this.setState({ 
         selectedRank: (Object.values(ranks)[0] || {})
@@ -217,14 +215,14 @@ class RankSettingsScreen extends Component {
                     {Object.values(PermissionsFriendly)
                       .map((permission, i) =>
                         <Flex key={i} align='left' className='board-settings-ranks-permissions-permission' direction='row' style={{ width: '100%' }}>
-                          <FlexChild align='left'>
+                          <FlexChild className='board-settings-ranks-permissions-text' align='left'>
                             {t(permission.name)}
                             <div className='board-settings-text' style={{ fontSize: '13px' }}>
                               {t(permission.description)}
                             </div>
                           </FlexChild>
 
-                          <FlexChild align='right'>
+                          <FlexChild className='board-settings-ranks-permissions-toggle' align='right'>
                             <ToggleSwitch onChange={(_) => this.addPermissionToRank(_, permission.id)} small initialState={selectedRank.permissions & Permissions[permission.id]} />
                           </FlexChild>
                         </Flex>

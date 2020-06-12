@@ -25,6 +25,7 @@ export { default as LabelCreationModal } from './general/modal/LabelCreationModa
 export { default as EditRevisionsModal } from './general/modal/EditRevisionsModal';
 export { default as BetaModal } from './general/modal/BetaModal';
 export { default as ConfirmModal } from './general/modal/ConfirmModal';
+export { default as NicknameModal } from './general/modal/NicknameModal';
 export { default as Input } from './general/input/Input';
 export { default as DefaultInput } from './general/input/DefaultInput';
 export { default as Editor } from './general/editor/Editor';
@@ -55,6 +56,8 @@ export { default as ListPopout } from './general/popout/ListPopout';
 export { default as DatePickerPopout } from './general/popout/DatePickerPopout';
 export { default as Indicator } from './general/indicator/Indicator';
 export { default as Mention } from './general/text/Mention';
+export { default as NotificationListPopout } from './general/popout/NotificationListPopout';
+export { default as LazyLoaderScroller } from './general/scroller/LazyLoaderScroller';
 // Internal
 export { default as CriticalFailure } from './internal/load/CriticalFailure';
 export { default as Loader } from './internal/load/Loader';

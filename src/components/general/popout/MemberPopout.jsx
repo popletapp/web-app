@@ -7,6 +7,7 @@ import { updateMember } from './../../../modules';
 import { connect } from 'react-redux';
 import { permissions } from './../../../util';
 import { withTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 function mapStateToProps (state) {
   return {
@@ -92,7 +93,7 @@ class MemberPopout extends Popout {
           </Flex>
           
           <br />
-          <Button>{t("POPOUT_MEMBER_VIEW_PROFILE")}</Button>
+          <Link to={`/users/${member.id}`}><Button>{t("POPOUT_MEMBER_VIEW_PROFILE")}</Button></Link>
         </FlexChild>
 
         <Flex className='popout-footer member-popout-footer' direction='row' justify='end' align='right'>

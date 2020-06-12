@@ -24,7 +24,6 @@ class UserSettingsGeneral extends Component {
     const { user } = this.props;
     const file = e.target.files.length ? e.target.files[0] : null;
     if (file) {
-      console.log(file)
       addAvatar(user.id, file);
     }
   }
@@ -37,7 +36,6 @@ class UserSettingsGeneral extends Component {
 
   render () {
     const { t, user } = this.props;
-    console.log(user)
     return (
       <FlexChild direction='column' className='user-settings-content'>
         <h1>{t("SETTINGS")}</h1>

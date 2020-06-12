@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SelectableItem, List, Scroller, Flex, 
-  FlexChild, User, MemberPopout, ContextMenu } from './../../';
-import { createContextMenu } from './../../../modules';
+  FlexChild, User, MemberPopout, ContextMenu, NicknameModal } from './../../';
+import { createContextMenu, createModal } from './../../../modules';
 import { connect } from 'react-redux';
 import ReactDOM from 'react-dom';
 import './MembersList.scss';
@@ -47,7 +47,7 @@ class MembersList extends Component {
                       },
                       {
                         name: 'Change Nickname',
-                        onClick: () => console.log('Clicker')
+                        onClick: () => createModal(<NicknameModal member={user} />)
                       },
                     ], { x: event.clientX, y: event.clientY })
                   }}

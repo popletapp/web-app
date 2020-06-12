@@ -4,6 +4,10 @@
   font-family: 'Inter', sans-serif;
   letter-spacing: -1px;
   color: var(--text-accent-color-1);
+
+  &-header {
+    margin: -2px;
+  }
 }
 
 .chatroom-last-active-label {
@@ -73,14 +77,14 @@
 @keyframes slideChatroomOut {
   0% {
     opacity: 1;
-    transform: translateX(0);
   }
 
   99% {
-    transform: translateX(200px);
+    width: 0;
   }
 
   100% {
+    width: 0;
     opacity: 0;
   }
 }
@@ -88,20 +92,27 @@
 @keyframes slideChatroomIn {
   0% {
     opacity: 1;
-    transform: translateX(200px);
+    width: 0;
   }
 
   100% {
-    transform: translateX(0px);
+    width: auto;
   }
 }
 
 .chatroom-exiting {
+  min-width: 0px !important;
   animation: 0.55s slideChatroomOut 0s forwards cubic-bezier(.15,.97,.51,1.01);
+
+  div {
+    min-width: 0 !important;
+    display: none;
+  }
 }
 
 .chatroom-entering {
   animation: 0.45s slideChatroomIn 0s backwards cubic-bezier(.15,.97,.51,1.01);
+  min-width: 0px !important;
 }
 
 .chatroom-root {
@@ -211,9 +222,10 @@
 }
 
 .chatroom-container {
+  position: relative;
   max-width: 500px;
   min-width: 225px;
-  width: 250px;
+  width: 300px;
   box-shadow: -2px 0px 3px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }

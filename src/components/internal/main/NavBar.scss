@@ -30,7 +30,7 @@ a.dropdown-link li {
     justify-items: center;
   }
 
-  > .navbar-user-container {
+  .navbar-user-container {
     padding: 0.65em;
     border-radius: 5px;
     justify-items: center;
@@ -55,8 +55,15 @@ a.dropdown-link li {
     }
   }
 
-  &-user-container {
+  &-user-area {
     margin-left: auto;
+
+    &-notifications-btn {
+      height: 100%;
+    }
+  }
+
+  &-user-container {
     display: flex;
     flex-direction: row;
 

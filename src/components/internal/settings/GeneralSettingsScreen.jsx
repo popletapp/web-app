@@ -39,7 +39,6 @@ class GeneralSettingsScreen extends Component {
     const { board } = this.props;
     const file = e.target.files.length ? e.target.files[0] : null;
     if (file) {
-      console.log(file)
       addAvatar(board.id, file, 'boards');
     }
   }

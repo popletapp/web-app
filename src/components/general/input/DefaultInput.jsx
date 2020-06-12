@@ -3,17 +3,24 @@ import { joinClasses } from '../../../util';
 import './Input.scss';
 
 class DefaultInput extends Component {
-  constructor ({ name, type, placeholder, value }) {
+  constructor ({ value }) {
     super();
-    this.name = name;
-    this.type = type;
-    this.placeholder = placeholder || '';
-    this.value = value;
-    this.state = {};
+    this.state = {
+      value
+    }
+  }
+
+  onChange (event) {
+    const { onChange } = this.props;
+    this.setState({ value: event.target.value });
+    if (typeof onChange === 'function') {
+      onChange(event);
+    }
   }
 
   render () {
-    const { name, type, placeholder, value, children, onChange, onInput, className, onBlur } = this.props;
+    const { name, type, placeholder, children, onInput, className, onBlur } = this.props;
+    const { value } = this.state;
     return (
       <input
         className={joinClasses('text-input', className)}
@@ -22,10 +29,10 @@ class DefaultInput extends Component {
         type={type || 'text'}
         placeholder={placeholder || ''}
         maxLength='999'
-        defaultValue={value || ''}
+        value={value || ''}
         onInput={onInput}
         onBlur={onBlur}
-        onChange={onChange}>
+        onChange={(e) => this.onChange(e)}>
         {children || null}
       </input>
     );

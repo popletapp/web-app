@@ -39,19 +39,6 @@ class GroupSettingsModal extends Modal {
     }
   }
 
-  async apply () {
-    const { code } = this.state;
-    const error = await this.check({ code });
-    if (!error) {
-      const board = await joinBoard(code, Poplet.user.id);
-      if (board) {
-        await switchBoard(board.id);
-      }
-    } else {
-      this.setState({ error });
-    }
-  }
-
   handleColorChange () {
 
   }
@@ -106,9 +93,9 @@ class GroupSettingsModal extends Modal {
           </div>
         </div>
         <Flex className='modal-footer' direction='row' justify='end' align='right'>
-          <Button onClick={(e) => this.handleEvent(e, 'cancel')} 
+          <Button onClick={(e) => this.actionMade('cancel', e)} 
           className='modal-close btn modal-cancel'>{this.props.cancelText || t("MODAL_GENERIC_CANCEL_CLOSE")}</Button>
-          <Button onClick={(e) => this.handleEvent(e, 'confirm')} 
+          <Button onClick={(e) => this.actionMade('confirm', e)} 
           className='modal-close btn modal-confirm'>{this.props.confirmText || t("MODAL_GENERIC_SAVE")}</Button>
         </Flex>
       </div>

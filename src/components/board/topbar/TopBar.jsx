@@ -143,7 +143,7 @@ class TopBar extends Component {
                 <p>{t("BOARD_TOPBAR_CHATROOM")}</p>
               </FlexChild>
 
-              <FlexChild className='zoom-container'>
+              <FlexChild className='zoom-container' grow={0}>
                 <header>{t("BOARD_TOPBAR_ZOOM_OPTIONS")}</header>
                 <div className='zoom-options'>
                   {/* Zoom starts at 1 and increases by 0.5 each time and decreases by 0.25 */}

@@ -1,27 +1,23 @@
 import React from 'react';
 import Modal from './Modal';
-import Input from '../input/DefaultInput.jsx';
 import { createInvite } from '../../../modules';
 import { withTranslation } from 'react-i18next';
 import './Modal.scss';
 
-class BoardCreationModal extends Modal {
+class BoardInviteMembersModal extends Modal {
   constructor ({ boardID }) {
     super();
     this.state = {
       name: '',
-      error: null
+      error: null,
+      invite: 'generating...'
     };
     this.boardID = boardID;
   }
 
-  async create () {
+  async componentDidMount () {
     const invite = await createInvite(this.boardID);
     this.setState({ invite: invite.code });
-  }
-
-  async componentDidMount () {
-    await this.create();
   }
 
   render () {
@@ -34,7 +30,7 @@ class BoardCreationModal extends Modal {
           </div>
           <div className='modal-body'>
             <p>{t("MODAL_INVITE_MEMBERS_BODY_LINE_1")}</p>
-            <Input value={this.state.invite}></Input>
+            <input className='text-input' value={this.state.invite} readOnly></input>
             <p>{t("MODAL_INVITE_MEMBERS_BODY_LINE_2")}</p>
           </div>
         </div>
@@ -46,4 +42,4 @@ class BoardCreationModal extends Modal {
   }
 }
 
-export default withTranslation()(BoardCreationModal);
+export default withTranslation()(BoardInviteMembersModal);

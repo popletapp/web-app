@@ -40,6 +40,8 @@ export { default as isNoteInGroup } from './notes/isNoteInGroup.js';
 export { default as isNoteOverlapping } from './notes/isNoteOverlapping.js';
 export { default as findNextAvailablePosition } from './notes/findNextAvailablePosition.js';
 export { default as adjustZoomLevel } from './notes/adjustZoomLevel.js';
+export { default as getComments } from './notes/getComments.js';
+export { default as createComment } from './notes/createComment.js';
 
 // Users
 export { default as getCurrentUser } from './user/getCurrentUser.js';
@@ -47,7 +49,15 @@ export { default as getUser } from './user/getUser.js';
 export { default as getUserBoards } from './user/getUserBoards.js';
 export { default as logout } from './user/logout.js';
 export { default as addAvatar } from './user/addAvatar.js';
+export { default as getHomeContent } from './user/getHomeContent.js';
+export { default as getNotifications } from './user/getNotifications.js';
 export { default as updateUser } from './user/updateUser.js';
+export { default as sendFriendRequest } from './user/sendFriendRequest.js';
+export { default as acceptFriendRequest } from './user/acceptFriendRequest.js';
+export { default as getFriends } from './user/getFriends.js';
+export { default as updateFriend } from './user/updateFriend.js';
+export { default as deleteFriend } from './user/deleteFriend.js';
+export { default as getPendingFriends } from './user/getPendingFriends.js';
 
 // Chatroom
 export { default as getChatroom } from './chatroom/getChatroom.js';

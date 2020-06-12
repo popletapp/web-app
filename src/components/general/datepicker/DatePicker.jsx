@@ -251,7 +251,7 @@ class DatePicker extends Component {
   }
 
   render () {
-    const { canSelectPreviousDate = true, initial } = this.props;
+    const { canSelectPreviousDate, initial } = this.props;
     const { selectedMonth, selectedDay, selectedYear, shownMonth, 
       shownYear, selectedPM, shownHour, selectedMinutes } = this.state;
 

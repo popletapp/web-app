@@ -126,7 +126,7 @@ class PerformableGroup extends Component {
     }
 
     let { performables } = this.state;
-    performables.push(<Performable />);
+    performables.push(<Performable t={this.props.t} />);
     this.setState({ performables });
   }
 
@@ -219,7 +219,7 @@ class Rule extends Component {
     const { t, index = 0 } = this.props;
     const { existingSelected } = this.state;
     const rule = this.initialize();
-    const performableMenu = React.createElement(ConnectedPerformableGroup, { onChange: () => this.forceUpdate() })
+    const performableMenu = React.createElement(ConnectedPerformableGroup, { t, onChange: () => this.forceUpdate() })
 
     return (<div>
       <div className='rule-creating'>
@@ -272,7 +272,6 @@ class NoteSettingsScreen extends Component {
     newRule.instructions = instructions;
     rules.push(newRule)
     this.forceUpdate();
-    console.log(rules)
   }
 
   modifyRule (key, value) {
