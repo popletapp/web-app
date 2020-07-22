@@ -10,6 +10,12 @@ Regular String
 ~~Strikethrough~~
 [Link to image](https://nevulo.xyz/meme/feels)
 ![Displaying image](https://nevulo.xyz/meme/feels)
+# Header 1
+## Header 2
+### Header 3
+#### Header 4
+##### Header 5
+###### Header 6
 `
 
 const NEWLINE_TEST_CONTENT = `Line 1\nLine 2\n\nLine 4\n\n\n\nLine 8\nLine 9\n\nLine 11\n\n\n\n\n\n\nLine 18`
@@ -39,16 +45,16 @@ class Test extends Component {
         <p><i className='material-icons'>info</i> Both textboxes should be identical.</p>
         <Button onClick={() => this.setState({ markdownTestDecorate: !markdownTestDecorate })}>Toggle decorations on editor</Button>
         <Flex direction='row'>
-          <RichTextbox>{MARKDOWN_TEST_CONTENT}</RichTextbox>
+          <RichTextbox parseMarkdown={markdownTestDecorate}>{MARKDOWN_TEST_CONTENT}</RichTextbox>
           <Flex>
-            <Editor>{MARKDOWN_TEST_CONTENT}</Editor>
+            <Editor parseMarkdown={markdownTestDecorate}>{MARKDOWN_TEST_CONTENT}</Editor>
           </Flex>
         </Flex>
 
         <header>Newline Test</header>
         <p><i className='material-icons'>info</i> All 3 textboxes should be identical.</p>
         <Flex direction='row'>
-          <textarea>{NEWLINE_TEST_CONTENT}</textarea>
+          <textarea style={{ height: '350px' }}>{NEWLINE_TEST_CONTENT}</textarea>
           <RichTextbox>{NEWLINE_TEST_CONTENT}</RichTextbox>
           <Flex>
             <Editor>{NEWLINE_TEST_CONTENT}</Editor>
