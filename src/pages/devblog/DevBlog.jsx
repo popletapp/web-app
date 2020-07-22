@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavBar, Flex, FlexChild, Editor } from '../../components';
+import { NavBar, Flex, Footer, Editor } from '../../components';
 import { getLastPosts } from '../../modules';
 import { Link } from 'react-router-dom';
 import app from './../../../package.json';
@@ -53,6 +53,7 @@ class DevBlog extends Component {
         <div className='blog-content'>
           {posts.map(post => <BlogPostPreview post={post} />)}
         </div>
+        <Footer />
       </div>
     );
   }

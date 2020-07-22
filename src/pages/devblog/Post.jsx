@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavBar, Flex, FlexChild, Editor } from '../../components';
+import { NavBar, Flex, FlexChild, RichTextbox } from '../../components';
 import { getPost } from './../../modules';
 import './Post.scss';
 import Poplet from './../../';
@@ -26,11 +26,10 @@ class Post extends Component {
 
   render () {
     let { post } = this.state;
-    console.log(post)
     if (!post) {
       post = {
         title: 'Post not found',
-        content: 'Sorry, doesn\'t exist.'
+        content: `*Sorry!* You tried to access a blog post that doesn't exist.`
       }
     }
     const { title, content } = post;
@@ -47,9 +46,9 @@ class Post extends Component {
           </section>
         </div>
 
-        <Editor parseMarkdown={true} editing={false} className='blog-content'>
+        <RichTextbox className='blog-content'>
           {content}
-        </Editor>
+        </RichTextbox>
       </div>
     );
   }
