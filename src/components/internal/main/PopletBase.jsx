@@ -35,7 +35,7 @@ class PopletBase extends Component {
           }, 2000);
         })
         .catch(() => {
-          ReactDOM.render(<CriticalFailure />, document.querySelector('#root'));
+          //ReactDOM.render(<CriticalFailure />, document.querySelector('#root'));
         });
     }
   }

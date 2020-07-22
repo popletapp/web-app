@@ -12,3 +12,5 @@ export { default as Post } from './devblog/Post';
 export { default as PostCreator } from './devblog/PostCreator';
 export { default as Premium } from './premium/Premium';
 export { default as Test } from './test/Test';
+export { default as Help } from './help/Help';
+export { default as About } from './about/About';

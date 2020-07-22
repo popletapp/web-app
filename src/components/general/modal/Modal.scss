@@ -391,8 +391,7 @@
 
 @media screen and (max-height: 600px) {
   div.modal-content {
-    min-height: 350px;
-    height: 350px;
+    max-height: 350px;
   }
 }
 

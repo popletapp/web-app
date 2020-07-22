@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router';
 import { Home, Board, DevBlog, Landing, Login, SignUp, NotFound, User, Feedback, 
-  UserSettings, Post, PostCreator, Premium, Test } from './../../../pages';
+  UserSettings, Post, PostCreator, Premium, Test, Help, About } from './../../../pages';
 import {
   Modals,
   BoardJoinModal,
@@ -104,6 +104,8 @@ class App extends Component {
             <Route exact path='/blog' component={DevBlog} />
             <Route exact path='/blog/create' component={PostCreator} />
             <Route exact path='/test' component={Test} />
+            <Route exact path='/help' component={Help} />
+            <Route exact path='/about' component={About} />
             <Route exact path='/' component={Landing} />
 
             <Route exact path='/blog/post/:id' component={Post} />

@@ -48,6 +48,7 @@ export { default as Tooltips } from './general/tooltip/Tooltips';
 export { default as CircleButton } from './general/button/CircleButton';
 export { default as CloseButton } from './general/button/CloseButton';
 export { default as Popout } from './general/popout/Popout';
+export { default as Footer } from './general/footer/Footer';
 export { default as Popouts } from './general/popout/Popouts';
 export { default as ContextMenus } from './general/contextmenu/ContextMenus';
 export { default as MemberPopout } from './general/popout/MemberPopout';

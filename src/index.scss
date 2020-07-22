@@ -64,6 +64,10 @@ html, body {
   user-select: none;
 }
 
+div > a {
+  color: var(--poplet-blue);
+}
+
 // Roboto
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,600,700,800|Bai+Jamjuree:700|Poppins:800|Heebo|Raleway:800|Rubik|Days+One&display=swap');
 * {

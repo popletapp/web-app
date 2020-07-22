@@ -44,14 +44,29 @@ a.dropdown-link li {
   }
 
   &-register {
+    background: var(--dark-accent-color-2);
+    padding: 0.5em;
+    border-radius: 4px;
     margin-left: auto;
     display: flex;
     flex-direction: row;
 
     &-or {
       color: grey;
-      padding: 0 0.5em 0 0.5em;
-      text-transform: lowercase;
+      padding: 0 0.65em 0 0.65em;
+      align-self: center;
+      margin-top: 2px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    a {
+      color: white !important;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

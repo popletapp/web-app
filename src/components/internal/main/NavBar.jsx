@@ -43,19 +43,21 @@ class NavBar extends PopletBase {
           </ul>
           
           <Flex grow={0} direction='row' align='center' className='navbar-user-area'>
-            <Flex align='right' justify='right' className='board-selector-btn-container navbar-user-area-notifications-btn'>
-              <NotificationListPopout placement='left'>
-                <MinimalisticButton icon='notifications' className='board-selector-btn' />
-              </NotificationListPopout>
-            </Flex>
-
             {(() => {
               if (user && user.id) {
                 return (
-                  <div className='navbar-user-container dropdown-trigger' data-target='user-selector'>
-                    <Avatar id={user.id} url={user.avatar} alt={user.username} size={32} />
-                    <div className='navbar-user-container-username'>{user.username}</div>
-                  </div>
+                  <>
+                    <Flex align='right' justify='right' className='board-selector-btn-container navbar-user-area-notifications-btn'>
+                      <NotificationListPopout placement='left'>
+                        <MinimalisticButton icon='notifications' className='board-selector-btn' />
+                      </NotificationListPopout>
+                    </Flex>
+
+                    <div className='navbar-user-container dropdown-trigger' data-target='user-selector'>
+                      <Avatar id={user.id} url={user.avatar} alt={user.username} size={32} />
+                      <div className='navbar-user-container-username'>{user.username}</div>
+                    </div>
+                  </>
                 );
               } else {
                 return (
