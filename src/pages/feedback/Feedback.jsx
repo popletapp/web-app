@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { PopletBase, Avatar, NavBar, Button, MinimalisticButton, Flex, FlexChild } from '../../components';
+import { PopletBase, Avatar, NavBar, Button, MinimalisticButton, Flex, FlexChild, Footer } from '../../components';
 import './Feedback.scss';
 import Poplet from './../../';
 import { withTranslation } from 'react-i18next';
@@ -63,7 +63,7 @@ class Feedback extends PopletBase {
     const { what, area, error, submitted } = this.state;
 
     return (
-      <div>
+      <div className='feedback-container'>
         <NavBar />
 
         <Flex align='center'>
@@ -129,6 +129,7 @@ class Feedback extends PopletBase {
             </Flex>
           </div>
         </Flex>
+        <Footer />
 
         <ul id='what-choice-dropdown' className='dropdown-content'>
           <li onClick={() => this.setState({ what: 0 })}>{t("FEEDBACK_BUG_REPORT")}</li>
