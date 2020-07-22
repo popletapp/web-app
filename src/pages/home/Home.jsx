@@ -195,7 +195,7 @@ class Home extends PopletBase {
         <div className='home-container'>
           <div className='board-selector'>
             <h2>{t("HOME_BOARDS_HEADER")}</h2>
-            {Object.values(boards).map((board, i) => {
+            {Object.values(boards).length ? Object.values(boards).map((board, i) => {
               return (
                 <Link key={i} className='board-item' to={`/boards/${board.id}`}>
                   <Avatar id={board.id} url={board.avatar} alt={board.name} size={32} />
@@ -204,7 +204,14 @@ class Home extends PopletBase {
                   </div>
                 </Link>
               );
-            })}
+            }) : (
+              <div className='no-boards-subtext'>
+                You aren't in any boards.
+                <Flex className='suggested-boards'>
+                  <FlexChild></FlexChild>
+                </Flex>
+              </div>
+            )}
 
             <Flex className='board-add-items' direction='column' align='center' justify='center'>
               <Link className='board-interaction-btn board-item-join' to={{

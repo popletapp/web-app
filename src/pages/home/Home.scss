@@ -39,6 +39,11 @@
   }
 }
 
+.no-boards-subtext {
+  margin-left: 8px;
+  color: var(--text-accent-color-1);
+}
+
 .board-add-items {
   background-color: rgba(0, 0, 0, 0.4);
   margin-left: -1em;
@@ -48,7 +53,7 @@
   padding: 1em;
 
   header {
-    background: var(--dark-accent-color-purple-2);
+    background: var(--dark-accent-color-purple-4);
     width: 100%;
     color: var(--text-accent-color-3);
     position: relative;
