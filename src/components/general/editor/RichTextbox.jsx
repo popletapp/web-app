@@ -35,20 +35,14 @@ const tutorialButton3 = {
   className='large-invite-members-btn'>Invite Members</Button>
 }
 
+
 const CUSTOM_RULES = {
   ...SimpleMarkdown.defaultRules,
-  paragraph: null,
-  newline: null,
-  text: {
-    ...SimpleMarkdown.defaultRules.text,
-    order: SimpleMarkdown.defaultRules.paragraph.order,
-    react(node, output, state) {
-      if (typeof node.content === 'string') {
-        return node.content;
-      }
-      return <span key={state.key}>{output(node.content, state)}</span>;
-    },
-  },
+  // Remove newline before ending header
+  heading: {
+    ...SimpleMarkdown.defaultRules.heading,
+    match: (source) => /^ *(#{1,6})([^\n]+?)#* *(?:\n *)+/.exec(source)
+  }
 }
 
 const rawParser = SimpleMarkdown.parserFor(CUSTOM_RULES);
@@ -81,7 +75,7 @@ class RichTextbox extends Component {
     const { children, editable, parseMarkdown = true, className, style, onClick, onBlur, onFocus, onMouseEnter, onMouseLeave,
       placeholder, doDecorate, onChange } = this.props;
     let { content } = this.state;
-    const parsed = output(parse(content));
+    const parsed = output(parse(content))
 
     const properties = editable ? {
       className,

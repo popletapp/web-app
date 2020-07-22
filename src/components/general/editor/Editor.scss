@@ -67,4 +67,13 @@
     background-color: rgb(8, 8, 8);
     padding: 3px;
   }
+
+  &-url {
+    color: var(--poplet-blue);
+    text-decoration: underline;
+  }
+
+  &-strike {
+    text-decoration: line-through;
+  }
 }
