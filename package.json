@@ -8,7 +8,7 @@
     "babel-eslint": "^10.0.3",
     "diff": "^4.0.2",
     "emotion": "^10.0.27",
-    "highlight.js": "^9.15.8",
+    "highlight.js": "^10.4.1",
     "i18next": "^19.3.2",
     "i18next-xhr-backend": "^3.2.2",
     "is-mobile": "^2.1.0",
