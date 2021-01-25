@@ -107,5 +107,20 @@
     "BOARD_MEMBER_COUNT_MEMBER": "{{count}} üye",
     "MEMBERS_LIST_MEMBERS_HEADER": "Üyeler",
     "CREATE_NEW_BOARD": "Yeni bir Pano oluştur",
-    "JOIN_A_BOARD": "Bir Yönetim Kuruluna Katılın"
+    "JOIN_A_BOARD": "Bir Yönetim Kuruluna Katılın",
+    "LANDING_CARD_2_TITLE": "Aşırı özelleştirme",
+    "LANDING_CARD_1_DESCRIPTION": "Üyeleri notlara, son tarihlere, önem sırasına ve daha fazlasına atamaktan hoşlandığınız özellikler dahil.",
+    "LANDING_LEARN_MORE": "ya da daha fazla gör",
+    "LANDING_CARD_1_TITLE": "İstediğin her şey ve daha fazlası",
+    "LANDING_GET_STARTED": "Başlamak",
+    "LANDING_INTRO_SUBTEXT": "Bazı fikirler diğerlerinden daha karmaşıktır - Poplet istediğiniz şekilde not almanıza izin verir.",
+    "LANDING_INTRO_DESCRIPTION": "Zengin özelliklere sahip bir not alma uygulaması",
+    "LANDING_MAIN_TITLE": "Düşünmek yeniden düşünüldü",
+    "HOME_PENDING_FRIENDSHIPS_HEADER": "Bekleyen Arkadaş İstekleri",
+    "HOME_ACTIVITY_FEED_NO_ACTIVITY": "Yeminde yeni bir şey yok. Daha sonra tekrar kontrol edin!",
+    "HOME_ACTIVITY_FEED_SUBHEADER_RECENTLY_MODIFIED": "Yakın Zamanda Değiştirildi",
+    "HOME_ACTIVITY_FEED_HEADER": "Etkinlik Besleme",
+    "HOME_RECENTLY_VIEWED_NONE": "Yakın zamanda hiçbir şey görmedin. Bunu yaptığınızda, burada görünecektir.",
+    "HOME_RECENTLY_VIEWED_HEADER": "Son Görüntülenen",
+    "HOME_BOARDS_HEADER": "Panolar"
 }
